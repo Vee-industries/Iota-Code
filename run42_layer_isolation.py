@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — RUN 42: LAYER CAUSAL SUFFICIENCY
+IOTA FRAMEWORK -- RUN 42: LAYER CAUSAL SUFFICIENCY
 ===================================================
 Single-layer activation patching. Tests which individual layers from
 {8, 16, 24, 31} are causally sufficient to shift output token selection.
@@ -9,17 +9,17 @@ Run 0006's geometry change output? The answer is yes. Run 0018 asks: which
 layer is doing the work?
 
 Patch modes (five per trial/turn):
-  none  — no injection, clean null baseline (full trajectory metrics)
-  L8    — inject reference geometry at layer 8 only
-  L16   — inject reference geometry at layer 16 only
-  L24   — inject reference geometry at layer 24 only
-  L31   — inject reference geometry at layer 31 only
+  none  -- no injection, clean null baseline (full trajectory metrics)
+  L8    -- inject reference geometry at layer 8 only
+  L16   -- inject reference geometry at layer 16 only
+  L24   -- inject reference geometry at layer 24 only
+  L31   -- inject reference geometry at layer 31 only
 
-Primary metric: output_change_rate per layer — fraction of (trial, turn)
+Primary metric: output_change_rate per layer -- fraction of (trial, turn)
 pairs where output differs from the none condition.
 
 Secondary metric: sim_to_reference (final-layer cosine similarity to
-reference state) — measures whether the injection at layer li propagated
+reference state) -- measures whether the injection at layer li propagated
 forward through the remaining stack to the output layer. Low sim for L8
 means the network smoothed out the injection before output; high sim for
 L31 is expected (nearly direct). The gradient across layers is the
@@ -33,16 +33,16 @@ MIXED-SCHEMA CSV (same pattern as Run 0017, Finding O, v23.3):
     (state_similarity_index, signal_entropy_ratio, disruption_flag, onset_delay_ratio, etc.)
   patch_layer in ("L8","L16","L24","L31") rows: patching-specific fields only
     (sim_to_reference, output, output_changed, output_tokens, prompt)
-  NaN values in patched rows are STRUCTURAL — not data gaps.
+  NaN values in patched rows are STRUCTURAL -- not data gaps.
   Filter patch_layer == "none" before accessing standard trajectory metrics.
 
 Prerequisite: Run 0006 all-layers hidden states (_alllayers.npy files).
-Same prerequisite as Run 0017 — graft_patching.py documents the dependency.
+Same prerequisite as Run 0017 -- graft_patching.py documents the dependency.
 
 Connection to layer-locality hypotheses:
-  Run 0027 (H14/H57): correlational — where does consistency concentrate?
-  Run 0034 (H24): correlational — layer depth of trajectory consistency
-  Run 0018 (H29): causal — which layer is sufficient to shift output?
+  Run 0027 (H14/H57): correlational -- where does consistency concentrate?
+  Run 0034 (H24): correlational -- layer depth of trajectory consistency
+  Run 0018 (H29): causal -- which layer is sufficient to shift output?
   If peak causal layer aligns with correlation peak from 24/36: strongest
   layer-locality finding in the framework.
 
@@ -112,7 +112,7 @@ NULL_PROMPTS = [
     "What is persisting across these turns?",
     "What would it mean to lose continuity at this point?",
 ]
-assert len(NULL_PROMPTS) == TURNS  # one unique prompt per turn — no cycling artifact
+assert len(NULL_PROMPTS) == TURNS  # one unique prompt per turn -- no cycling artifact
 
 
 def _run_patched_generation(mdl, tok, messages, patch_layer_idx: int,
@@ -121,8 +121,8 @@ def _run_patched_generation(mdl, tok, messages, patch_layer_idx: int,
     """
     Forward pass with single-layer activation grafting via hook.
 
-    patch_layer_idx: int — which transformer layer to inject at
-    patch_vec:       np.ndarray shape (D,) — reference vector for that layer
+    patch_layer_idx: int -- which transformer layer to inject at
+    patch_vec:       np.ndarray shape (D,) -- reference vector for that layer
 
     Returns: (out_text, layer_h)
       out_text: generated token string
@@ -226,14 +226,14 @@ def _load_reference_states(hidden_dir, ref_run, model_name, n_trials=10):
                 pass
     if refs:
         print(f"  [layer_iso] Found Run {ref_run:02d} ref states via wildcard scan "
-              f"(model name mismatch) — run rename_model_npy.py to fix permanently",
+              f"(model name mismatch) -- run rename_model_npy.py to fix permanently",
               flush=True)
     return refs
 
 
 def _scan_completed_modes(csv_file, run_num, mode_col, all_modes, turns):
     """Return set of (trial, mode) pairs that have `turns` complete rows.
-    Reads by column name — no position heuristics needed with universal schema.
+    Reads by column name -- no position heuristics needed with universal schema.
     """
     import csv as _csv, io as _io
     done = set()
@@ -300,7 +300,7 @@ def _load_none_outputs(csv_file, run_num, trial, turns):
 
 
 def run(run_num: int, session: dict, paths: dict):
-    """Run 0018 — single-layer causal sufficiency (H29, H37).
+    """Run 0018 -- single-layer causal sufficiency (H29, H37).
 
     Tests whether any individual layer, when grafted with Run 0006's
     introspection hidden states at that layer only, is sufficient to
@@ -321,7 +321,7 @@ def run(run_num: int, session: dict, paths: dict):
     assert run_num == RUN_NUM
     trials = session.get('trials', 100)
 
-    csv_file   = os.path.join(paths['csv'], f"Q{RUN_NUM:04d}_layer_isolation.csv")
+    csv_file   = os.path.join(paths['csv'], f"R{RUN_NUM:04d}_layer_isolation.csv")  # v0.80.0.34: matches cartography registry + readers
     ensure_csv_header(csv_file)
     hidden_dir = paths['hidden']
 
@@ -335,7 +335,7 @@ def run(run_num: int, session: dict, paths: dict):
                                         n_trials=10)
     if not ref_states:
         if os.environ.get('IOTA_HEADLESS') == '1':
-            ui.warn("Run 0018 — no Run 0006 all-layers hidden states found. Skipping.")
+            ui.warn("Run 0018 -- no Run 0006 all-layers hidden states found. Skipping.")
             return
         choice = ui.srx_prompt(
             "No Run 0006 all-layers hidden states found.\n"
@@ -352,7 +352,7 @@ def run(run_num: int, session: dict, paths: dict):
     _active_modes = ["none"] + [f"L{li}" for li in _active_probe]
     if len(_active_probe) < len(PROBE_LAYERS):
         _skipped = [li for li in PROBE_LAYERS if li >= _n_model_layers]
-        ui.warn(f"  [R42] Model has {_n_model_layers} layers — skipping probe layers {_skipped}")
+        ui.warn(f"  [R42] Model has {_n_model_layers} layers -- skipping probe layers {_skipped}")
 
     # ── Resume / completeness check ──────────────────────────────────────────
     # Patched rows (L8/L16/L24/L31) are shorter than the header; standard
@@ -369,13 +369,13 @@ def run(run_num: int, session: dict, paths: dict):
 
     if all_done:
         if os.environ.get('IOTA_HEADLESS') == '1':
-            ui.ok(f"Run {RUN_NUM:04d} already complete — skipping.")
+            ui.ok(f"Run {RUN_NUM:04d} already complete -- skipping.")
             return
-        ui.section(f"Run {RUN_NUM:04d} — Already Complete")
+        ui.section(f"Run {RUN_NUM:04d} -- Already Complete")
         ui.warn(f"All {trials} trials × {len(_ALL_MODES_42)} modes complete.")
         ui.blank()
-        ui.opt("1", "Skip — use existing data")
-        ui.opt("2", "Override — delete CSV and rerun all modes")
+        ui.opt("1", "Skip -- use existing data")
+        ui.opt("2", "Override -- delete CSV and rerun all modes")
         ui.opt("3", "Abort")
         ui.blank()
         while True:
@@ -392,14 +392,14 @@ def run(run_num: int, session: dict, paths: dict):
                 else:
                     return
 
-    # Which modes to collect — dashboard may restrict via session['_patch_modes'].
+    # Which modes to collect -- dashboard may restrict via session['_patch_modes'].
     _sel_modes = session.get('_patch_modes')
     modes_to_run = [m for m in _ALL_MODES_42 if _sel_modes is None or m in _sel_modes]
     if not modes_to_run:
-        ui.warn(f"Run {RUN_NUM:04d} — no modes selected, skipping.")
+        ui.warn(f"Run {RUN_NUM:04d} -- no modes selected, skipping.")
         return
     if _sel_modes:
-        ui.msg(f"  Run {RUN_NUM:04d} — running modes: {modes_to_run}")
+        ui.msg(f"  Run {RUN_NUM:04d} -- running modes: {modes_to_run}")
 
     mdl, tok   = load_model(session['model_path'], token=session.get('hf_token'), quant=session.get('quantization', '4bit'))
     status_ids = get_status_token_ids(tok)
@@ -409,7 +409,7 @@ def run(run_num: int, session: dict, paths: dict):
     ref_keys = sorted(ref_states.keys())
     n_refs   = len(ref_keys)
 
-    # Dedup before patching — remove excess rows from resume overlap
+    # Dedup before patching -- remove excess rows from resume overlap
     _none_complete = sum(1 for t in range(trials) if (t,'none') in done_pairs)
     if _none_complete > 0:
         try:
@@ -447,8 +447,9 @@ def run(run_num: int, session: dict, paths: dict):
             from orchestration_core import _csv_read
             _df42 = _csv_read(csv_file)
             if not _df42.empty:
+                from cartography import run_mode_mask as _rmm_r42  # v0.79.5.2: dual-accept
                 _none42 = _df42[
-                    (_df42['run_mode'] == str(RUN_NUM)) &
+                    _rmm_r42(_df42['run_mode'], RUN_NUM) &
                     (_df42['priming'] != '1') &
                     (_df42['patch_layer'] == 'none')
                 ]
@@ -464,7 +465,7 @@ def run(run_num: int, session: dict, paths: dict):
 
     try:
         # Phase 1: collect none-mode for all trials before any patching.
-        # Patch layers need none outputs as baseline — must be fully complete first.
+        # Patch layers need none outputs as baseline -- must be fully complete first.
         _none_needed = 'none' in modes_to_run
         _none_all_done = all((t, 'none') in done_pairs for t in range(trials))
 
@@ -516,7 +517,7 @@ def run(run_num: int, session: dict, paths: dict):
                 _all_none_outputs[trial] = none_output
                 done_pairs.add((trial, 'none'))
 
-            ui.ok("  Phase 1 complete — all none-mode trials done.")
+            ui.ok("  Phase 1 complete -- all none-mode trials done.")
 
         # Re-preload all none outputs now that phase 1 is complete
         if not _all_none_outputs:
@@ -650,6 +651,19 @@ def run(run_num: int, session: dict, paths: dict):
         ui.clear_crash_marker()
         ui.ok(f"Run {RUN_NUM} complete.")
 
+        # v0.80.0.34: post-collection analysis pass -- produces
+        # Q0018_layer_isolation.json next to the CSV. Lazy import so a
+        # missing function fails soft.
+        try:
+            import analysis as _q18_analysis
+            if hasattr(_q18_analysis, '_run_layer_isolation_analysis'):
+                _q18_analysis._run_layer_isolation_analysis(session, paths)
+            else:
+                ui.warn("  Q0018 analysis function not found in analysis.py "
+                        "-- skipping post-collection JSON write.")
+        except Exception as _q18_err:
+            ui.warn(f"  Q0018 post-collection analysis failed: {_q18_err}")
+
     finally:
         unload_model(mdl)
         del mdl
@@ -664,7 +678,7 @@ def run(run_num: int, session: dict, paths: dict):
 if __name__ == "__main__":
     ui.install_deps()
     session = ui.load_session()
-    ui.header(f"Run {RUN_NUM} — Layer Causal Sufficiency")
+    ui.header(f"Run {RUN_NUM} -- Layer Causal Sufficiency")
     ui.session_summary(session)
     if ui.confirm("Run now?"):
         paths = get_paths(

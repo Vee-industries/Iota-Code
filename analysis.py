@@ -151,39 +151,34 @@ def _fit_ols(X, y):
     return float(LinearRegression().fit(Xs, ys).score(Xs, ys))
 
 
-def _fit_ols_fast(Xs, ys):
-    """OLS R² on pre-scaled data. No StandardScaler, no condition number.
-    Used inside permutation loops where:
-      - X and y are already scaled (once, outside the loop)
-      - condition number was checked on the initial fit
-      - speed matters: np.linalg.cond is O(m*n²) and dominates runtime
-    v0.58.0.6: split from _fit_ols to fix 60+ minute permutation runtimes.
-    """
-    from sklearn.linear_model import LinearRegression
-    return float(LinearRegression().fit(Xs, ys).score(Xs, ys))
-
 
 # ══════════════════════════════════════════════════════════════════
 # RUNS 25 + 27 — GRANGER PROBE
 # ══════════════════════════════════════════════════════════════════
 
 def _build_granger_matrix(hidden_dir, source_run, model_name, max_trials=None):
-    mn, pfx = sanitize(model_name), run_prefix(source_run)
+    # v0.79.4.0: accept either int or 4-digit string for source_run — be
+    # defensive; caller may pass from an iteration over DualKeyRunSet.
+    try:
+        source_run_int = int(source_run)
+    except (ValueError, TypeError):
+        source_run_int = 0
+    mn, pfx = sanitize(model_name), run_prefix(source_run_int)
     # v0.79.5.0: search both 4-digit (canonical) and 2-digit (legacy) patterns.
     # Pre-migration data is 2-digit; post-migration is 4-digit.
     # _rid4 (4-digit) tried first; falls through to legacy if no match.
-    _rid4 = f"{source_run:04d}" if isinstance(source_run, int) else source_run
+    _rid4 = f"{source_run_int:04d}"
     pattern = os.path.join(hidden_dir, f"{pfx}{_rid4}_{mn}_trial*_turn01.npy")
     trial_files = sorted(glob.glob(pattern))
     if not trial_files:
-        pattern = os.path.join(hidden_dir, f"{pfx}{source_run:02d}_{mn}_trial*_turn01.npy")
+        pattern = os.path.join(hidden_dir, f"{pfx}{source_run_int:02d}_{mn}_trial*_turn01.npy")
         trial_files = sorted(glob.glob(pattern))
     _effective_mn = model_name
     if not trial_files:
         # Fallback: wildcard for model_name (session name drift). Try both
         # canonical and legacy prefixes.
         fallback4 = os.path.join(hidden_dir, f"{pfx}{_rid4}_*_trial*_turn01.npy")
-        fallback2 = os.path.join(hidden_dir, f"{pfx}{source_run:02d}_*_trial*_turn01.npy")
+        fallback2 = os.path.join(hidden_dir, f"{pfx}{source_run_int:02d}_*_trial*_turn01.npy")
         trial_files = sorted(glob.glob(fallback4)) + sorted(glob.glob(fallback2))
         trial_files = [f for f in trial_files
                        if not f.endswith('_alllayers.npy')
@@ -402,8 +397,8 @@ def _run_baseline_swap(session, paths):
     ui.blank()
 
     def _observed_effect(df, metric):
-        intro = df[run_mode_mask_any(df['run_mode'], [3,4,5])][metric].dropna()
-        null  = df[run_mode_mask_any(df['run_mode'], [1,2,19])][metric].dropna()
+        intro = df[run_mode_mask_any(df['run_mode'], [6,7,8])][metric].dropna()
+        null  = df[run_mode_mask_any(df['run_mode'], [4,5,1])][metric].dropna()
         return float(intro.mean() - null.mean()) if len(intro) and len(null) else float('nan')
 
     # Bug RNG-1 fix (v29.1, corrected v29.2): hardcoded integer seeds per metric.
@@ -419,12 +414,12 @@ def _run_baseline_swap(session, paths):
 
     def _permutation_test(df, metric, n_perm=N_PERMUTE):
         rng = np.random.default_rng(_PERM_SEEDS.get(metric, 999))
-        sub = df[run_mode_mask_any(df['run_mode'], [3,4,5,1,2,19])][[metric,'run_mode']].dropna()
+        sub = df[run_mode_mask_any(df['run_mode'], [6,7,8,4,5,1])][[metric,'run_mode']].dropna()
         if len(sub) < 10:
             return float('nan'), float('nan')
         observed = _observed_effect(sub, metric)
         vals     = sub[metric].values
-        labels   = run_mode_mask_any(sub['run_mode'], [3,4,5]).values
+        labels   = run_mode_mask_any(sub['run_mode'], [6,7,8]).values
         null_d   = []
         for _ in range(n_perm):
             perm_labels = rng.permutation(labels)
@@ -433,7 +428,7 @@ def _run_baseline_swap(session, paths):
 
     def _split_half(df, metric):
         rng = np.random.default_rng(_SPLIT_SEEDS.get(metric, 998))
-        sub = df[run_mode_mask_any(df['run_mode'], [3,4,5])][['trial',metric]].dropna()
+        sub = df[run_mode_mask_any(df['run_mode'], [6,7,8])][['trial',metric]].dropna()
         if len(sub) < 20: return float('nan')
         trials = sub['trial'].unique().copy()
         rng.shuffle(trials)
@@ -468,7 +463,7 @@ def _run_baseline_swap(session, paths):
 
 # v0.79.4.0: renumbered to new execution-order IDs.
 # Old [3,4,5,15,16,17,19,26,28] → new [6,7,8,13,14,15,1,3,23]
-SOURCE_RUNS_3WAY = [6, 7, 8, 13, 14, 15, 1, 3, 23]
+SOURCE_RUNS_3WAY = [6, 7, 8, 13, 14, 15, 1, 23]  # v0.82.0.27: Run 0003 removed (temperature-robustness sweep, not chain-rule source)
 # v40.0.0: Run 0001 (was R19) now provides per-trial real E_t and real C_t
 # following the three-model redesign. It is the canonical 3-way source.
 
@@ -507,7 +502,7 @@ def _qcache_load(hidden_dir, source_runs, require_ct):
         return None
     # v0.76.0.7: mtime freshness check. Prior version only checked source_runs
     # list equality + POOL_DIM in filename. If any source .npy file (hidden
-    # states, E_base, constraint) or the R19 global-mean C_t constant is newer
+    # states, E_base, constraint) or the R0001 global-mean C_t constant is newer
     # than the cache, return None to force a re-load. Prevents stale quadruplets
     # after ET recovery, Run 0001 Pass 4 re-computation, or any single-run
     # re-collection from silently poisoning Run 0042/34/46 fractions.
@@ -580,7 +575,7 @@ def _qcache_load(hidden_dir, source_runs, require_ct):
         return rows
     except Exception:
         try: os.remove(path)
-        except: pass
+        except OSError: pass  # v0.83.1: tighten cleanup-loader except
         return None
 
 def _qcache_save(hidden_dir, source_runs, require_ct, rows):
@@ -612,16 +607,9 @@ def _qcache_save(hidden_dir, source_runs, require_ct, rows):
         for stale in glob.glob(os.path.join(hidden_dir, '_qcache_*.npz')):
             if os.path.abspath(stale) != os.path.abspath(path):
                 try: os.remove(stale)
-                except: pass
+                except OSError: pass  # v0.83.1: tighten cleanup-stale except
     except Exception as e:
         ui.warn(f"  [cache] Save failed: {e}")
-
-def qcache_cleanup(hidden_dir):
-    """Delete all quadruplet cache files. Legacy — no longer called by start_here.py
-    (v0.75.1.0). Retained for manual use."""
-    for f in glob.glob(os.path.join(hidden_dir, '_qcache_*.npz')):
-        try: os.remove(f)
-        except: pass
 
 
 def _load_quadruplets(hidden_dir, source_runs, model_name, require_ct=True):
@@ -634,11 +622,11 @@ def _load_quadruplets(hidden_dir, source_runs, model_name, require_ct=True):
 
     ct_source field per row:
       'per_trial'   — real per-trial C_t from kind='C' embedding file (3WAY runs)
-      'global_mean' — global mean C_t from R19 constant file (2WAY runs backfilled)
+      'global_mean' — global mean C_t from R0001 constant file (2WAY runs backfilled)
       'none'        — no C_t available; row will not enter three-way OLS
 
     v40.0.0: 2WAY runs (1, 2, 6-9) now receive backfilled C_t from the Run 0001
-    global mean constant (R19_{model_name}_ct_global_mean.npy) when it exists.
+    global mean constant (R0001_{model_name}_ct_global_mean.npy) when it exists.
     This elevates them from legacy two-predictor rows to full three-predictor rows
     for the purpose of Run 0042/34. The ct_source field distinguishes per-trial from
     global-mean rows so downstream analysis can report the distinction.
@@ -657,20 +645,36 @@ def _load_quadruplets(hidden_dir, source_runs, model_name, require_ct=True):
     # name found in the files for ALL file access in this function.
     _effective_mn = mn
     _first_run = source_runs[0] if source_runs else 3
-    _det_pfx = run_prefix(_first_run)
-    _det_pattern = os.path.join(hidden_dir, f"{_det_pfx}{_first_run:02d}_{mn}_trial*_turn01.npy")
+    try:
+        _first_run_int = int(_first_run)
+    except (ValueError, TypeError):
+        _first_run_int = 3
+    _det_pfx = run_prefix(_first_run_int)
+    _rid4 = f"{_first_run_int:04d}"
+    # v0.79.4.0: try 4-digit (canonical) first, fall back to 2-digit (legacy)
+    _det_pattern = os.path.join(hidden_dir, f"{_det_pfx}{_rid4}_{mn}_trial*_turn01.npy")
     if not glob.glob(_det_pattern):
-        _det_fallback = os.path.join(hidden_dir, f"{_det_pfx}{_first_run:02d}_*_trial*_turn01.npy")
-        _det_files = [f for f in sorted(glob.glob(_det_fallback))
-                      if not f.endswith('_alllayers.npy')
-                      and '_emb.npy' not in f
-                      and '_et_base.npy' not in f
-                      and '_constraint.npy' not in f]
-        if _det_files:
-            _effective_mn = os.path.basename(_det_files[0]).split(
-                f"{_det_pfx}{_first_run:02d}_")[1].split("_trial")[0]
-            if _effective_mn != mn:
-                pass  # silently use disk name — dashboard display name often drifts
+        _det_pattern = os.path.join(hidden_dir, f"{_det_pfx}{_first_run_int:02d}_{mn}_trial*_turn01.npy")
+    if not glob.glob(_det_pattern):
+        # Fallback with wildcard model name — try 4-digit then 2-digit
+        for _pat in [f"{_det_pfx}{_rid4}_*_trial*_turn01.npy",
+                     f"{_det_pfx}{_first_run_int:02d}_*_trial*_turn01.npy"]:
+            _det_fallback = os.path.join(hidden_dir, _pat)
+            _det_files = [f for f in sorted(glob.glob(_det_fallback))
+                          if not f.endswith('_alllayers.npy')
+                          and '_emb.npy' not in f
+                          and '_et_base.npy' not in f
+                          and '_constraint.npy' not in f]
+            if _det_files:
+                # Extract effective model name based on whichever prefix matched
+                _bn = os.path.basename(_det_files[0])
+                for _split_key in [f"{_det_pfx}{_rid4}_", f"{_det_pfx}{_first_run_int:02d}_"]:
+                    if _split_key in _bn:
+                        _effective_mn = _bn.split(_split_key)[1].split("_trial")[0]
+                        break
+                if _effective_mn != mn:
+                    pass  # silently use disk name — dashboard display name often drifts
+                break
 
     # ── Cache check (v0.71.0.12) ──────────────────────────────────────────
     cached = _qcache_load(hidden_dir, source_runs, require_ct)
@@ -687,8 +691,8 @@ def _load_quadruplets(hidden_dir, source_runs, model_name, require_ct=True):
     except Exception:
         base_hid_dir = hidden_dir  # safe fallback
 
-    # Attempt to load the global mean C_t constant from Run 0001.
-    _global_ct_path = os.path.join(hidden_dir, f"R19_{_effective_mn}_ct_global_mean.npy")
+    # Load the global mean C_t constant from Run 0001.
+    _global_ct_path = os.path.join(hidden_dir, f"R0001_{_effective_mn}_ct_global_mean.npy")
     _global_ct = None
     if os.path.exists(_global_ct_path):
         try:
@@ -1373,6 +1377,71 @@ def _run_decomposition(session, paths):
                 ui.msg(f"    Stratified sample: {len(_knn_idx)} rows from {len(_by_run)} runs")
 
                 def _knn_ii(idx_list, label='pooled'):
+                    """Per-row pooled kNN-MI computation.
+
+                    NOTE TO READERS: The apparatus has THREE different
+                    MI estimator families with similar names. This
+                    function (_knn_ii) is Family 1.
+
+                    Family 1 -- Cover-Thomas on kNN-regressor R^2:
+                      - This function (_knn_ii in analysis.py).
+                      - MI = -(dim/2) * log(1 - R^2) where R^2 is from
+                        a kNN regressor on the joint distribution.
+                      - Assumes Gaussian residuals.
+                      - Convention: redundancy-positive (see CONVENTION
+                        block below).
+                      - Used for: per-cell ii_fraction_knn /
+                        redundancy_fraction_knn writes to results.json
+                        measurements.
+
+                    Family 2 -- sklearn mutual_info_regression with PCA:
+                      - run_kraskov_anchor._kraskov_mi
+                      - run_kraskov_spike._kraskov_mi_share
+                      - sklearn KSG-equivalent estimator on PCA-reduced
+                        features.
+                      - Convention: synergy-positive (standard II).
+                      - Used for: per-cell p_anchor (kraskov_anchor),
+                        V5b parametric sweep (kraskov_spike).
+
+                    Family 3 -- KSG-1 with discrete-dispatcher:
+                      - run_split_pca_selection._knn_mi
+                      - run_knn_mi_reliability._knn_mi
+                      - Dispatches: exact contingency-table MI for
+                        integer-lattice; KSG-1 for continuous.
+                      - Convention: synergy-positive.
+                      - Used for: V5b/V5e calibration, MI reliability
+                        validation.
+
+                    These are NOT interchangeable: each handles a
+                    different data regime and produces values on
+                    different scales. Pick the family that matches the
+                    data type, not the one with the most familiar name.
+
+                    CONVENTION: This function computes the
+                    redundancy-positive form:
+                        II = mi_S + mi_E - mi_SE
+                    which is the NEGATION of standard interaction
+                    information. In this convention:
+                      - II positive  -> redundancy (marginals duplicate
+                        info that the joint already carries)
+                      - II negative  -> synergy (joint exceeds sum of
+                        marginals)
+                    Pure XOR (V5d) -> very negative (synergy saturation).
+                    Pure redundancy (S = E = Y) -> approaches +1.
+
+                    II_fraction = II / mi_SE is the per-cell summary
+                    written to results.json as ii_fraction_knn. Same
+                    convention.
+
+                    The MI estimates themselves use the
+                    Cover-Thomas Gaussian formula on kNN-regressor R^2,
+                    NOT the KSG estimator. KSG-specific bias corrections
+                    (e.g. Gao 2015) do not apply to this estimator.
+
+                    See audit_report_v0_82_0_26.md (CHUNK 1) for the
+                    full sign convention audit and downstream consumer
+                    inventory.
+                    """
                     _S = np.stack([rows_3way[i]['s_prev'] for i in idx_list])
                     _E = np.stack([rows_3way[i]['e_t'] for i in idx_list])
                     _Y = np.stack([rows_3way[i]['s_next'] for i in idx_list])
@@ -1412,8 +1481,8 @@ def _run_decomposition(session, paths):
                     _II_knn_frac = float('nan')
 
                 _COND_RUNS = {
-                    'introspection': {3, 4, 5, 15, 16, 17},
-                    'null': {19}, 'resistant': {26}, 'confound': {28},
+                    'introspection': {6, 7, 8, 13, 14, 15},
+                    'null': {1}, 'temperature': {3}, 'confound': {23},
                 }
                 _knn_per_cond = {}
                 for _cname, _cruns in _COND_RUNS.items():
@@ -3442,14 +3511,26 @@ def _run_mlp_decomposition(session, paths,
         return
     ui.msg(f"  Ridge (Run 0043): E={ridge_pooled['E']:.3f}  C={ridge_pooled['C']:.3f}  R={ridge_pooled['R']:.3f}")
 
-    ridge_per_cond = {}
-    if do_per_condition:
-        ridge_per_cond = _load_ridge_reference_per_condition(ana_dir)
-        if not ridge_per_cond:
-            ui.warn("Run 0044 output not found or empty — per-condition pass skipped.")
-            do_per_condition = False
-        else:
-            ui.msg(f"  Ridge (Run 0044): {len(ridge_per_cond)} conditions available")
+    # v0.79.6.1: Run 0044 is a hard prerequisite for Run 0046.
+    # Per-condition MLP (56b) must run alongside pooled MLP (56a). A Q0046
+    # that claims status='complete' but carries only pooled results is
+    # misleading — master JSON ingestion picks it up, ridge_vs_mlp aggregates
+    # get computed against an incomplete denominator, and the conjecture_1
+    # verdict is evaluated on a subset. Per paper Sections 2.10 / 3.7 / 8.1,
+    # the Ridge-vs-MLP comparison is load-bearing for the H50 finding and
+    # must cover both pooled and per-condition surfaces. Ground-truth
+    # alignment: code must not flip a run to 'complete' when its data isn't.
+    # Refuse to proceed if Run 0044 output isn't present; user reruns 0044
+    # first. The do_per_condition parameter is preserved for signature
+    # compatibility but no longer gates the per-condition load.
+    ridge_per_cond = _load_ridge_reference_per_condition(ana_dir)
+    if not ridge_per_cond:
+        ui.err("Run 0044 output not found or empty — per-condition Ridge reference unavailable.")
+        ui.err("  Run 0046 requires BOTH pooled (56a) and per-condition (56b) passes.")
+        ui.err("  Run 0044 must complete at this temperature before Run 0046 can proceed.")
+        return
+    do_per_condition = True
+    ui.msg(f"  Ridge (Run 0044): {len(ridge_per_cond)} conditions available")
     ui.blank()
 
     # ── Resume ───────────────────────────────────────────────────────────
@@ -3681,7 +3762,7 @@ def _run_mlp_decomposition(session, paths,
 
 def _run_cross_temp_synthesis(session, paths):
     import csv as _csv
-    from cartography import DATA, get_paths as _gp_synth, RUN_CSV, condition_name, get_family_size_dir
+    from cartography import DATA, get_paths as _gp_synth, RUN_CSV, condition_name, get_family_size_dir, run_mode_matches
 
     family     = session.get('model_family', 'llama')
     size       = session.get('model_size', '8b')
@@ -3748,7 +3829,7 @@ def _run_cross_temp_synthesis(session, paths):
     # Section 1: Priming Vulnerability (Runs 0013/0014/0015)
     # ═══════════════════════════════════════════════════════════════
     ui.section("Section 1 — Priming Vulnerability (Runs 0013/0014/0015)")
-    _PRIME_LABELS = {15: 'neutral', 16: 'cooperative', 17: 'resistant'}
+    _PRIME_LABELS = {13: 'neutral', 14: 'cooperative', 15: 'resistant'}
     priming_results = []
 
     for temp, cond in _TEMPS:
@@ -3760,7 +3841,7 @@ def _run_cross_temp_synthesis(session, paths):
             if not csv_name:
                 continue
             rows = _read_csv(os.path.join(csv_dir, csv_name))
-            rows = [r for r in rows if r.get('run_mode', '') == str(rn)]
+            rows = [r for r in rows if run_mode_matches(r.get('run_mode', ''), rn)]
             similarities = [_safe_float(r.get('state_similarity_index')) for r in rows]
             similarities = [t for t in similarities if t is not None]
             disruption_flags = [_safe_float(r.get('disruption_flag')) for r in rows]
@@ -4545,3 +4626,113 @@ def _run_cross_model(run_num, session, paths):
         ui.ok(f"Run 0053 concordance: {out_path}")
 
     ui.blank()
+
+
+def _run_layer_isolation_analysis(session, paths):
+    """Run 0018 analysis pass — produce Q0018_layer_isolation.json from
+    R0018_layer_isolation.csv.
+
+    Per-layer aggregates: output_change_rate, n_trials, n_changed, p_binomial.
+
+    v0.80.0.34: production wire-in. Layer set discovered from the CSV's
+    patch_layer column, not hardcoded. Different model sizes have different
+    layer counts (LLaMA 8B has 32 transformer blocks, Gemma 2B has 18) —
+    discovery handles all configurations correctly. Binomial null: one-sided
+    test against the unpatched-control rate (patch_layer='none'). When that
+    baseline is 0 (always, in this experiment), the test is degenerate and
+    p_binomial is None for all layers. The JSON's binomial_null field marks
+    the regime.
+    """
+    import pandas as pd
+    from scipy.stats import binomtest
+
+    hidden_dir = paths['hidden']
+    ana_dir    = paths['analysis']
+    csv_dir    = os.path.join(os.path.dirname(hidden_dir), 'csv')
+    os.makedirs(ana_dir, exist_ok=True)
+    out_file = os.path.join(ana_dir, 'Q0018_layer_isolation.json')
+    csv_path = os.path.join(csv_dir, 'R0018_layer_isolation.csv')
+
+    ui.section("Run 0018 — Layer Causal Sufficiency Analysis (no GPU)")
+
+    if not os.path.exists(csv_path):
+        ui.warn(f"  R0018_layer_isolation.csv not found at {csv_path}")
+        return None
+
+    try:
+        df = pd.read_csv(csv_path, dtype=str, keep_default_na=False)
+    except Exception as e:
+        ui.err(f"  Failed to read CSV: {e}")
+        return None
+
+    if 'patch_layer' not in df.columns or 'output_changed' not in df.columns:
+        ui.err(f"  Missing required columns. Saw: {list(df.columns)[:8]}")
+        return None
+
+    df['_oc'] = pd.to_numeric(df['output_changed'], errors='coerce')
+    df = df.dropna(subset=['_oc'])
+
+    baseline = df[df['patch_layer'] == 'none']
+    n_baseline = int(len(baseline))
+    p_null = float(baseline['_oc'].mean()) if n_baseline > 0 else None
+
+    patched_layers = df[df['patch_layer'] != 'none']['patch_layer'].unique()
+
+    def _layer_depth(L):
+        digits = ''.join(c for c in str(L) if c.isdigit())
+        try:
+            return int(digits) if digits else 9999
+        except ValueError:
+            return 9999
+
+    layers_sorted = sorted(patched_layers, key=_layer_depth)
+
+    per_layer = {}
+    for layer in layers_sorted:
+        sub = df[df['patch_layer'] == layer]['_oc']
+        n_trials = int(len(sub))
+        if n_trials < 5:
+            continue
+        n_changed = int(sub.sum())
+        rate = n_changed / n_trials
+
+        p_bin = None
+        if p_null is not None and 0.0 < p_null < 1.0:
+            try:
+                p_bin = float(binomtest(n_changed, n_trials, p_null,
+                                         alternative='greater').pvalue)
+            except Exception:
+                p_bin = None
+
+        per_layer[str(layer)] = {
+            'output_change_rate': float(rate),
+            'n_trials':           n_trials,
+            'n_changed':          n_changed,
+            'p_binomial':         p_bin,
+        }
+
+    binomial_null_kind = (
+        'vs_baseline_rate'
+        if (p_null is not None and 0.0 < p_null < 1.0)
+        else 'degenerate_baseline_test_skipped'
+    )
+
+    out = {
+        'run_num':           18,
+        'schema_version':    '0.80.0-q18.1',
+        'per_layer':         per_layer,
+        'baseline': {
+            'rate':              p_null,
+            'n_trials':          n_baseline,
+            'patch_layer_value': 'none',
+        },
+        'binomial_null':     binomial_null_kind,
+        'n_layers_analyzed': len(per_layer),
+        'source_csv':        os.path.basename(csv_path),
+    }
+
+    with open(out_file, 'w', encoding='utf-8') as f:
+        json.dump(out, f, indent=2, default=str)
+
+    ui.ok(f"  Q0018_layer_isolation.json written. {len(per_layer)} layers analyzed.")
+    return out

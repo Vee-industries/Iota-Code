@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — DEPENDENCY MAP
+IOTA FRAMEWORK -- DEPENDENCY MAP
 ================================
 Hypothesis-to-run dependency reference for the /hyp_deps dashboard endpoint.
 RUN_CSV and ANALYSIS_JSON have moved to cartography.py.
@@ -35,8 +35,8 @@ DEPENDENCY_MAP = {
             "(base, instruct, abliterated). E_t = base hidden states. "
             "C_t = abliterated minus base difference vectors (real, not zero-vector). "
             "Run 0001 now qualifies for SOURCE_RUNS_3WAY in Run 0042. "
-            "Global mean C_t constant saved for retroactive backfill of Runs 0004, 0005, 0009-9. "
-            "R19_null.csv contains abliterated pass only (unchanged for H01/H10 analysis). "
+            "Global mean C_t constant saved for retroactive backfill of Runs 0004, 0005, 0009-0012. "
+            "R0001_null.csv contains abliterated pass only (unchanged for H01/H10 analysis). "
             "EXECUTION PRIORITY: Run 0001 should run FIRST among all generation runs, "
             "before Run 0003. It produces the C_t constants that every downstream run needs."
         ),
@@ -80,7 +80,7 @@ DEPENDENCY_MAP = {
         "saves_hidden":     True,
         "saves_all_layers": True,
         "blocking":         False,
-        "known_bugs":       ["INF-H03-BASELINE (fixed v32.0): export_stats.py ttest compared [3,4,5] vs [1,2] — should be [1,2,19]. Map was correct; code was wrong."],
+        "known_bugs":       ["INF-H03-BASELINE (fixed v32.0): export_stats.py ttest compared [3,4,5] vs [1,2] -- should be [1,2,19]. Map was correct; code was wrong."],
         "notes":            "E_t and C_t from these runs feed Run 0042 quadruplets (SOURCE_RUNS_3WAY).",
     },
 
@@ -101,7 +101,7 @@ DEPENDENCY_MAP = {
         "saves_hidden":     True,
         "saves_all_layers": True,
         "blocking":         False,
-        "known_bugs":       ["INF-H04-BASELINE (fixed v32.0): export_stats.py ttest compared [3,4,5] vs [1,2] — should be [1,2,19]. Map was correct; code was wrong."],
+        "known_bugs":       ["INF-H04-BASELINE (fixed v32.0): export_stats.py ttest compared [3,4,5] vs [1,2] -- should be [1,2,19]. Map was correct; code was wrong."],
         "notes":            "Same data collection as H03. signal_entropy_ratio = layer_sim_mean / (mean_logit_entropy + 1e-9).",
     },
 
@@ -120,7 +120,7 @@ DEPENDENCY_MAP = {
         # Same class as H34 BUG-FOUND-3 (v36.4) and H35 fix (v36.7). A column
         # tested in the outer guard must be in required_columns so the schema
         # checker will flag its absence before inference runs. Moved from extra
-        # to required. post_contradiction stays in extra_columns — it is accessed
+        # to required. post_contradiction stays in extra_columns -- it is accessed
         # inside the block with a graceful `if 'post_contradiction' in sub22.columns:`
         # fallback, not in the outer guard itself.
         "extra_columns":    ["post_contradiction"],
@@ -230,7 +230,7 @@ DEPENDENCY_MAP = {
         "required_columns": ["layer_sim_mean", "is_shock"],
         "extra_columns":    ["is_recovery"],
         # BUG-FOUND-3 (fixed v36.4): is_shock was in both required_columns and extra_columns.
-        # Removed from extra_columns — already covered by required_columns.
+        # Removed from extra_columns -- already covered by required_columns.
         # is_recovery not in required_columns because the inference falls back gracefully
         # when the column is absent (pre-v16 CSVs). Kept in extra_columns only.
         "analysis_file":    "export_stats.py",
@@ -298,8 +298,8 @@ DEPENDENCY_MAP = {
         "extra_columns":    ["temperature", "condition"],
         "analysis_file":    "export_stats.py",
         "analysis_fn":      "_infer_outcomes:H13",
-        "saves_E_t":        True,   # Run 0003 saves E_t — required by Run 0042
-        "saves_C_t":        True,   # Run 0003 saves C_t — required by Run 0042
+        "saves_E_t":        True,   # Run 0003 saves E_t -- required by Run 0042
+        "saves_C_t":        True,   # Run 0003 saves C_t -- required by Run 0042
         "saves_hidden":     True,
         "saves_all_layers": False,
         "blocking":         True,   # BLOCKS all Phase 2 results
@@ -317,7 +317,7 @@ DEPENDENCY_MAP = {
         "csv_files":        ["Q0027_layers.csv"],
         "required_columns": ["layer_sim_prev_profile"],
         # FINDING (fixed v36.9): layer_sim_prev_profile duplicated in both required_columns
-        # and extra_columns. layer_sim_prev_profile is in STANDARD_COLS — standard columns
+        # and extra_columns. layer_sim_prev_profile is in STANDARD_COLS -- standard columns
         # must never appear in extra_columns. Same class as FINDING-2 (v36.6).
         # Functional impact: zero (all_required_csv_columns uses set union).
         "extra_columns":    [],
@@ -389,8 +389,8 @@ DEPENDENCY_MAP = {
         "extra_columns":    ["confound_condition"],
         "analysis_file":    "export_stats.py",
         "analysis_fn":      "_infer_outcomes:H17",
-        "saves_E_t":        True,   # Run 0023 saves E_t — required by Run 0042
-        "saves_C_t":        True,   # Run 0023 saves C_t — required by Run 0042
+        "saves_E_t":        True,   # Run 0023 saves E_t -- required by Run 0042
+        "saves_C_t":        True,   # Run 0023 saves C_t -- required by Run 0042
         "saves_hidden":     True,
         "saves_all_layers": False,
         "blocking":         False,
@@ -416,7 +416,7 @@ DEPENDENCY_MAP = {
         "saves_all_layers": False,
         "blocking":         False,
         "known_bugs":       ["INF-H18-SUMMARY (fixed v32.0): summary history mode collected and plotted but never tested; only full vs last compared. All three pairwise tests now included."],
-        "notes":            "history_mode: full, last, summary. Bug G (v23.0) fixed — file_trial = mode_idx * n_trials + trial (runners.py:1256).",
+        "notes":            "history_mode: full, last, summary. Bug G (v23.0) fixed -- file_trial = mode_idx * n_trials + trial (runners.py:1256).",
     },
 
     "H19": {
@@ -443,7 +443,7 @@ DEPENDENCY_MAP = {
         "notes":            "coupling_score computed inline per turn in _run_cross_instance.",
     },
 
-    "H20": {  # OUT OF PAPER SCOPE — Appendix A only
+    "H20": {  # OUT OF PAPER SCOPE -- Appendix A only
         "name":             "R Condition Has No Signal-Per-Watt Effect",
         "phase":            2,
         "status":           "pending",
@@ -506,7 +506,7 @@ DEPENDENCY_MAP = {
         "saves_all_layers": False,
         "blocking":         False,
         "known_bugs":       [],
-        "notes":            "NOT proper Sobol indices — fixed-model permutation sensitivity. Output: analysis/Q34_sobol_partition.json. Run 0051 uses pooled data post all-rounds; output: pooled/analysis/Q40_pooled_sobol.json. export_stats now loads both (Bug V fix, v25.6).",
+        "notes":            "NOT proper Sobol indices -- fixed-model permutation sensitivity. Output: analysis/Q34_sobol_partition.json. Run 0051 uses pooled data post all-rounds; output: pooled/analysis/Q40_pooled_sobol.json. export_stats now loads both (Bug V fix, v25.6).",
     },
 
     "H23": {
@@ -627,7 +627,7 @@ DEPENDENCY_MAP = {
         "status":           "pending",
         "data_runs":        [33],
         "comparison_runs":  [],
-        "upstream_runs":    [42, 43],   # ANALYSIS-TIME dependency only — not collection-time.
+        "upstream_runs":    [42, 43],   # ANALYSIS-TIME dependency only -- not collection-time.
                                         # Run 0033 data collection is independent of Runs 0042/0043
                                         # and should happen early (EXECUTION_ORDER places it
                                         # before Run 0043). upstream_runs here means: the Ridge
@@ -645,7 +645,7 @@ DEPENDENCY_MAP = {
         "saves_all_layers": False,
         "blocking":         False,
         "known_bugs":       [],
-        "notes":            "Seed offset +50000. Never in SOURCE_RUNS_3WAY. Ridge model fitted on training data applied without refit. Evaluated in Run 0043 Stage 2. Run 0033 data collection precedes Runs 0042/0043 in EXECUTION_ORDER — upstream_runs refers to analysis-time dependency only.",
+        "notes":            "Seed offset +50000. Never in SOURCE_RUNS_3WAY. Ridge model fitted on training data applied without refit. Evaluated in Run 0043 Stage 2. Run 0033 data collection precedes Runs 0042/0043 in EXECUTION_ORDER -- upstream_runs refers to analysis-time dependency only.",
     },
     "H29": {
         "name":             "No Single Layer Is Causally Sufficient",
@@ -671,11 +671,11 @@ DEPENDENCY_MAP = {
         "known_bugs":       ["INF-H29-BINOMTEST (fixed v32.0): verdict used raw rate thresholds only (>5%); added binomtest(k,n,p=0.02,greater) per layer for consistency with H38."],
         "notes":            (
             "Single-layer extension of Run 0017. Patch modes: none/L8/L16/L24/L31. "
-            "none always runs first per (trial, turn) — establishes baseline output "
+            "none always runs first per (trial, turn) -- establishes baseline output "
             "for output_changed comparison. "
-            "Primary metric: output_change_rate per layer — fraction of turns where "
+            "Primary metric: output_change_rate per layer -- fraction of turns where "
             "output differs from none condition. Threshold: >5% = causally sufficient. "
-            "Secondary metric: sim_to_reference at final layer — measures forward "
+            "Secondary metric: sim_to_reference at final layer -- measures forward "
             "propagation of the injection through the remaining stack. "
             "Mixed-schema CSV (same as Run 0017): patch_layer=='none' rows have full "
             "trajectory metrics; patched rows have NaN for standard metrics (structural). "
@@ -707,18 +707,18 @@ DEPENDENCY_MAP = {
         "blocking":         False,
         "known_bugs":       [
             "RUN21-OUT-CHANGE (fixed v30.9): output_changed never written pre-v30.9.",
-            "Bug M (v23.3 CRITICAL): all_layers file matching corrupted — re-collect Run 0017.",
+            "Bug M (v23.3 CRITICAL): all_layers file matching corrupted -- re-collect Run 0017.",
         ],
         "notes":            (
             "Multi-layer activation patching. patch_mode: none/partial/full. "
             "output_changed: 1 if output differs from none-condition baseline. "
             "Supported: overall change rate >= 10% (p < 0.05, binomtest vs 10%). "
-            "Pre-Bug-M finding: 15.4% — treat as preliminary until re-collected. "
+            "Pre-Bug-M finding: 15.4% -- treat as preliminary until re-collected. "
             "Re-collect after Run 0006 completes with save_all_layers=True."
         ),
     },
 
-    # ── v32.0 — zero-cost hypotheses ─────────────────────────────────────────
+    # ── v32.0 -- zero-cost hypotheses ─────────────────────────────────────────
     # H30/H31/H32 require no new runs. All data already collected by existing runs.
 
     "H30": {
@@ -732,7 +732,7 @@ DEPENDENCY_MAP = {
         "required_columns": ["output_sim_turn1", "turn"],
         "extra_columns":    [],
         # BUG-FOUND-3 (fixed v36.4): output_sim_turn1 was in both required_columns and
-        # extra_columns. Removed from extra_columns — already covered by required_columns.
+        # extra_columns. Removed from extra_columns -- already covered by required_columns.
         "analysis_file":    "export_stats.py",
         "analysis_fn":      "_infer_outcomes:H30",
         "saves_E_t":        False,
@@ -745,7 +745,7 @@ DEPENDENCY_MAP = {
             "output_sim_turn1 already saved per row in Run 0035 (runners.py:2248). "
             "Zero additional data cost. Test: linregress(turn, output_sim_turn1) on "
             "introspection arm. Supported = positive slope, p < 0.05. "
-            "Added v32.0 — zero-cost extension of H27 data collection."
+            "Added v32.0 -- zero-cost extension of H27 data collection."
         ),
     },
 
@@ -760,7 +760,7 @@ DEPENDENCY_MAP = {
         "required_columns": ["state_similarity_index", "correct"],
         "extra_columns":    [],
         # BUG-FOUND-3 (fixed v36.4): correct was in both required_columns and extra_columns.
-        # Removed from extra_columns — already covered by required_columns.
+        # Removed from extra_columns -- already covered by required_columns.
         "analysis_file":    "export_stats.py",
         "analysis_fn":      "_infer_outcomes:H31",
         "saves_E_t":        True,
@@ -809,9 +809,9 @@ DEPENDENCY_MAP = {
 }
 
 
-# ── v35.0 — Phase 4: Coherence Transfer and Contradiction Recovery ──────────
+# ── v35.0 -- Phase 4: Coherence Transfer and Contradiction Recovery ──────────
 
-DEPENDENCY_MAP["H33"] = {  # OUT OF PAPER SCOPE — Appendix A only
+DEPENDENCY_MAP["H33"] = {  # OUT OF PAPER SCOPE -- Appendix A only
     "name":             "Condition A Has No Task-Equivalent Compute Advantage",
     "phase":            4,
     "status":           "pending",
@@ -825,8 +825,8 @@ DEPENDENCY_MAP["H33"] = {  # OUT OF PAPER SCOPE — Appendix A only
     # all_required_csv_columns() uses set union so functional impact is zero.
     # Consistent with BUG-FOUND-3 (v36.4) which fixed H10/H30/H31/H32/H34.
     # BUG-NEW-5 (fixed v36.3): compute_per_correct is derived in inference (peak_gpu_power*elapsed_sec),
-    # not a CSV column — listed in required_columns caused false-positive schema_mismatch.
-    # compression_ratio mentioned in notes but never computed anywhere — removed from extra_columns.
+    # not a CSV column -- listed in required_columns caused false-positive schema_mismatch.
+    # compression_ratio mentioned in notes but never computed anywhere -- removed from extra_columns.
     # recovery_delta (H35) same class: derived per-trial in inference from sub-rows, not a CSV column.
     "analysis_file":    "export_stats.py",
     "analysis_fn":      "_infer_outcomes:H33",
@@ -835,7 +835,7 @@ DEPENDENCY_MAP["H33"] = {  # OUT OF PAPER SCOPE — Appendix A only
     "saves_hidden":     True,
     "saves_all_layers": False,
     "blocking":         False,
-    "known_bugs":       ["BUG-NEW-5 (fixed v36.3): required_columns had compute_per_correct (derived in inference, not a CSV column); extra_columns had compression_ratio (never computed anywhere). Both caused false-positive schema_mismatch on H33. H35 extra_columns also had recovery_delta (same class — derived per-trial in inference, not saved to CSV). All three removed."],
+    "known_bugs":       ["BUG-NEW-5 (fixed v36.3): required_columns had compute_per_correct (derived in inference, not a CSV column); extra_columns had compression_ratio (never computed anywhere). Both caused false-positive schema_mismatch on H33. H35 extra_columns also had recovery_delta (same class -- derived per-trial in inference, not saved to CSV). All three removed."],
     "notes":            (
         "8 enforcer priming turns + 5 arithmetic turns. Conditions: condition_a, "
         "condition_b, condition_c. Primary metric: compute_per_correct ratio. "
@@ -861,7 +861,7 @@ DEPENDENCY_MAP["H34"] = {
     # being checked in the outer guard ('contradiction_turn' in sub22_h34.columns).
     # A column tested in the outer guard must be in required_columns so the schema
     # checker will flag its absence before inference runs. Moved from extra to required.
-    # disruption_magnitude was duplicated in both required and extra — removed from extra.
+    # disruption_magnitude was duplicated in both required and extra -- removed from extra.
     # post_contradiction added to extra_columns: used inside the inference loop with
     # graceful fallback (BUG-36-6 fix, v36.1), is a real Run 0028 CSV column, and
     # should be verified by the schema checker when present.
@@ -875,11 +875,11 @@ DEPENDENCY_MAP["H34"] = {
     "blocking":         False,
     "known_bugs":       [],
     "notes":            (
-        "Zero new data cost — uses Run 0028 CSV (same as H05). disruption_magnitude (continuous signal) "
+        "Zero new data cost -- uses Run 0028 CSV (same as H05). disruption_magnitude (continuous signal) "
         "vs disruption_flag (binary, H05). Paired t-test within-trial: disruption_magnitude at turn 7 "
         "significantly higher than mean(turns 1-6). Supported: p<0.05, delta>0.01. "
         "If supported: disruption_magnitude is a continuous per-turn geometric disruption signal. "
-        "Inference block only — no new runs required."
+        "Inference block only -- no new runs required."
     ),
 }
 
@@ -939,18 +939,18 @@ DEPENDENCY_MAP["H35b"] = {
     "saves_all_layers": False,
     "blocking":         False,
     "known_bugs":       ["BUG-NEW-2 (fixed v36.2): pre_contradiction missing from outer guard and "
-                         "extra_columns — KeyError if column absent; schema checker wouldn't flag it."],
+                         "extra_columns -- KeyError if column absent; schema checker wouldn't flag it."],
     "notes":            (
         "Per-trial arm of the R-level recovery test. 3 R-condition arms (high/mid/low_r) × "
         "100 trials. Contradiction at turn 7. pre_sim = mean(state_similarity_index, turns 1-6). "
         "recovery_delta = mean(state_similarity_index, turns 8-13) - state_similarity_index(turn 7). "
         "Supported: Pearson r(pre_sim, recovery_delta) > 0.2, p<0.05 (pooled across all 3 arms). "
-        "mid_r data participates in the pooled Pearson r test (correct — tests monotonic ordering "
+        "mid_r data participates in the pooled Pearson r test (correct -- tests monotonic ordering "
         "across the full R-level range)."
     ),
 }
 
-# ── v44.0.0 — FIND-H09-GAP fix ───────────────────────────────────────────────
+# ── v44.0.0 -- FIND-H09-GAP fix ───────────────────────────────────────────────
 # Runs 0029, 0030, 0031 (impossibility cluster) were collected but had no DEPENDENCY_MAP
 # entry and no inference block. Data exists on disk; analysis layer added here.
 
@@ -975,13 +975,13 @@ DEPENDENCY_MAP["H39"] = {
     "notes": (
         "Three sub-conditions: Run 0029 (constrained impossible, status enforcer), "
         "Run 0030 (unconstrained impossible, free output), Run 0031 (epistemic impossible, free). "
-        "No throughline for any — cold start, cleaner collapse signal. "
+        "No throughline for any -- cold start, cleaner collapse signal. "
         "Prediction: impossibility prompts produce distinctive geometry vs null baseline. "
         "Null: state_similarity_index and layer_sim_mean indistinguishable from Runs 0004, 0005, 0001. "
-        "Supported: significant difference (either direction) between [12,13,14] and [1,2,19]. "
-        "Disproven: no significant difference — impossible prompts leave no geometric trace. "
-        "Run 0029 uses status enforcer (1-token outputs) — same constraint as null Run 0004. "
-        "Runs 0030/0031 use long outputs — different from null. "
+        "Supported: significant difference (either direction) between [29,30,31] and [4,5,1]. "
+        "Disproven: no significant difference -- impossible prompts leave no geometric trace. "
+        "Run 0029 uses status enforcer (1-token outputs) -- same constraint as null Run 0004. "
+        "Runs 0030/0031 use long outputs -- different from null. "
         "Per-run breakdown reported in implication to isolate enforcer vs free-output effect."
     ),
 }
@@ -1008,7 +1008,7 @@ DEPENDENCY_MAP["H40"] = {
         "Random noise control for H38 (Run 0017). Run 0019 patches with random Gaussian "
         "noise instead of real high-R geometry. Two-proportion z-test: if Run 0017 "
         "output_change_rate is not significantly higher than Run 0019, the causal claim "
-        "is confounded — any perturbation would produce the effect. "
+        "is confounded -- any perturbation would produce the effect. "
         "v0.71.0.0: added."
     ),
 }
@@ -1030,7 +1030,7 @@ DEPENDENCY_MAP["H36"] = {
     "saves_hidden":     False,
     "saves_all_layers": False,
     "blocking":         False,
-    "known_bugs":       ["v54.2.2: temperature hardcoded to 0.0 in all prior versions — T=0.2 data collected deterministically. Re-collect T=0.2 on v54.2.2+."],
+    "known_bugs":       ["v54.2.2: temperature hardcoded to 0.0 in all prior versions -- T=0.2 data collected deterministically. Re-collect T=0.2 on v54.2.2+."],
     "notes": (
         "Requires Run 0017 collected at each temperature round with v54.2.2+ code. "
         "Pools R21_patching.csv across all temperature directories. "
@@ -1057,12 +1057,12 @@ DEPENDENCY_MAP["H37"] = {
     "saves_hidden":     False,
     "saves_all_layers": False,
     "blocking":         False,
-    "known_bugs":       ["v54.2.2: temperature hardcoded to 0.0 in all prior versions — T=0.2 data collected deterministically. Re-collect T=0.2 on v54.2.2+."],
+    "known_bugs":       ["v54.2.2: temperature hardcoded to 0.0 in all prior versions -- T=0.2 data collected deterministically. Re-collect T=0.2 on v54.2.2+."],
     "notes": (
         "Requires Run 0018 collected at each temperature round with v54.2.2+ code. "
         "Pools Q42_layer_isolation.csv across all temperature directories. "
         "Two-way ANOVA: output_changed ~ C(patch_layer) * C(temperature). "
-        "Interaction p < 0.05 to support — layer profile flattens at high temperature. "
+        "Interaction p < 0.05 to support -- layer profile flattens at high temperature. "
         "Requires statsmodels (added to setup.py REQUIRED_PACKAGES in v54.2.2). "
         "temperature column only present in v54.2.2+ collections."
     ),
@@ -1079,7 +1079,7 @@ DEPENDENCY_MAP["H50"] = {
     "required_columns": [],
     "extra_columns":    [],
     "analysis_file":    "analysis.py",
-    "analysis_fn":      "_run_decomposition (Run 0042) — linearity_check field",
+    "analysis_fn":      "_run_decomposition (Run 0042) -- linearity_check field",
     "saves_E_t":        False,
     "saves_C_t":        False,
     "saves_hidden":     False,
@@ -1105,7 +1105,7 @@ DEPENDENCY_MAP["H51"] = {
     "required_columns": [],
     "extra_columns":    [],
     "analysis_file":    "analysis.py",
-    "analysis_fn":      "_run_decomposition (Run 0042) — interaction_info field",
+    "analysis_fn":      "_run_decomposition (Run 0042) -- interaction_info field",
     "saves_E_t":        False,
     "saves_C_t":        False,
     "saves_hidden":     False,
@@ -1121,7 +1121,7 @@ DEPENDENCY_MAP["H51"] = {
     ),
 }
 
-# ── v0.77.0.0 — Planned hypothesis dependency entries ──────────────────────
+# ── v0.77.0.0 -- Planned hypothesis dependency entries ──────────────────────
 # Schema present in HYPOTHESES (export_stats.py); inference blocks pending.
 # These entries document data-flow requirements so scanner/orchestration
 # can correctly identify which runs gate each hypothesis.
@@ -1198,16 +1198,16 @@ DEPENDENCY_MAP["H46"] = {
     "notes": "Phase comparison: pre-contradiction mean similarity vs post-contradiction. Inference pending.",
 }
 
-DEPENDENCY_MAP["H47"] = {  # OUT OF PAPER SCOPE — Appendix A only
+DEPENDENCY_MAP["H47"] = {  # OUT OF PAPER SCOPE -- Appendix A only
     "name":             "Coherence Transfer Is Not Compute-Efficient",
-    "phase":            5, "status": "pending (out of scope — Appendix A)",
+    "phase":            5, "status": "pending (out of scope -- Appendix A)",
     "data_runs":        [50], "comparison_runs": [25], "upstream_runs": [],
     "csv_files":        ["Q0050_cross_temp_synthesis.csv"],
     "required_columns": [], "extra_columns": [],
     "analysis_file":    "analysis.py", "analysis_fn": "_run_cross_temp_synthesis (Run 0050) §6",
     "saves_E_t": False, "saves_C_t": False, "saves_hidden": False, "saves_all_layers": False,
     "blocking": False, "known_bugs": [],
-    "notes": "Framework hypothesis — moved to Appendix A of the measurement paper. Schema retained for UI completeness. Inference pending.",
+    "notes": "Framework hypothesis -- moved to Appendix A of the measurement paper. Schema retained for UI completeness. Inference pending.",
 }
 
 DEPENDENCY_MAP["H48"] = {

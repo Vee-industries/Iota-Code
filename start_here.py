@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK v0.79.4.9
+IOTA FRAMEWORK v1.0.0
 ======================
     python start_here.py
 
@@ -8,12 +8,12 @@ Files in this directory:
   runners.py               ← dispatch hub (routes run numbers to phase modules)
   runners_prompts.py       ← all prompt constants
   runners_core.py          ← shared infrastructure + E_t recovery
-  runners_p1.py            ← Phase 1 runs (1-20)
-  runners_p2.py            ← Phase 2 runs (22-31)
-  runners_p3.py            ← Phase 3+4 runs (35-44)
-  analysis.py               ← all no-GPU analysis (25, 27, 32, 33, 34, 40)
-  graft_patching.py         ← run 0017 (activation patching — mechanically unique)
-  run42_layer_isolation.py  ← run 0018 (layer causal sufficiency — single-layer patching)
+  runners_p1.py            ← Phase 1 runs
+  runners_p2.py            ← Phase 2 runs
+  runners_p3.py            ← Phase 3+4 runs
+  analysis.py               ← all no-GPU analysis (run 41-51)
+  graft_patching.py         ← run 0017 (activation patching -- mechanically unique)
+  run42_layer_isolation.py  ← run 0018 (layer causal sufficiency -- single-layer patching)
   orchestration_core.py     ← shared model/generation infrastructure
   orchestration_throughlines.py  ← system prompts and turn-0 injections
   cartography.py            ← path resolution and file I/O
@@ -23,71 +23,112 @@ Files in this directory:
   export_flask.py           ← live dashboard (localhost:5000)
 
 ══════════════════════════════════════════════════════════════
-  RUN ORDER
+  RUN ORDER (post-renumber, v0.79.4.0+)
 ══════════════════════════════════════════════════════════════
 
-  PHASE 1 — PROOF (establish the phenomenon)
+  PHASE A -- temp-indep foundation (3 runs)
 
-    1   null_baseline A          (H01 floor)
-    2   null_baseline B          (H01 ceiling)
-    3   introspection A          (H03 direct self-query)
-    4   introspection B          (H03 memory probe)
-    5   introspection C          (H03 fixed output enforcer)
-    6   arithmetic A             (H09 visible — show your work)
-    7   arithmetic B             (H09 hidden — answer only)
-    8   arithmetic C             (H09 cold)
-    9   arithmetic D             (H09 primed)
-    10  perturbation A           (H10 late shock at turn 13)
-    11  perturbation B           (H10 early shock at turn 5)
-    12  impossibility A          (H39 constrained)
-    13  impossibility B          (H39 unconstrained)
-    14  impossibility C          (H39 epistemic)
-    15  priming neutral          (H08)
-    16  priming cooperative      (H08)
-    17  priming resistant        (H08)
-    18  tokenization control     (H12 token-matched nonsense)
-    19  null baseline + hidden   (H42 hidden state extraction)
-    20  robustness sweep         (H41 metric convergence)
-    21  activation patching      (H38 causal upstream test)
-    42  layer causal sufficiency (H29 which layer drives the effect)
+    1   null baseline + hidden   (H42 hidden state extraction)  [was R19]
+    2   robustness sweep         (H41 metric convergence)       [was R20]
+    3   temperature grid 4×5     (H13)                          [was Q26]
 
-  PHASE 2 — QUANTIFY
+  PHASE B -- fast ET-source block (12 runs)
 
-    26  temperature grid 4×5    (H13)
-    28  C_t confound isolation                   (H17)
-    22  self-reference probe                     (H05)
-    23  context saturation                       (H06)
-    24  layer locality                           (H14)
-    25  Granger probe A — no GPU                 (H11)
-    27  Granger probe B — no GPU                 (H11)
-    29  persistence mechanism                    (H18)
-    30  two-instance cross-instance              (H19)
-    31  coherence levels                         (H20)
-    32  baseline swap — no GPU                   (H16)
-    33  E+C+R decomposition — no GPU             (H21)
-    34  Permutation Sensitivity partition — no GPU  (H22) ← NEW v10.0
+    4   null baseline A          (H01 floor)                    [was R01]
+    5   null baseline B          (H01 ceiling)                  [was R02]
+    6   introspection A          (H03 direct self-query)        [was R03]
+    7   introspection B          (H03 memory probe)             [was R04]
+    8   introspection C          (H03 fixed output enforcer)    [was R05]
+    9   arithmetic A             (H09 visible -- show your work) [was R06]
+    10  arithmetic B             (H09 hidden -- answer only)     [was R07]
+    11  arithmetic C             (H09 cold)                     [was R08]
+    12  arithmetic D             (H09 primed)                   [was R09]
+    13  priming neutral          (H08)                          [was R15]
+    14  priming cooperative      (H08)                          [was R16]
+    15  priming resistant        (H08)                          [was R17]
 
-  PHASE 3 — EXTEND (new hypotheses from underused signals)
+  PHASE G -- E_t recovery meta-run
 
-    35  hesitation probe                         (H23) ← NEW v10.0
-    36  layer locality depth analysis            (H24) ← NEW v10.0
-    37  within-turn entropy shape                (H25) ← NEW v10.0
-    38  condition transfer                       (H26) ← NEW v10.0
-    39  output self-similarity                   (H27) ← NEW v10.0
+    16  E_t recovery -- base-model pass                          [was R48]
 
-  VALIDATION
+  PHASE D -- patching cluster
 
-    41  held-out validation set for Run 0043       (H28) ← NEW v16.0
-        mirrors Run 0023 with seed +50000; never used for fitting
+    17  activation patching      (H38)                          [was R21]
+    18  layer causal sufficiency (H29)                          [was Q42]
+    19  random noise patching baseline (H40 control)            [was R53]
 
-  POST-ALL-ROUNDS — run once after all temperature rounds complete
+  PHASE EFC -- slow→fast collection (21 runs, 20-40)
 
-    40  pooled E+C+R decomposition + Permutation Sensitivity — no GPU  (cross-directory)
+    20  two-instance cross-instance              (H19)          [was Q30]
+    21  coherence levels                         (H20)          [was Q31]
+    22  context saturation                       (H06)          [was Q23]
+    23  C_t confound isolation                   (H17)          [was Q28]
+    24  persistence mechanism                    (H18)          [was Q29]
+    25-27, 28, 29-31, 32, 33-40 (see RUN_MAP)
+
+  PER-TEMP ANALYSIS (no GPU, runs 41-49)
+
+    41  POOL_DIM stability sweep                 [was Q45]
+    42  E+C+R full decomposition                 [was Q33]
+    43  Permutation Sensitivity partition        [was Q34]
+    44  Per-condition R fractions                [was Q46]
+    45  Fixed-dim per-condition R                [was Q49]
+    46  MLP permutation sensitivity              [was Q56]
+    47  Granger probe A                          [was Q25]
+    48  Granger probe B                          [was Q27]
+    49  Baseline swap                            [was Q32]
+
+  POOLED ANALYSIS (no GPU, runs 50-51)
+
+    50  Cross-temperature synthesis              [was Q47]
+    51  Pooled E+C+R + Permutation Sensitivity   [was Q40]
+
+  CROSS-MODEL ANALYSIS (no GPU, runs 52-54)
+
+    52  Cross-model R comparison                 [was Q50]
+    53  Cross-model condition concordance        [was Q51]
+    54  Cross-model paper summary table          [was Q52]
+
+  PAPER OUTPUT (no GPU, runs 55-56)
+
+    55  Stats export + report generation         [was R54]
+    56  Cross-model paper assembly               [was R55]
 
 ══════════════════════════════════════════════════════════════
 """
 
 import os, sys, importlib.util, time, threading
+
+# v0.82.0.26: Force UTF-8 stdout/stderr on Windows. Default cp1252 console
+# encoding mangles unicode characters in print strings (em-dashes, lambda,
+# bullet markers) AND in tqdm progress bars (block-element chars from
+# transformers' weight-loading bar). The garble looks like errors. It isn't.
+# This fixes the source so output is readable regardless of how the
+# apparatus is invoked (UI, --single-run, --all-models, direct python).
+if sys.platform == 'win32':
+    os.environ.setdefault('PYTHONIOENCODING', 'utf-8')
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+
+# v0.82.0.26: kill transformers/safetensors weight-loading progress bars.
+# They emit hundreds of in-place updates per model load with block-element
+# unicode chars that mangle on cp1252 console even with chcp 65001 set.
+# Apparatus's own trial-progress messages use plain print() calls, not
+# tqdm, so they're unaffected.
+os.environ.setdefault('TQDM_DISABLE', '1')
+os.environ.setdefault('HF_HUB_DISABLE_PROGRESS_BARS', '1')
+os.environ.setdefault('TRANSFORMERS_VERBOSITY', 'error')
+
+# v0.82.0.26: silence library deprecation/user warnings that go to stderr.
+# PowerShell paints stderr lines red regardless of content, making harmless
+# pandas FutureWarning + torch UserWarning + transformers DeprecationWarning
+# all look like errors. Apparatus errors still go through ui.err() to stdout
+# and remain visible.
+import warnings
+warnings.filterwarnings('ignore')
 
 def _find_root():
     """Walk up from this file's directory to the iota root (contains
@@ -108,7 +149,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 import ui
-from cartography import get_paths
+from cartography import get_paths, DualKeyRunDict, run_id_pad  # v0.79.4.18: wrap RUN_MAP + fix _order_runs key normalization
 
 DASHBOARD_URL = "http://localhost:5000"
 
@@ -151,7 +192,7 @@ def _kill_stale_dashboard():
 
 def _launch_dashboard():
     """Spawn Flask dashboard as a daemon subprocess.
-    Output is redirected to .iota_flask.log — does not pollute the console.
+    Output is redirected to .iota_flask.log -- does not pollute the console.
     Kills any stale Flask process first to ensure fresh code is served.
     Returns the Popen handle or None.
     """
@@ -196,7 +237,7 @@ def _maybe_open_browser(countdown=0):
         webbrowser.open(DASHBOARD_URL)
         return
 
-    print(f"  Opening browser in {countdown}s  — press Enter to skip", flush=True)
+    print(f"  Opening browser in {countdown}s  -- press Enter to skip", flush=True)
 
     skipped   = threading.Event()
     opened    = threading.Event()
@@ -213,7 +254,7 @@ def _maybe_open_browser(countdown=0):
 
     for remaining in range(countdown, 0, -1):
         if skipped.is_set():
-            pass  # console mode — URL already printed above
+            pass  # console mode -- URL already printed above
             return
         time.sleep(1)
 
@@ -223,77 +264,98 @@ def _maybe_open_browser(countdown=0):
 
 # ── Run map ───────────────────────────────────────────────────────────────────
 
-RUN_MAP = {
-    # v0.79.4.9: renumbered to execution-order positions (1-56). "was"
+RUN_MAP = DualKeyRunDict({
+    # v0.79.4.18: wrapped in DualKeyRunDict. Prior plain-dict form with
+    # 4-digit string keys meant `int_r in RUN_MAP` always returned False,
+    # breaking _parse_runs (which parses to int) and every downstream
+    # caller doing integer lookups against the post-renumber string keys.
+    # Same migration pattern already applied to RUN_CSV / ANALYSIS_JSON
+    # in cartography.py -- this closes the third instance.
+    # v0.79.4.15: renumbered to execution-order positions (1-56). "was"
     # comments reference pre-renumber IDs for migration cross-ref.
     #
-    # ── PHASE A — temp-indep foundation ──
+    # ── PHASE A -- temp-indep foundation ──
     "0001": ("runners",        "Null baseline + hidden state extraction"),  # was R19
     "0002": ("runners",        "Robustness sweep"),                         # was R20
     "0003": ("runners",        "Temperature grid 4×5"),                     # was Q26
-    # ── PHASE B — fast ET-source block ──
+    # ── PHASE B -- fast ET-source block ──
     "0004": ("runners",        "Null baseline A"),                          # was R01
     "0005": ("runners",        "Null baseline B"),                          # was R02
-    "0006": ("runners",        "Introspection A — direct self-query"),      # was R03
-    "0007": ("runners",        "Introspection B — memory probe"),           # was R04
-    "0008": ("runners",        "Introspection C — fixed output enforcer"),  # was R05
-    "0009": ("runners",        "Arithmetic A — visible"),                   # was R06
-    "0010": ("runners",        "Arithmetic B — hidden"),                    # was R07
-    "0011": ("runners",        "Arithmetic C — cold"),                      # was R08
-    "0012": ("runners",        "Arithmetic D — primed"),                    # was R09
-    "0013": ("runners",        "Priming — neutral"),                        # was R15
-    "0014": ("runners",        "Priming — cooperative"),                    # was R16
-    "0015": ("runners",        "Priming — resistant"),                      # was R17
-    # ── PHASE G — E_t recovery meta-run ──
-    "0016": ("runners_core",   "E_t recovery — base-model pass (meta-run)"), # was R48
-    # ── PHASE D — patching cluster ──
+    "0006": ("runners",        "Introspection A -- direct self-query"),      # was R03
+    "0007": ("runners",        "Introspection B -- memory probe"),           # was R04
+    "0008": ("runners",        "Introspection C -- fixed output enforcer"),  # was R05
+    "0009": ("runners",        "Arithmetic A -- visible"),                   # was R06
+    "0010": ("runners",        "Arithmetic B -- hidden"),                    # was R07
+    "0011": ("runners",        "Arithmetic C -- cold"),                      # was R08
+    "0012": ("runners",        "Arithmetic D -- primed"),                    # was R09
+    "0013": ("runners",        "Priming -- neutral"),                        # was R15
+    "0014": ("runners",        "Priming -- cooperative"),                    # was R16
+    "0015": ("runners",        "Priming -- resistant"),                      # was R17
+    # ── PHASE G -- E_t recovery meta-run ──
+    "0016": ("runners",        "E_t recovery -- base-model pass (meta-run)"), # was R48 -- v0.79.4.16: runners_core has no run(), dispatch lives in runners.run()
+    # ── PHASE D -- patching cluster ──
     "0017": ("graft_patching", "Activation patching"),                       # was R21
-    "0018": ("run42_layer_isolation", "Layer causal sufficiency — single-layer patching"),  # was Q42
+    "0018": ("run42_layer_isolation", "Layer causal sufficiency -- single-layer patching"),  # was Q42
     "0019": ("graft_patching", "Random noise patching baseline (H40 control)"),  # was R53
-    # ── PHASE EFC — slow→fast collection ──
+    # ── PHASE EFC -- slow→fast collection ──
     "0020": ("runners",        "Two-instance cross-instance measurement"),   # was Q30
-    "0021": ("runners",        "Coherence levels — three R conditions"),     # was Q31
+    "0021": ("runners",        "Coherence levels -- three R conditions"),     # was Q31
     "0022": ("runners",        "Context saturation"),                        # was Q23
     "0023": ("runners",        "C_t confound isolation"),                    # was Q28
     "0024": ("runners",        "Persistence mechanism"),                     # was Q29
-    "0025": ("runners",        "Coherence transfer — priming length probe"), # was Q43
-    "0026": ("runners",        "Contradiction — priming then recovery"),     # was Q44
+    "0025": ("runners",        "Coherence transfer -- priming length probe"), # was Q43
+    "0026": ("runners",        "Contradiction -- priming then recovery"),     # was Q44
     "0027": ("runners",        "Layer locality"),                            # was Q24
     "0028": ("runners",        "Self-reference probe"),                      # was Q22
-    "0029": ("runners",        "Impossibility A — constrained"),             # was R12
-    "0030": ("runners",        "Impossibility B — unconstrained"),           # was R13
-    "0031": ("runners",        "Impossibility C — epistemic"),               # was R14
+    "0029": ("runners",        "Impossibility A -- constrained"),             # was R12
+    "0030": ("runners",        "Impossibility B -- unconstrained"),           # was R13
+    "0031": ("runners",        "Impossibility C -- epistemic"),               # was R14
     "0032": ("runners",        "Tokenization control"),                      # was R18
     "0033": ("runners",        "Held-out validation set for decomposition"), # was Q41
-    "0034": ("runners",        "Layer depth analysis — where does R live?"), # was Q36
+    "0034": ("runners",        "Layer depth analysis -- where does R live?"), # was Q36
     "0035": ("runners",        "Output self-similarity across turns"),       # was Q39
-    "0036": ("runners",        "Condition transfer — introspection → arithmetic"),  # was Q38
+    "0036": ("runners",        "Condition transfer -- introspection → arithmetic"),  # was Q38
     "0037": ("runners",        "Within-turn entropy shape"),                 # was Q37
-    "0038": ("runners",        "Hesitation probe — first-token latency vs R"),  # was Q35
-    "0039": ("runners",        "Perturbation A — late shock"),               # was R10
-    "0040": ("runners",        "Perturbation B — early shock"),              # was R11
+    "0038": ("runners",        "Hesitation probe -- first-token latency vs R"),  # was Q35
+    "0039": ("runners",        "Perturbation A -- late shock"),               # was R10
+    "0040": ("runners",        "Perturbation B -- early shock"),              # was R11
     # ── PER-TEMP ANALYSIS (chain: POOL_DIM → decomp → partition → R fracs) ──
-    "0041": ("analysis",       "POOL_DIM stability sweep — no GPU"),         # was Q45
-    "0042": ("analysis",       "E+C+R full decomposition — no GPU"),         # was Q33
-    "0043": ("analysis",       "Permutation Sensitivity partition — no GPU"), # was Q34
-    "0044": ("analysis",       "Per-condition R fractions — no GPU"),        # was Q46
-    "0045": ("analysis",       "Fixed-dim per-condition R (POOL_DIM=64) — no GPU"),  # was Q49
-    "0046": ("analysis",       "MLP permutation sensitivity — Ridge 3×3 — no GPU"),  # was Q56
+    "0041": ("analysis",       "POOL_DIM stability sweep -- no GPU"),         # was Q45
+    "0042": ("analysis",       "E+C+R full decomposition -- no GPU"),         # was Q33
+    "0043": ("analysis",       "Permutation Sensitivity partition -- no GPU"), # was Q34
+    "0044": ("analysis",       "Per-condition R fractions -- no GPU"),        # was Q46
+    "0045": ("analysis",       "Fixed-dim per-condition R (POOL_DIM=64) -- no GPU"),  # was Q49
+    "0046": ("analysis",       "MLP permutation sensitivity -- Ridge 3×3 -- no GPU"),  # was Q56
     # ── PER-TEMP ANALYSIS (independents) ──
-    "0047": ("analysis",       "Granger probe A — no GPU"),                  # was Q25
-    "0048": ("analysis",       "Granger probe B — no GPU"),                  # was Q27
-    "0049": ("analysis",       "Baseline swap — no GPU"),                    # was Q32
+    "0047": ("analysis",       "Granger probe A -- no GPU"),                  # was Q25
+    "0048": ("analysis",       "Granger probe B -- no GPU"),                  # was Q27
+    "0049": ("analysis",       "Baseline swap -- no GPU"),                    # was Q32
     # ── POOLED ANALYSIS ──
-    "0050": ("analysis",       "Cross-temperature synthesis — no GPU"),      # was Q47
-    "0051": ("analysis",       "Pooled E+C+R decomposition + Permutation Sensitivity — no GPU"),  # was Q40
+    "0050": ("analysis",       "Cross-temperature synthesis -- no GPU"),      # was Q47
+    "0051": ("analysis",       "Pooled E+C+R decomposition + Permutation Sensitivity -- no GPU"),  # was Q40
     # ── CROSS-MODEL ANALYSIS ──
-    "0052": ("analysis",       "Cross-model R comparison — pairwise + pooled — no GPU"),  # was Q50
-    "0053": ("analysis",       "Cross-model condition ranking concordance — no GPU"),     # was Q51
-    "0054": ("analysis",       "Cross-model paper summary table (S5/S6) — no GPU"),       # was Q52
+    "0052": ("analysis",       "Cross-model R comparison -- pairwise + pooled -- no GPU"),  # was Q50
+    "0053": ("analysis",       "Cross-model condition ranking concordance -- no GPU"),     # was Q51
+    "0054": ("analysis",       "Cross-model paper summary table (S5/S6) -- no GPU"),       # was Q52
     # ── OUTPUT ──
-    "0055": ("export_stats",   "Stats export + report generation — no GPU"), # was R54
-    "0056": ("export_stats",   "Cross-model paper assembly — figures + JSONs — no GPU"),  # was R55
-}
+    "0055": ("export_stats",   "Stats export + report generation -- no GPU"), # was R54
+    # v0.80.0.51: Run 0058 reassigned. Old Run 0058 (paper assembly)
+    # is now Run 0059. Run 0058 is the lagrangian apparatus -- kraskov
+    # anchor producer, I-projection solver, V5d threshold calibration,
+    # aggregator. Apparatus hard-depends on 0056 (foundations) and
+    # 0057 (function-class data); paper assembly (now 0059)
+    # hard-depends on all three.
+    #
+    # Run cadence:
+    #   0056 -- calibration only (foundations: V5, channel marginal, etc)
+    #   0057 -- function-class sensitivity (Ridge vs MLP vs RF; was earlier)
+    #   0058 -- lagrangian apparatus (NEW: anchor + solver + threshold + aggregator)
+    #   0059 -- paper assembly (results.json + figures; was 0058)
+    "0056": ("export_stats",   "Methodology calibration only -- V5b synthetic + channel marginal + manifest -- no GPU"),  # v0.80.0.44: split from old Run 0056
+    "0057": ("export_stats",   "Function-class sensitivity -- Ridge vs MLP vs RF on §5.4 cross-cell pattern -- no GPU"),  # v0.80.0.44
+    "0058": ("run_bayesian_apparatus",  "Bayesian apparatus -- kraskov anchor + I-projection solver + threshold + aggregator -- no GPU"),  # v0.80.0.51: new; v0.82.0.23: renamed lagrangian → bayesian (apparatus is Bayesian I-projection MAP, not constrained-Lagrangian)
+    "0059": ("export_stats",   "Stats export + paper assembly -- results.json + figures -- no GPU"),  # v0.80.0.51: was 0058
+})
 
 # ── Collection-time prerequisites ─────────────────────────────────────────────
 #
@@ -309,108 +371,146 @@ RUN_MAP = {
 # This dict is the single authoritative pre-dispatch gate; the in-module guards
 # remain as a secondary safety net inside each module.
 
-_PREREQS = {
-    # v0.79.4.9: renumbered to execution-order positions. 'was' comments
+_PREREQS = DualKeyRunDict({
+    # v0.79.5.18: wrapped in DualKeyRunDict. Pre-0.79.5.18 this was a
+    # plain dict with 4-digit string keys ("0017", "0042", etc.), but
+    # every caller of _check_prereqs (line 1726, 1867, 2998) passes
+    # run_num as an INT. _PREREQS.get(17) on a dict with "0017" keys
+    # returns None, fell through to the default {} in _check_prereqs,
+    # and no prereq was ever detected. The entire prerequisite
+    # machinery has been silently non-functional since the 0.79.4.0
+    # renumber. Wrapping in DualKeyRunDict (same fix as 0.79.4.18's
+    # RUN_MAP) normalizes int ↔ 4-digit-string at lookup boundary.
+    # Every existing entry below now enforces. Queued in HANDOFF as
+    # deferred since 0.79.4.18 -- shipped at last.
+    #
+    # v0.79.4.15: renumbered to execution-order positions. 'was' comments
     # reference pre-renumber IDs for migration cross-ref.
 
-    # Run 0017 — Activation patching reads Run 0006 all-layers refs (was R21→R3)
+    # Run 0016 -- E_t recovery meta-run. Per-(trial, turn) E_t
+    # forward-pass output is meaningful only with Run 0001's global-
+    # mean vectors for downstream normalization. Run 1 writes
+    # R0001_{mn}_ct_global_mean.npy and R0001_{mn}_et_global_mean.npy
+    # during null_trivariant (runners_p1.py:388-389). Without those,
+    # Run 16's output is orphaned -- no baseline for Run 0042's
+    # E+C+R decomposition. v0.79.5.18: added.
+    "0016": {
+        "0001": "Run 0001 -- ct_global_mean.npy + et_global_mean.npy baseline vectors required for E_t downstream normalization",
+    },
+
+    # Run 0017 -- Activation patching reads Run 0006 all-layers refs (was R21→R3)
     "0017": {
-        "0006": "Run 0006 (Introspection A) — all-layers .npy needed for patching",
+        "0006": "Run 0006 (Introspection A) -- all-layers .npy needed for patching",
     },
 
-    # Run 0047 — Granger A reads Run 0001 hidden .npy (was R25→R19)
+    # Run 0047 -- Granger A reads Run 0001 hidden .npy (was R25→R19)
     "0047": {
-        "0001": "Run 0001 (Null + hidden) — .npy needed for Granger A",
+        "0001": "Run 0001 (Null + hidden) -- .npy needed for Granger A",
     },
 
-    # Run 0048 — Granger B reads Run 0003 temp-grid CSV (was R27→R26)
+    # Run 0048 -- Granger B reads Run 0003 temp-grid CSV (was R27→R26)
     "0048": {
-        "0003": "Run 0003 (Temperature grid) — grid data for Granger B",
+        "0003": "Run 0003 (Temperature grid) -- grid data for Granger B",
     },
 
-    # Run 0049 — Baseline swap reads all Phase 1 CSVs (was R32, Runs 0004-0002)
+    # Run 0049 -- Baseline swap reads all Phase 1 CSVs (was R32, Runs 0004-0002)
     "0049": {
-        "0004": "Run 0004 — Phase 1 CSV required for baseline swap",
-        "0005": "Run 0005 — Phase 1 CSV required for baseline swap",
-        "0006": "Run 0006 — Phase 1 CSV required for baseline swap",
-        "0007": "Run 0007 — Phase 1 CSV required for baseline swap",
-        "0008": "Run 0008 — Phase 1 CSV required for baseline swap",
-        "0009": "Run 0009 — Phase 1 CSV required for baseline swap",
-        "0010": "Run 0010 — Phase 1 CSV required for baseline swap",
-        "0011": "Run 0011 — Phase 1 CSV required for baseline swap",
-        "0012": "Run 0012 — Phase 1 CSV required for baseline swap",
-        "0039": "Run 0039 — Phase 1 CSV required for baseline swap",
-        "0040": "Run 0040 — Phase 1 CSV required for baseline swap",
-        "0029": "Run 0029 — Phase 1 CSV required for baseline swap",
-        "0030": "Run 0030 — Phase 1 CSV required for baseline swap",
-        "0031": "Run 0031 — Phase 1 CSV required for baseline swap",
-        "0013": "Run 0013 — Phase 1 CSV required for baseline swap",
-        "0014": "Run 0014 — Phase 1 CSV required for baseline swap",
-        "0015": "Run 0015 — Phase 1 CSV required for baseline swap",
-        "0032": "Run 0032 — Phase 1 CSV required for baseline swap",
-        "0001": "Run 0001 — Phase 1 CSV required for baseline swap",
-        "0002": "Run 0002 — Phase 1 CSV required for baseline swap",
+        "0004": "Run 0004 -- Phase 1 CSV required for baseline swap",
+        "0005": "Run 0005 -- Phase 1 CSV required for baseline swap",
+        "0006": "Run 0006 -- Phase 1 CSV required for baseline swap",
+        "0007": "Run 0007 -- Phase 1 CSV required for baseline swap",
+        "0008": "Run 0008 -- Phase 1 CSV required for baseline swap",
+        "0009": "Run 0009 -- Phase 1 CSV required for baseline swap",
+        "0010": "Run 0010 -- Phase 1 CSV required for baseline swap",
+        "0011": "Run 0011 -- Phase 1 CSV required for baseline swap",
+        "0012": "Run 0012 -- Phase 1 CSV required for baseline swap",
+        "0039": "Run 0039 -- Phase 1 CSV required for baseline swap",
+        "0040": "Run 0040 -- Phase 1 CSV required for baseline swap",
+        "0029": "Run 0029 -- Phase 1 CSV required for baseline swap",
+        "0030": "Run 0030 -- Phase 1 CSV required for baseline swap",
+        "0031": "Run 0031 -- Phase 1 CSV required for baseline swap",
+        "0013": "Run 0013 -- Phase 1 CSV required for baseline swap",
+        "0014": "Run 0014 -- Phase 1 CSV required for baseline swap",
+        "0015": "Run 0015 -- Phase 1 CSV required for baseline swap",
+        "0032": "Run 0032 -- Phase 1 CSV required for baseline swap",
+        "0001": "Run 0001 -- Phase 1 CSV required for baseline swap",
+        "0002": "Run 0002 -- Phase 1 CSV required for baseline swap",
     },
 
-    # Run 0042 — E+C+R decomposition reads E_t+C_t from sources (was R33)
+    # Run 0042 -- E+C+R decomposition reads E_t+C_t from sources (was R33)
     "0042": {
-        "0001": "Run 0001 — E_t+C_t source for decomposition",
-        "0002": "Run 0002 — E_t+C_t source for decomposition",
-        "0003": "Run 0003 — E_t+C_t source for decomposition",
-        "0004": "Run 0004 — E_t+C_t source for decomposition",
-        "0005": "Run 0005 — E_t+C_t source for decomposition",
-        "0006": "Run 0006 — E_t+C_t source for decomposition",
-        "0007": "Run 0007 — E_t+C_t source for decomposition",
-        "0008": "Run 0008 — E_t+C_t source for decomposition",
-        "0009": "Run 0009 — E_t+C_t source for decomposition",
-        "0010": "Run 0010 — E_t+C_t source for decomposition",
-        "0011": "Run 0011 — E_t+C_t source for decomposition",
-        "0012": "Run 0012 — E_t+C_t source for decomposition",
-        "0013": "Run 0013 — E_t+C_t source for decomposition",
-        "0014": "Run 0014 — E_t+C_t source for decomposition",
-        "0015": "Run 0015 — E_t+C_t source for decomposition",
-        "0016": "Run 0016 — E_t+C_t source for decomposition",
-        "0023": "Run 0023 — E_t+C_t source for decomposition",
+        "0001": "Run 0001 -- E_t+C_t source for decomposition",
+        "0002": "Run 0002 -- E_t+C_t source for decomposition",
+        "0003": "Run 0003 -- E_t+C_t source for decomposition",
+        "0004": "Run 0004 -- E_t+C_t source for decomposition",
+        "0005": "Run 0005 -- E_t+C_t source for decomposition",
+        "0006": "Run 0006 -- E_t+C_t source for decomposition",
+        "0007": "Run 0007 -- E_t+C_t source for decomposition",
+        "0008": "Run 0008 -- E_t+C_t source for decomposition",
+        "0009": "Run 0009 -- E_t+C_t source for decomposition",
+        "0010": "Run 0010 -- E_t+C_t source for decomposition",
+        "0011": "Run 0011 -- E_t+C_t source for decomposition",
+        "0012": "Run 0012 -- E_t+C_t source for decomposition",
+        "0013": "Run 0013 -- E_t+C_t source for decomposition",
+        "0014": "Run 0014 -- E_t+C_t source for decomposition",
+        "0015": "Run 0015 -- E_t+C_t source for decomposition",
+        "0016": "Run 0016 -- E_t+C_t source for decomposition",
+        "0023": "Run 0023 -- E_t+C_t source for decomposition",
     },
 
-    # Run 0043 — Permutation sensitivity needs decomposition + validation (was R34)
+    # Run 0043 -- Permutation sensitivity needs decomposition + validation (was R34)
     "0043": {
-        "0042": "Run 0042 (decomposition) — Ridge model required",
-        "0033": "Run 0033 (held-out validation) — Stage 2 validation CSV",
+        "0042": "Run 0042 (decomposition) -- Ridge model required",
+        "0033": "Run 0033 (held-out validation) -- Stage 2 validation CSV",
     },
 
-    # Run 0051 — Pooled decomposition needs Run 0042+34 outputs (was R40)
+    # Run 0051 -- Pooled decomposition needs Run 0042+34 outputs (was R40)
     "0051": {
-        "0042": "Run 0042 (decomposition) — required for pooled",
-        "0043": "Run 0043 (permutation sensitivity) — required for pooled",
+        "0042": "Run 0042 (decomposition) -- required for pooled",
+        "0043": "Run 0043 (permutation sensitivity) -- required for pooled",
     },
 
-    # Run 0018 — Layer isolation reads Run 0006 all-layers (was R42→R3)
+    # Run 0018 -- Layer isolation reads Run 0006 all-layers (was R42→R3)
     "0018": {
-        "0006": "Run 0006 (Introspection A) — all-layers .npy",
+        "0006": "Run 0006 (Introspection A) -- all-layers .npy",
     },
 
-    # Run 0019 — Random patching reads Run 0006 all-layers (was R53→R3)
+    # Run 0019 -- Random patching reads Run 0006 all-layers (was R53→R3)
     "0019": {
-        "0006": "Run 0006 (Introspection A) — all-layers .npy",
+        "0006": "Run 0006 (Introspection A) -- all-layers .npy",
     },
 
-    # Run 0046 — MLP perm sensitivity needs decomp/partition/per-cond (was R56)
+    # Run 0046 -- MLP perm sensitivity needs decomp/partition/per-cond (was R56)
     "0046": {
-        "0042": "Run 0042 (decomposition) — POOL_DIM + quadruplets",
-        "0043": "Run 0043 (permutation sensitivity) — pooled Ridge ref",
-        "0044": "Run 0044 (per-condition R) — per-condition Ridge ref",
+        "0042": "Run 0042 (decomposition) -- POOL_DIM + quadruplets",
+        "0043": "Run 0043 (permutation sensitivity) -- pooled Ridge ref",
+        "0044": "Run 0044 (per-condition R) -- per-condition Ridge ref",
     },
-}
+
+    # v0.80.0.51: Runs 0057, 0058, and 0059 do their own internal gating against
+    # GLOBAL artifacts (channel_marginal_nonlinearity.csv,
+    # Q0057_function_class_sensitivity.json, calibration manifest), not
+    # per-cell paths. The _scan_runs / _check_prereqs machinery is per-cell
+    # -- it walks one model+temp+variant directory and checks Q-files there.
+    # Listing 0057/0058/0059 prereqs (0042/0044/0046/0056) here would route
+    # global artifacts through the per-cell scanner, which sees Q0042 only
+    # at the current scan path and reports global runs as 'missing' even
+    # when the global artifacts exist.
+    #
+    # Both runs fail loud on their own checks if their global artifacts
+    # are missing. This matches how the pre-split Run 0056 paper assembly
+    # was gated (no _PREREQS entry; inline HARD GATE on calibration
+    # status). Don't add 0057/0058/0059 entries here.
+})
 def _check_prereqs(run_num, status):
     """
     Check collection-time prerequisites for run_num against the live scan.
 
     Returns list of (prereq_num, prereq_status, description) for each unmet prereq.
-    prereq_status is 'missing' or 'partial' — both count as unmet.
+    prereq_status is 'missing' or 'partial' -- both count as unmet.
     An empty list means all prerequisites are satisfied (or this run has none).
 
-    v0.79.4.9: E_t state is now owned entirely by Run 0016 (first-class meta-
+    v0.79.4.15: E_t state is now owned entirely by Run 0016 (first-class meta-
     run). Source runs (1-9, 15-17, 20) no longer emit 'needs_et'/'et_partial'
     statuses. Analysis runs that need E_t embeddings (33, etc.) now list
     Run 0016 in their _PREREQS explicitly instead of relying on the old
@@ -432,7 +532,7 @@ def _prereq_warning_block(run_num, problems):
     _, rdesc = RUN_MAP.get(run_num, ('', f'Run {run_num}'))
     print()
     print('!' * W)
-    ui.warn(f"PREREQUISITE WARNING  —  Run {run_num:04d}: {rdesc}")
+    ui.warn(f"PREREQUISITE WARNING  --  Run {run_num:04d}: {rdesc}")
     print('!' * W)
     for prereq_num, prereq_stat, desc in problems:
         label = "MISSING" if prereq_stat == 'missing' else "INCOMPLETE"
@@ -444,13 +544,13 @@ def _prereq_warning_block(run_num, problems):
 # Runs that require a base-model E_t recovery pass (collected pre-v40.0.0).
 # Subset of SOURCE_RUNS_2WAY ∪ SOURCE_RUNS_3WAY that were collected without
 # true base-model E_t and need the recovery pass before feeding the OLS.
-# v42.5.2: Run 0002 added — SOURCE_RUNS_2WAY member, needs base E_t pass.
-# v0.79.4.9: _ET_RECOVERY_TOTAL removed with Run 0016 promotion — scanner
+# v42.5.2: Run 0002 added -- SOURCE_RUNS_2WAY member, needs base E_t pass.
+# v0.79.4.15: _ET_RECOVERY_TOTAL removed with Run 0016 promotion -- scanner
 # derives expected counts from CSV row counts at scan time now.
 from scanner import _ET_RECOVERY_RUNS
 
 
-def _prompt_pass_cfg_r19(paths, n_trials):
+def _prompt_pass_cfg_r01(paths, n_trials):
     """Interactive toggle for Run 0001 pass selection.
 
     Shows current completion status for each of the four passes and lets the
@@ -460,7 +560,7 @@ def _prompt_pass_cfg_r19(paths, n_trials):
     or None if the user chooses to skip Run 0001 entirely.
 
     In headless mode (IOTA_HEADLESS=1) returns all-True immediately.
-    Defaults to only the passes that are NOT yet complete — saves time on partial runs.
+    Defaults to only the passes that are NOT yet complete -- saves time on partial runs.
     """
     if os.environ.get('IOTA_HEADLESS') == '1':
         return {'base': True, 'instruct': True, 'abliterated': True, 'vectors': True}
@@ -469,10 +569,13 @@ def _prompt_pass_cfg_r19(paths, n_trials):
     hidden_dir = paths.get('hidden', '')
     csv_dir    = paths.get('csv', '')
 
-    def _count_pass(pattern, variant=None):
+    def _count_pass(patterns, variant=None):
         # v42.1.11: base/instruct dirs are siblings of abliterated under
         # the same family/size root. Derive path from hidden_dir structure.
         # Falls back to old v42.1.10 subdir for migration window compatibility.
+        # Accepts a list of patterns or a single-pattern string.
+        if isinstance(patterns, str):
+            patterns = [patterns]
         if variant and variant != 'abliterated':
             try:
                 _cond_dir    = os.path.dirname(hidden_dir)
@@ -489,11 +592,12 @@ def _prompt_pass_cfg_r19(paths, n_trials):
             fallback_dir = None
         trials = set()
         for _sd in ([search_dir, fallback_dir] if fallback_dir else [search_dir]):
-            for f in _g.glob(os.path.join(_sd, pattern)):
-                try:
-                    trials.add(int(os.path.basename(f).split('_trial')[1].split('_')[0]))
-                except Exception:
-                    pass
+            for pat in patterns:
+                for f in _g.glob(os.path.join(_sd, pat)):
+                    try:
+                        trials.add(int(os.path.basename(f).split('_trial')[1].split('_')[0]))
+                    except Exception:
+                        pass
         return len(trials)
 
     def _count_abl():
@@ -516,16 +620,15 @@ def _prompt_pass_cfg_r19(paths, n_trials):
         except Exception:
             return 0
 
-    n_base = _count_pass('R19_*_base_trial*_turn01.npy', variant='base')
-    n_inst = _count_pass('R19_*_instruct_trial*_turn01.npy', variant='instruct')
+    n_base = _count_pass(['R0001_*_base_trial*_turn01.npy'], variant='base')
+    n_inst = _count_pass(['R0001_*_instruct_trial*_turn01.npy'], variant='instruct')
     n_abl  = _count_abl()
-    # pass4: requires the Pass 4 sentinel file written by v42.1.2+ _compute_run19_vectors.
+    # pass4: requires the Pass 4 sentinel file written by v42.1.2+ _compute_run01_vectors.
     # The sentinel is ONLY written after a correct (BUG-42B-fixed) Pass 4 completes.
     # Corrupted BUG-42B runs have constraint.npy files on disk (correct count, wrong
-    # content) — file-count checks would falsely report pass4 done. The sentinel
+    # content) -- file-count checks would falsely report pass4 done. The sentinel
     # cannot be faked by file count; it must be explicitly written by the fixed code.
-    _sentinel_pat = os.path.join(hidden_dir, 'R19_*_pass4_ok.stamp')
-    pass4 = len(_g.glob(_sentinel_pat)) > 0
+    pass4 = len(_g.glob(os.path.join(hidden_dir, 'R0001_*_pass4_ok.stamp'))) > 0
 
     def _st(n, is_bool=False):
         if is_bool:
@@ -542,16 +645,16 @@ def _prompt_pass_cfg_r19(paths, n_trials):
         'vectors':     not pass4,
     }
     labels = {
-        'base':        f"Pass 1 — Base model hidden states      ({_st(n_base)})",
-        'instruct':    f"Pass 2 — Instruct model hidden states  ({_st(n_inst)})",
-        'abliterated': f"Pass 3 — Abliterated model + CSV       ({_st(n_abl)})",
-        'vectors':     f"Pass 4 — Compute E_t / C_t vectors     ({_st(pass4, is_bool=True)})",
+        'base':        f"Pass 1 -- Base model hidden states      ({_st(n_base)})",
+        'instruct':    f"Pass 2 -- Instruct model hidden states  ({_st(n_inst)})",
+        'abliterated': f"Pass 3 -- Abliterated model + CSV       ({_st(n_abl)})",
+        'vectors':     f"Pass 4 -- Compute E_t / C_t vectors     ({_st(pass4, is_bool=True)})",
     }
     keys     = ['base', 'instruct', 'abliterated', 'vectors']
     key_char = {'base': 'b', 'instruct': 'i', 'abliterated': 'a', 'vectors': 'v'}
 
     while True:
-        ui.section("Run 0001 — Pass Configuration")
+        ui.section("Run 0001 -- Pass Configuration")
         ui.blank()
         for k in keys:
             sym = 'x' if cfg[k] else ' '
@@ -576,7 +679,7 @@ def _prompt_pass_cfg_r19(paths, n_trials):
             ui.warn(f"  Unknown input: '{raw}'")
 
     if not any(cfg.values()):
-        ui.warn("  No passes selected — skipping Run 0001.")
+        ui.warn("  No passes selected -- skipping Run 0001.")
         return None
     return cfg
 
@@ -589,29 +692,29 @@ def _prompt_et_batch_cfg(run_nums, status, paths, n_trials):
 
     Shows all queued ET runs with their current Abl CSV and E_t file counts.
     Each run has an assigned mode:
-      [e] E_t base pass only  — CSV and S_t intact, just add E_t files (default for needs_et)
-      [a] Abliterated only    — re-run model, overwrite CSV + S_t (default for missing)
-      [b] Both                — abliterated first, then E_t base pass (default for missing)
-      [s] Skip                — do nothing for this run
+      [e] E_t base pass only  -- CSV and S_t intact, just add E_t files (default for needs_et)
+      [a] Abliterated only    -- re-run model, overwrite CSV + S_t (default for missing)
+      [b] Both                -- abliterated first, then E_t base pass (default for missing)
+      [s] Skip                -- do nothing for this run
 
     Default assignment per status:
       'needs_et' → 'e'   (CSV complete, just need E_t)
-      'missing'  → 'b'   (nothing collected yet — collect everything)
-      other      → 's'   (done or unexpected — skip)
+      'missing'  → 'b'   (nothing collected yet -- collect everything)
+      other      → 's'   (done or unexpected -- skip)
 
     Inputs:
-      <N>       — cycle run N through modes: e → a → b → s → e
-      <N> <M>   — set run N directly to mode M (e/a/b/s)
-      E         — set all to E_t only
-      A         — set all to abliterated only
-      B         — set all to both
-      X         — set all to skip
-      Enter     — confirm
-      s         — skip all (returns empty sets)
+      <N>       -- cycle run N through modes: e → a → b → s → e
+      <N> <M>   -- set run N directly to mode M (e/a/b/s)
+      E         -- set all to E_t only
+      A         -- set all to abliterated only
+      B         -- set all to both
+      X         -- set all to skip
+      Enter     -- confirm
+      s         -- skip all (returns empty sets)
 
     Returns (abl_set, et_set):
-      abl_set — run numbers that need an abliterated generation pass (mode a or b)
-      et_set  — run numbers that need a base-model E_t pass (mode e or b)
+      abl_set -- run numbers that need an abliterated generation pass (mode a or b)
+      et_set  -- run numbers that need a base-model E_t pass (mode e or b)
 
     In headless mode: needs_et → et_set, missing → both sets. No prompt.
     """
@@ -663,7 +766,7 @@ def _prompt_et_batch_cfg(run_nums, status, paths, n_trials):
             return 0
 
     def _n_et(rn):
-        # v0.79.4.9: glob both 4-digit (canonical, post-migration) and
+        # v0.79.4.15: glob both 4-digit (canonical, post-migration) and
         # 2-digit (legacy, pre-migration) patterns. Mirrors the scanner's
         # transitional backward-compat read in _run48_status.
         return (
@@ -679,7 +782,7 @@ def _prompt_et_batch_cfg(run_nums, status, paths, n_trials):
     }
 
     def _print_table():
-        ui.section(f"ET Run Configuration — {len(run_list)} run(s) in queue")
+        ui.section(f"ET Run Configuration -- {len(run_list)} run(s) in queue")
         ui.blank()
         ui.msg(f"  {'Run':<4}  {'Description':<38}  {'Abl CSV':>10}  {'E_t files':>10}  Mode")
         ui.msg(f"  {'─'*4}  {'─'*38}  {'─'*10}  {'─'*10}  {'─'*9}")
@@ -739,7 +842,7 @@ def _analysis_is_complete(json_path):
     """Check if an analysis JSON represents a complete run.
     Returns True only if the file exists, parses as valid JSON, and does NOT
     have 'status': 'running'. Everything else (missing, corrupt, partial) → False.
-    The JSON content is the sole source of truth — .running marker files are
+    The JSON content is the sole source of truth -- .running marker files are
     irrelevant to this check."""
     if not os.path.exists(json_path):
         return False
@@ -759,16 +862,16 @@ def _analysis_is_complete(json_path):
 # _run_session sorts the selected run set against this order instead of numerically.
 
 EXECUTION_ORDER = [
-    # v0.79.4.9: runs have been renumbered so their ID equals their
+    # v0.79.4.15: runs have been renumbered so their ID equals their
     # execution-order position. This is now just 1..56 in order,
     # with phase boundaries marked for readability.
     # ── DATA COLLECTION ──
-    "0001", "0002", "0003",                                    # Phase A — temp-indep
-    "0004", "0005", "0006", "0007", "0008", "0009",            # Phase B — ET-source
+    "0001", "0002", "0003",                                    # Phase A -- temp-indep
+    "0004", "0005", "0006", "0007", "0008", "0009",            # Phase B -- ET-source
     "0010", "0011", "0012", "0013", "0014", "0015",
-    "0016",                                                    # Phase G — E_t meta-run
-    "0017", "0018", "0019",                                    # Phase D — patching
-    "0020", "0021", "0022", "0023", "0024",                    # Phase EFC — slow→fast
+    "0016",                                                    # Phase G -- E_t meta-run
+    "0017", "0018", "0019",                                    # Phase D -- patching
+    "0020", "0021", "0022", "0023", "0024",                    # Phase EFC -- slow→fast
     "0025", "0026", "0027", "0028", "0029",
     "0030", "0031", "0032", "0033", "0034",
     "0035", "0036", "0037", "0038", "0039", "0040",
@@ -780,14 +883,25 @@ EXECUTION_ORDER = [
     # ── CROSS-MODEL ANALYSIS ──
     "0052", "0053", "0054",
     # ── OUTPUT ──
-    "0055", "0056",
+    "0055", "0056", "0057", "0058", "0059",   # v0.80.0.51: 0058 = apparatus, 0059 = paper assembly (was 0058)
 ]
 
 def _order_runs(run_set):
     """Return run_set sorted by EXECUTION_ORDER, not numerically.
-    Any run not in EXECUTION_ORDER (should not happen) falls to the end."""
+    Any run not in EXECUTION_ORDER (should not happen) falls to the end.
+
+    v0.79.4.18: EXECUTION_ORDER is a list of 4-digit strings post-renumber,
+    but callers hand us ints (from _parse_runs). Normalize the lookup key
+    via run_id_pad so both int and string run IDs resolve to their
+    canonical 4-digit form before _pos lookup. Without this, every int
+    input fell through to the 9999 default and ordering was a no-op."""
     _pos = {r: i for i, r in enumerate(EXECUTION_ORDER)}
-    return sorted(run_set, key=lambda r: _pos.get(r, 9999))
+    def _key(r):
+        try:
+            return _pos.get(run_id_pad(r), 9999)
+        except (ValueError, TypeError):
+            return _pos.get(r, 9999)
+    return sorted(run_set, key=_key)
 
 
 # ── Resume state ──────────────────────────────────────────────────────────────
@@ -830,20 +944,20 @@ def _clear_resume_state():
 # Auto-fires before any stats/analysis run (25, 27, 32, 33, 34, 40).
 # Removes duplicate rows caused by BUG-PARTIAL-TRIAL broken-resume.
 #
-# Single-condition runs: dedup on (trial, turn, priming) — keep first occurrence.
-# MC runs: dedup on (trial, turn, priming, condition_value) — keep first occurrence,
+# Single-condition runs: dedup on (trial, turn, priming) -- keep first occurrence.
+# MC runs: dedup on (trial, turn, priming, condition_value) -- keep first occurrence,
 #          then cap at n_trials per condition (removes overshoot from mis-resumed runs).
 # Patching runs (21, 42), Run 0003, no-GPU runs: skipped.
 
 from cartography import DualKeyRunSet as _DKRSet
-# v0.79.4.9: DualKeyRunSet accepts int or 4-digit string on membership
+# v0.79.4.15: DualKeyRunSet accepts int or 4-digit string on membership
 # tests. Canonical storage is 4-digit string. Lets legacy `run_num in
 # _ANALYSIS_RUNS` (int) keep working while on-disk/UI surfaces use strings.
-_ANALYSIS_RUNS = _DKRSet({41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54})  # v0.79.4.9: was {25, 27, 32, 33, 34, 40, 45, 46, 47, 49, 50, 51, 52, 56}
+_ANALYSIS_RUNS = _DKRSet({41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54})  # v0.79.4.15: was {25, 27, 32, 33, 34, 40, 45, 46, 47, 49, 50, 51, 52, 56}
 
 def _dedup_all_csvs(paths, session):
     """Run universal dedup across all collected CSVs. Called before stats runs.
-    Delegates to dedup_all_runs.process_run — single source of truth for dedup logic.
+    Delegates to dedup_all_runs.process_run -- single source of truth for dedup logic.
     """
     from cartography import RUN_CSV
     import dedup_all_runs as _dedup_mod
@@ -854,15 +968,17 @@ def _dedup_all_csvs(paths, session):
 
     for run_num, csv_fname in sorted(RUN_CSV.items()):
         if csv_fname is None: continue
-        if run_num == 1: continue  # multi-pass structure exempt — see v54.0.2, v54.2.4
+        try: run_num_int = int(run_num)
+        except (ValueError, TypeError): run_num_int = -1
+        if run_num_int == 1: continue  # multi-pass structure exempt -- see v54.0.2, v54.2.4
         fpath = os.path.join(csv_dir, csv_fname)
         if not os.path.exists(fpath): continue
         try:
-            result = _dedup_mod.process_run(run_num, fpath, n_trials,
+            result = _dedup_mod.process_run(run_num_int, fpath, n_trials,
                                             dry_run=False, verbose=False)
             removed = result.get('total', 0)
             if removed:
-                msg = (f"  [dedup] Run {run_num:04d}: removed {removed} rows"
+                msg = (f"  [dedup] Run {run_num_int:04d}: removed {removed} rows"
                        f" (dedup={result['dedup']}, cap={result['cap']}, cull={result['cull']})")
                 print(msg, flush=True)
                 try:
@@ -871,10 +987,10 @@ def _dedup_all_csvs(paths, session):
                 except Exception: pass
                 total_fixed += removed
         except Exception as e:
-            ui.warn(f"  [dedup] Run {run_num:04d}: skipped ({e})")
+            ui.warn(f"  [dedup] Run {run_num_int:04d}: skipped ({e})")
 
     if total_fixed:
-        ui.warn(f"  [dedup] Total rows removed: {total_fixed} — backups saved as .csv.bak")
+        ui.warn(f"  [dedup] Total rows removed: {total_fixed} -- backups saved as .csv.bak")
     else:
         ui.ok("  [dedup] All CSVs clean.")
 
@@ -902,7 +1018,7 @@ def _parse_runs(spec):
 
     Accepts ranges ('1-5'), individual numbers ('7'), and mixed
     ('1-5,7,12-14'). Silently drops non-numeric tokens and numbers
-    outside RUN_MAP — so '1-100' gracefully resolves to the valid
+    outside RUN_MAP -- so '1-100' gracefully resolves to the valid
     subset rather than erroring. Used by every dispatch path: console
     menu, dashboard /queue, headless --auto-run, --batch-runs."""
     runs = set()
@@ -962,11 +1078,11 @@ def _ensure_calibration(session, paths):
 # TEMPERATURE-INDEPENDENT RUN COPY
 # ─────────────────────────────────────────────
 # Runs 0001, 0002, 0003 produce data that is valid across all temperature rounds:
-#   Run 0001  — three-model C_t/E_t isolation (model forward pass, no sampling)
-#   Run 0002  — internal temperature sweep (5 temps in one pass, ignores session temp)
-#   Run 0003  — temperature grid run (4 conditions × 5 temps in one pass)
+#   Run 0001  -- three-model C_t/E_t isolation (model forward pass, no sampling)
+#   Run 0002  -- internal temperature sweep (5 temps in one pass, ignores session temp)
+#   Run 0003  -- temperature grid run (4 conditions × 5 temps in one pass)
 #
-# Runs 0017/0018 were previously listed here but removed in v54.2.2 — they now
+# Runs 0017/0018 were previously listed here but removed in v54.2.2 -- they now
 # collect per-temperature data for H36/H37 (causal effect temperature invariance).
 #
 # When starting a new temperature round, auto-copy CSVs and hidden states
@@ -1009,7 +1125,7 @@ def _copy_temperature_independent_runs(session, paths):
     variant = session.get('model_variant', 'abliterated')
     current_cond = condition_name(session.get('temperature', 0.0))
 
-    # Nothing to do if we're in deterministic — that's the source
+    # Nothing to do if we're in deterministic -- that's the source
     if current_cond == 'deterministic':
         return
 
@@ -1019,7 +1135,7 @@ def _copy_temperature_independent_runs(session, paths):
         csv_fname = cfg['csv']
         dst_csv   = os.path.join(paths['csv'], csv_fname)
 
-        # Find source condition — even if CSV already present, hidden states may be missing
+        # Find source condition -- even if CSV already present, hidden states may be missing
         src_cond = None
         _temp_conds = _get_temp_conditions(family, size, variant)
         for cond in _temp_conds:
@@ -1058,7 +1174,7 @@ def _copy_temperature_independent_runs(session, paths):
 def _copy_run_hidden_states(family, size, variants, src_cond, dst_cond, glob_pattern):
     """Copy hidden state files matching glob_pattern across specified variants.
 
-    v0.58.0.0: generalized from _copy_run19_hidden_states. Handles any run
+    v0.58.0.0: generalized from _copy_run01_hidden_states. Handles any run
     and any set of variant directories (abliterated, base, instruct).
     """
     import shutil, glob
@@ -1087,7 +1203,7 @@ def _copy_run_hidden_states(family, size, variants, src_cond, dst_cond, glob_pat
 
 
 def _atomic_write_json(path, data):
-    """Write JSON atomically — write to temp file then rename.
+    """Write JSON atomically -- write to temp file then rename.
     Prevents corrupt session file if process dies mid-write."""
     import json as _j, tempfile as _tf, os as _os
     dir_ = _os.path.dirname(_os.path.abspath(path))
@@ -1116,7 +1232,7 @@ def _clean_stale_tmp():
 def _wait_for_vram(run_label, threshold_pct=0.75, timeout=120):
     """Wait until free VRAM exceeds threshold before spawning the next run.
 
-    Uses percentage of total VRAM instead of absolute GiB — works for any card
+    Uses percentage of total VRAM instead of absolute GiB -- works for any card
     size and any model size. 75% free means the model is genuinely released.
     Quick exit: if already above threshold on first check, returns immediately.
     """
@@ -1142,12 +1258,12 @@ def _wait_for_vram(run_label, threshold_pct=0.75, timeout=120):
             mem = pynvml.nvmlDeviceGetMemoryInfo(handle)
             free_gib = mem.free / 1024**3
             if free_gib >= threshold_gib:
-                print(f"  [vram] clear — {free_gib:.2f} GiB free.", flush=True)
-                _vram_log(f"  [vram] clear — {free_gib:.2f} GiB free.", kind="ok")
+                print(f"  [vram] clear -- {free_gib:.2f} GiB free.", flush=True)
+                _vram_log(f"  [vram] clear -- {free_gib:.2f} GiB free.", kind="ok")
                 pynvml.nvmlShutdown()
                 return
-        print(f"  [vram] timeout after {timeout}s — {free_gib:.2f}/{total_gib:.1f} GiB free.", flush=True)
-        _vram_log(f"  [vram] timeout — {free_gib:.2f} GiB free.", kind="warn")
+        print(f"  [vram] timeout after {timeout}s -- {free_gib:.2f}/{total_gib:.1f} GiB free.", flush=True)
+        _vram_log(f"  [vram] timeout -- {free_gib:.2f} GiB free.", kind="warn")
         pynvml.nvmlShutdown()
     except Exception as _e:
         print(f"  [vram] pynvml unavailable ({_e}), waiting 10s...", flush=True)
@@ -1159,7 +1275,7 @@ def _run_session_isolated(session):
     """
     Orchestrate a multi-run session by spawning a fresh subprocess for each run.
 
-    Each run gets its own Python process — completely clean VRAM, no fragmentation
+    Each run gets its own Python process -- completely clean VRAM, no fragmentation
     from prior runs. The orchestrator itself never loads a model.
 
     Flow:
@@ -1188,7 +1304,7 @@ def _run_session_isolated(session):
     if _cal_needed:
         ui.ok("Calibration complete. Continuing with isolated run mode...")
 
-    ui.section("Queued runs (isolated mode — fresh process per run):")
+    ui.section("Queued runs (isolated mode -- fresh process per run):")
     for r in runs:
         _, desc = RUN_MAP.get(r, ('?', '?'))
         ui.msg(f"    {r:02d}  {desc}")
@@ -1197,8 +1313,8 @@ def _run_session_isolated(session):
     completed = 0
     skipped   = 0
 
-    # v0.79.4.9: _et_direct_batch carve-out removed. E_t recovery is now
-    # a first-class run (Run 0016) in the queue — dispatched like any other
+    # v0.79.4.15: _et_direct_batch carve-out removed. E_t recovery is now
+    # a first-class run (Run 0016) in the queue -- dispatched like any other
     # subprocess. Previously ET-only runs (status='needs_et') were pulled
     # out of the subprocess loop and routed to an implicit batch; with
     # Run 0016 as a visible entry, the user sees exactly one ET subprocess
@@ -1208,7 +1324,7 @@ def _run_session_isolated(session):
     _real_runs = list(runs)
     _et_direct_batch = []  # retained as empty for compatibility with later references
 
-    # Squid — three hearts. Once per model family, on the console you're watching.
+    # Squid -- three hearts. Once per model family, on the console you're watching.
     _squid_family = session.get('model_family', 'unknown')
     _squid_sentinel = os.path.join(ROOT, f'.iota_squid3_{_squid_family}')
     if not os.path.exists(_squid_sentinel):
@@ -1224,13 +1340,13 @@ def _run_session_isolated(session):
     for run_num in _real_runs:
         # Check if already done before spawning a process.
         # v0.58.0.0: Run 0001 no longer exempted here. The exemption existed for
-        # _run_session (interactive) where Run 0001 falls through to _prompt_pass_cfg_r19.
-        # In isolated mode there is no interactive prompt — the subprocess would hit
+        # _run_session (interactive) where Run 0001 falls through to _prompt_pass_cfg_r01.
+        # In isolated mode there is no interactive prompt -- the subprocess would hit
         # RuntimeError (_run_null_trivariant lost in v54.0.0). Auto-copy from
         # _copy_temperature_independent_runs handles Run 0001 data correctly.
         _status = _scan_runs(paths, session.get('trials', 100))
         if _status.get(run_num) == 'done' and run_num not in _ANALYSIS_RUNS:
-            ui.ok(f"Run {run_num:04d} already complete — skipping.")
+            ui.ok(f"Run {run_num:04d} already complete -- skipping.")
             if run_num == 1:
                 try:
                     from runners_p1 import _print_nietzsche
@@ -1240,7 +1356,7 @@ def _run_session_isolated(session):
             skipped += 1
             continue
 
-        ui.section(f"Run {run_num:04d} — spawning isolated process")
+        ui.section(f"Run {run_num:04d} -- spawning isolated process")
 
         # ── Run 0020 special case: subprocess per instance ──────────────────
         # Run 0020 loads the model twice (instance A, B) in one process. On 10GB
@@ -1253,14 +1369,14 @@ def _run_session_isolated(session):
             _r30_ok = True
             for _r30_phase in ('A', 'B', 'coupling'):
                 _wsess_tmp = dict(session)
-                _wsess_tmp['runs'] = '30'
+                _wsess_tmp['runs'] = '20'  # v0.79.4.17: was '30' (old id) -- post-renumber two-instance is new 0020
                 try:
                     _atomic_write_json(_sess_file, _wsess_tmp)
                 except Exception as _e:
                     ui.warn(f"  Could not write session for Run 0020 {_r30_phase}: {_e}")
                     _r30_ok = False; break
                 _cmd = [sys.executable, os.path.join(ROOT, 'start_here.py'),
-                        '--single-run', '30', '--r30-instance', _r30_phase]
+                        '--single-run', '20', '--r30-instance', _r30_phase]  # v0.79.4.17: was '30' (old id)
                 ui.msg(f"  Run 0020 instance {_r30_phase}...")
                 try:
                     with open(log_path, 'a') as _lf:
@@ -1276,14 +1392,14 @@ def _run_session_isolated(session):
                 finally:
                     try: _atomic_write_json(_sess_file, session)
                     except Exception: pass
-                # VRAM wait between A and B — not needed after coupling (no GPU)
+                # VRAM wait between A and B -- not needed after coupling (no GPU)
                 if _r30_phase in ('A', 'B'):
                     _wait_for_vram(f"30-{_r30_phase}")
             if _r30_ok:
                 ui.ok("Run 0020 complete (all instances + coupling).")
                 completed += 1
             else:
-                ui.warn("Run 0020 incomplete — instance failed.")
+                ui.warn("Run 0020 incomplete -- instance failed.")
                 skipped += 1
             continue
         # ── End Run 0020 special case ───────────────────────────────────────
@@ -1295,7 +1411,7 @@ def _run_session_isolated(session):
         try:
             _atomic_write_json(_sess_file, _wsess_tmp)
         except Exception as _e:
-            ui.warn(f"  Could not write session for run {run_num}: {_e} — skipping")
+            ui.warn(f"  Could not write session for run {run_num}: {_e} -- skipping")
             skipped += 1
             continue
 
@@ -1319,7 +1435,7 @@ def _run_session_isolated(session):
                     except Exception:
                         pass
             else:
-                ui.warn(f"Run {run_num:04d} exited with code {ret} — may have OOM'd or failed.")
+                ui.warn(f"Run {run_num:04d} exited with code {ret} -- may have OOM'd or failed.")
                 skipped += 1
         except Exception as _e:
             ui.err(f"Run {run_num:04d} subprocess error: {_e}")
@@ -1341,7 +1457,7 @@ def _run_session_isolated(session):
         # causing N base model loads + N CUDA teardowns + N VRAM waits for what
         # should be one. Markers are collected and fired as a single batch below.
 
-    # ── Batched ET recovery — one subprocess for all accumulated runs ─────────
+    # ── Batched ET recovery -- one subprocess for all accumulated runs ─────────
     import json as _json
     _et_marker = os.path.join(ROOT, '.iota_et_pending.json')
     # Merge any marker-file runs with the pre-scanned ET-only batch
@@ -1358,7 +1474,7 @@ def _run_session_isolated(session):
     if _et_all:
         _et_runs = sorted(set(_et_all))
         log_path = os.path.join(ROOT, '.iota_flask.log')
-        ui.section(f"E_t Recovery — spawning isolated subprocess for runs {_et_runs}")
+        ui.section(f"E_t Recovery -- spawning isolated subprocess for runs {_et_runs}")
         ui.msg(f"  One base model load for all {len(_et_runs)} runs.")
         try:
             with open(log_path, 'a') as _lf:
@@ -1369,22 +1485,22 @@ def _run_session_isolated(session):
                 )
             et_ret = et_proc.wait()
             if et_ret == 0:
-                ui.ok(f"  E_t recovery complete — {len(_et_runs)} runs.")
+                ui.ok(f"  E_t recovery complete -- {len(_et_runs)} runs.")
             else:
-                ui.warn(f"  E_t recovery exited {et_ret} — may have failed.")
+                ui.warn(f"  E_t recovery exited {et_ret} -- may have failed.")
             _wait_for_vram('ET')
         except Exception as _e:
             ui.warn(f"  ET recovery subprocess failed: {_e}")
 
     ui.blank()
-    ui.ok(f"Session complete — {completed} runs done, {skipped} skipped/failed.")
+    ui.ok(f"Session complete -- {completed} runs done, {skipped} skipped/failed.")
     _clear_resume_state()
 
 
 # ── Temperature auto-advance ──────────────────────────────────────────────────
 
 _ALL_TEMPS = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
-# v0.79.4.9: post-renumber, data-collection runs are positions 1-40 (inc.
+# v0.79.4.15: post-renumber, data-collection runs are positions 1-40 (inc.
 # E_t meta-run at pos 16). Analysis/output is 41-56.
 _GEN_RUNS  = _DKRSet(set(range(1, 41)))
 
@@ -1415,7 +1531,7 @@ def _run_all_temperatures(session):
     """
     from cartography import condition_name
 
-    ui.section("Temperature auto-advance — scanning all rounds")
+    ui.section("Temperature auto-advance -- scanning all rounds")
     temp_status = _scan_temp_status(session)
     for temp, n_done, n_total, complete in temp_status:
         cond = condition_name(temp)
@@ -1428,12 +1544,12 @@ def _run_all_temperatures(session):
         if complete:
             continue
         cond = condition_name(temp)
-        ui.section(f"Starting T={temp:.1f}  ({cond})  —  {n_done}/{n_total} runs done")
+        ui.section(f"Starting T={temp:.1f}  ({cond})  --  {n_done}/{n_total} runs done")
 
         # Update session temperature and persist
         session['temperature'] = temp
         # v0.76.0.4: only dispatch GPU collection runs. Analysis runs (25, 27,
-        # 32, 33, 34, 45, 46, etc.) must not run mid-collection — they require
+        # 32, 33, 34, 45, 46, etc.) must not run mid-collection -- they require
         # completed data + Run 0041 calibration. Analysis happens after all temps.
         _gen_str = ','.join(str(r) for r in sorted(_GEN_RUNS))
         session['runs'] = _gen_str
@@ -1448,18 +1564,18 @@ def _run_all_temperatures(session):
         if post_temp[3]:
             ui.ok(f"T={temp:.1f} complete.")
         else:
-            ui.warn(f"T={temp:.1f} finished with {post_temp[1]}/{post_temp[2]} runs — "
+            ui.warn(f"T={temp:.1f} finished with {post_temp[1]}/{post_temp[2]} runs -- "
                     f"some may have failed. Continuing to next temperature.")
 
     ui.blank()
     if rounds_completed == 0:
         ui.ok("All temperature rounds already complete.")
     else:
-        ui.ok(f"Temperature auto-advance done — {rounds_completed} round(s) collected.")
+        ui.ok(f"Temperature auto-advance done -- {rounds_completed} round(s) collected.")
 
 
 def _run_all_models(session, runs_payload):
-    """v0.79.4.9 — fan out runs across every discovered model in DATA/.
+    """v0.79.4.15 -- fan out runs across every discovered model in DATA/.
 
     ARGUMENT
     ========
@@ -1474,18 +1590,18 @@ def _run_all_models(session, runs_payload):
     SEMANTICS
     =========
     Discovers every model that has data on disk (via the same walker the
-    dashboard /models_collected endpoint uses — export_stats._discover_model_data).
+    dashboard /models_collected endpoint uses -- export_stats._discover_model_data).
     For each model, writes the session file with that model's family/size/variant/
     quantization, then invokes the appropriate single-model dispatch path (the
     same path --auto-temp or --all-temps-runs or --auto-run would take from
-    a normal launch). No parallelization in this ship — strictly sequential,
+    a normal launch). No parallelization in this ship -- strictly sequential,
     model A fully complete before model B starts.
 
     SMART LOADER
     ============
     Each run within a model is already its own subprocess (0.58.0.0 isolation).
     "Grouping by model" is the natural consequence of iterating models at the
-    outer loop — all of Model A's runs fire in sequence before Model B starts,
+    outer loop -- all of Model A's runs fire in sequence before Model B starts,
     so the base-model cache and HF tokenizer downloads don't thrash between
     models. No explicit model-pinning needed; the outer iteration is the group.
 
@@ -1505,7 +1621,7 @@ def _run_all_models(session, runs_payload):
     import subprocess as _sp_am
     import export_stats as _es_am
 
-    ui.section(f"All-Models dispatch — runs: {runs_payload}")
+    ui.section(f"All-Models dispatch -- runs: {runs_payload}")
 
     try:
         models = _es_am._discover_model_data({})
@@ -1514,7 +1630,7 @@ def _run_all_models(session, runs_payload):
         return
 
     if not models:
-        ui.warn("No models have data on disk — nothing to dispatch.")
+        ui.warn("No models have data on disk -- nothing to dispatch.")
         return
 
     ui.msg(f"  Discovered {len(models)} model(s):")
@@ -1529,7 +1645,7 @@ def _run_all_models(session, runs_payload):
     failed = []
 
     for idx, m in enumerate(models, 1):
-        ui.section(f"Model {idx}/{len(models)}  —  {m['label']}")
+        ui.section(f"Model {idx}/{len(models)}  --  {m['label']}")
 
         # Derive quant from size_dir if present ('2b_8bit' → '8bit', else '4bit')
         from cartography import quant_from_dir as _qfd
@@ -1547,7 +1663,7 @@ def _run_all_models(session, runs_payload):
             'quantization':  _quant,
         })
         # model_name / model_path are derived from the (family, logical_size,
-        # variant, quant) tuple by vault lookup — refresh them so each model's
+        # variant, quant) tuple by vault lookup -- refresh them so each model's
         # subprocess uses the correct HF path and display label.
         try:
             from vault import resolve_variant_path as _rvp
@@ -1557,14 +1673,14 @@ def _run_all_models(session, runs_payload):
             if _name:
                 _model_session['model_name'] = _name
         except Exception:
-            # vault helper fallback — subprocess will use whatever's in the
+            # vault helper fallback -- subprocess will use whatever's in the
             # session file from the original launch. Not fatal.
             pass
 
         try:
             _atomic_write_json(_sess_file, _model_session)
         except Exception as e:
-            ui.warn(f"  Could not write session for {m['label']}: {e} — skipping")
+            ui.warn(f"  Could not write session for {m['label']}: {e} -- skipping")
             failed.append(m['label'])
             continue
 
@@ -1584,13 +1700,13 @@ def _run_all_models(session, runs_payload):
                 proc = _sp_am.Popen(cmd, stdout=_lf, stderr=_sp_am.STDOUT)
             ret = proc.wait()
             if ret == 0:
-                ui.ok(f"  {m['label']} — complete.")
+                ui.ok(f"  {m['label']} -- complete.")
                 completed.append(m['label'])
             else:
-                ui.warn(f"  {m['label']} — exited {ret}, continuing to next model.")
+                ui.warn(f"  {m['label']} -- exited {ret}, continuing to next model.")
                 failed.append(m['label'])
         except Exception as e:
-            ui.err(f"  {m['label']} — dispatch failed: {e}")
+            ui.err(f"  {m['label']} -- dispatch failed: {e}")
             failed.append(m['label'])
 
     # Restore original session so the user's "active" model isn't whatever
@@ -1613,14 +1729,14 @@ def _run_all_models(session, runs_payload):
 
 
 def _run_session(session):
-    """Primary dispatch — execute a user-selected run list end-to-end.
+    """Primary dispatch -- execute a user-selected run list end-to-end.
 
     Responsibilities:
       - Parse + order the run list per EXECUTION_ORDER (analysis runs
         follow their collection prereqs).
       - Resolve paths for the current temperature cell.
       - Auto-copy temperature-independent runs (19, 20, 26) from any
-        sibling temp dir that already has them — avoids re-collecting
+        sibling temp dir that already has them -- avoids re-collecting
         identical data across 6 temperature rounds.
       - Single-run mode (IOTA_SINGLE_RUN=1): dedup this run's CSV
         before _get_trials_for_condition reads it so resume logic
@@ -1629,7 +1745,7 @@ def _run_session(session):
         SOURCE_RUNS_3WAY member lacking E_base files.
       - Dispatch each run via its RUN_MAP entry, unloading the model
         between runs when session['unload_between_runs'] is set.
-      - Check prereqs (_PREREQS) before each run — hard warning block
+      - Check prereqs (_PREREQS) before each run -- hard warning block
         if upstream data is missing.
 
     Called directly by console mode and by --auto-run / --auto-temp /
@@ -1640,7 +1756,7 @@ def _run_session(session):
 
     # paths must be defined before _scan_runs is called anywhere in this function.
     # BUG-42C fix: previously defined after the auto-prepend ET check, causing
-    # UnboundLocalError when any ET_RECOVERY_RUNS were in the queue — subprocess
+    # UnboundLocalError when any ET_RECOVERY_RUNS were in the queue -- subprocess
     # crashed immediately, timer ran client-side, nothing happened.
     paths = get_paths(session.get('model_family','llama'), session.get('model_size','8b'),
                       session.get('model_variant','abliterated'), session.get('temperature',0.0))
@@ -1677,13 +1793,13 @@ def _run_session(session):
     # v0.66.3.0: skip in single-run isolated mode. The orchestrator
     # (_run_session_isolated) handles Run 0001 ordering and ET batching at
     # the session level. Auto-prepending inside a --single-run subprocess
-    # forces a three-model download+load that may not be wanted yet — the
+    # forces a three-model download+load that may not be wanted yet -- the
     # user may want to collect abliterated data first and do Run 0001 later.
     if (any(r in _ET_RECOVERY_RUNS for r in runs)
             and os.environ.get('IOTA_SINGLE_RUN') != '1'):
         _early_status = _scan_runs(paths, session.get('trials', 100))
         if _early_status.get("0001", 'missing') != 'done' and 1 not in runs:
-            ui.msg("  Auto-prepending Run 0001 — required before E_t recovery (global C_t backfill).")
+            ui.msg("  Auto-prepending Run 0001 -- required before E_t recovery (global C_t backfill).")
             runs = [1] + runs  # v0.79.4.0: was R19 null+hidden
 
     ui.section("Queued runs:")
@@ -1695,7 +1811,7 @@ def _run_session(session):
     # ── Pre-flight prerequisite check (v30.4) ─────────────────────────────────
     # Scan filesystem once before any GPU/model work.  Only warn about runs whose
     # prerequisites are BOTH (a) not yet done, AND (b) not also being collected in
-    # this very session — if Run 0006 and Run 0017 are both queued in execution order,
+    # this very session -- if Run 0006 and Run 0017 are both queued in execution order,
     # the prereq will be satisfied before Run 0017 is reached; no warning needed.
     # The per-run gate (below) is the authoritative real-time check; this pre-flight
     # is an early warning that fires before model load so the user can abort cheaply.
@@ -1707,9 +1823,13 @@ def _run_session(session):
         raw_problems = _check_prereqs(r, _pf_status)
         # Drop problems whose prereq run is also in this session's queue
         # (it will complete first due to EXECUTION_ORDER).
+        # v0.80.0.44: _PREREQS keys are 4-digit strings ("0001"); _runs_set
+        # holds ints. Coerce pnum to int for the membership compare,
+        # otherwise every prereq is treated as external and the warning
+        # block fires for in-batch dependencies that will satisfy themselves.
         external_problems = [
             (pnum, pstat, desc) for pnum, pstat, desc in raw_problems
-            if pnum not in _runs_set
+            if int(pnum) not in _runs_set
         ]
         if external_problems:
             _pf_problems[r] = external_problems
@@ -1725,7 +1845,7 @@ def _run_session(session):
         for r, problems in sorted(_pf_problems.items()):
             _, rdesc = RUN_MAP.get(r, ('', f'Run {r}'))
             ui.blank()
-            ui.warn(f"  Run {r:02d} — {rdesc}")
+            ui.warn(f"  Run {r:02d} -- {rdesc}")
             for prereq_num, prereq_stat, desc in problems:
                 label = "MISSING    " if prereq_stat == 'missing' else "INCOMPLETE "
                 ui.warn(f"    [{label}]  {desc}")
@@ -1736,7 +1856,7 @@ def _run_session(session):
         if os.environ.get('IOTA_HEADLESS') == '1':
             # In headless mode: log and continue.  The per-run gate will skip
             # individual runs whose prereqs are still unmet at dispatch time.
-            ui.warn("[headless] Proceeding — per-run gate will skip runs with unmet prereqs.")
+            ui.warn("[headless] Proceeding -- per-run gate will skip runs with unmet prereqs.")
         else:
             ui.warn("Results from runs attempted without prerequisites may be invalid.")
             ui.blank()
@@ -1775,12 +1895,12 @@ def _run_session(session):
     # current status, and present the unified _prompt_et_batch_cfg screen.
     #
     # _prompt_et_batch_cfg returns (abl_set, et_set_all):
-    #   abl_set     — runs needing abliterated generation (mode a or b)
-    #   et_set_all  — runs needing base-model E_t pass (mode e or b)
+    #   abl_set     -- runs needing abliterated generation (mode a or b)
+    #   et_set_all  -- runs needing base-model E_t pass (mode e or b)
     #
     # We split et_set_all into:
-    #   _et_batch       — mode-'e' runs (E_t only) — skip abl loop, go straight to E_t pass
-    #   _et_runs_both   — mode-'b' runs (both) — dispatch abl first, then add to E_t batch
+    #   _et_batch       -- mode-'e' runs (E_t only) -- skip abl loop, go straight to E_t pass
+    #   _et_runs_both   -- mode-'b' runs (both) -- dispatch abl first, then add to E_t batch
     _et_runs_in_queue = [r for r in runs if r in _ET_RECOVERY_RUNS]
     _abl_set      = set()
     _et_batch     = set()
@@ -1790,7 +1910,7 @@ def _run_session(session):
         _et_status = _scan_runs(paths, session.get('trials', 100))
         _overrides = session.get('et_mode_overrides') if os.environ.get('IOTA_HEADLESS') == '1' else None
         if _overrides:
-            # Dashboard specified modes per-run — build sets directly, skip prompt.
+            # Dashboard specified modes per-run -- build sets directly, skip prompt.
             _q_set = set(_et_runs_in_queue)
             _abl_set    = {int(rn) for rn, m in _overrides.items()
                            if m in ('a', 'b') and int(rn) in _q_set}
@@ -1806,7 +1926,7 @@ def _run_session(session):
     # ── End upfront ET config ──────────────────────────────────────────────────
 
     for run_index, run_num in enumerate(runs):
-        # Save resume state — remaining runs from this point forward.
+        # Save resume state -- remaining runs from this point forward.
         # Dashboard Resume button reads this to re-launch from here on abort.
         _save_resume_state(runs[run_index:])
 
@@ -1818,9 +1938,9 @@ def _run_session(session):
         except Exception:
             pass
 
-        # Flush VRAM between runs — catches any residual state from prior run
+        # Flush VRAM between runs -- catches any residual state from prior run
         # BUG-43B fix (v43.0.9): synchronize() guarded by 15s timeout thread
-        # — same fix as unload_model. Without the guard this flush hangs the
+        # -- same fix as unload_model. Without the guard this flush hangs the
         # entire queue between runs on Windows CUDA sync stalls.
         try:
             import torch, gc, threading as _th
@@ -1835,12 +1955,12 @@ def _run_session(session):
                 _ft = _th.Thread(target=_fsync, daemon=True)
                 _ft.start()
                 if not _fs_done.wait(timeout=15):
-                    print("  [inter-run flush] cuda.synchronize() timed out — skipping", flush=True)
+                    print("  [inter-run flush] cuda.synchronize() timed out -- skipping", flush=True)
         except Exception:
             pass
 
         # ── Per-run prerequisite gate (v30.4) ─────────────────────────────────
-        # Fresh scan immediately before each run — a prior run in this session
+        # Fresh scan immediately before each run -- a prior run in this session
         # may just have satisfied a prerequisite.  If prereqs are still unmet,
         # warn hard and prompt.  This is the authoritative check; the pre-flight
         # above is just an early warning before model load.
@@ -1849,12 +1969,12 @@ def _run_session(session):
         if _run_problems:
             _prereq_warning_block(run_num, _run_problems)
             if os.environ.get('IOTA_HEADLESS') == '1':
-                ui.warn(f"[headless] Skipping Run {run_num:04d} — prerequisites not met.")
+                ui.warn(f"[headless] Skipping Run {run_num:04d} -- prerequisites not met.")
                 continue
             ui.blank()
-            ui.opt("c", f"Continue — run {run_num:04d} anyway  (results may be invalid)")
-            ui.opt("s", f"Skip     — skip Run {run_num:04d} and continue to next run")
-            ui.opt("a", "Abort    — stop the entire session")
+            ui.opt("c", f"Continue -- run {run_num:04d} anyway  (results may be invalid)")
+            ui.opt("s", f"Skip     -- skip Run {run_num:04d} and continue to next run")
+            ui.opt("a", "Abort    -- stop the entire session")
             ui.blank()
             _gate = input("  > ").strip().lower()
             if _gate == 'a':
@@ -1867,17 +1987,17 @@ def _run_session(session):
         # ── End per-run gate ───────────────────────────────────────────────────
 
         module_name, desc = RUN_MAP[run_num]
-        # Log skip explicitly when a run is already complete — no silent no-ops.
-        # Exception: Run 0001 always falls through to _prompt_pass_cfg_r19 even when
+        # Log skip explicitly when a run is already complete -- no silent no-ops.
+        # Exception: Run 0001 always falls through to _prompt_pass_cfg_r01 even when
         # done, so the user can re-trigger individual passes (e.g. vectors after
         # BUG-42B fix) without having to clear files manually.
         _run_status2 = _scan_runs(paths, session.get('trials', 100))
         _this_status = _run_status2.get(run_num)
         if _this_status == 'done' and run_num != 1 and run_num not in _ANALYSIS_RUNS:
-            ui.ok(f"Run {run_num:04d} already complete — skipping.")
+            ui.ok(f"Run {run_num:04d} already complete -- skipping.")
             continue
 
-        # v0.79.4.9: Legacy interactive-mode ET dispatch block.
+        # v0.79.4.15: Legacy interactive-mode ET dispatch block.
         # Scanner no longer emits 'needs_et' (Run 0016 owns ET state now),
         # so the needs_et branches below are effectively dead. The block
         # is preserved for the interactive _run_session path where the
@@ -1893,37 +2013,40 @@ def _run_session(session):
         #   skip      (not in either)                  → skip entirely
         if run_num in _ET_RECOVERY_RUNS and _this_status in ('needs_et', 'missing'):
             if run_num not in _abl_set:
-                # E_t-only or skip — no abliterated dispatch needed
+                # E_t-only or skip -- no abliterated dispatch needed
                 if run_num in _et_batch:
-                    ui.msg(f"  Run {run_num:04d} — queued for E_t base pass only.")
+                    ui.msg(f"  Run {run_num:04d} -- queued for E_t base pass only.")
                 else:
-                    ui.msg(f"  Run {run_num:04d} — skipped (mode: skip).")
+                    ui.msg(f"  Run {run_num:04d} -- skipped (mode: skip).")
                 continue
-            # BUG-43C: needs_et means CSV is complete — abliterated dispatch
+            # BUG-43C: needs_et means CSV is complete -- abliterated dispatch
             # would load the model, find get_trials_to_run()=[], do nothing, then
             # hang on unload. Redirect to E_t batch and skip the abl loop.
-            # v0.79.4.9: dead branch (scanner no longer emits needs_et) but
+            # v0.79.4.15: dead branch (scanner no longer emits needs_et) but
             # retained defensively in case of disk state from pre-0.79.2 tools.
             if _this_status == 'needs_et':
                 _et_batch.add(run_num)
-                ui.msg(f"  Run {run_num:04d} — CSV complete (needs_et), "
+                ui.msg(f"  Run {run_num:04d} -- CSV complete (needs_et), "
                        f"redirected to E_t base pass only.")
                 continue
-            # else: mode is 'a' or 'b', status is 'missing' — fall through to abliterated dispatch
+            # else: mode is 'a' or 'b', status is 'missing' -- fall through to abliterated dispatch
 
         # Run 0001: prompt for per-pass configuration before model load.
-        # When 'done', all passes default to False — user must explicitly enable.
-        # In headless mode, use r19_passes from session if set by the dashboard
+        # When 'done', all passes default to False -- user must explicitly enable.
+        # In headless mode, use r01_passes from session if set by the dashboard
         # launch buttons; otherwise default to all-True (full run).
+        # v0.80.0.44: key renamed r19_passes → r01_passes. Old sessions
+        # may still have r19_passes; accept both during migration window.
         if run_num == 1:
-            if os.environ.get('IOTA_HEADLESS') == '1' and session.get('r19_passes'):
-                _pass_cfg = session['r19_passes']
-                ui.msg(f"  Run 0001 — using dashboard pass selection: "
+            _r01p = session.get('r01_passes') or session.get('r19_passes')
+            if os.environ.get('IOTA_HEADLESS') == '1' and _r01p:
+                _pass_cfg = _r01p
+                ui.msg(f"  Run 0001 -- using dashboard pass selection: "
                        f"{[k for k,v in _pass_cfg.items() if v]}")
             else:
-                _pass_cfg = _prompt_pass_cfg_r19(paths, session.get('trials', 100))
+                _pass_cfg = _prompt_pass_cfg_r01(paths, session.get('trials', 100))
             if _pass_cfg is None or not any(_pass_cfg.values()):
-                ui.warn(f"Run 0001 — all passes skipped.")
+                ui.warn(f"Run 0001 -- all passes skipped.")
                 try:
                     from runners_p1 import _print_nietzsche
                     _print_nietzsche(session.get('model_family', 'unknown'))
@@ -1942,35 +2065,35 @@ def _run_session(session):
             _r26c = session.get('r26_cells')
             if _r26c:
                 session['_r26_cells'] = _r26c
-                ui.msg(f"  Run 0003 — cell filter from dashboard: {len(_r26c)} cell(s)")
+                ui.msg(f"  Run 0003 -- cell filter from dashboard: {len(_r26c)} cell(s)")
             else:
                 session.pop('_r26_cells', None)
         if run_num in _MC_RUNS and run_num not in (3, ):
             _mcc = session.get('mc_conds')
             if _mcc:
                 session['_mc_conds'] = _mcc
-                ui.msg(f"  Run {run_num:04d} — condition filter from dashboard: {_mcc}")
+                ui.msg(f"  Run {run_num:04d} -- condition filter from dashboard: {_mcc}")
             else:
                 session.pop('_mc_conds', None)
         if run_num == 17:
             _pm21 = session.get('patch_modes_21')
             if _pm21:
                 session['_patch_modes'] = _pm21
-                ui.msg(f"  Run 0017 — mode filter from dashboard: {_pm21}")
+                ui.msg(f"  Run 0017 -- mode filter from dashboard: {_pm21}")
             else:
                 session.pop('_patch_modes', None)
         elif run_num == 18:
             _pm42 = session.get('patch_modes_42')
             if _pm42:
                 session['_patch_modes'] = _pm42
-                ui.msg(f"  Run 0018 — mode filter from dashboard: {_pm42}")
+                ui.msg(f"  Run 0018 -- mode filter from dashboard: {_pm42}")
             else:
                 session.pop('_patch_modes', None)
         elif run_num == 19:
             _pm53 = session.get('patch_modes_53')
             if _pm53:
                 session['_patch_modes'] = _pm53
-                ui.msg(f"  Run 0019 — mode filter from dashboard: {_pm53}")
+                ui.msg(f"  Run 0019 -- mode filter from dashboard: {_pm53}")
             else:
                 session.pop('_patch_modes', None)
 
@@ -1980,11 +2103,20 @@ def _run_session(session):
             _dedup_all_csvs(paths, session)
         try:
             # Run 0055: stats export at all temps + report generation
-            # Run 0056: cross-model paper assembly
+            # Run 0056: methodology calibration (foundations)
+            # Run 0057: function-class sensitivity
+            # Run 0058: lagrangian apparatus (v0.80.0.51 -- was paper assembly)
+            # Run 0059: paper assembly (v0.80.0.51 -- was Run 0058)
             if run_num == 55:
                 _run_54_stats_report(session)
             elif run_num == 56:
-                _run_55_paper_assembly(session)
+                _run_56_calibration(session)
+            elif run_num == 57:
+                _run_57_function_class_sensitivity(session)
+            elif run_num == 58:
+                _run_58_apparatus(session)
+            elif run_num == 59:
+                _run_59_paper_assembly(session)
             else:
                 mod = _load_module(module_name)
                 mod.run(run_num, session, paths)
@@ -2009,15 +2141,15 @@ def _run_session(session):
             _et_batch.add(run_num)
             ui.msg(f"  Run {run_num:04d} queued for E_t base pass.")
 
-    # E_t recovery pass — runs batched through base model in a single load.
+    # E_t recovery pass -- runs batched through base model in a single load.
     # Fires AFTER all generation runs so Run 0001 (which provides the global C_t
     # constant) has always completed first if it was in the same session.
     if _et_batch:
         ui.blank()
-        ui.section(f"E_t Recovery Pass — {len(_et_batch)} run(s)")
+        ui.section(f"E_t Recovery Pass -- {len(_et_batch)} run(s)")
         ui.msg(f"  Processing {sorted(_et_batch)} ...")
         if os.environ.get('IOTA_SINGLE_RUN') == '1':
-            # Running in isolated subprocess — write marker for orchestrator to
+            # Running in isolated subprocess -- write marker for orchestrator to
             # fire ET recovery as its own subprocess after VRAM clears.
             import json as _json
             _et_marker = os.path.join(ROOT, '.iota_et_pending.json')
@@ -2030,9 +2162,9 @@ def _run_session(session):
                 _merged = sorted(set(_existing) | _et_batch)
                 with open(_et_marker, 'w') as _f:
                     _json.dump({'runs': _merged}, _f)
-                ui.ok(f"  ET batch written to marker — orchestrator will fire isolated pass: {_merged}")
+                ui.ok(f"  ET batch written to marker -- orchestrator will fire isolated pass: {_merged}")
             except Exception as _e:
-                ui.warn(f"  Could not write ET marker ({_e}) — running inline (may OOM)")
+                ui.warn(f"  Could not write ET marker ({_e}) -- running inline (may OOM)")
                 try:
                     import runners as _runners_mod
                     _runners_mod._run_et_recovery(session, paths, sorted(_et_batch))
@@ -2049,7 +2181,7 @@ def _run_session(session):
                 ui.err(f"E_t recovery failed: {e}")
                 traceback.print_exc()
 
-    # Session complete — clear the resume marker so dashboard doesn't offer stale resume.
+    # Session complete -- clear the resume marker so dashboard doesn't offer stale resume.
     _clear_resume_state()
 
 
@@ -2064,28 +2196,6 @@ from scanner import _MC_RUNS, _MC_TURNS, scan_runs as _scan_runs
 
 
 
-def _status_header(paths, n_trials=100):
-    """One-line summary for the main menu header."""
-    status = _scan_runs(paths, n_trials)
-    if not status:
-        return "  Status  : (unable to read data directory)"
-
-    total    = len(status)
-    done     = sum(1 for s in status.values() if s == 'done')
-    partial  = sum(1 for s in status.values() if s == 'partial')
-    # v0.79.4.9: needs_et / et_partial no longer emitted by scanner.
-    # Run 0016 (E_t recovery meta-run) reports its own done/partial/missing
-    # status as a single queue entry. Surface it separately in the header.
-    r48 = status.get("0016", 'missing')
-    parts = [f"{done}/{total} runs complete"]
-    if r48 == 'partial':
-        parts.append("E_t recovery partial")
-    elif r48 == 'missing':
-        parts.append("E_t recovery pending")
-    if partial:
-        parts.append(f"{partial} partial")
-    return "  Status  : " + "  ·  ".join(parts)
-
 
 def _what_next(paths, n_trials=100):
     """
@@ -2094,7 +2204,7 @@ def _what_next(paths, n_trials=100):
     """
     status = _scan_runs(paths, n_trials)
     if not status:
-        ui.warn("Could not read data directory — set model and run first.")
+        ui.warn("Could not read data directory -- set model and run first.")
         return
 
     try:
@@ -2110,10 +2220,10 @@ def _what_next(paths, n_trials=100):
     run_desc = {r: desc for r, (_, desc) in RUN_MAP.items()}
 
     phase_labels = {
-        1: "PHASE 1 — PROOF  (establish the phenomenon)",
-        2: "PHASE 2 — QUANTIFY  (measure and decompose R)",
-        3: "PHASE 3 — EXTEND  (new hypotheses)",
-        4: "PHASE 4 — PROVE  (coherence transfer + contradiction recovery)",
+        1: "PHASE 1 -- PROOF  (establish the phenomenon)",
+        2: "PHASE 2 -- QUANTIFY  (measure and decompose R)",
+        3: "PHASE 3 -- EXTEND  (new hypotheses)",
+        4: "PHASE 4 -- PROVE  (coherence transfer + contradiction recovery)",
         99: "VALIDATION / ANALYSIS",
     }
 
@@ -2167,14 +2277,14 @@ def _what_next(paths, n_trials=100):
         rest_missing = [r for r in missing if _display_phase(r) == 99]
 
         if p1_missing:
-            print(f"  Phase 1 incomplete — missing runs: {p1_missing}")
-            print(f"  Suggested: select runs → [1] Phase 1 — Proof")
+            print(f"  Phase 1 incomplete -- missing runs: {p1_missing}")
+            print(f"  Suggested: select runs → [1] Phase 1 -- Proof")
         if p2_missing:
-            print(f"  Phase 2 incomplete — missing runs: {p2_missing}")
+            print(f"  Phase 2 incomplete -- missing runs: {p2_missing}")
         if p3_missing:
-            print(f"  Phase 3 incomplete — missing runs: {p3_missing}")
+            print(f"  Phase 3 incomplete -- missing runs: {p3_missing}")
         if rest_missing:
-            print(f"  Validation/analysis incomplete — missing runs: {rest_missing}")
+            print(f"  Validation/analysis incomplete -- missing runs: {rest_missing}")
         if not p1_missing and not p2_missing and not p3_missing:
             print(f"  Only analysis/validation runs remain: {rest_missing}")
             print("  Suggested: select runs → [a] Analysis only")
@@ -2197,32 +2307,32 @@ def _clear_stale_status():
     now reads filesystem directly on every request; there is nothing
     to clear. This function is kept as a no-op call site in case a
     future cache re-emerges and needs hooking."""
-    # Force fresh scanner read — no cache to clear, scanner reads filesystem directly.
+    # Force fresh scanner read -- no cache to clear, scanner reads filesystem directly.
     pass
 
 
 # ── Run presets ───────────────────────────────────────────────────────────────
 
 PRESETS = {
-    'f':  ("Full",              "1-55",
+    'f':  ("Full",              "1-56",
            "All runs in execution order (Phase A → B → D → EFC → Per-Temp → Pooled → Cross-Model → Output)"),
-    'c':  ("Collection",        "1-24,26,28-31,35-39,41-44,53",
-           "All GPU generation runs — temp-indep foundation + Phase B + patching cluster + multi-cond block. Skips no-GPU analysis"),
-    'a':  ("Analysis (per-temp)", "25,27,32,33,34,45,46,49,56",
-           "Per-temperature analysis: POOL_DIM calibration (45), E+C+R decomposition (33), permutation (34), per-condition R (46, 49), MLP validation (56), Granger A/B (25, 27), baseline swap (32)"),
-    'p':  ("Pooled",            "40,47",
-           "Pooled analysis within one model across temperatures: cross-temp synthesis (47), pooled decomposition (40)"),
-    'x':  ("Cross-Model",       "50,51,52",
-           "Cross-architecture comparison: pairwise R (50), condition concordance (51), cross-model summary (52)"),
-    'o':  ("Paper Output",      "54,55",
-           "Stats report + paper assembly: R54 stats + master_results.json, R55 paper JSON copy + all_models_master.json"),
-    '1':  ("Phase 1 — Proof",   "1-21,42",
-           "Historical: null baselines, introspection, arithmetic, jolt, impossibility, priming, patching"),
-    '2':  ("Phase 2 — Quantify", "22-34,40,41",
-           "Historical: temperature grid, confound isolation, E+C+R decomposition, pooled sensitivity, held-out validation"),
-    '3':  ("Phase 3 — Extend",  "35-39",
-           "Historical: hesitation, layer depth, entropy shape, condition transfer, output similarity"),
-    '4':  ("Phase 4 — Prove",   "43,44",
+    'c':  ("Collection",        "1-40",
+           "All GPU generation runs -- null baselines, introspection, arithmetic, priming, patching, multi-cond, perturbation, impossibility. Skips no-GPU analysis."),
+    'a':  ("Analysis (per-temp)", "41-49",
+           "Per-temperature analysis: POOL_DIM calibration (41), decomposition (42), permutation (43), per-condition R (44, 45), MLP validation (46), Granger A/B (47, 48), baseline swap (49)"),
+    'p':  ("Pooled",            "50,51",
+           "Pooled analysis within one model across temperatures: cross-temp synthesis (50), pooled decomposition + sobol (51)"),
+    'x':  ("Cross-Model",       "52,53,54",
+           "Cross-architecture comparison: pairwise R (52), condition concordance Kendall W (53), cross-model summary table (54)"),
+    'o':  ("Paper Output",      "55,56",
+           "Stats report + paper assembly: R55 stats + master_results.json, R56 paper JSON copy + all_models_master.json"),
+    '1':  ("Phase 1 -- Proof",   "1-2,4-15,17-18,29-32,39-40",
+           "Historical: null baselines, introspection, arithmetic, perturbation, impossibility, priming, tokenization, patching"),
+    '2':  ("Phase 2 -- Quantify", "3,22-28,33,41-43,51",
+           "Historical: temperature grid, saturation, layer locality, self-reference, confound, persistence, cross-instance, coherence levels, validation, POOL_DIM calibration, E+C+R decomposition, permutation sensitivity, pooled"),
+    '3':  ("Phase 3 -- Extend",  "34-38",
+           "Historical: layer depth, output similarity, condition transfer, entropy shape, hesitation"),
+    '4':  ("Phase 4 -- Prove",   "25-26",
            "Historical: coherence transfer (H33) and contradiction recovery (H35a/H35b)"),
     'm':  ("Custom",            None,
            "Enter run numbers manually"),
@@ -2345,7 +2455,7 @@ def _run_54_stats_report(session):
             ui.warn(f"    {cond} failed: {_e}")
 
     # Step 2: Report generation removed (v0.74.0.0)
-    # report.py figures are legacy — superseded by generate_paper_figures().
+    # report.py figures are legacy -- superseded by generate_paper_figures().
     # report.py retained in codebase for REPORT.md generation if needed manually.
 
     # Step 3: Cross-temperature hypothesis status change table (v0.71.0.11)
@@ -2393,12 +2503,12 @@ def _run_54_stats_report(session):
     try:
         import csv as _csv19
         from cartography import RUN_CSV as _RC19
-        _r19_csv = _RC19.get("0001", 'R0001_null.csv')  # v0.79.4.0: old R19 → new 0001
+        _r01_csv = _RC19.get("0001", 'R0001_null.csv')  # v0.79.4.0: old R19 → new 0001
         _variant_data = {}  # {temp: {model: {similarity: [], sim: [], ent: []}}}
         for cond in conditions:
             temp = _COND_TEMPS[cond]
-            _p19 = _gp(family, size, variant, temp, create_dirs=False)
-            _csv_path = os.path.join(_p19.get('csv', ''), _r19_csv)
+            _p01 = _gp(family, size, variant, temp, create_dirs=False)
+            _csv_path = os.path.join(_p01.get('csv', ''), _r01_csv)
             if not os.path.exists(_csv_path):
                 continue
             with open(_csv_path, 'r', encoding='utf-8', errors='replace') as _f19:
@@ -2439,7 +2549,7 @@ def _run_54_stats_report(session):
         ui.warn(f"  Three-variant table failed: {_e}")
 
     # Generate per-model pooled diagnostic figures (v0.75.0.6)
-    # Writes to {model}/pooled/visuals/ — FIG07, FIG11, FIG12 + others.
+    # Writes to {model}/pooled/visuals/ -- FIG07, FIG11, FIG12 + others.
     ui.msg("  Generating per-model pooled diagnostics...")
     try:
         import export_stats as _es_pooled
@@ -2469,43 +2579,29 @@ def _run_54_stats_report(session):
     ui.ok(f"  Run 0055 complete. Stamp: {stamp_path}")
 
 
-def _run_55_paper_assembly(session):
-    """Run 0056: Cross-model paper assembly — figures + JSONs.
+def _discover_ready_models(session, ui_log=None):
+    """Shared helper for Runs 0056 / 0057 / 0058 -- discover models that
+    have at least one completed temperature's analysis (Q0043). Filters
+    by session.cross_model_include if present (dashboard checkbox UI).
 
-    Session-independent. Discovers all models with completed analysis,
-    generates combined paper figures (FIG01–FIG13) into base/paper/visuals/,
-    and copies all models' JSONs into base/paper/json/ with model prefixes.
-
-    v0.75.2.2: split from Run 0055. No session model dependency.
+    v0.80.0.44: extracted from the old _run_55_paper_assembly so all three
+    refactored runs share one model-discovery pass.
     """
-    from cartography import DATA, get_paper_paths as _get_pp, get_pooled_paths as _gpp
-    from cartography import get_paths as _gp
-    import json, datetime, shutil
-
-    ui.section("Run 0056 — Cross-Model Paper Assembly")
-
-    # ── Discover all models with analysis data ────────────────────────
     import export_stats as _es55
     models = _es55._discover_model_data({})
     if not models:
-        ui.err("No models with analysis data found in base/")
-        return
+        if ui_log: ui_log("No models with analysis data found in base/")
+        return []
 
-    ui.msg(f"  Discovered {len(models)} model(s):")
-    for m in models:
-        ui.msg(f"    {m['label']}")
+    if ui_log:
+        ui_log(f"  Discovered {len(models)} model(s):")
+        for m in models:
+            ui_log(f"    {m['label']}")
 
-    # ── Check which models have completed analysis ────────────────────
-    _COND_TEMPS = {
-        'deterministic': 0.0, 'temp_0.2': 0.2, 'temp_0.4': 0.4,
-        'temp_0.6': 0.6, 'temp_0.8': 0.8, 'temp_1.0': 1.0,
-    }
     ready_models = []
     for m in models:
-        # Check for R54 stamp or at least some analysis JSONs
         pooled_dir = os.path.join(m['data_dir'], 'pooled', 'analysis')
         has_stamp = os.path.exists(os.path.join(pooled_dir, 'Q0055_stats_report.json'))
-        # Count temps with analysis
         n_temps_with_analysis = 0
         for cond_name in ('deterministic', 'temp_0.2', 'temp_0.4', 'temp_0.6', 'temp_0.8', 'temp_1.0'):
             ana_dir = os.path.join(m['data_dir'], cond_name, 'analysis')
@@ -2517,124 +2613,321 @@ def _run_55_paper_assembly(session):
         m['has_stamp'] = has_stamp
         if n_temps_with_analysis >= 1:
             ready_models.append(m)
-            ui.ok(f"    {m['label']}: {n_temps_with_analysis}/6 temps analyzed" +
-                  (" + R54 stamp" if has_stamp else ""))
+            if ui_log:
+                ui_log(f"    {m['label']}: {n_temps_with_analysis}/6 temps analyzed" +
+                       (" + R54 stamp" if has_stamp else ""))
         else:
-            ui.warn(f"    {m['label']}: no analysis — excluded")
+            if ui_log:
+                ui_log(f"    {m['label']}: no analysis -- excluded")
 
-    # Apply session model filter if provided (from dashboard checkbox UI)
     _include = session.get('cross_model_include')
     if _include:
         ready_models = [m for m in ready_models if m['label'] in _include]
-        ui.msg(f"  Filtered to {len(ready_models)} model(s) by session selection")
+        if ui_log:
+            ui_log(f"  Filtered to {len(ready_models)} model(s) by session selection")
 
+    return ready_models
+
+
+def _run_56_calibration(session):
+    """Run 0056: Methodology calibration only.
+
+    v0.80.0.44: split from old monolithic Run 0056 (paper assembly).
+    Now Run 0056 does ONE job: produce fresh calibration artifacts
+    (V5b synthetic, channel_marginal_nonlinearity, methodology
+    calibration block). Run 0058 (paper assembly) hard-depends on
+    this run's output being fresh.
+
+    Why split: the old Run 0056 conflated three concerns (calibration
+    integrity, function-class robustness, paper-write). Each had
+    different failure modes and different recovery patterns. Splitting
+    into 0056 / 0057 / 0058 means each run has one job, and Run 0058
+    can refuse to fire if EITHER calibration or function-class
+    sensitivity is incomplete -- preventing a paper from shipping
+    without its load-bearing checks.
+
+    Returns True if calibration is complete and fresh, False otherwise.
+    """
+    ui.section("Run 0056 -- Methodology Calibration")
+
+    ready_models = _discover_ready_models(session, ui_log=ui.msg)
+    if not ready_models:
+        ui.err("No models ready for calibration.")
+        return False
+
+    cal_ok = False
+    try:
+        sys.path.insert(0, ROOT)
+        import export_stats as _es_cal
+        _es_cal._run_paper_calibration_phase(ui_log=ui.msg)
+        cal_status = _es_cal.methodology_calibration_status()
+        if cal_status.get('_any_missing') or cal_status.get('_any_stale'):
+            failed = [k for k, v in cal_status.items()
+                      if not k.startswith('_') and v in ('missing', 'stale')]
+            ui.err(f"  Calibration incomplete: {', '.join(failed)}")
+            ui.err(f"  Run 0058 (paper assembly) will refuse to fire.")
+            return False
+        cal_ok = True
+        ui.ok(f"  Run 0056 complete -- calibration fresh, ready for downstream.")
+    except Exception as _cal_e:
+        ui.err(f"  calibration phase failed: {_cal_e}")
+        return False
+
+    # Write calibration manifest stamp so Run 0058's prereq check finds it
+    try:
+        from cartography import DATA as _DATA
+        import json as _json, datetime as _dt
+        _manifest_dir = os.path.join(_DATA, 'paper', 'calibration')
+        os.makedirs(_manifest_dir, exist_ok=True)
+        _manifest_path = os.path.join(_manifest_dir, 'Q0056_calibration_manifest.json')
+        _manifest = {
+            'run': '0056',
+            'role': 'calibration_only',
+            'cal_ok': cal_ok,
+            'cal_status': _es_cal.methodology_calibration_status(),
+            'timestamp': _dt.datetime.now().isoformat(),
+        }
+        with open(_manifest_path, 'w', encoding='utf-8') as _mf:
+            _json.dump(_manifest, _mf, indent=2)
+            _mf.flush()
+            try:
+                os.fsync(_mf.fileno())
+            except Exception:
+                pass
+        ui.ok(f"  Calibration manifest: {_manifest_path}")
+    except Exception as _me:
+        ui.warn(f"  Calibration manifest write failed (non-fatal): {_me}")
+
+    return cal_ok
+
+
+def _run_57_function_class_sensitivity(session):
+    """Run 0057: Function-class sensitivity analysis.
+
+    v0.80.0.44: NEW. Validates §5.4's cross-cell asymmetry-vs-gap
+    pattern under a third nonlinear function class (Random Forest),
+    beyond the canon Ridge-vs-MLP pair. Reads canon Ridge/MLP per-
+    channel R² from channel_marginal_nonlinearity.csv (produced by
+    Run 0056 calibration) and canon Ridge/MLP partition fractions
+    from results.json's per-cell measurements (or refits cheap if
+    not yet stored). Fits RF on the same train/test split with
+    matched protocol. Writes Q0057_function_class_sensitivity.json
+    with per-cell breakdown + cross_cell_aggregates summary.
+
+    Hard-depended on by Run 0058 (paper assembly). If RF underfits
+    or if the result narrows the §5.4 mechanism account, the paper
+    text in v0_13 reflects that honestly. Either way, the paper
+    ships with this check or doesn't ship.
+
+    Activation-protocol note: writerbot's original handoff specified
+    ReLU MLP. Canon protocol uses tanh MLP. Run 0057 honors canon --
+    pulls existing tanh-MLP values from canon CSVs, fits RF on the
+    same protocol. The activation discrepancy is a v0_12 → v0_13
+    paper-text correction independent of this run's outcome.
+    """
+    ui.section("Run 0057 -- Function-Class Sensitivity")
+
+    try:
+        sys.path.insert(0, ROOT)
+        import subprocess as _sp
+        import sys as _sys
+        _script = os.path.join(ROOT, 'run_function_class_sensitivity.py')
+        if not os.path.exists(_script):
+            ui.err(f"  run_function_class_sensitivity.py not found at {_script}")
+            raise RuntimeError(f"Run 0057 script not found at {_script}")
+        ui.msg(f"  Running {os.path.basename(_script)}...")
+        # v0.80.0.44: was _sp.run([...], cwd=ROOT) which let stdout flow
+        # through to the parent (Flask log) but stderr was also inherited
+        # -- and importantly, the previous "return False on rc!=0" was
+        # silently swallowed by the dispatch loop's lack of bool-checking,
+        # so a failed Run 0057 reported as "1 runs done, 0 skipped/failed."
+        # Raise instead so the dispatch loop's standard exception handler
+        # surfaces the failure properly.
+        # v0.80.0.44: force unbuffered stdout/stderr in the subprocess.
+        # Without -u, Python's stdout defaults to block-buffered (4-8KB)
+        # when stdout is a pipe (which it is when launched by subprocess).
+        # The parent (start_here.py under Flask) inherits a pipe fd from
+        # Flask's spawn, and the subprocess inherits that pipe in turn.
+        # Block-buffering means print(..., flush=True) flushes Python's
+        # internal buffer but the OS-level pipe buffer can still hold
+        # output for many seconds before the dashboard sees it.
+        # PYTHONUNBUFFERED=1 in the env is equivalent to -u; either works.
+        # -u is more explicit and survives env-var stripping.
+        _env = dict(os.environ)
+        _env['PYTHONUNBUFFERED'] = '1'  # belt-and-suspenders
+        _proc = _sp.run([_sys.executable, '-u', _script],
+                        cwd=ROOT, env=_env)
+        if _proc.returncode != 0:
+            ui.err(f"  Run 0057 exited with code {_proc.returncode}")
+            ui.err(f"  Check stderr above for traceback. The run produced no usable output;")
+            ui.err(f"  Run 0058 (paper assembly) will refuse to fire until this is resolved.")
+            raise RuntimeError(f"Run 0057 exited with code {_proc.returncode}")
+        ui.ok(f"  Run 0057 complete.")
+        return True
+    except Exception as _e:
+        ui.err(f"  Run 0057 failed: {_e}")
+        # v0.80.0.44: re-raise so dispatch loop's session-failure
+        # accounting catches this. Returning False was being treated
+        # as success ("1 runs done, 0 skipped/failed").
+        raise
+
+
+def _run_58_apparatus(session):
+    """Run 0058: Lagrangian apparatus -- kraskov anchor, solver,
+    V5d threshold, aggregator.
+
+    v0.80.0.51 (stub): apparatus implementation is queued. This
+    placeholder exists so the dispatcher chain works and Run 0059
+    (paper assembly) can hard-gate on Run 0058's manifest output
+    without firing into a void. Stub raises SystemExit(1) on any
+    failure (gate or stub-script) so the dispatcher reports failure
+    in the dashboard. Same fix pattern as Run 0057's 0.80.0.44 fix.
+
+    Once implemented, the apparatus run will:
+      - Run kraskov bias spike (locks bucket: strong / narrow / ordinal)
+      - Run solver three-tier validation harness + linearization sweep
+      - Calibrate V5d threshold τ (spread + AM-GM)
+      - Run kraskov anchor producer over real cells
+      - Run aggregator over real cells, emit per-cell q* + bounds
+      - Write Q0058_apparatus_manifest.json summarizing all sub-phases
+
+    HARD prereqs (when implemented):
+      - Run 0056: foundations calibration
+      - Run 0057: Q0057_function_class_sensitivity.json
+    """
+    from cartography import DATA
+    sys.path.insert(0, ROOT)
+    ui.section("Run 0058 -- Lagrangian Apparatus")
+
+    # ── HARD GATE: foundations calibration (from Run 0056) ────────────
+    # v0.80.0.52: failure paths raise instead of return. Returning was
+    # treated by the dispatcher as success ("1 runs done, 0 skipped/
+    # failed") and surfaced green in the dashboard, masking gate
+    # failures and stub failures alike.
+    try:
+        import export_stats as _es_cal
+        cal_status = _es_cal.methodology_calibration_status()
+        if cal_status.get('_any_missing') or cal_status.get('_any_stale'):
+            failed = [k for k, v in cal_status.items()
+                      if not k.startswith('_') and v in ('missing', 'stale')]
+            ui.err(f"  Calibration incomplete: {', '.join(failed)}")
+            ui.err(f"  Run Run 0056 before apparatus.")
+            raise SystemExit(1)
+    except SystemExit:
+        raise
+    except Exception as _ce:
+        ui.err(f"  Calibration status check failed: {_ce}")
+        raise SystemExit(1)
+
+    # ── HARD GATE: function-class sensitivity (from Run 0057) ─────────
+    _q57_path = os.path.join(DATA, 'paper', 'Q0057_function_class_sensitivity.json')
+    if not os.path.exists(_q57_path):
+        ui.err(f"  Q0057_function_class_sensitivity.json not found at {_q57_path}")
+        ui.err(f"  Run Run 0057 before apparatus.")
+        raise SystemExit(1)
+
+    # ── Stub: invoke the apparatus orchestrator ───────────────────────
+    # Stub raises SystemExit(1) by design; propagate it.
+    try:
+        import run_bayesian_apparatus as _la
+        _la.main()
+    except SystemExit as _se:
+        if _se.code and _se.code != 0:
+            ui.err(f"  Apparatus exited with code {_se.code}")
+        raise
+    except Exception as _e:
+        ui.err(f"  Apparatus failed: {type(_e).__name__}: {_e}")
+        raise SystemExit(1)
+
+
+def _run_59_paper_assembly(session):
+    """Run 0059: Paper assembly -- results.json + figures.
+
+    v0.80.0.51: renumbered from Run 0058. Run 0058 is now the
+    Bayesian apparatus (kraskov anchor, I-projection solver,
+    V5d threshold, aggregator). Paper assembly is downstream of
+    all three calibration runs and hard-gates on each.
+
+    Builds results.json (which incorporates the calibration block
+    from Run 0056, the function-class sensitivity block from Run
+    0057, the apparatus block from Run 0058, and the H₀₅₈
+    partition sanity check from cross_cell_aggregates), then
+    renders figures.
+
+    HARD prereqs (enforced by _PREREQS dict + checked here):
+      - Run 0056: methodology_calibration block must be fresh
+      - Run 0057: Q0057_function_class_sensitivity.json must exist
+      - Run 0058: Q0058_apparatus_manifest.json must exist
+
+    If any are missing, this run refuses to fire.
+    """
+    from cartography import DATA, get_paper_paths as _get_pp, get_pooled_paths as _gpp
+    from cartography import get_paths as _gp
+
+    ui.section("Run 0059 -- Paper Assembly")
+
+    ready_models = _discover_ready_models(session, ui_log=ui.msg)
     if not ready_models:
         ui.err("No models ready for paper assembly.")
         return
 
-    # ── Generate combined paper figures ───────────────────────────────
-    ui.msg(f"  Generating combined paper figures for {len(ready_models)} model(s)...")
+    # ── HARD GATE: calibration freshness (from Run 0056) ──────────────
     try:
-        n_figs = _es55.generate_combined_paper_figures(
-            models_include=[m['label'] for m in ready_models])
-        ui.ok(f"  {n_figs} paper figures generated.")
-    except Exception as _e:
-        import traceback
-        ui.warn(f"  Combined paper figures failed: {_e}")
-        ui.warn(traceback.format_exc().strip().split('\n')[-1])
+        sys.path.insert(0, ROOT)
+        import export_stats as _es_cal
+        cal_status = _es_cal.methodology_calibration_status()
+        if cal_status.get('_any_missing') or cal_status.get('_any_stale'):
+            failed = [k for k, v in cal_status.items()
+                      if not k.startswith('_') and v in ('missing', 'stale')]
+            ui.err(f"  Calibration incomplete: {', '.join(failed)}")
+            ui.err(f"  Run Run 0056 first to refresh calibration.")
+            return
+    except Exception as _ce:
+        ui.err(f"  Calibration status check failed: {_ce}")
+        return
 
-    # ── Assemble paper JSONs from ALL ready models ────────────────────
-    _paper = _get_pp(create_dirs=True)
-    paper_json = _paper['json']
+    # ── HARD GATE: function-class sensitivity (from Run 0057) ─────────
+    _q57_path = os.path.join(DATA, 'paper', 'Q0057_function_class_sensitivity.json')
+    if not os.path.exists(_q57_path):
+        ui.err(f"  Q0057_function_class_sensitivity.json not found at {_q57_path}")
+        ui.err(f"  Run Run 0057 before paper assembly.")
+        return
 
-    n_copied = 0
-    for m in ready_models:
-        fam, sz, var = m['family'], m['size'], m['variant']
-        pp_m = _gpp(fam, sz, var, create_dirs=False)
-        pooled_ana = pp_m.get('analysis', '')
+    # ── HARD GATE: lagrangian apparatus (from Run 0058) ───────────────
+    # v0.80.0.51: paper assembly is downstream of the apparatus.
+    # If the apparatus hasn't run, results.json can't carry the
+    # aggregator output that figures and §7-§9 of the merged paper
+    # depend on.
+    _q58_path = os.path.join(DATA, 'paper', 'Q0058_apparatus_manifest.json')
+    if not os.path.exists(_q58_path):
+        ui.err(f"  Q0058_apparatus_manifest.json not found at {_q58_path}")
+        ui.err(f"  Run Run 0058 before paper assembly.")
+        return
 
-        # Copy pooled JSONs (master_results, cross_temp_status, etc.)
-        for jf in ['master_results.json', 'cross_temp_status.json',
-                    'three_variant_comparison.json', 'Q0055_stats_report.json']:
-            src = os.path.join(pooled_ana, jf)
-            if os.path.exists(src):
-                dst = os.path.join(paper_json, f'{fam}_{sz}_{jf}')
-                shutil.copy2(src, dst)
-                n_copied += 1
-
-        # Copy per-temp hypothesis outcomes
-        for cond_name, temp in _COND_TEMPS.items():
-            p_temp = _gp(fam, sz, var, temp, create_dirs=False)
-            ho = os.path.join(p_temp['analysis'], 'hypothesis_outcomes.json')
-            if os.path.exists(ho):
-                dst = os.path.join(paper_json, f'{fam}_{sz}_T{temp:.1f}_hypothesis_outcomes.json')
-                shutil.copy2(ho, dst)
-                n_copied += 1
-
-    ui.ok(f"  {n_copied} JSONs copied to {paper_json}")
-
-    # ── Propagate cross-model JSONs to all included models (v0.75.2.2) ─
-    # Runs 0052-0054 write to whichever model was active at run time. Copy their
-    # output to ALL included models' pooled/analysis/ so the scanner shows
-    # them as "done" in every model's grid, not just the source model.
-    _CROSS_JSONS = ['Q0052_cross_model_pairwise.json', 'Q0053_condition_concordance.json',
-                     'Q0054_cross_model_summary.json']
-    # Find cross-model JSONs from any model that has them
-    _cross_sources = {}
-    for m in ready_models:
-        pp_m = _gpp(m['family'], m['size'], m['variant'], create_dirs=False)
-        for jf in _CROSS_JSONS:
-            if jf not in _cross_sources:
-                src = os.path.join(pp_m.get('analysis', ''), jf)
-                if os.path.exists(src):
-                    _cross_sources[jf] = src
-    # Copy to all models
-    n_propagated = 0
-    for m in ready_models:
-        pp_m = _gpp(m['family'], m['size'], m['variant'], create_dirs=True)
-        dest_dir = pp_m.get('analysis', '')
-        for jf, src in _cross_sources.items():
-            dst = os.path.join(dest_dir, jf)
-            if not os.path.exists(dst) or os.path.getmtime(src) > os.path.getmtime(dst):
-                shutil.copy2(src, dst)
-                n_propagated += 1
-    if n_propagated:
-        ui.ok(f"  {n_propagated} cross-model JSONs propagated to all models")
-
-    # ── Summary ───────────────────────────────────────────────────────
-    _n_vis = len([f for f in os.listdir(_paper['visuals']) if f.endswith('.png')]) if os.path.isdir(_paper['visuals']) else 0
-    _n_json = len(os.listdir(paper_json)) if os.path.isdir(paper_json) else 0
-    ui.ok(f"  Paper directory: {_paper['base']}")
-    ui.msg(f"  {_n_vis} visuals + {_n_json} JSONs")
-
-    # ── Build cross-model aggregate (v0.79.4.9) ───────────────────────
-    # After per-model masters are copied, build the all-models master
-    # that aggregates Ridge vs MLP (Q34 vs Q56) for Conjecture 1 plus
-    # R_per_temperature across every architecture.
-    # Integrated into export_stats.py alongside build_master_results —
-    # rebuild_per_model=False because the per-model masters were already
-    # rebuilt in-line by the per-model build_master_results calls above.
+    # ── Phase B: build results.json ───────────────────────────────────
     try:
         sys.path.insert(0, ROOT)
         import export_stats as _es_aggr
         _es_aggr.build_all_masters(verbose=False, rebuild_per_model=False)
-        ui.ok(f"  all_models_master.json written to {paper_json}")
+        ui.ok(f"  data/paper/results.json written (validated)")
     except Exception as _bmj_e:
-        ui.warn(f"  all_models_master.json build failed: {_bmj_e}")
+        ui.err(f"  results.json build failed: {_bmj_e}")
+        ui.err(f"  Aborting Phase C -- figures need results.json.")
+        return
 
-    # ── Stamp ─────────────────────────────────────────────────────────
-    stamp = {
-        "run": 55,
-        "timestamp": datetime.datetime.now().isoformat(),
-        "models": [m['label'] for m in ready_models],
-        "n_models": len(ready_models),
-        "n_figures": _n_vis,
-        "n_jsons": _n_json,
-    }
-    stamp_path = os.path.join(paper_json, 'Q0056_paper_assembly.json')
-    with open(stamp_path, 'w') as f:
-        json.dump(stamp, f, indent=2)
-    ui.ok(f"  Run 0056 complete. Stamp: {stamp_path}")
+    # ── Phase C: figure generation ────────────────────────────────────
+    try:
+        import export_stats as _es_fig
+        _es_fig._run_paper_figures_phase(ui_log=ui.msg)
+    except Exception as _fig_e:
+        ui.warn(f"  figure phase failed: {_fig_e}")
+
+    # ── Completion summary ────────────────────────────────────────────
+    from cartography import DATA as _DATA
+    _paper_root = os.path.join(_DATA, 'paper')
+    _n_figs = len([f for f in os.listdir(_paper_root)
+                   if f.endswith(('.svg', '.pdf'))]) if os.path.isdir(_paper_root) else 0
+    ui.ok(f"  Run 0059 complete. {_n_figs} figure files in {_paper_root}")
 
 
 def _run_all_stats(session, force=False, backup=False):
@@ -2671,7 +2964,7 @@ def _run_all_stats(session, force=False, backup=False):
         return
 
     mode_str = "overwrite+backup" if (force and backup) else "overwrite" if force else "skip existing"
-    ui.section(f"ALL STATS — mode: {mode_str}")
+    ui.section(f"ALL STATS -- mode: {mode_str}")
     ui.msg(f"  Model: {family}/{size}/{variant}")
     ui.blank()
 
@@ -2741,7 +3034,7 @@ def _run_all_stats(session, force=False, backup=False):
         ui.blank()
 
     # ── Step 1: POOL_DIM calibration at each temperature ──────────────
-    ui.section("Step 1 — POOL_DIM Calibration (Run 0041 per temperature)")
+    ui.section("Step 1 -- POOL_DIM Calibration (Run 0041 per temperature)")
     conditions = sorted(_found)
     for cond in conditions:
         temp = _COND_TEMPS.get(cond, 0.0)
@@ -2761,7 +3054,7 @@ def _run_all_stats(session, force=False, backup=False):
     # ── Step 2: Analysis per temperature ──────────────────────────────
     _ANALYSIS_RUNS_ORDERED = [42, 43, 44, 45, 47, 48, 49]  # v0.79.4.0 renumbered
 
-    ui.section(f"Step 2 — Analysis + Stats across {len(conditions)} conditions")
+    ui.section(f"Step 2 -- Analysis + Stats across {len(conditions)} conditions")
     ui.msg(f"  Analysis runs per condition: {_ANALYSIS_RUNS_ORDERED}")
     ui.blank()
 
@@ -2774,7 +3067,7 @@ def _run_all_stats(session, force=False, backup=False):
 
         for run_num in _ANALYSIS_RUNS_ORDERED:
             try:
-                # No outer skip gate — analysis.py run() handles resume-aware
+                # No outer skip gate -- analysis.py run() handles resume-aware
                 # completeness checking (v0.75.2.2). Force flag still works:
                 # _run_all_stats with force=True deletes JSONs before this loop.
                 ui.msg(f"  Run {run_num}...")
@@ -2797,7 +3090,7 @@ def _run_all_stats(session, force=False, backup=False):
         ui.blank()
 
     # ── Step 3: Pooled + cross-temperature analysis ──────────────────
-    ui.section("Step 3 — Pooled + Cross-Temperature Analysis")
+    ui.section("Step 3 -- Pooled + Cross-Temperature Analysis")
     paths_pooled = _gp(family, size, variant, 0.0)
     _pp = _gpp(family, size, variant, create_dirs=True)
 
@@ -2822,7 +3115,7 @@ def _run_all_stats(session, force=False, backup=False):
             ui.warn(f"  Run 0051 failed: {_e}")
 
     # ── Step 4: Generate report ──────────────────────────────────────
-    ui.section("Step 4 — Report Generation")
+    ui.section("Step 4 -- Report Generation")
     try:
         import report as _rpt
         _rpt.generate(session=session)
@@ -2830,15 +3123,15 @@ def _run_all_stats(session, force=False, backup=False):
         ui.warn(f"  Report generation failed: {_e}")
 
     ui.blank()
-    ui.ok(f"ALL STATS complete — {len(conditions)} conditions processed.")
+    ui.ok(f"ALL STATS complete -- {len(conditions)} conditions processed.")
 
 
 def _run_all_temps_analysis(session, runs_str):
     """Run specified runs at every temperature directory that has data.
 
-    Usage: --all-temps-runs 21       (GPU run — subprocess per temp)
-           --all-temps-runs 0049,0042,0043 (analysis — direct call)
-           --all-temps-runs 0017,0043,0051 (mixed — GPU first, then analysis, pooled last)
+    Usage: --all-temps-runs 21       (GPU run -- subprocess per temp)
+           --all-temps-runs 0049,0042,0043 (analysis -- direct call)
+           --all-temps-runs 0017,0043,0051 (mixed -- GPU first, then analysis, pooled last)
 
     GPU runs are spawned as isolated subprocesses per temperature (same as
     _run_session_isolated) with VRAM wait between each. Analysis runs call
@@ -2858,20 +3151,25 @@ def _run_all_temps_analysis(session, runs_str):
 
     # v0.71.0.11: Auto-detect model_name from hidden state files on disk.
     # The session's model_name can drift if the user switches models in the
-    # dashboard — model_family/size/variant stay correct but model_name
+    # dashboard -- model_family/size/variant stay correct but model_name
     # gets overwritten with the new model's display name.
+    #
+    # Infers model_name from any Run 0003 hidden state filename across all
+    # temperature directories when the session's model_name differs from
+    # what's on disk (e.g., user selected a different model key but the
+    # data was collected under an earlier key).
     _session_mn = session.get('model_name', '')
     for _det_dir_name in ('deterministic', 'temp_0.2', 'temp_0.0'):
         _det_hid = os.path.join(base_dir, _det_dir_name, 'hidden_states')
         if os.path.isdir(_det_hid):
             import glob as _glob_det
             from cartography import sanitize as _san_det, run_prefix as _rp_det
-            _det_pat = os.path.join(_det_hid, f"{_rp_det(3)}03_*_trial*_turn01.npy")
+            _det_pat = os.path.join(_det_hid, f"{_rp_det(3)}0003_*_trial*_turn01.npy")
             _det_hits = [f for f in sorted(_glob_det.glob(_det_pat))
                          if not f.endswith('_alllayers.npy')
                          and '_emb.npy' not in f]
             if _det_hits:
-                _pfx = f"{_rp_det(3)}03_"
+                _pfx = f"{_rp_det(3)}0003_"
                 _disk_mn = os.path.basename(_det_hits[0]).split(_pfx)[1].split("_trial")[0]
                 if _san_det(_session_mn) != _disk_mn:
                     session['model_name'] = _disk_mn  # silently correct
@@ -2906,6 +3204,10 @@ def _run_all_temps_analysis(session, runs_str):
     POOLED_RUNS = {50, 51, 52, 53, 54, 55, 56}  # v0.79.4.0: renumbered pooled+xm+out set
     pooled_runs   = [r for r in all_runs if r in POOLED_RUNS]
 
+    # v0.79.5.4 [DISP]: dispatch instrumentation -- parsed run sets after split
+    print(f"[DISP] _run_all_temps_analysis parsed: runs_str={runs_str!r} "
+          f"all={all_runs} gpu={gpu_runs} ana={analysis_runs} pooled={pooled_runs}", flush=True)
+
     # Gate: check Q45 exists at every temperature for analysis runs that need it
     _NEEDS_Q45 = {47, 48, 49, 42, 43, 44}  # v0.79.4.0: old 25,27,32,33,34,46  # all need POOL_DIM calibration from Run 0041
     if any(r in _NEEDS_Q45 for r in analysis_runs) and 41 not in analysis_runs:  # v0.79.4.0: old 45 POOL_DIM → new 41
@@ -2925,7 +3227,7 @@ def _run_all_temps_analysis(session, runs_str):
     n_gpu = len(gpu_runs)
     n_ana = len(analysis_runs)
     n_total = n_temps * (n_gpu + n_ana) + len(pooled_runs)
-    ui.section(f"ALL TEMPS — {n_temps} temperatures × {n_gpu + n_ana} runs = {n_total} total")
+    ui.section(f"ALL TEMPS -- {n_temps} temperatures × {n_gpu + n_ana} runs = {n_total} total")
     if gpu_runs:
         ui.msg(f"  GPU runs (subprocess per temp): {gpu_runs}")
     if analysis_runs:
@@ -2964,38 +3266,61 @@ def _run_all_temps_analysis(session, runs_str):
 
             # Filter to runs that actually need work
             _todo = []
-            _gpu_set = set(gpu_runs)
+            # v0.80.0.44: _gpu_set as int-keyed; _PREREQS keys are strings
+            # like "0017" but gpu_runs are ints. Coerce both to int for
+            # membership compare so "is this prereq already in our gpu
+            # batch" works correctly. Without this, every prereq fell
+            # into _ext_probs and the warn-and-skip path always fired.
+            _gpu_set = set(int(r) for r in gpu_runs)
             for run_num in gpu_runs:
                 _rs = _status.get(run_num)
-                # v0.79.4.9: needs_et / et_partial no longer emitted.
+                # v0.79.4.15: needs_et / et_partial no longer emitted.
                 # Run 0016 (E_t recovery) reports its own done/partial/missing
                 # directly, so the per-run accept-if-ET-only branch is gone.
                 if _rs == 'done':
-                    ui.ok(f"  Run {run_num}: complete at T={temp} — skipping.")
+                    ui.ok(f"  Run {run_num}: complete at T={temp} -- skipping.")
                     done += 1
                 else:
-                    # Check prerequisites — but ignore prereqs that are also
+                    # Check prerequisites -- but ignore prereqs that are also
                     # in this gpu_runs set (they'll collect first per exec order)
                     _probs = _check_prereqs(run_num, _status)
-                    _ext_probs = [(p,s,d) for p,s,d in _probs if p not in _gpu_set]
+                    _ext_probs = [(p,s,d) for p,s,d in _probs if int(p) not in _gpu_set]
                     if _ext_probs:
-                        _missing = ', '.join(f"R{p[0]:04d}" for p in _ext_probs)
-                        ui.warn(f"  Run {run_num}: prereqs not met ({_missing}) — skipping.")
+                        # v0.80.0.44: was `f"R{p[0]:04d}" for p in _ext_probs` --
+                        # double bug: (1) `p` is already the run id from the
+                        # tuple unpack so `p[0]` reads the first character of
+                        # the string, (2) `_PREREQS` keys are 4-digit strings
+                        # like "0001" not ints, so :04d crashed before the
+                        # subscript bug even mattered. Coerce to int via
+                        # `int(p)` since string ids parse cleanly.
+                        _missing = ', '.join(f"R{int(p):04d}" for p,s,d in _ext_probs)
+                        ui.warn(f"  Run {run_num}: prereqs not met ({_missing}) -- skipping.")
                     else:
                         _todo.append(run_num)
+
+            # v0.79.5.4 [DISP]: dispatch instrumentation -- per-temp gate result
+            print(f"[DISP] T={temp} gate: status={dict((r, _status.get(r)) for r in gpu_runs)} "
+                  f"todo={_todo}", flush=True)
 
             if not _todo:
                 pass  # all skipped
             elif not session.get('unload_between_runs', True) and len(_todo) > 1:
                 # Batch mode: one subprocess, one model load
-                # Runs 0001, 0017, 0020, 0018, 0019 manage their own model — run individually
-                _SELF_LOAD = {1, 17, 18, 19, 20}  # v0.79.4.0: old {19,21,30,42,53}
-                _LATE_SOLO = {17, 18, 19, 20}  # v0.79.4.0: old {21,30,42,53}  # run AFTER batch — 30 self-loads, 21/42/53 need Run 0006
+                # Runs 0001, 0017, 0020, 0018, 0019 manage their own model -- run individually
+                # v0.80.0.44: Run 0016 added. ET recovery self-loads its
+                # own base model (distinct from the batch's abliterated
+                # model load), runs hours of source-by-source recovery,
+                # and has its own resume/dedup logic. Inside the batch
+                # it serialized Runs 17-20 behind itself. Solo-late
+                # makes the batch finish fast and reorders 16 last
+                # within solo-late so 17-20 don't wait on it.
+                _SELF_LOAD = {1, 16, 17, 18, 19, 20}
+                _LATE_SOLO = {16, 17, 18, 19, 20}  # 16 ordered LAST in Phase 3 below
                 _solo_early = [r for r in _todo if r in _SELF_LOAD and r not in _LATE_SOLO]
                 _solo_late  = [r for r in _todo if r in _LATE_SOLO]
                 _batch = [r for r in _todo if r not in _SELF_LOAD]
 
-                # Phase 1: early solo (19, 30 — independent)
+                # Phase 1: early solo (19, 30 -- independent)
                 for run_num in _solo_early:
                     ui.msg(f"  Run {run_num} at T={temp} (self-loading)...")
                     _wsess_tmp = dict(session)
@@ -3005,6 +3330,8 @@ def _run_all_temps_analysis(session, runs_str):
                         _atomic_write_json(_sess_file, _wsess_tmp)
                     except Exception:
                         pass
+                    # v0.79.5.4 [DISP]: subprocess spawn -- solo-early path
+                    print(f"[DISP] spawn[solo-early] T={temp} --single-run {run_num}", flush=True)
                     try:
                         with open(log_path, 'a') as _lf:
                             proc = _sp_at.Popen(
@@ -3053,8 +3380,30 @@ def _run_all_temps_analysis(session, runs_str):
                             pass
                     _wait_for_vram('batch')
 
-                # Phase 3: late solo (21/42/53 — need Run 0006 data from batch)
-                for run_num in _solo_late:
+                # Phase 3: late solo. v0.80.0.44: order fast runs (17/18/19/20)
+                # before Run 16 (slow ET recovery) so Q8-style fresh-model
+                # runs don't wait hours for collection runs to finish their
+                # verification work. Per-run prereq re-check using the post-
+                # batch status -- if the batch failed to produce a run's
+                # prereq (e.g. Run 6's all-layers .npy for runs 17/18/19),
+                # skip cleanly with a warning instead of firing and crashing
+                # partway. Re-scan after each solo-late run so subsequent
+                # prereq checks see the result of this run.
+                _LATE_SOLO_ORDER = [17, 18, 19, 20, 16]
+                _solo_late_ordered = [r for r in _LATE_SOLO_ORDER if r in _solo_late]
+                _post_batch_status = _scan_runs(paths, session.get('trials', 100))
+                for run_num in _solo_late_ordered:
+                    _probs = _check_prereqs(run_num, _post_batch_status)
+                    if _probs:
+                        _missing = ', '.join(f"R{int(p):04d}" for p,s,d in _probs)
+                        ui.warn(f"  Run {run_num} at T={temp}: prereqs not met ({_missing}) -- skipping.")
+                        continue
+
+                    if _post_batch_status.get(run_num) == 'done':
+                        ui.ok(f"  Run {run_num} at T={temp}: already complete -- skipping.")
+                        done += 1
+                        continue
+
                     ui.msg(f"  Run {run_num} at T={temp} (self-loading, post-batch)...")
                     _wsess_tmp = dict(session)
                     _wsess_tmp['runs'] = str(run_num)
@@ -3063,6 +3412,8 @@ def _run_all_temps_analysis(session, runs_str):
                         _atomic_write_json(_sess_file, _wsess_tmp)
                     except Exception:
                         pass
+                    # v0.79.5.4 [DISP]: subprocess spawn -- solo-late path
+                    print(f"[DISP] spawn[solo-late] T={temp} --single-run {run_num}", flush=True)
                     try:
                         with open(log_path, 'a') as _lf:
                             proc = _sp_at.Popen(
@@ -3079,6 +3430,8 @@ def _run_all_temps_analysis(session, runs_str):
                     except Exception as _e:
                         ui.err(f"  Run {run_num} at T={temp} error: {_e}")
                     _wait_for_vram(run_num)
+                    # Re-scan so subsequent prereq checks see this run's result.
+                    _post_batch_status = _scan_runs(paths, session.get('trials', 100))
             else:
                 # Per-run mode: one subprocess per run
                 for run_num in _todo:
@@ -3089,9 +3442,11 @@ def _run_all_temps_analysis(session, runs_str):
                     try:
                         _atomic_write_json(_sess_file, _wsess_tmp)
                     except Exception as _e:
-                        ui.warn(f"  Could not write session for Run {run_num}: {_e} — skipping")
+                        ui.warn(f"  Could not write session for Run {run_num}: {_e} -- skipping")
                         continue
 
+                    # v0.79.5.4 [DISP]: subprocess spawn -- per-run mode (default path)
+                    print(f"[DISP] spawn[per-run] T={temp} --single-run {run_num}", flush=True)
                     try:
                         with open(log_path, 'a') as _lf:
                             proc = _sp_at.Popen(
@@ -3116,7 +3471,7 @@ def _run_all_temps_analysis(session, runs_str):
                     _wait_for_vram(run_num)
 
         # ── Analysis runs: direct call ───────────────────────────────────
-        # No outer skip gate — analysis.py run() has its own resume-aware
+        # No outer skip gate -- analysis.py run() has its own resume-aware
         # completeness check that detects missing fields (v0.75.2.2).
         for run_num in analysis_runs:
             ui.msg(f"  Run {run_num}...")
@@ -3129,14 +3484,14 @@ def _run_all_temps_analysis(session, runs_str):
                 traceback.print_exc()
 
         # ── E_t recovery safety-net: fire Run 0016 if it's not yet done ─────
-        # v0.79.4.9: was `for r in gpu_runs if _post_status.get(r) == 'needs_et'`.
-        # Scanner no longer emits needs_et — ET state lives in Run 0016's status.
+        # v0.79.4.15: was `for r in gpu_runs if _post_status.get(r) == 'needs_et'`.
+        # Scanner no longer emits needs_et -- ET state lives in Run 0016's status.
         # If the main gpu_runs loop already dispatched 48, its status will be
         # 'done' now and this block no-ops. If 48 wasn't in gpu_runs (user
         # selected a subset), fire it here to keep auto-temp self-healing.
         _post_status = _scan_runs(paths, session.get('trials', 100))
         if _post_status.get(16) != 'done' and 16 not in gpu_runs:  # v0.79.4.0: E_t meta-run old 48 → new 16
-            ui.msg(f"  E_t recovery (Run 0016) pending at T={temp} — firing...")
+            ui.msg(f"  E_t recovery (Run 0016) pending at T={temp} -- firing...")
             _sess_file = os.path.join(ROOT, 'last_session.json')
             log_path = os.path.join(ROOT, '.iota_flask.log')
             try:
@@ -3144,7 +3499,7 @@ def _run_all_temps_analysis(session, runs_str):
                 with open(log_path, 'a') as _lf:
                     et_proc = _sp_at.Popen(
                         [sys.executable, os.path.join(ROOT, 'start_here.py'),
-                         '--single-run', '48'],
+                         '--single-run', '16'],  # v0.79.4.17: was '48' (old id) -- Run 16 is new E_t meta-run
                         stdout=_lf, stderr=_sp_at.STDOUT
                     )
                 et_ret = et_proc.wait()
@@ -3160,18 +3515,24 @@ def _run_all_temps_analysis(session, runs_str):
         # v0.75.2.2: qcache_cleanup removed. Cache persists for instant re-entry.
         ui.blank()
 
-    # Pooled runs — call directly with T=0.0 paths
+    # Pooled runs -- call directly with T=0.0 paths
     from cartography import get_pooled_paths as _gpp
     for run_num in pooled_runs:
-        ui.section(f"Pooled — Run {run_num}")
-        # No outer skip gate — analysis.py run() handles completeness (v0.75.2.2).
+        ui.section(f"Pooled -- Run {run_num}")
+        # No outer skip gate -- analysis.py run() handles completeness (v0.75.2.2).
         session['temperature'] = 0.0
         paths = _gp(family, size, variant, 0.0)
         try:
             if run_num == 55:
                 _run_54_stats_report(session)
             elif run_num == 56:
-                _run_55_paper_assembly(session)
+                _run_56_calibration(session)
+            elif run_num == 57:
+                _run_57_function_class_sensitivity(session)
+            elif run_num == 58:
+                _run_58_apparatus(session)
+            elif run_num == 59:
+                _run_59_paper_assembly(session)
             else:
                 _ana.run(run_num, session, paths)
             done += 1
@@ -3183,7 +3544,7 @@ def _run_all_temps_analysis(session, runs_str):
         ui.blank()
 
     elapsed = time.time() - t0
-    ui.ok(f"ALL TEMPS complete — {done}/{n_total} runs across {n_temps} temperatures ({elapsed:.0f}s)")
+    ui.ok(f"ALL TEMPS complete -- {done}/{n_total} runs across {n_temps} temperatures ({elapsed:.0f}s)")
 
 
 def main():
@@ -3194,9 +3555,9 @@ def main():
                             25/27/32-34/40/45-47/49/54), finishing with
                             Run 0051 pooled cross-directory decomposition.
       --et-recovery N,M,.. : E_t recovery pass for specified runs via
-                            _run_et_recovery — base-model forward pass
+                            _run_et_recovery -- base-model forward pass
                             over the existing CSV conversation.
-      --single-run N      : isolated subprocess mode — load model, run
+      --single-run N      : isolated subprocess mode -- load model, run
                             one run, exit. Called by _run_session_isolated
                             for per-run VRAM isolation.
       --batch-runs N,M,.. : one model load, multiple runs in sequence,
@@ -3239,11 +3600,11 @@ def main():
     _p.add_argument('--backup', action='store_true',
                     help='Backup existing analysis JSONs before overwriting (used with --force)')
     _p.add_argument('--auto-temp', action='store_true',
-                    help='Auto-advance through all temperature rounds — collect incomplete rounds in order')
+                    help='Auto-advance through all temperature rounds -- collect incomplete rounds in order')
     _p.add_argument('--all-temps-runs', default=None,
                     help='Run specified runs at every temperature that has data (comma-sep or ranges)')
     _p.add_argument('--all-models', default=None,
-                    help='v0.79.4.9 — fan out specified runs across every discovered '
+                    help='v0.79.4.15 -- fan out specified runs across every discovered '
                          'model in DATA/. Value is passed to the per-model dispatch as-is '
                          '(accepts auto-temp, all-temps:N, or plain run list). Smart loader '
                          'groups by model: all runs complete on Model A before Model B starts.')
@@ -3331,6 +3692,11 @@ def main():
     if _args.all_temps_runs:
         os.environ['IOTA_HEADLESS'] = '1'
         session = ui.load_session()
+        # v0.79.5.4 [DISP]: dispatch instrumentation -- entry arg for --all-temps-runs
+        print(f"[DISP] --all-temps-runs arg={_args.all_temps_runs!r} "
+              f"variant={session.get('model_variant','?')} "
+              f"model={session.get('model_name','?')} "
+              f"session_runs={session.get('runs','?')!r}", flush=True)
         _run_all_temps_analysis(session, _args.all_temps_runs)
         return
 
@@ -3351,7 +3717,7 @@ def main():
             _sp.loader.exec_module(_sm)
             _sm.run_setup(force=False)
     except Exception:
-        pass   # setup failure is non-fatal — deps already installed or user knows what they're doing
+        pass   # setup failure is non-fatal -- deps already installed or user knows what they're doing
 
     ui.install_deps()
     session = ui.load_session()
@@ -3362,7 +3728,7 @@ def main():
     # Launch the Flask dashboard as a background daemon on every startup.
     # Output is silenced to .iota_flask.log. Console remains fully navigable.
     _launch_dashboard()
-    # Wait for Flask to be ready before opening browser — prevents race where
+    # Wait for Flask to be ready before opening browser -- prevents race where
     # the browser loads a cached page and the user clicks Run before Flask is
     # listening. Poll localhost:5000 with a 10s timeout.
     _dash_ready = False
@@ -3374,7 +3740,7 @@ def main():
     if _dash_ready:
         _maybe_open_browser(countdown=0)
     else:
-        ui.warn("Dashboard did not start within 10s — check .iota_flask.log")
+        ui.warn("Dashboard did not start within 10s -- check .iota_flask.log")
         ui.msg(f"  Try opening {DASHBOARD_URL} manually.")
 
     while True:
@@ -3412,7 +3778,7 @@ if __name__ == "__main__":
             _session['runs'] = _runs_str
             print(f"[headless] Preset: {_args.preset}  runs: {_runs_str}")
         else:
-            # No preset passed — use the runs saved to last_session.json by the dashboard.
+            # No preset passed -- use the runs saved to last_session.json by the dashboard.
             # BUG-39A fix: previously default='f' caused this branch to always overwrite
             # session['runs'] with '1-44' regardless of what was selected in the UI.
             print(f"[headless] Using saved runs: {_session.get('runs', '1-44')}")
@@ -3434,7 +3800,7 @@ if __name__ == "__main__":
                     finally: _sync_done.set()
                 threading.Thread(target=_sync, daemon=True).start()
                 if not _sync_done.wait(timeout=15):
-                    print("[headless] cuda.synchronize() timed out — skipping.")
+                    print("[headless] cuda.synchronize() timed out -- skipping.")
                 torch.cuda.empty_cache()
         except Exception:
             pass

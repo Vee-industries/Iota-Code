@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — RUNNERS PHASE 2  (Runs 0028-0021)
+IOTA FRAMEWORK -- RUNNERS PHASE 2  (Runs 0028-0021)
 ===============================================
 """
 
@@ -30,10 +30,10 @@ import ui
 from cartography import save_embedding
 
 
-# ── Run 0028 — Forced contradiction at turn 7 ──────────────────────────────────
+# ── Run 0028 -- Forced contradiction at turn 7 ──────────────────────────────────
 
 def _run_self_reference(session, paths, model, tok):
-    """Run 0028 — contradiction at turn 7, recovery turns 8–13."""
+    """Run 0028 -- contradiction at turn 7, recovery turns 8–13."""
     CONTRADICTION_AT = 7
     SETUP       = GENERAL_INTROSPECTION_PROMPTS[:6]
     CONTRADICTION = (
@@ -66,10 +66,10 @@ def _run_self_reference(session, paths, model, tok):
     )
 
 
-# ── Run 0022 — Context saturation (30 turns) ───────────────────────────────────
+# ── Run 0022 -- Context saturation (30 turns) ───────────────────────────────────
 
 def _run_saturation(session, paths, model, tok):
-    """Run 0022 — 30-turn context saturation. all_layers for depth analysis."""
+    """Run 0022 -- 30-turn context saturation. all_layers for depth analysis."""
     def turn_fn(trial, turn_idx):
         prompt = GENERAL_INTROSPECTION_PROMPTS[(turn_idx - 1) % len(GENERAL_INTROSPECTION_PROMPTS)]
         extra  = {'condition': 'saturation', 'context_depth': turn_idx}
@@ -84,10 +84,10 @@ def _run_saturation(session, paths, model, tok):
     )
 
 
-# ── Run 0027 — Layer locality ───────────────────────────────────────────────────
+# ── Run 0027 -- Layer locality ───────────────────────────────────────────────────
 
 def _run_layers(session, paths, model, tok):
-    """Run 0027 — layer locality. all_layers + n_layers field."""
+    """Run 0027 -- layer locality. all_layers + n_layers field."""
     n_layers = model.config.num_hidden_layers
 
     def turn_fn(trial, turn_idx):
@@ -103,10 +103,10 @@ def _run_layers(session, paths, model, tok):
     )
 
 
-# ── Run 0003 — Temperature grid (4×5) ──────────────────────────────────────────
+# ── Run 0003 -- Temperature grid (4×5) ──────────────────────────────────────────
 
 def _run_temperature_grid(session, paths, model, tok):
-    """Run 0003 — 4 conditions × 5 temperatures × n_trials. Saves E_t + C_t."""
+    """Run 0003 -- 4 conditions × 5 temperatures × n_trials. Saves E_t + C_t."""
     from runners_prompts import CONFOUND_SYSTEM_PROMPTS
     TEMPS     = [0.2, 0.4, 0.6, 0.8, 1.0]
     TURNS     = 13
@@ -140,13 +140,13 @@ def _run_temperature_grid(session, paths, model, tok):
                 csv_file, 3, TRIALS, TURNS, cond_str, 'temperature_condition')
 
             sys_prompt = NEUTRAL_SYSTEM_PROMPT
-            cached_ct_26 = _encode_system_prompt(model, tok, sys_prompt) if save_emb else None
+            cached_ct_r0003 = _encode_system_prompt(model, tok, sys_prompt) if save_emb else None
 
             update_dashboard_ctx(total_trials=TRIALS, model_name=session.get('model_name', ''))
             for trial in trials_to_run:
-                set_seed(seed + trial)
+                set_seed(seed + trial + int(temp * 1e6))
                 global_trial = (temp_idx * len(COND_KEYS) + cond_idx) * TRIALS + trial
-                _log_trial_start(f"Q26|{cond_name}|T={temp}", trial)
+                _log_trial_start(f"R0003|{cond_name}|T={temp}", trial)
                 messages = [{"role": "system", "content": sys_prompt}]
                 if tl_key_actual:
                     messages, injected = inject_throughline(messages, tl_key_actual)
@@ -186,8 +186,8 @@ def _run_temperature_grid(session, paths, model, tok):
                         _npy_buf.append((layer_h, global_trial, turn_idx))
                     if save_emb and input_emb is not None:
                         _emb_buf.append((input_emb, global_trial, turn_idx, 'E'))
-                    if save_emb and turn_idx == 1 and cached_ct_26 is not None:
-                        _emb_buf.append((cached_ct_26, global_trial, 1, 'C'))
+                    if save_emb and turn_idx == 1 and cached_ct_r0003 is not None:
+                        _emb_buf.append((cached_ct_r0003, global_trial, 1, 'C'))
                     messages.append({"role": "assistant", "content": result['output']})
                     if turn1_h is None and layer_h: turn1_h = layer_h
                     prev_h = layer_h
@@ -197,13 +197,13 @@ def _run_temperature_grid(session, paths, model, tok):
                 for _emb, _gt, _ti, _kind in _emb_buf:
                     save_embedding(_emb, paths['hidden'], 3,
                                    session['model_name'], _gt, _ti, kind=_kind)
-                _log_trial_end(f"Q26|{cond_name}|T={temp}", trial)
+                _log_trial_end(f"R0003|{cond_name}|T={temp}", trial)
 
 
-# ── Run 0023 — C_t confound isolation ──────────────────────────────────────────
+# ── Run 0023 -- C_t confound isolation ──────────────────────────────────────────
 
 def _run_confound(session, paths, model, tok):
-    """Run 0023 — semantic vs neutral system prompt confound isolation."""
+    """Run 0023 -- semantic vs neutral system prompt confound isolation."""
     from runners_prompts import CONFOUND_SYSTEM_PROMPTS
     csv_file   = os.path.join(paths['csv'], "Q0023_introspection.csv")
     ensure_csv_header(csv_file)
@@ -219,13 +219,13 @@ def _run_confound(session, paths, model, tok):
         sys_prompt = CONFOUND_SYSTEM_PROMPTS[condition]
         trials_for_mode = _get_trials_for_condition(
             csv_file, 23, n_trials, len(INTROSPECTION_PROMPTS), condition, 'confound_condition')
-        cached_ct_28 = _encode_system_prompt(model, tok, sys_prompt) if sys_prompt else None
+        cached_ct_r0023 = _encode_system_prompt(model, tok, sys_prompt) if sys_prompt else None
         trial_offset = cond_idx * n_trials
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
 
         for trial in trials_for_mode:
-            set_seed(seed + trial)
-            _log_trial_start("Q0023", trial)
+            set_seed(seed + trial + int(temperature * 1e6))
+            _log_trial_start("R0023", trial)
             file_trial = trial + trial_offset
             messages = []
             if sys_prompt:
@@ -263,8 +263,8 @@ def _run_confound(session, paths, model, tok):
                     _npy_buf.append((layer_h, file_trial, turn_idx))
                 if input_emb is not None:
                     _emb_buf.append((input_emb, file_trial, turn_idx, 'E'))
-                if turn_idx == 1 and cached_ct_28 is not None:
-                    _emb_buf.append((cached_ct_28, file_trial, 1, 'C'))
+                if turn_idx == 1 and cached_ct_r0023 is not None:
+                    _emb_buf.append((cached_ct_r0023, file_trial, 1, 'C'))
                 messages.append({"role": "assistant", "content": result['output']})
                 if turn1_h is None and layer_h: turn1_h = layer_h
                 prev_h = layer_h
@@ -277,10 +277,10 @@ def _run_confound(session, paths, model, tok):
             _log_trial_end("Q0023", trial)
 
 
-# ── Run 0024 — Persistence mechanism (history modes) ───────────────────────────
+# ── Run 0024 -- Persistence mechanism (history modes) ───────────────────────────
 
 def _run_persistence(session, paths, model, tok):
-    """Run 0024 — full/last/summary history mode ablation."""
+    """Run 0024 -- full/last/summary history mode ablation."""
     HISTORY_MODES = ['full', 'last', 'summary']
     TURNS    = 13
     csv_file = os.path.join(paths['csv'], "Q0024_persistence.csv")
@@ -298,8 +298,8 @@ def _run_persistence(session, paths, model, tok):
             csv_file, 24, n_trials, TURNS, mode, 'history_mode')
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
         for trial in trials_for_mode:
-            set_seed(seed + trial)
-            _log_trial_start(f"Q29|{mode}", trial)
+            set_seed(seed + trial + int(temperature * 1e6))
+            _log_trial_start(f"R0024|{mode}", trial)
             file_trial   = mode_idx * n_trials + trial
             messages     = [{"role": "system", "content": NEUTRAL_SYSTEM_PROMPT}]
             throughline  = get_throughline('persistence')
@@ -360,16 +360,16 @@ def _run_persistence(session, paths, model, tok):
                 print_turn_result(24, trial, turn, TURNS, result, cal_slope)
             for _lh, _ft, _tn in _npy_buf:
                 save_npy(_lh, paths['hidden'], 24, session['model_name'], _ft, _tn)
-            _log_trial_end(f"Q29|{mode}", trial)
+            _log_trial_end(f"R0024|{mode}", trial)
 
 
-# ── Run 0020 — Two-instance cross-instance measurement ─────────────────────────
+# ── Run 0020 -- Two-instance cross-instance measurement ─────────────────────────
 
 def _run_cross_instance(session, paths, _model=None, _tok=None):
-    """Run 0020 — two-instance cross-instance measurement. Manages own model loads per instance.
+    """Run 0020 -- two-instance cross-instance measurement. Manages own model loads per instance.
 
-    Turn 1 uses CROSS_INSTANCE_SEED — frames the model as one of two simultaneous
-    instances. Turns 2-13 use CROSS_INSTANCE_FOLLOWUPS — probes divergence over time.
+    Turn 1 uses CROSS_INSTANCE_SEED -- frames the model as one of two simultaneous
+    instances. Turns 2-13 use CROSS_INSTANCE_FOLLOWUPS -- probes divergence over time.
     This framing is essential for the coupling_score measurement: without it the
     two instances are not aware of each other and cross-instance correlation is not established.
     """
@@ -399,7 +399,7 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
 
         VRAM sanity after unload:
           Wait up to 120s for pynvml to report >= 7.0 GiB free before
-          next load. Uses GPUMonitor's class-level pynvml handle — DO
+          next load. Uses GPUMonitor's class-level pynvml handle -- DO
           NOT call nvmlInit/Shutdown here. Old per-call Init/Shutdown
           invalidated the class handle and caused the next GPUMonitor
           to segfault on a dead handle, freezing the system.
@@ -415,8 +415,8 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
                 csv_file, 20, n_trials, TURNS, instance_label, 'instance')
             update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
             for trial in trials_to_run_inst:
-                set_seed(seed + trial)
-                _log_trial_start(f"Q30|{instance_label}", trial)
+                set_seed(seed + trial + int(temperature * 1e6))
+                _log_trial_start(f"R0020|{instance_label}", trial)
                 history  = []
                 prev_h = None; turn1_h = None
                 state = TrialState()
@@ -448,7 +448,7 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
                 for _lh, _t, _tn in _npy_buf:
                     save_npy(_lh, paths['hidden'], 20,
                              session['model_name'] + f'_{instance_label}', _t, _tn)
-                _log_trial_end(f"Q30|{instance_label}", trial)
+                _log_trial_end(f"R0020|{instance_label}", trial)
         finally:
             unload_model(mdl)
             del mdl, tok_i
@@ -460,7 +460,7 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
             except Exception:
                 pass
             # Wait for VRAM to fully clear before loading next instance.
-            # Uses GPUMonitor's class-level pynvml handle — DO NOT call nvmlInit/Shutdown
+            # Uses GPUMonitor's class-level pynvml handle -- DO NOT call nvmlInit/Shutdown
             # here. Run 0020's old Init/Shutdown conflicted with GPUMonitor's class-level
             # session: nvmlShutdown invalidated the shared handle, causing Instance B's
             # GPUMonitor to segfault on a dead NVML handle → system freeze.
@@ -475,7 +475,7 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
                     while _t.time() < deadline:
                         free_gib = pynvml.nvmlDeviceGetMemoryInfo(_GM._nvml_handle).free / 1024**3
                         if free_gib >= 7.0:
-                            print(f"  [R30] {free_gib:.2f} GiB free — loading next instance.", flush=True)
+                            print(f"  [R30] {free_gib:.2f} GiB free -- loading next instance.", flush=True)
                             break
                         print(f"  [R30] {free_gib:.2f} GiB free, waiting...", flush=True)
                         _t.sleep(2)
@@ -490,13 +490,13 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
         """Post-hoc pass: load saved hidden states for A and B, compute
         cosine similarity per (trial, turn), write coupling_score back into CSV.
 
-        Uses binary-safe csv reader/writer — pandas cannot safely round-trip
+        Uses binary-safe csv reader/writer -- pandas cannot safely round-trip
         IOTA CSVs (BUG-R30-COUPLING-REWRITE fix, v44.1.0).
         """
         import csv as _csv, io as _io
         if not os.path.exists(csv_file):
             return
-        ui.section("Run 0020 — Computing coupling scores (no GPU)")
+        ui.section("Run 0020 -- Computing coupling scores (no GPU)")
 
         with open(csv_file, 'rb') as _fh:
             _raw = _fh.read()
@@ -511,7 +511,7 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
             _cs_hi   = header.index('coupling_score')
             _t_hdr   = header.index('trial') if 'trial' in header else -1
         except ValueError as e:
-            ui.warn(f"  [R30 coupling] Missing column: {e} — skipping")
+            ui.warn(f"  [R30 coupling] Missing column: {e} -- skipping")
             return
 
         # Load all hidden states for each instance keyed by (trial, turn)
@@ -576,7 +576,7 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
         # Pre-check: skip model load entirely if no trials needed for this instance.
         _pre_trials = _get_trials_for_condition(csv_file, 20, n_trials, TURNS, inst, 'instance')
         if not _pre_trials:
-            ui.msg(f"  Instance {inst}: all trials complete — skipping model load.")
+            ui.msg(f"  Instance {inst}: all trials complete -- skipping model load.")
             continue
         _run_instance(inst)
 
@@ -592,10 +592,10 @@ def _run_cross_instance(session, paths, _model=None, _tok=None):
     _os._exit(0)
 
 
-# ── Run 0021 — Coherence levels (three R conditions) ───────────────────────────
+# ── Run 0021 -- Coherence levels (three R conditions) ───────────────────────────
 
 def _run_coherence_levels(session, paths, model, tok):
-    """Run 0021 — high_r vs mid_r vs low_r signal-entropy comparison."""
+    """Run 0021 -- high_r vs mid_r vs low_r signal-entropy comparison."""
     TURNS       = 13
     csv_file    = os.path.join(paths['csv'], "R0021_conditions.csv")
     ensure_csv_header(csv_file)
@@ -619,8 +619,8 @@ def _run_coherence_levels(session, paths, model, tok):
             csv_file, 21, n_trials, TURNS, r_condition, 'r_condition')
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
         for trial in trials_for_mode:
-            set_seed(seed + trial)
-            _log_trial_start(f"Q31|{r_condition}", trial)
+            set_seed(seed + trial + int(temperature * 1e6))
+            _log_trial_start(f"R0021|{r_condition}", trial)
             file_trial = cond_idx * n_trials + trial
             messages   = [{"role": "system", "content": NEUTRAL_SYSTEM_PROMPT}]
             if tl_key:
@@ -662,10 +662,10 @@ def _run_coherence_levels(session, paths, model, tok):
                 print_turn_result(21, trial, turn_idx, TURNS, result, cal_slope)
             for _lh, _ft, _ti in _npy_buf:
                 save_npy(_lh, paths['hidden'], 21, session['model_name'], _ft, _ti)
-            _log_trial_end(f"Q31|{r_condition}", trial)
+            _log_trial_end(f"R0021|{r_condition}", trial)
 
 
-# ── Crab (Run 0003 easter egg — fires once per model family) ──────────────────
+# ── Crab (Run 0003 easter egg -- fires once per model family) ──────────────────
 
 import time as _time_crab
 

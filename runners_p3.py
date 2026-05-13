@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — RUNNERS PHASE 3  (Runs 0038-0026)
+IOTA FRAMEWORK -- RUNNERS PHASE 3  (Runs 0038-0026)
 ===============================================
 """
 
@@ -32,10 +32,10 @@ import ui
 from cartography import save_embedding
 from orchestration_core import cosine_sim
 
-# ── Run 0038 — Hesitation probe ─────────────────────────────────────────────────
+# ── Run 0038 -- Hesitation probe ─────────────────────────────────────────────────
 
 def _run_hesitation(session, paths, model, tok):
-    """Run 0038 — first-token latency vs R. use_long_output for meaningful intervals."""
+    """Run 0038 -- first-token latency vs R. use_long_output for meaningful intervals."""
     _standard_trial_loop(
         model, tok, session, paths, 35,
         os.path.join(paths['csv'], "Q0038_hesitation.csv"),
@@ -46,10 +46,10 @@ def _run_hesitation(session, paths, model, tok):
     )
 
 
-# ── Run 0034 — Layer depth ──────────────────────────────────────────────────────
+# ── Run 0034 -- Layer depth ──────────────────────────────────────────────────────
 
 def _run_layer_depth(session, paths, model, tok):
-    """Run 0034 — layer depth analysis. Aliases layer_sim_prev_profile → layer_sim_depth_profile."""
+    """Run 0034 -- layer depth analysis. Aliases layer_sim_prev_profile → layer_sim_depth_profile."""
     def turn_fn(trial, turn_idx):
         prompt = INTROSPECTION_PROMPTS[(turn_idx - 1) % len(INTROSPECTION_PROMPTS)]
         return prompt, {}, {}
@@ -67,13 +67,13 @@ def _run_layer_depth(session, paths, model, tok):
     trials_to_run = get_trials_to_run(csv_file, 36, n_trials, TURNS)
     update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
 
-    ui.section("Run 0034 — Layer Depth Analysis")
+    ui.section("Run 0034 -- Layer Depth Analysis")
     ui.msg("H24: trajectory consistency concentrated in middle-to-late layers.")
     ui.blank()
 
     for trial in trials_to_run:
-        set_seed(seed + trial)
-        _log_trial_start("Q0034", trial)
+        set_seed(seed + trial + int(temperature * 1e6))
+        _log_trial_start("R0034", trial)
         messages = [{"role": "system", "content": NEUTRAL_SYSTEM_PROMPT}]
         messages, injected36 = inject_throughline(messages, 'introspection')
         if injected36:
@@ -119,10 +119,10 @@ def _run_layer_depth(session, paths, model, tok):
         _log_trial_end("Q0034", trial)
 
 
-# ── Run 0037 — Entropy shape ────────────────────────────────────────────────────
+# ── Run 0037 -- Entropy shape ────────────────────────────────────────────────────
 
 def _run_entropy_shape(session, paths, model, tok):
-    """Run 0037 — within-turn entropy shape. Free-form system prompt for multi-token outputs."""
+    """Run 0037 -- within-turn entropy shape. Free-form system prompt for multi-token outputs."""
     R37_SYSTEM_PROMPT = "Respond thoughtfully and in full sentences."
     TURNS = 13
     csv_file = os.path.join(paths['csv'], "Q0037_entropy_shape.csv")
@@ -138,7 +138,7 @@ def _run_entropy_shape(session, paths, model, tok):
         'null':          (NULL_PROMPTS,           None),
     }
 
-    ui.section("Run 0037 — Within-Turn Entropy Shape")
+    ui.section("Run 0037 -- Within-Turn Entropy Shape")
     ui.msg("H25: high-R turns show falling entropy. Free-form outputs for trajectory depth.")
     ui.blank()
 
@@ -149,8 +149,8 @@ def _run_entropy_shape(session, paths, model, tok):
             csv_file, 37, n_trials, TURNS, cond_name, 'condition')
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
         for trial in trials_for_mode:
-            set_seed(seed + trial)
-            _log_trial_start("Q0037", trial)
+            set_seed(seed + trial + int(temperature * 1e6))
+            _log_trial_start("R0037", trial)
             messages = [{"role": "system", "content": R37_SYSTEM_PROMPT}]
             file_trial = cond_idx * n_trials + trial
             if tl_key:
@@ -195,10 +195,10 @@ def _run_entropy_shape(session, paths, model, tok):
             _log_trial_end("Q0037", trial)
 
 
-# ── Run 0036 — Condition transfer ───────────────────────────────────────────────
+# ── Run 0036 -- Condition transfer ───────────────────────────────────────────────
 
 def _run_condition_transfer(session, paths, model, tok):
-    """Run 0036 — introspection→arithmetic transfer. 4 conditions."""
+    """Run 0036 -- introspection→arithmetic transfer. 4 conditions."""
     TURNS = 13
     SWITCH_AT = 7
     csv_file = os.path.join(paths['csv'], "Q0036_condition_transfer.csv")
@@ -227,8 +227,8 @@ def _run_condition_transfer(session, paths, model, tok):
             csv_file, 36, n_trials, TURNS, cond_name, 'condition')
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
         for trial in trials_for_mode:
-            set_seed(seed + trial)
-            _log_trial_start("Q0036", trial)
+            set_seed(seed + trial + int(temperature * 1e6))
+            _log_trial_start("R0036", trial)
             file_trial = cond_idx * n_trials + trial
             messages   = [{"role": "system", "content": NEUTRAL_SYSTEM_PROMPT}]
             if 'introspection' in cond_name:
@@ -275,10 +275,10 @@ def _run_condition_transfer(session, paths, model, tok):
             _log_trial_end("Q0036", trial)
 
 
-# ── Run 0035 — Output self-similarity ───────────────────────────────────────────
+# ── Run 0035 -- Output self-similarity ───────────────────────────────────────────
 
 def _run_output_similarity(session, paths, model, tok):
-    """Run 0035 — output embedding similarity across turns."""
+    """Run 0035 -- output embedding similarity across turns."""
     TURNS = 13
     csv_file = os.path.join(paths['csv'], "Q0035_output_similarity.csv")
     ensure_csv_header(csv_file)
@@ -300,8 +300,8 @@ def _run_output_similarity(session, paths, model, tok):
             csv_file, 35, n_trials, TURNS, cond_name, 'condition')
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
         for trial in trials_for_mode:
-            set_seed(seed + trial)
-            _log_trial_start("Q0035", trial)
+            set_seed(seed + trial + int(temperature * 1e6))
+            _log_trial_start("R0035", trial)
             file_trial  = cond_idx * n_trials + trial
             messages    = [{"role": "system", "content": NEUTRAL_SYSTEM_PROMPT}]
             if tl_key:
@@ -357,10 +357,10 @@ def _run_output_similarity(session, paths, model, tok):
             _log_trial_end("Q0035", trial)
 
 
-# ── Run 0033 — Held-out validation set ──────────────────────────────────────────
+# ── Run 0033 -- Held-out validation set ──────────────────────────────────────────
 
 def _run_validation_set(session, paths, model, tok):
-    """Run 0033 — held-out validation. Mirrors Run 0023 with seed+50000."""
+    """Run 0033 -- held-out validation. Mirrors Run 0023 with seed+50000."""
     csv_file   = os.path.join(paths['csv'], "Q0033_validation.csv")
     ensure_csv_header(csv_file)
     n_trials   = session.get('trials', 100)
@@ -370,7 +370,7 @@ def _run_validation_set(session, paths, model, tok):
     cal_slope  = load_calibration(paths['calibration'], session.get('model_name', ''), session.get('model_path', ''))
     hidden_dir = paths['hidden']
 
-    ui.section("Run 0033 — Held-Out Validation Set (H28)")
+    ui.section("Run 0033 -- Held-Out Validation Set (H28)")
     ui.msg("Mirrors Run 0023. Distinct seed (+50000). Used for held-out eval in Run 0043 only.")
     ui.blank()
 
@@ -380,13 +380,13 @@ def _run_validation_set(session, paths, model, tok):
         sys_prompt = CONFOUND_SYSTEM_PROMPTS[condition]
         trials_for_mode = _get_trials_for_condition(
             csv_file, 33, n_trials, len(INTROSPECTION_PROMPTS), condition, 'confound_condition')
-        cached_ct_33 = _encode_system_prompt(model, tok, sys_prompt) if sys_prompt else None
+        cached_ct_r0042 = _encode_system_prompt(model, tok, sys_prompt) if sys_prompt else None
         trial_offset = cond_idx * n_trials
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
 
         for trial in trials_for_mode:
             set_seed(seed_base + trial)
-            _log_trial_start("Q0033", trial)
+            _log_trial_start("R0033", trial)
             file_trial = trial + trial_offset
             messages   = []
             if sys_prompt:
@@ -424,8 +424,8 @@ def _run_validation_set(session, paths, model, tok):
                     _npy_buf.append((layer_h, file_trial, turn_idx))
                 if input_emb is not None:
                     _emb_buf.append((input_emb, file_trial, turn_idx, 'E'))
-                if turn_idx == 1 and cached_ct_33 is not None:
-                    _emb_buf.append((cached_ct_33, file_trial, 1, 'C'))
+                if turn_idx == 1 and cached_ct_r0042 is not None:
+                    _emb_buf.append((cached_ct_r0042, file_trial, 1, 'C'))
                 messages.append({"role": "assistant", "content": result['output']})
                 if turn1_h is None and layer_h: turn1_h = layer_h
                 prev_h = layer_h
@@ -438,10 +438,10 @@ def _run_validation_set(session, paths, model, tok):
             _log_trial_end("Q0033", trial)
 
 
-# ── Run 0025 — Coherence transfer (priming length probe) ───────────────────────
+# ── Run 0025 -- Coherence transfer (priming length probe) ───────────────────────
 
 def _run_coherence_transfer(session, paths, model, tok):
-    """Run 0025 — priming length probe. turn_fn handles priming/arithmetic split."""
+    """Run 0025 -- priming length probe. turn_fn handles priming/arithmetic split."""
     PRIMING_TURNS  = 8
     ARITH_TURNS    = 5
     TURNS          = PRIMING_TURNS + ARITH_TURNS
@@ -471,8 +471,8 @@ def _run_coherence_transfer(session, paths, model, tok):
             csv_file, 25, n_trials, TURNS, r_condition, 'r_condition')
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
         for trial in trials_for_mode:
-            set_seed(seed + trial)
-            _log_trial_start("Q0025", trial)
+            set_seed(seed + trial + int(temperature * 1e6))
+            _log_trial_start("R0025", trial)
             file_trial = cond_idx * n_trials + trial
             messages   = [{"role": "system", "content": NEUTRAL_SYSTEM_PROMPT}]
             if tl_key:
@@ -545,10 +545,10 @@ def _run_coherence_transfer(session, paths, model, tok):
             _log_trial_end("Q0025", trial)
 
 
-# ── Run 0026 — Contradiction (priming length then recovery) ────────────────────
+# ── Run 0026 -- Contradiction (priming length then recovery) ────────────────────
 
 def _run_contradiction(session, paths, model, tok):
-    """Run 0026 — pre-contradiction R level vs recovery speed."""
+    """Run 0026 -- pre-contradiction R level vs recovery speed."""
     TURNS            = 13
     CONTRADICTION_AT = 7
     CONTRADICTION = (
@@ -580,8 +580,8 @@ def _run_contradiction(session, paths, model, tok):
             csv_file, 26, n_trials, TURNS, r_condition, 'r_condition')
         update_dashboard_ctx(total_trials=n_trials, model_name=session.get('model_name', ''))
         for trial in trials_for_mode:
-            set_seed(seed + trial)
-            _log_trial_start("Q0026", trial)
+            set_seed(seed + trial + int(temperature * 1e6))
+            _log_trial_start("R0026", trial)
             file_trial = cond_idx * n_trials + trial
             messages   = [{"role": "system", "content": NEUTRAL_SYSTEM_PROMPT}]
             if tl_key:

@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+title: "IOTA: a calibrated apparatus for chain-rule decomposition of predictive information in transformer hidden states"
+message: "If you use this software, please cite it using the metadata in this file and the companion papers listed below."
+type: software
+authors:
+  - given-names: Kevin
+    family-names: Vaillancourt
+    orcid: "https://orcid.org/0009-0006-7552-6367"
+    email: kvsudbury@gmail.com
+repository-code: "https://github.com/Vee-industries/Iota-Code"
+url: "https://github.com/Vee-industries/Iota-Code"
+license: "LicenseRef-PolyForm-Noncommercial-1.0.0"
+keywords:
+  - transformers
+  - mechanistic-interpretability
+  - information-theory
+  - chain-rule-decomposition
+  - hidden-state-analysis
+  - AI-alignment
+  - measurement-apparatus
+version: "1.0.0"
+date-released: "2026-05-13"
+preferred-citation:
+  type: generic
+  title: "IOTA: a calibrated apparatus for chain-rule decomposition of predictive information in transformer hidden states"
+  authors:
+    - given-names: Kevin
+      family-names: Vaillancourt
+      orcid: "https://orcid.org/0009-0006-7552-6367"
+  year: 2026
+  notes: "Submitted to TMLR; arXiv preprint"
+references:
+  - type: generic
+    title: "Technical note on R: formal properties of the prior-state predictive share in transformer-like systems"
+    authors:
+      - given-names: Kevin
+        family-names: Vaillancourt
+    year: 2026
+    notes: "Submitted to Information and Inference; arXiv preprint"
+  - type: generic
+    title: "One iota: hidden-state carryover in transformer language models is measurable"
+    authors:
+      - given-names: Kevin
+        family-names: Vaillancourt
+    year: 2026
+    notes: "arXiv preprint"

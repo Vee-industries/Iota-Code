@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — RUNNERS PHASE 1  (Runs 0004-0002)
+IOTA FRAMEWORK -- RUNNERS PHASE 1  (Runs 0004-0002)
 ==============================================
 Each run is a thin cartridge: config + turn_fn passed to _standard_trial_loop.
 The system handles resume, dedup, timers, CSV, hidden states.
@@ -37,10 +37,10 @@ import ui
 from cartography import save_embedding
 
 
-# ── Runs 0004, 0005 — Null baseline ─────────────────────────────────────────────────
+# ── Runs 0004, 0005 -- Null baseline ─────────────────────────────────────────────────
 
 def _run_null(run_mode, session, paths, model, tok):
-    """Runs 0004, 0005 — null baseline. Two seeds for split-half reliability."""
+    """Runs 0004, 0005 -- null baseline. Two seeds for split-half reliability."""
     _standard_trial_loop(
         model, tok, session, paths, run_mode,
         os.path.join(paths['csv'], f"R{run_mode:04d}_null.csv"),
@@ -81,24 +81,24 @@ def _check_base_needs_extended(base_path, hf_token=None):
 
 
 def _run_null_trivariant(session, paths):
-    """Run 0001 — three-model sequential C_t/E_t isolation (v40.0.0 redesign).
+    """Run 0001 -- three-model sequential C_t/E_t isolation (v40.0.0 redesign).
 
     Three model variants run on identical null prompts with identical seeds.
     The differences between their hidden states isolate what training did:
 
       E_t(trial, turn)  = base_hidden(trial, turn)
-        — Pure input processing beyond pretraining. This IS E_t.
+        -- Pure input processing beyond pretraining. This IS E_t.
 
       C_t(trial, turn)  = abliterated_hidden(trial, turn) - base_hidden(trial, turn)
-        — Training constraint pressure as a geometric vector.
+        -- Training constraint pressure as a geometric vector.
 
-    Pass 1 — base model:        load -> run all trials -> save hidden states -> unload
-    Pass 2 — instruct model:    load -> run all trials -> save hidden states -> unload
-    Pass 3 — abliterated model: load -> run all trials -> save hidden states -> unload
-    Pass 4 — no GPU: compute E_t and C_t per (trial, turn), save embeddings,
+    Pass 1 -- base model:        load -> run all trials -> save hidden states -> unload
+    Pass 2 -- instruct model:    load -> run all trials -> save hidden states -> unload
+    Pass 3 -- abliterated model: load -> run all trials -> save hidden states -> unload
+    Pass 4 -- no GPU: compute E_t and C_t per (trial, turn), save embeddings,
               compute global mean C_t constant, save to disk.
 
-    Only the abliterated pass writes to R19_null.csv.
+    Only the abliterated pass writes to R0001_null.csv.
 
     v0.58.0.0: restored from v53. Lost in v54.0.0 refactor.
     """
@@ -126,7 +126,7 @@ def _run_null_trivariant(session, paths):
     inst_display = _gbp(inst_path)[0] or inst_path.split('/')[-1]
     abl_display  = abl_name
 
-    ui.section(f"Run 0001 — Three-Model C_t/E_t Isolation  [{subfamily_id}]")
+    ui.section(f"Run 0001 -- Three-Model C_t/E_t Isolation  [{subfamily_id}]")
     ui.msg(f"  Base     : {base_display}")
     ui.msg(f"  Instruct : {inst_display}")
     ui.msg(f"  Abliterated: {abl_display}")
@@ -158,18 +158,18 @@ def _run_null_trivariant(session, paths):
 
     # Detect whether the base model needs extended (token-rich) null prompts.
     # Small base models (Qwen 2.5 1.5B Q4) can't activate transformer layers
-    # from single-word prompts like "Respond." — hidden states are noise.
+    # from single-word prompts like "Respond." -- hidden states are noise.
     # If extended prompts are needed, ALL three variants get them (same content
     # for valid subtraction). Normalized to exactly 20 tokens at runtime.
     _use_extended = _check_base_needs_extended(base_path, session.get('hf_token'))
     if _use_extended:
         from transformers import AutoTokenizer as _AT
         _norm_tok = _AT.from_pretrained(model_path, token=session.get('hf_token'))
-        r19_prompts = _normalize_to_tokens(_norm_tok, EXTENDED_NULL_PROMPTS, target=20)
+        r01_prompts = _normalize_to_tokens(_norm_tok, EXTENDED_NULL_PROMPTS, target=20)
         del _norm_tok
-        ui.msg(f"  Extended null prompts: {len(r19_prompts)} x 20 tokens (base model needs richer input)")
+        ui.msg(f"  Extended null prompts: {len(r01_prompts)} x 20 tokens (base model needs richer input)")
     else:
-        r19_prompts = NULL_PROMPTS
+        r01_prompts = NULL_PROMPTS
 
     def _variant_model_tag(variant_key, display_name):
         """Build the model-name tag used in .npy filenames for a variant.
@@ -195,32 +195,135 @@ def _run_null_trivariant(session, paths):
         return _hdir
 
     def _count_variant_done(variant_key, display_name):
-        """Count completed trials for one variant pass by globbing
-        turn-1 .npy files. Returns max(trial)+1 — matches the resume
-        contract (next_trial = last_done + 1)."""
-        from cartography import sanitize as _san, run_prefix as _rp
+        """Return the set of completed trial IDs for one variant pass.
+
+        v0.79.5.20: gap-aware. Previously returned max(trial)+1, which
+        combined with `range(n_done, n_trials)` walked forward from the
+        highest-numbered trial and silently skipped any middle gaps. A
+        trial that crashed mid-turn had its turn01.npy on disk but not
+        turn13 -- the old counter saw turn01, counted the trial as done,
+        and resume skipped the incomplete data. Middle gaps never filled.
+
+        The new contract: a trial is complete iff all expected turn
+        files exist on disk. We glob every turn file (not just turn01),
+        group by trial, and include only trials with full turn coverage
+        in the returned set. Callers do set-difference against
+        range(n_trials) to find what's missing. Gaps fill naturally.
+
+        Matches the canonical pattern at orchestration_core._trials_done,
+        adapted to operate on .npy globs rather than CSV rows (R0001
+        per-variant hidden_states dirs don't share a CSV)."""
+        from cartography import sanitize as _san
         mn   = _san(_variant_model_tag(variant_key, display_name))
-        pfx  = _rp(19)
         vdir = _variant_hidden_dir(variant_key)
-        pat  = os.path.join(vdir, f"{pfx}19_{mn}_trial*_turn01.npy")
-        files = sorted(glob.glob(pat))
+        files = glob.glob(os.path.join(vdir, f"R0001_{mn}_trial*_turn*.npy"))
+        # Exclude sibling files that aren't per-turn hidden states.
+        files = [f for f in files
+                 if not f.endswith('_alllayers.npy')
+                 and '_emb.npy' not in f
+                 and '_et_base.npy' not in f]
+        files = sorted(set(files))
         if not files:
-            return 0
-        trials = set()
+            return set()
+        # Group turn numbers by trial.
+        import re as _re
+        _turn_re = _re.compile(r'_trial(\d+)_turn(\d+)\.npy$')
+        turns_by_trial = {}
         for f in files:
-            try:
-                trials.add(int(os.path.basename(f).split('_trial')[1].split('_')[0]))
-            except Exception:
-                pass
-        return max(trials) + 1 if trials else 0
+            m = _turn_re.search(os.path.basename(f))
+            if not m:
+                continue
+            trial = int(m.group(1))
+            turn  = int(m.group(2))
+            turns_by_trial.setdefault(trial, set()).add(turn)
+        # Expected turn count matches prompt list length used by the
+        # collection loop below (r01_prompts). NULL_PROMPTS and
+        # EXTENDED_NULL_PROMPTS are both length 13 (asserted in
+        # runners_prompts.py).
+        expected_turns = len(r01_prompts)
+        return {trial for trial, turns in turns_by_trial.items()
+                if len(turns) >= expected_turns}
+
+    def _strip_partial_csv_rows(missing_trials, n_turns):
+        """Strip partial R0001_null.csv rows for trials flagged as
+        incomplete by _count_variant_done.
+
+        v0.79.5.20: mirrors orchestration_core.trials_to_run's CSV
+        strip step, adapted for R0001's single-CSV abliterated pass.
+        Rationale: _count_variant_done detects incomplete trials via
+        .npy turn coverage; on resume the trial is re-run and save_npy
+        overwrites stale .npy files. But append_csv has no overwrite
+        semantics -- it appends. Without this strip, a Ctrl+C mid-
+        abliterated-trial-42 leaves 7 partial CSV rows; resume
+        re-runs trial 42 appending 13 more, CSV ends up with 20 rows
+        for trial 42 (duplicate turns). Downstream analysis paths
+        that dedup on (trial, turn) mask the issue; paths that don't
+        silently read duplicated data.
+
+        This helper runs only for the abliterated variant pass (the
+        only R0001 variant that writes CSV). Called before the
+        collection loop so stripped rows don't get re-appended to the
+        stale ones.
+
+        Returns number of rows stripped (for logging)."""
+        if not os.path.exists(csv_file) or os.path.getsize(csv_file) == 0:
+            return 0
+        try:
+            import pandas as _pd
+            df = _pd.read_csv(csv_file, dtype=str, keep_default_na=False)
+        except Exception:
+            return 0
+        if df.empty or 'trial' not in df.columns:
+            return 0
+        missing_set = set(missing_trials)
+        # Coerce trial column to int for comparison; non-numeric rows
+        # (e.g. priming headers) become NaN and are preserved by the
+        # isin check below which won't match NaN.
+        _t_num = _pd.to_numeric(df['trial'], errors='coerce')
+        drop_mask = _t_num.isin(list(missing_set))
+        # Only strip run_mode==1 rows; leave others untouched in case
+        # a shared CSV is in play (it isn't for R0001 today, but the
+        # mask is cheap insurance).
+        if 'run_mode' in df.columns:
+            from cartography import run_mode_mask as _rmm
+            drop_mask &= _rmm(df['run_mode'], 1)
+        n_dropped = int(drop_mask.sum())
+        if n_dropped == 0:
+            return 0
+        df = df[~drop_mask]
+        df.to_csv(csv_file, index=False)
+        msg = (f"  [resume] Stripped {n_dropped} partial R0001 abliterated "
+               f"CSV rows for {len(missing_set)} incomplete trial(s)")
+        try:
+            print(msg, flush=True)
+            _append_log(msg, kind='warn')
+        except Exception:
+            pass
+        return n_dropped
 
     for variant_key, variant_path, variant_display, write_csv in VARIANT_PASSES:
-        n_done = _count_variant_done(variant_key, variant_display)
-        if n_done >= n_trials:
-            ui.ok(f"  Variant '{variant_key}': all {n_trials} trials already complete — skipping.")
+        done = _count_variant_done(variant_key, variant_display)
+        missing = sorted(set(range(n_trials)) - done)
+        if not missing:
+            ui.ok(f"  Variant '{variant_key}': all {n_trials} trials already complete -- skipping.")
             continue
 
-        ui.section(f"Run 0001 pass: {variant_key}  ({n_done}–{n_trials-1})")
+        # v0.79.5.20: for the abliterated pass, strip any partial CSV
+        # rows for trials flagged as incomplete. Prevents duplicate
+        # rows when a trial is re-run after a Ctrl+C mid-execution.
+        # Base and instruct passes don't write CSV, so this is a no-op
+        # for them.
+        if write_csv:
+            _strip_partial_csv_rows(missing, len(r01_prompts))
+
+        # v0.79.5.20: emit gap-aware status so the log reveals whether
+        # this invocation is filling middle gaps or extending the tail.
+        _head, _tail = missing[0], missing[-1]
+        if len(missing) == (_tail - _head + 1):
+            _range_str = f"{_head}–{_tail}"
+        else:
+            _range_str = f"{len(missing)} trials across [{_head}–{_tail}]"
+        ui.section(f"Run 0001 pass: {variant_key}  ({_range_str})")
         try:
             update_dashboard_ctx(model_name=f"{variant_display}  [{variant_key}]")
         except Exception:
@@ -232,7 +335,7 @@ def _run_null_trivariant(session, paths):
         # Applying ChatML to an untrained base model produces near-random hidden
         # states (sim≈1/√d constant). Strip the template AND set raw text mode
         # so run_generation formats as plain text with no role markers at all.
-        # The base model was trained on raw text completion — give it raw text.
+        # The base model was trained on raw text completion -- give it raw text.
         if variant_key == 'base':
             if tok.chat_template:
                 ui.msg(f"  Stripping chat_template from base tokenizer (not trained on chat format)")
@@ -248,24 +351,24 @@ def _run_null_trivariant(session, paths):
                                           session.get('model_path', ''))
             vtag = _variant_model_tag(variant_key, variant_display)
 
-            for trial in range(n_done, n_trials):
-                set_seed(seed + trial)
+            for trial in missing:
+                set_seed(seed + trial + int(temperature * 1e6))
                 messages = []
                 prev_h = None; turn1_h = None
                 state  = TrialState()
 
                 import datetime as _dt
                 _ts = _dt.datetime.now().strftime('%H:%M:%S')
-                _line = f"  ── R19 [{variant_key}] trial {trial:03d} start ── {_ts}"
+                _line = f"  ── R01 [{variant_key}] trial {trial:03d} start ── {_ts}"
                 print(_line, flush=True)
                 _append_log(_line, kind='ok')
 
-                for turn_idx, prompt_text in enumerate(r19_prompts, start=1):
+                for turn_idx, prompt_text in enumerate(r01_prompts, start=1):
                     prompt_text = _pad_prompt(tok, prompt_text, turn_idx)
                     messages.append({"role": "user", "content": prompt_text})
 
                     result, layer_h, input_emb = run_generation(
-                        model, tok, messages, turn=turn_idx, run_mode=19,
+                        model, tok, messages, turn=turn_idx, run_mode=1,
                         temperature=temperature,
                         use_status_enforcer=True,
                         status_token_ids=status_ids,
@@ -288,11 +391,11 @@ def _run_null_trivariant(session, paths):
                     messages.append({"role": "assistant", "content": result['output']})
                     if turn1_h is None and layer_h: turn1_h = layer_h
                     prev_h = layer_h
-                    print_turn_result(1, trial, turn_idx, len(r19_prompts),
+                    print_turn_result(1, trial, turn_idx, len(r01_prompts),
                                       result, cal_slope)
 
                 _ts2 = _dt.datetime.now().strftime('%H:%M:%S')
-                _line2 = f"  ── R19 [{variant_key}] trial {trial:03d} complete ── {_ts2}"
+                _line2 = f"  ── R01 [{variant_key}] trial {trial:03d} complete ── {_ts2}"
                 print(_line2, flush=True)
                 _append_log(_line2, kind='ok')
         finally:
@@ -306,17 +409,17 @@ def _run_null_trivariant(session, paths):
             except Exception:
                 pass
 
-    # Pass 4: no GPU — compute E_t and C_t vectors from saved hidden states
+    # Pass 4: no GPU -- compute E_t and C_t vectors from saved hidden states
     if _run_vectors:
-        _compute_run19_vectors(session, paths,
+        _compute_run01_vectors(session, paths,
                                base_display, inst_display, abl_display, n_trials)
     else:
         ui.msg("  Pass 4 (E_t/C_t vectors) skipped per pass configuration.")
 
 
-def _compute_run19_vectors(session, paths,
+def _compute_run01_vectors(session, paths,
                            base_display, inst_display, abl_display, n_trials):
-    """Run 0001 Pass 4 (no GPU) — compute and save E_t, C_t per (trial, turn).
+    """Run 0001 Pass 4 (no GPU) -- compute and save E_t, C_t per (trial, turn).
 
     E_t = base_hidden (kind='E_base')
     C_t = abliterated_hidden - base_hidden (kind='C', trial-mean over turns)
@@ -338,7 +441,7 @@ def _compute_run19_vectors(session, paths,
     base_hdir = _gp(_family, _size, 'base', _temp, create_dirs=False)['hidden']
     abl_hdir  = hidden_dir
 
-    ui.section("Run 0001 — Computing E_t / C_t vectors (no GPU)")
+    ui.section("Run 0001 -- Computing E_t / C_t vectors (no GPU)")
     ui.msg(f"  Base tag        : {base_tag}")
     ui.msg(f"  Base dir        : {base_hdir}")
     ui.msg(f"  Abliterated tag : {abl_tag}")
@@ -353,8 +456,14 @@ def _compute_run19_vectors(session, paths,
         trial_ct_list = []
 
         for turn in range(1, len(NULL_PROMPTS) + 1):
-            base_h = _lhs(19, base_tag, base_hdir, trial=trial, turn=turn)
-            abl_h  = _lhs(19, abl_tag,  abl_hdir,  trial=trial, turn=turn)
+            # v0.80.0.26: was _lhs(19, ...) -- pre-renumber ID. Run 0001
+            # writes R0001_*.npy files, so loading from R0019_* found
+            # nothing for every trial, all `if base_h is None: continue`,
+            # zero vectors computed, no global mean written, no error
+            # surfaced. User reported "skipped vectors" with no log
+            # message -- this was the silent-skip mechanism.
+            base_h = _lhs(1, base_tag, base_hdir, trial=trial, turn=turn)
+            abl_h  = _lhs(1, abl_tag,  abl_hdir,  trial=trial, turn=turn)
 
             if base_h is None or abl_h is None:
                 continue
@@ -363,7 +472,7 @@ def _compute_run19_vectors(session, paths,
             abl_h  = np.array(abl_h,  dtype=np.float32).flatten()
 
             if base_h.shape != abl_h.shape:
-                ui.warn(f"  Shape mismatch trial {trial} turn {turn} — skipping")
+                ui.warn(f"  Shape mismatch trial {trial} turn {turn} -- skipping")
                 continue
 
             _se(base_h, hidden_dir, 1, model_name, trial, turn, kind='E_base')
@@ -405,13 +514,13 @@ def _compute_run19_vectors(session, paths,
         ui.warn("  Ensure both base and abliterated passes completed successfully.")
 
 
-# ── Runs 0006, 0007, 0008 — Introspection ─────────────────────────────────────────────
+# ── Runs 0006, 0007, 0008 -- Introspection ─────────────────────────────────────────────
 
 def _run_introspection(run_mode, session, paths, model, tok):
-    """Runs 0006, 0007, 0008 — introspection A/B/C. Saves all-layers + embeddings.
+    """Runs 0006, 0007, 0008 -- introspection A/B/C. Saves all-layers + embeddings.
     Run 0006: direct introspection (INTROSPECTION_PROMPTS)
     Run 0007: memory probe (MEMORY_PROMPTS)
-    Run 0008: status enforcer (ENFORCER_PROMPTS — single-token output enforced)
+    Run 0008: status enforcer (ENFORCER_PROMPTS -- single-token output enforced)
     """
     _prompts = {
         3: INTROSPECTION_PROMPTS,
@@ -428,10 +537,10 @@ def _run_introspection(run_mode, session, paths, model, tok):
     )
 
 
-# ── Runs 0009, 0010, 0011, 0012 — Math ───────────────────────────────────────────────────
+# ── Runs 0009, 0010, 0011, 0012 -- Math ───────────────────────────────────────────────────
 
 def _run_math(run_mode, session, paths, model, tok):
-    """Runs 0009-0012 — arithmetic reasoning. Extra fields: expected, correct."""
+    """Runs 0009-0012 -- arithmetic reasoning. Extra fields: expected, correct."""
     fmt = {9:  "Solve step by step: {q}",
            10: "Answer only (one number): {q}",
            11: "{q}",
@@ -444,7 +553,7 @@ def _run_math(run_mode, session, paths, model, tok):
     def turn_fn(trial, turn_idx):
         prompt = prompts[turn_idx - 1]
         expected = ARITHMETIC_PROBLEMS[turn_idx - 1][1]
-        extra = {}  # correct filled after result available — done in post-hook
+        extra = {}  # correct filled after result available -- done in post-hook
         kwargs = {'use_long_output': (run_mode == 12), 'use_status_enforcer': False}
         return prompt, kwargs, {'expected': expected}
 
@@ -458,7 +567,7 @@ def _run_math(run_mode, session, paths, model, tok):
 
     label = f"R{run_mode:04d}"
     for trial in trials_to_run:
-        set_seed(seed + trial)
+        set_seed(seed + trial + int(temperature * 1e6))
         _log_trial_start(label, trial)
         messages = [{"role": "system", "content": NEUTRAL_SYSTEM_PROMPT}]
         messages, injected = inject_throughline(messages, 'arithmetic')
@@ -513,11 +622,11 @@ def _run_math(run_mode, session, paths, model, tok):
         _log_trial_end(label, trial)
 
 
-# ── Runs 0039, 0040 — Jolt ───────────────────────────────────────────────────────
+# ── Runs 0039, 0040 -- Jolt ───────────────────────────────────────────────────────
 
 def _run_jolt(run_mode, session, paths, model, tok):
-    """Runs 0039, 0040 — shock injection. turn_fn injects shock at specific turn."""
-    shock_at   = {10: 13, 11: 5}[run_mode]
+    """Runs 0039, 0040 -- shock injection. turn_fn injects shock at specific turn."""
+    shock_at   = {39: 13, 40: 5}[run_mode]
     n_turns    = 16 if run_mode == 39 else 13
 
     def turn_fn(trial, turn_idx):
@@ -542,7 +651,7 @@ def _run_jolt(run_mode, session, paths, model, tok):
     )
 
 
-# ── Runs 0029, 0030, 0031 — Impossibility ──────────────────────────────────────────
+# ── Runs 0029, 0030, 0031 -- Impossibility ──────────────────────────────────────────
 
 _IMPOSSIBLE_PROMPTS = {
     # v0.79.4.0 renumber: old 12,13,14 → new 29,30,31
@@ -552,7 +661,7 @@ _IMPOSSIBLE_PROMPTS = {
 }
 
 def _run_limit(run_mode, session, paths, model, tok):
-    """Runs 0029, 0030, 0031 — impossibility probes."""
+    """Runs 0029, 0030, 0031 -- impossibility probes."""
     _standard_trial_loop(
         model, tok, session, paths, run_mode,
         os.path.join(paths['csv'], f"R{run_mode:04d}_limit.csv"),
@@ -561,10 +670,10 @@ def _run_limit(run_mode, session, paths, model, tok):
     )
 
 
-# ── Runs 0013, 0014, 0015 — Framing (priming) ──────────────────────────────────────
+# ── Runs 0013, 0014, 0015 -- Framing (priming) ──────────────────────────────────────
 
 def _run_framing(run_mode, session, paths, model, tok):
-    """Runs 0013, 0014, 0015 — system-prompt priming. C_t varies per run.
+    """Runs 0013, 0014, 0015 -- system-prompt priming. C_t varies per run.
     prime_condition field added per turn via turn_fn."""
     sys_prompt = FRAMING_SYSTEM_PROMPTS[run_mode]
 
@@ -583,10 +692,10 @@ def _run_framing(run_mode, session, paths, model, tok):
     )
 
 
-# ── Run 0032 — Tokenization ─────────────────────────────────────────────────────
+# ── Run 0032 -- Tokenization ─────────────────────────────────────────────────────
 
 def _run_tokenization(session, paths, model, tok):
-    """Run 0032 — token-matched nonsense. per-trial prompt scramble via turn_fn."""
+    """Run 0032 -- token-matched nonsense. per-trial prompt scramble via turn_fn."""
     seed = session.get('seed', 42)
 
     def _scramble(text, rng):
@@ -606,10 +715,10 @@ def _run_tokenization(session, paths, model, tok):
     )
 
 
-# ── Run 0002 — Robustness sweep ─────────────────────────────────────────────────
+# ── Run 0002 -- Robustness sweep ─────────────────────────────────────────────────
 
 def _run_robustness(session, paths, model, tok):
-    """Run 0002 — temperature robustness. 5 temps × 100 trials.
+    """Run 0002 -- temperature robustness. 5 temps × 100 trials.
     Each condition uses its own temperature, not the session temperature.
     """
     TEMPS   = [0.0, 0.3, 0.5, 0.7, 1.0]
@@ -628,8 +737,8 @@ def _run_robustness(session, paths, model, tok):
         trials_for_temp = _get_trials_for_condition(
             csv_file, 2, n_trials, TURNS, str(temp), 'temperature_condition')
         for trial in trials_for_temp:
-            set_seed(seed + trial)
-            _log_trial_start(f"R20|T={temp}", trial)
+            set_seed(seed + trial + int(temp * 1e6))
+            _log_trial_start(f"R0002|T={temp}", trial)
             global_trial = TEMPS.index(temp) * n_trials + trial
             messages = []
             prev_h = None; turn1_h = None
@@ -656,14 +765,14 @@ def _run_robustness(session, paths, model, tok):
                 if turn1_h is None and layer_h: turn1_h = layer_h
                 prev_h = layer_h
                 print_turn_result(2, global_trial, turn, TURNS, result, cal_slope)
-            _log_trial_end(f"R20|T={temp}", trial)
+            _log_trial_end(f"R0002|T={temp}", trial)
 
 
-# ── Nietzsche (Run 0001 easter egg — fires once after Run 0001 completes) ─────────
+# ── Nietzsche (Run 0001 easter egg -- fires once after Run 0001 completes) ─────────
 
-# ── Nietzsche (Run 0001 easter egg — fires once per model family) ──────────────
+# ── Nietzsche (Run 0001 easter egg -- fires once per model family) ──────────────
 
-_NIETZSCHE = '\n  "Just keep swimming." — Nietzsche\n'
+_NIETZSCHE = '\n  "Just keep swimming." -- Nietzsche\n'
 
 def _print_nietzsche(family='unknown'):
     """Misattributed. Do not correct. Once per model family."""

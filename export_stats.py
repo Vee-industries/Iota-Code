@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — EXPORT: STATS + FIGURES
+IOTA FRAMEWORK -- EXPORT: STATS + FIGURES
 ==========================================
 v37.2
 
@@ -65,13 +65,13 @@ plt.rcParams.update({
     'savefig.edgecolor': 'white',
 })
 
-# B&W-friendly palette — distinguishable in grayscale via markers/hatching
+# B&W-friendly palette -- distinguishable in grayscale via markers/hatching
 _BW_COLORS = ['#000000', '#555555', '#999999', '#CCCCCC']
 _BW_MARKERS = ['o', 's', '^', 'D', 'v', 'P']
 _BW_HATCHES = ['', '///', '...', 'xxx', '\\\\\\', '+++']
 _BW_LINESTYLES = ['-', '--', ':', '-.']
 
-# Global model style registry — consistent symbols across ALL figures.
+# Global model style registry -- consistent symbols across ALL figures.
 # Key: (family, size). Every figure uses get_model_style() not loop index.
 _MODEL_STYLES = {
     ('llama', '8b'):  {'color': '#000000', 'marker': 'o', 'ls': '-',  'hatch': ''},
@@ -107,33 +107,33 @@ PAL      = {"introspect": "#000000", "null": "#555555",
 # Each entry: H_id → (label, source_runs, key_metric, direction)
 
 HYPOTHESES = {
-    "H01":  ("Geometry Is Condition-Invariant",              [1, 2, 19],        "layer_sim_mean",              "positive"),
-    # v0.77.1.0: renamed from "Is Degenerate" — code supports when 0.5 ≤ entropy
+    "H01":  ("Geometry Is Condition-Invariant",              [4, 5, 1],        "layer_sim_mean",              "positive"),
+    # v0.77.1.0: renamed from "Is Degenerate" -- code supports when 0.5 ≤ entropy
     # ≤ 8.0, i.e. NOT degenerate. Prior name was semantically inverted against
     # the test. Framework convention is "supported = favored finding"; favored
     # here is working-range entropy. (Was H02 in pre-0.77 naming, renumbered
     # H54 in 0.77.0.0 surgery, renamed in 0.77.1.0.)
-    "H54":  ("Baseline Entropy Is Not Degenerate",           [1, 2, 19],        "mean_logit_entropy",          "neutral"),
-    "H03":  ("Introspection Has No Geometric Effect",        [3, 4, 5],         "state_similarity_index",                   "positive"),
-    # v0.77.1.0: renamed from "Is Condition-Invariant" — code runs ttest with
+    "H54":  ("Baseline Entropy Is Not Degenerate",           [4, 5, 1],        "mean_logit_entropy",          "neutral"),
+    "H03":  ("Introspection Has No Geometric Effect",        [6, 7, 8],         "state_similarity_index",                   "positive"),
+    # v0.77.1.0: renamed from "Is Condition-Invariant" -- code runs ttest with
     # direction='positive' on signal_entropy_ratio. An elevation test cannot
     # falsify invariance; the prior name misdescribed the test. (Was H04 →
     # renumbered H55 in 0.77.0.0 → renamed in 0.77.1.0.)
-    "H55":  ("Signal Entropy Ratio Is Elevated By Introspection",   [3, 4, 5],  "signal_entropy_ratio",                   "positive"),
-    "H05":  ("Contradiction Has No Geometric Effect",        [22],              "disruption_flag",                    "positive"),
-    "H06":  ("Similarity Does Not Decay With Context",              [23],              "state_similarity_index",                   "negative"),
+    "H55":  ("Signal Entropy Ratio Is Elevated By Introspection",   [6, 7, 8],  "signal_entropy_ratio",                   "positive"),
+    "H05":  ("Contradiction Has No Geometric Effect",        [28],              "disruption_flag",                    "positive"),
+    "H06":  ("Similarity Does Not Decay With Context",              [22],              "state_similarity_index",                   "negative"),
     "H56":  ("No Similarity Drop Early To Late",                    [23],              "state_similarity_index",                   "negative"),
-    "H08":  ("Throughline Has No Trajectory Effect",         [15, 16, 17],      "state_similarity_index",                   "positive"),
-    "H09":  ("Task Demand Geometry Equals Introspection",    [6, 7, 8, 9],      "state_similarity_index",                   "negative"),
-    "H10":  ("Disruption Fully Resets Trajectory",           [10, 11],          "layer_sim_mean",              "positive"),
+    "H08":  ("Throughline Has No Trajectory Effect",         [13, 14, 15],      "state_similarity_index",                   "positive"),
+    "H09":  ("Task Demand Geometry Equals Introspection",    [9, 10, 11, 12],      "state_similarity_index",                   "negative"),
+    "H10":  ("Disruption Fully Resets Trajectory",           [39, 40],          "layer_sim_mean",              "positive"),
     "H11":  ("Prior State Adds No Predictive Power",         [25, 27],          "delta_r2_internal",           "positive"),
-    "H12":  ("Similarity Is Explained By Token Statistics",         [18],              "state_similarity_index",                   "neutral"),
-    "H13":  ("Similarity Collapses Under Temperature Variation",    [26],              "state_similarity_index",                   "positive"),
-    # v0.77.1.0: renamed from "Is Layer-Uniform" — code at the H14 inference
+    "H12":  ("Similarity Is Explained By Token Statistics",         [32],              "state_similarity_index",                   "neutral"),
+    "H13":  ("Similarity Collapses Under Temperature Variation",    [3],              "state_similarity_index",                   "positive"),
+    # v0.77.1.0: renamed from "Is Layer-Uniform" -- code at the H14 inference
     # block supports when peak_idx >= n_layers/2, a concentration test. A
     # concentration test is not a uniformity test.
-    "H14":  ("Cross-Turn Similarity Concentrates In Late Layers", [24],          "layer_sim_mean",              "positive"),
-    # v0.77.1.0: renamed from "Is Layer-Uniform" — code supports when
+    "H14":  ("Cross-Turn Similarity Concentrates In Late Layers", [27],          "layer_sim_mean",              "positive"),
+    # v0.77.1.0: renamed from "Is Layer-Uniform" -- code supports when
     # late − early > 0.02, a directional gradient test. Gradient is not
     # uniformity. (Was H15 → renumbered H57 in 0.77.0.0 → renamed in 0.77.1.0.)
     "H57":  ("Turn-1 Similarity Shows Early-To-Late Gradient",      [24],          "layer_sim_turn1_mean",        "neutral"),
@@ -141,58 +141,58 @@ HYPOTHESES = {
     # H16 source is Run 0049 (baseline_swap.json). Runs 0004-0002 are upstream (supply the CSV rows
     # that Run 0049 permutes) but are not direct data sources for this hypothesis.
     # dependency_map.py correctly lists data_runs:[32], upstream_runs:[1..20].
-    # Prior value list(range(1,32)) = [1..31] was wrong — BUG-FOUND-4 (fixed v36.5).
+    # Prior value list(range(1,32)) = [1..31] was wrong -- BUG-FOUND-4 (fixed v36.5).
     "H17":  ("Consistency Is Fully Explained By System Prompt",[28],              "delta_r2_internal_per_condition", "neutral"),
-    "H18":  ("History Mode Has No Trajectory Effect",        [29],              "state_similarity_index",                   "positive"),
-    "H19":  ("Two-Instance Coupling Has No Geometric Effect",  [30],              "coupling_score",              "positive"),
-    "H20":  ("R Condition Has No Signal-Per-Watt Effect",    [31],              "signal_per_watt",                "positive"),  # OUT OF PAPER SCOPE — Appendix A only
+    "H18":  ("History Mode Has No Trajectory Effect",        [24],              "state_similarity_index",                   "positive"),
+    "H19":  ("Two-Instance Coupling Has No Geometric Effect",  [20],              "coupling_score",              "positive"),
+    "H20":  ("R Condition Has No Signal-Per-Watt Effect",    [21],              "signal_per_watt",                "positive"),  # OUT OF PAPER SCOPE -- Appendix A only
     "H21":  ("Prior State Adds No Power Over E_t And C_t",  [33],              "delta_r2_internal",           "positive"),
     # H22 REMOVED as standalone hypothesis (v0.71.0.0): E/C/R fractions are a
     # threshold check on Run 0043 output, not an independent test. Fractions kept
     # in _infer_outcomes for Q34 interpretation; H28 is the real validation guard.
-    "H23":  ("Hesitation Is Uncorrelated With Disruption",   [35],              "onset_delay_ratio",            "positive"),
+    "H23":  ("Hesitation Is Uncorrelated With Disruption",   [38],              "onset_delay_ratio",            "positive"),
     # H24 REMOVED as standalone hypothesis (v0.71.0.0): redundant with H14/H15.
     # All three test the same wrong prediction (peak at middle layers). H14 result
     # reported; H24 data folded into one sentence in appendix.
     "H25":  ("Entropy Shape Is Uncorrelated With R",         [37],              "mean_logit_entropy",          "negative"),
-    "H26":  ("R Does Not Persist Across Condition Switch",   [38],              "state_similarity_index",                   "positive"),
-    "H27":  ("Output Similarity Is Uncorrelated With R",     [39],              "output_sim_prev",             "positive"),
+    "H26":  ("R Does Not Persist Across Condition Switch",   [36],              "state_similarity_index",                   "positive"),
+    "H27":  ("Output Similarity Is Uncorrelated With R",     [35],              "output_sim_prev",             "positive"),
     "H28":  ("In-Sample Fractions Do Not Generalise",        [41],              "h28_max_fraction_divergence", "negative"),
     # H28: Run 0033 held-out set. Null = in-sample fractions overfit (divergence > 0.10).
     # Supported = max divergence < 0.05 across E/C/R fractions.
     # Metric direction "negative" = lower divergence = better.
-    "H29":  ("No Single Layer Is Causally Sufficient",       [42],              "output_change_rate_max",      "positive"),
+    "H29":  ("No Single Layer Is Causally Sufficient",       [18],              "output_change_rate_max",      "positive"),
     # H29: Run 0018 single-layer patching. Null = no individual layer sufficient (all rates <= 2%).
     # Supported = at least one layer shows output_change_rate > 5% (p < 0.05 vs null).
     # Metric: max output_change_rate across L8/L16/L24/L31.
     "H38": (
         "Patched State Does Not Change Output",
-        [21],
+        [17],
         "output_change_rate",
         "positive",
     ),
-    # ── v32.0 additions — zero extra data cost ─────────────────────────────────
+    # ── v32.0 additions -- zero extra data cost ─────────────────────────────────
     "H30":  ("Output Turn-1 Self-Referentiality Grows With Turns",  [39],  "output_sim_turn1",   "positive"),
     # H30: Run 0035 already saves output_sim_turn1 per row. Null: cosine sim of current
     # output embedding to turn-1 output embedding shows no increase over turns.
     # Supported = positive slope (linregress state_similarity_index ~ turn, introspection arm).
-    "H31":  ("Arithmetic Accuracy Is Uncorrelated With Trajectory Consistency", [6, 7, 8, 9], "pearsonr_correct_similarity", "positive"),
+    "H31":  ("Arithmetic Accuracy Is Uncorrelated With Trajectory Consistency", [9, 10, 11, 12], "pearsonr_correct_similarity", "positive"),
     # H31: Run 0009-9 save `correct` flag (1/0) per turn. Null: r(state_similarity_index, correct) is
-    # not significant. Supported = Pearson r > 0.15 and p < 0.05 — high-R trajectories
+    # not significant. Supported = Pearson r > 0.15 and p < 0.05 -- high-R trajectories
     # produce more accurate answers, demonstrating functional consequence of R.
     "H32":  ("Shock Phrasing Has No Differential Effect On Recovery", [10], "shock_variant_anova_p", "positive"),
     # H32: Run 0039 cycles 4 SHOCK_VARIANTS per trial. Null: recovery_delta (post-shock
     # sim - shock-turn sim) is identical across all four phrasings (ANOVA p ≥ 0.05).
-    # Supported = ANOVA non-significant — recovery is phrasing-robust.
+    # Supported = ANOVA non-significant -- recovery is phrasing-robust.
     # Disproven = one or more variants shows significantly different recovery arc.
     # H38: Run 0017 multi-layer activation patching. Null = grafting high-R geometry
     # has no causal effect on output (change rate <= 2%, indistinguishable from noise).
     # Supported = rate >= 10% in partial or full patch_mode (p < 0.05, binomial vs 10%).
     # H38 prediction: >= 10% of turns change output. Prior finding: 15.4% (pre-Bug-M data).
-    # output_changed absent from pre-v30.9 R21_patching.csv rows — degrades gracefully to pending.
+    # output_changed absent from pre-v30.9 R21_patching.csv rows -- degrades gracefully to pending.
     # Re-collect Run 0017 after Run 0006 completes with save_all_layers=True before citing result.
-    # ── v35.0 additions — Phase 4: Coherence Transfer and Contradiction Recovery ───────
-    "H33":  ("Condition A Has No Task-Equivalent Compute Advantage", [43], "compute_per_correct_ratio", "negative"),  # OUT OF PAPER SCOPE — Appendix A only
+    # ── v35.0 additions -- Phase 4: Coherence Transfer and Contradiction Recovery ───────
+    "H33":  ("Condition A Has No Task-Equivalent Compute Advantage", [43], "compute_per_correct_ratio", "negative"),  # OUT OF PAPER SCOPE -- Appendix A only
     # H33: Run 0025. 8 enforcer priming turns (1 token each) + 5 arithmetic turns.
     # Null: compute_per_correct does not differ across conditions, or condition_a
     # correct_rate is significantly lower.
@@ -200,52 +200,52 @@ HYPOTHESES = {
     # AND correct_rate not significantly lower. This is the compute efficiency measurement.
     # Metric: ratio condition_a / condition_c compute_per_correct (lower = better).
     "H34":  ("Disruption Magnitude Does Not Track Contradiction Response",              [22],  "disruption_magnitude_delta",    "positive"),
-    # H34: Run 0028 — zero new data cost. disruption_magnitude (continuous) at contradiction turn
+    # H34: Run 0028 -- zero new data cost. disruption_magnitude (continuous) at contradiction turn
     # vs pre-contradiction baseline. H05 tests binary disruption_flag clustering; H34 tests
-    # the continuous signal magnitude — is disruption_magnitude a continuous geometric disruption signal?
+    # the continuous signal magnitude -- is disruption_magnitude a continuous geometric disruption signal?
     # Supported: paired t-test within-trial, disruption_magnitude at turn 7 significantly higher
     # than mean(turns 1–6), p < 0.05 and Δ > 0.01.
     # Implication: if supported, disruption_magnitude is a continuous signal computed from per-turn hidden states.
     "H35a": ("R Level Has No Effect On Contradiction Recovery (Group)",    [44],  "recovery_similarity_delta_group","positive"),
     "H35b": ("R Level Has No Effect On Contradiction Recovery (Per-Trial)", [44],  "recovery_similarity_delta_corr","positive"),
-    # H35a: Group comparison — high_r vs low_r recovery_delta (t-test).
-    # H35b: Per-trial correlation — Pearson r(pre_sim, recovery_delta).
+    # H35a: Group comparison -- high_r vs low_r recovery_delta (t-test).
+    # H35b: Per-trial correlation -- Pearson r(pre_sim, recovery_delta).
     # Split (v0.71.0.0): these are two different tests giving two different answers.
     # H35a (group) rejects the null at every temperature. H35b (per-trial) does not.
     # Reporting them as one ambiguous result was misleading.
     "H36":  ("Causal Effect Of Patching Is Temperature-Invariant",   [21],  "patch_temp_slope",  "negative"),
     # H36: Run 0017 across all temperature rounds. Null: output_change_rate does not vary
     # with temperature (Kruskal-Wallis p >= 0.05). Supported: output_change_rate decreases
-    # monotonically with temperature — Pearson r(temperature, output_change_rate) < -0.8.
+    # monotonically with temperature -- Pearson r(temperature, output_change_rate) < -0.8.
     # Requires temperature written to CSV (v54.2.2+). Pre-v54.2.2 data not usable.
     "H37":  ("Layer Causal Sufficiency Is Temperature-Invariant",    [42],  "layer_temp_interaction_p", "negative"),
     # H37: Run 0018 across all temperature rounds. Null: per-layer output_change_rate profile
     # does not vary with temperature (no layer × temperature interaction).
     # Supported: two-way ANOVA layer × temperature interaction p < 0.05.
-    # Profile flattens at high temperature — late-layer causal dominance dissolves.
+    # Profile flattens at high temperature -- late-layer causal dominance dissolves.
     # Requires temperature written to CSV (v54.2.2+). Pre-v54.2.2 data not usable.
 
-    # ── v44.0.0 — FIND-H09-GAP fix ────────────────────────────────────────────
-    "H39": ("Impossibility Has No Geometric Effect",             [12, 13, 14], "state_similarity_index", "positive"),
+    # ── v44.0.0 -- FIND-H09-GAP fix ────────────────────────────────────────────
+    "H39": ("Impossibility Has No Geometric Effect",             [29, 30, 31], "state_similarity_index", "positive"),
     # H39: Runs 0029-0031 (impossibility cluster). Null: impossible-input geometry
-    # indistinguishable from null baseline [1,2,19]. Supported: significant difference
+    # indistinguishable from null baseline [4,5,1]. Supported: significant difference
     # (either direction) found between impossibility runs and null. Disproven: no effect.
 
-    # ── v0.71.0.0 — H40 random noise control ───────────────────────────────────
-    "H40": ("Random Noise Patching Matches Real Patching Effect",  [53], "output_change_rate_noise", "negative"),
+    # ── v0.71.0.0 -- H40 random noise control ───────────────────────────────────
+    "H40": ("Random Noise Patching Matches Real Patching Effect",  [19], "output_change_rate_noise", "negative"),
     # H40: Run 0019 (random noise patching baseline). Null: random noise patches produce
     # the same output change rate as real geometry patches (Run 0017). If so, Run 0017's
-    # causal claim is confounded — any perturbation would do. Two-proportion z-test:
+    # causal claim is confounded -- any perturbation would do. Two-proportion z-test:
     # H38 rate vs H40 rate. Supported = H38 rate significantly > H40 rate (p < 0.05).
-    # Disproven = rates indistinguishable — patching effect is non-specific.
+    # Disproven = rates indistinguishable -- patching effect is non-specific.
 
-    # ── v0.77.0.0 — planned hypotheses (catalog entries, inference pending) ────
+    # ── v0.77.0.0 -- planned hypotheses (catalog entries, inference pending) ────
     # These entries define the hypothesis schema for measurements that are
     # specified in IOTA_Hypotheses_v10.md but do not yet have inference blocks
     # implemented in _compute_outcomes(). They will report status="pending"
     # until their inference is written.
     "H22": ("E, C, R Permutation Fractions Are Equal",              [34], "frac_R",                         "positive"),
-    "H24": ("Cross-Turn Similarity Has No Layer Locality",          [36], "layer_sim_mean",                 "positive"),
+    "H24": ("Cross-Turn Similarity Has No Layer Locality",          [34], "layer_sim_mean",                 "positive"),
     "H41": ("System Prompt Has No Geometric Effect",                [20], "state_similarity_index",         "positive"),
     "H42": ("Similarity Does Not Accumulate With Turn Count",       [19], "state_similarity_index",         "negative"),
     "H43": ("R Fraction Is Sensitive To Projection Dimension",      [45], "frac_R",                         "negative"),
@@ -258,13 +258,13 @@ HYPOTHESES = {
     # ("Improves ... By More Than 0.01", "Exceeds 5% Of Joint MI") stated the
     # alternative hypothesis, not the null. Framework convention is that the
     # registry name states the null. Code logic unchanged.
-    "H50": ("MLP Does Not Improve On Ridge By More Than 0.01",      [33], "mlp_delta_r2",                   "negative"),
-    "H51": ("Interaction Information Below 5% Of Joint MI",         [33], "interaction_info_fraction",      "neutral"),
+    "H50": ("MLP Does Not Improve On Ridge By More Than 0.01",      [42], "mlp_delta_r2",                   "negative"),
+    "H51": ("Interaction Information Below 5% Of Joint MI",         [42], "interaction_info_fraction",      "neutral"),
     "H52": ("Disruption Magnitude Is Stationary Across Non-Contradiction Turns", [22], "disruption_magnitude_stationarity", "positive"),
     "H53": ("Cross-Stochasticity Disruption Rate Is Monotonic",     [22, 35], "disruption_flag_temp_monotonicity", "positive"),
     "H58": ("E + C + R Fractions Sum To 1.0 Within Tolerance",      [34], "ecr_sum_deviation",              "neutral"),
-    # Appendix A (out of scope for measurement paper) — schema kept for UI completeness
-    "H47": ("Coherence Transfer Is Not Compute-Efficient",          [47], "compute_per_correct_ratio",       "negative"),  # OUT OF PAPER SCOPE — Appendix A only
+    # Appendix A (out of scope for measurement paper) -- schema kept for UI completeness
+    "H47": ("Coherence Transfer Is Not Compute-Efficient",          [47], "compute_per_correct_ratio",       "negative"),  # OUT OF PAPER SCOPE -- Appendix A only
 }
 
 
@@ -290,7 +290,7 @@ def load_all(csv_dir: str) -> pd.DataFrame:
         combined = combined[combined['priming'].astype(str) != '1']
     # v52: replace "NA" sentinel (structurally inapplicable fields) with NaN
     combined = combined.replace("NA", float('nan'))
-    # Known string/JSON columns — never coerce to numeric
+    # Known string/JSON columns -- never coerce to numeric
     _STRING_COLS = frozenset({
         'output','prompt','model','source_file',
         'layer_sim_prev_profile','layer_sim_t1_profile',
@@ -352,7 +352,7 @@ def load_pooled_permutation_sensitivity(pooled_ana_dir: str) -> dict:
     Reads Q40_pooled_sobol.json from the pooled analysis directory
     (.../pooled/analysis/), which is separate from the per-condition
     analysis/ directory used by load_permutation_sensitivity. Bug V fix (v25.7).
-    Pooled dir has no temperature prefix — no T-prefix needed.
+    Pooled dir has no temperature prefix -- no T-prefix needed.
     """
     f = os.path.join(pooled_ana_dir, "Q0051_pooled_sobol.json")
     if os.path.exists(f):
@@ -397,7 +397,7 @@ def fig_similarity_by_cluster(df, vis_dir):
            yerr=grouped['sem'], color=colors, capsize=4)
     ax.set_xlabel("Run")
     ax.set_ylabel("Similarity (mean ± SEM)")
-    ax.set_title("H01 / H03 / H09 — Similarity by Run")
+    ax.set_title("H01 / H03 / H09 -- Similarity by Run")
     patches = [mpatches.Patch(color=v, label=k) for k, v in PAL.items()]
     ax.legend(handles=patches, fontsize=8)
     return save_fig(fig, vis_dir, "H01_H03_H09_similarity_by_run")
@@ -422,8 +422,9 @@ def fig_similarity_trajectory(df, vis_dir, run_nums, h_id, title):
     # v0.79.4.0: renumbered. Old {3,4,5,1,2,19} → new {6,7,8,4,5,1}.
     _COND_LABELS = {6: 'Intro-Direct', 7: 'Intro-Indirect', 8: 'Intro-Reflective',
                     4: 'Baseline-A', 5: 'Baseline-B', 1: 'Null (3-variant)'}
+    from cartography import run_mode_mask as _rmm_es1  # v0.79.5.2: dual-accept
     for ri, rn in enumerate(run_nums):
-        rsub = sub[sub['run_mode'] == rn]
+        rsub = sub[_rmm_es1(sub['run_mode'], rn)]
         if rsub.empty:
             continue
         grp = rsub.groupby('turn')['state_similarity_index'].mean().reset_index()
@@ -444,7 +445,7 @@ def fig_similarity_trajectory(df, vis_dir, run_nums, h_id, title):
 
     ax.set_xlabel("Turn")
     ax.set_ylabel("Similarity")
-    ax.set_title(f"{h_id} — {title}")
+    ax.set_title(f"{h_id} -- {title}")
     ax.legend(fontsize=7, ncol=2)
     # Auto y-axis: pad around data range
     vals = sub['state_similarity_index'].dropna()
@@ -468,7 +469,7 @@ def fig_disruption_events(df, vis_dir, run_nums, h_id, title):
     ax.bar(grouped['turn'], grouped['disruption_flag'], color=PAL["introspect"])
     ax.set_xlabel("Turn")
     ax.set_ylabel("Disruption Event Rate")
-    ax.set_title(f"{h_id} — {title}")
+    ax.set_title(f"{h_id} -- {title}")
     ax.set_ylim(0, 1)
     return save_fig(fig, vis_dir, f"{h_id}_{title.lower().replace(' ','_')}")
 
@@ -480,14 +481,15 @@ def fig_perturbation_recovery(df, vis_dir):
     the recovery window in turns 14-16. Run 0040 shows turns 1-13 with shock at turn 5.
     Both runs plotted on same axes for timing comparison.
     """
-    sub = df[run_mode_mask_any(df['run_mode'], [10, 11])]
+    sub = df[run_mode_mask_any(df['run_mode'], [39, 40])]
     if sub.empty or 'layer_sim_mean' not in sub.columns or 'turn' not in sub.columns:
         return None
     fig, ax = plt.subplots(figsize=FIGSIZE)
-    colors = {10: PAL["introspect"], 11: PAL["priming"]}
-    shock_at = {10: 13, 11: 5}
+    colors = {39: PAL["introspect"], 40: PAL["priming"]}
+    shock_at = {39: 13, 40: 5}
     for run_num in [39, 40]:
-        rsub = sub[sub['run_mode'] == run_num]
+        from cartography import run_mode_mask as _rmm_es2  # v0.79.5.2: dual-accept
+        rsub = sub[_rmm_es2(sub['run_mode'], run_num)]
         if rsub.empty:
             continue
         grouped = rsub.groupby('turn')['layer_sim_mean'].agg(['mean', 'sem']).reset_index()
@@ -507,7 +509,7 @@ def fig_perturbation_recovery(df, vis_dir):
     ax.axvspan(13.5, 16.5, alpha=0.07, color=PAL["arithmetic"], label="Run 0039 recovery window")
     ax.set_xlabel("Turn")
     ax.set_ylabel("Layer Sim Mean (cross-turn cosine)")
-    ax.set_title("H10 — Disruption Fully Resets Trajectory: Shock and Recovery Arc")
+    ax.set_title("H10 -- Disruption Fully Resets Trajectory: Shock and Recovery Arc")
     ax.legend(fontsize=8)
     return save_fig(fig, vis_dir, "H10_perturbation_recovery")
 
@@ -515,7 +517,7 @@ def fig_perturbation_recovery(df, vis_dir):
 def fig_self_reference_phase(df, vis_dir):
     """H05: state_similarity_index before/at/after contradiction turn (contextual geometry view).
 
-    NOT IN PIPELINE — retained for future figure generation.
+    NOT IN PIPELINE -- retained for future figure generation.
     """
     if 'contradiction_turn' not in df.columns:
         return None
@@ -533,7 +535,7 @@ def fig_self_reference_phase(df, vis_dir):
     fig, ax = plt.subplots(figsize=(7, 5))
     ax.bar(order, means, yerr=sems, color=colors, capsize=4)
     ax.set_ylabel("State Similarity Index")
-    ax.set_title("H05 — State Similarity by Phase (geometry context; primary test is disruption_flag chi-square)")
+    ax.set_title("H05 -- State Similarity by Phase (geometry context; primary test is disruption_flag chi-square)")
     return save_fig(fig, vis_dir, "H05_self_reference_phase")
 
 
@@ -562,7 +564,7 @@ def fig_disruption_events_by_phase(df, vis_dir):
     ax.bar(order, means, yerr=sems, color=colors, capsize=4)
     ax.set_ylabel("Disruption Event Rate (proportion of turns)")
     ax.set_ylim(0, min(1.0, (means.max() if not means.isna().all() else 0.5) + 0.2))
-    ax.set_title("H05 — Disruption Event Rate by Phase (primary inference figure)\n"
+    ax.set_title("H05 -- Disruption Event Rate by Phase (primary inference figure)\n"
                  "Contradiction injection expected to cluster disruption events")
     return save_fig(fig, vis_dir, "H05_disruption_events_by_phase")
 
@@ -582,7 +584,7 @@ def fig_saturation(df, vis_dir):
     ax.axvline(20, color='#333333', linestyle='--', alpha=0.5, label='Turn 20')
     ax.set_xlabel("Turn")
     ax.set_ylabel("Similarity")
-    ax.set_title("H06 — Similarity Does Not Decay With Context: Similarity Over 30 Turns")
+    ax.set_title("H06 -- Similarity Does Not Decay With Context: Similarity Over 30 Turns")
     ax.legend()
     return save_fig(fig, vis_dir, "H06_saturation_similarity_decay")
 
@@ -590,7 +592,7 @@ def fig_saturation(df, vis_dir):
 def fig_temperature(df, vis_dir):
     """H13: similarity by temperature condition."""
     # BUG 3 fix: Run 0003 saves column as 'temperature' not 'temperature_condition'.
-    sub = df[run_mode_mask(df['run_mode'], 26)]
+    sub = df[run_mode_mask(df['run_mode'], 3)]
     if sub.empty or 'temperature' not in sub.columns:
         return None
     grouped = sub.groupby('temperature')['state_similarity_index'].agg(['mean','sem']).reset_index()
@@ -599,7 +601,7 @@ def fig_temperature(df, vis_dir):
            yerr=grouped['sem'], capsize=4, color=PAL["arithmetic"])
     ax.set_xlabel("Temperature")
     ax.set_ylabel("Similarity")
-    ax.set_title("H13 — Similarity Collapses Under Temperature Variation: Similarity by Temperature")
+    ax.set_title("H13 -- Similarity Collapses Under Temperature Variation: Similarity by Temperature")
     return save_fig(fig, vis_dir, "H13_temperature_similarity")
 
 
@@ -620,7 +622,7 @@ def fig_granger(granger_data, vis_dir):
     ax.bar(x + w/2, r2_both, width=w, label='R² (E_t + S_{t-1})', color=PAL["introspect"])
     ax.set_xticks(x); ax.set_xticklabels(x_labels)
     ax.set_ylabel("R²")
-    ax.set_title("H11 — Prior State Adds No Predictive Power: Granger ΔR² Internal")
+    ax.set_title("H11 -- Prior State Adds No Predictive Power: Granger ΔR² Internal")
     ax.legend()
     for i, d in enumerate(deltas):
         ax.annotate(f"Δ={d:.4f}", xy=(x[i], max(r2_ext[i], r2_both[i]) + 0.01),
@@ -629,12 +631,12 @@ def fig_granger(granger_data, vis_dir):
 
 
 def fig_confound(df, vis_dir, decomp=None):
-    """H17: dual-panel — primary: ΔR²_internal per confound condition (Run 0042 decomp),
+    """H17: dual-panel -- primary: ΔR²_internal per confound condition (Run 0042 decomp),
     secondary: similarity by system prompt condition from Run 0023 CSV (context only).
 
     FIX-3 (v34.2): prior version plotted only similarity from Run 0023 CSV. The H17
     inference block (INF-1 fix v29.7) reads delta_r2_internal per condition from the
-    Run 0042 decomposition JSON — a completely different metric, different run, different
+    Run 0042 decomposition JSON -- a completely different metric, different run, different
     pipeline stage. Figure and inference were misaligned: same class of bug fixed for
     H05 (v32.0 FIX-3) and H25 (v32.0 FIX-12). This is the last unresolved case.
     Primary panel now matches what the verdict is actually based on.
@@ -651,7 +653,7 @@ def fig_confound(df, vis_dir, decomp=None):
         neu_val = neu_dr2.get('value', float('nan'))
         has_decomp = not (np.isnan(sem_val) and np.isnan(neu_val))
 
-    sub = df[run_mode_mask(df['run_mode'], 28)] if not df.empty else pd.DataFrame()
+    sub = df[run_mode_mask(df['run_mode'], 23)] if not df.empty else pd.DataFrame()
     has_csv = not sub.empty and 'confound_condition' in sub.columns
 
     if not has_decomp and not has_csv:
@@ -667,7 +669,7 @@ def fig_confound(df, vis_dir, decomp=None):
         colors = [PAL["priming"], PAL["null"]]
         bars   = ax0.bar(conds, vals, color=colors, capsize=4)
         # v34.2: use np.nanmax to avoid order-dependent NaN poisoning of max().
-        # max([nan, x]) returns nan; max([x, nan]) returns x — silent breakage.
+        # max([nan, x]) returns nan; max([x, nan]) returns x -- silent breakage.
         valid_vals = [v for v in vals if not np.isnan(v)]
         _ann_offset = float(np.nanmax(np.abs(valid_vals))) * 0.05 if valid_vals else 0.01
         for bar, v in zip(bars, vals):
@@ -676,13 +678,13 @@ def fig_confound(df, vis_dir, decomp=None):
                              v + _ann_offset), ha='center', fontsize=9)
         ax0.set_ylabel("ΔR²_internal")
         ax0.set_xlabel("System Prompt Condition")
-        ax0.set_title("H17 PRIMARY — ΔR²_internal per condition\n(Run 0042 decomposition — inference test)")
+        ax0.set_title("H17 PRIMARY -- ΔR²_internal per condition\n(Run 0042 decomposition -- inference test)")
         ax0.axhline(0, color='grey', linewidth=0.8, linestyle='--')
     else:
         ax0.text(0.5, 0.5, "Pending: Run 0042 decomposition\nnot yet complete",
                  ha='center', va='center', fontsize=11, color='grey',
                  transform=ax0.transAxes)
-        ax0.set_title("H17 PRIMARY — ΔR²_internal per condition\n(Run 0042 decomposition — inference test)")
+        ax0.set_title("H17 PRIMARY -- ΔR²_internal per condition\n(Run 0042 decomposition -- inference test)")
         ax0.set_xticks([])
 
     # ── Secondary panel: similarity from Run 0023 CSV ──
@@ -700,9 +702,9 @@ def fig_confound(df, vis_dir, decomp=None):
                  ha='center', va='center', fontsize=11, color='grey',
                  transform=ax1.transAxes)
         ax1.set_xticks([])
-    ax1.set_title("H17 SECONDARY — similarity by condition\n(context only; not the inference test)")
+    ax1.set_title("H17 SECONDARY -- similarity by condition\n(context only; not the inference test)")
 
-    fig.suptitle("H17 — Coherence Is Fully Explained By System Prompt: C_t Confound Isolation",
+    fig.suptitle("H17 -- Coherence Is Fully Explained By System Prompt: C_t Confound Isolation",
                  fontsize=11)
     fig.tight_layout()
     return save_fig(fig, vis_dir, "H17_confound_isolation")
@@ -720,14 +722,14 @@ def fig_persistence(df, vis_dir):
            yerr=grouped['sem'], capsize=4, color=PAL["introspect"])
     ax.set_xlabel("History Mode")
     ax.set_ylabel("Similarity")
-    ax.set_title("H18 — History Mode Has No Trajectory Effect: Similarity by History Mode")
+    ax.set_title("H18 -- History Mode Has No Trajectory Effect: Similarity by History Mode")
     return save_fig(fig, vis_dir, "H18_persistence_similarity")
 
 
 def fig_cross_instance(df, vis_dir):
     """H19: Geometric coupling over turns (run 0020).
 
-    NOT IN PIPELINE — retained for future figure generation.
+    NOT IN PIPELINE -- retained for future figure generation.
     """
     sub = df[run_mode_mask(df['run_mode'], 30)]
     if sub.empty or 'coupling_score' not in sub.columns:
@@ -743,14 +745,14 @@ def fig_cross_instance(df, vis_dir):
                     alpha=0.2, color=PAL["introspect"])
     ax.set_xlabel("Turn")
     ax.set_ylabel("Coupling Score (cosine)")
-    ax.set_title("H19 — Two-Instance Coupling Has No Geometric Effect: Cross-Instance Coupling Score")
+    ax.set_title("H19 -- Two-Instance Coupling Has No Geometric Effect: Cross-Instance Coupling Score")
     return save_fig(fig, vis_dir, "H19_cross_instance")
 
 
 def fig_coherence_levels(df, vis_dir):
     """H20: signal_per_watt by R condition (run 0021).
 
-    NOT IN PIPELINE — retained for future figure generation.
+    NOT IN PIPELINE -- retained for future figure generation.
     """
     sub = df[run_mode_mask(df['run_mode'], 31)]
     if sub.empty or 'signal_per_watt' not in sub.columns:
@@ -763,7 +765,7 @@ def fig_coherence_levels(df, vis_dir):
            yerr=grouped['sem'], color=colors, capsize=4)
     ax.set_xlabel("R Condition")
     ax.set_ylabel("Signal / Watt")
-    ax.set_title("H20 — R Condition Has No Signal-Per-Watt Effect: Signal per Watt")
+    ax.set_title("H20 -- R Condition Has No Signal-Per-Watt Effect: Signal per Watt")
     return save_fig(fig, vis_dir, "H20_power_by_condition")
 
 
@@ -785,7 +787,7 @@ def fig_sobol(sobol_data, vis_dir, suffix=""):
     bars = ax.bar(labels, fracs, color=colors)
     ax.set_ylabel("Permutation Sensitivity Fraction")
     src_label = "Pooled (Run 0051)" if suffix else "Run 0043"
-    ax.set_title(f"H22 — E, C, R Permutation Fractions Are Equal: Permutation Sensitivity Partition\n({src_label})")
+    ax.set_title(f"H22 -- E, C, R Permutation Fractions Are Equal: Permutation Sensitivity Partition\n({src_label})")
     ax.set_ylim(0, 1)
     for bar_, v in zip(bars, fracs):
         if v == v:
@@ -814,7 +816,7 @@ def fig_linearity(decomp, vis_dir):
     fig, ax = plt.subplots(figsize=(7, 5))
     bars = ax.bar(labels, vals, color=colors)
     ax.set_ylabel("R² (test set)")
-    ax.set_title("Linearity Validation — Ridge vs MLP\n(Model D features: E+C+S → S_next)")
+    ax.set_title("Linearity Validation -- Ridge vs MLP\n(Model D features: E+C+S → S_next)")
     # Set y-axis to show detail around the values
     valid = [v for v in vals if v == v]
     if valid:
@@ -868,7 +870,7 @@ def fig_interaction_info(decomp, vis_dir):
                         f"{v:.3f}", ha='center', va='bottom' if v >= 0 else 'top', fontsize=7)
         agrees = knn.get('agrees_with_linear', True)
         _tag = "AGREE" if agrees else "DISAGREE"
-        fig.suptitle(f"Interaction Information — Methods {_tag}", fontsize=11, y=1.02)
+        fig.suptitle(f"Interaction Information -- Methods {_tag}", fontsize=11, y=1.02)
         verdict = ii.get('verdict', '')
         fig.text(0.5, -0.02, verdict, ha='center', fontsize=7, color='gray', style='italic')
         fig.tight_layout()
@@ -880,7 +882,7 @@ def fig_interaction_info(decomp, vis_dir):
         fig, ax = plt.subplots(figsize=(7, 5))
         bars = ax.bar(labels, vals, color=colors)
         ax.set_ylabel("MI proxy (nats)")
-        ax.set_title("Interaction Information — Ordering Sensitivity (Linear Proxy Only)")
+        ax.set_title("Interaction Information -- Ordering Sensitivity (Linear Proxy Only)")
         ax.axhline(0, color='gray', linewidth=0.5)
         for bar_, v in zip(bars, vals):
             _off = max(abs(v) * 0.02, 0.01)
@@ -906,12 +908,12 @@ def fig_hesitation(df, vis_dir):
                     alpha=0.2, color=PAL["introspect"])
     ax.set_xlabel("Turn")
     ax.set_ylabel("Onset Delay Ratio (first-token latency / mean interval)")
-    ax.set_title("H23 — Hesitation Is Uncorrelated With Disruption: First-Token Latency vs Turn")
+    ax.set_title("H23 -- Hesitation Is Uncorrelated With Disruption: First-Token Latency vs Turn")
     return save_fig(fig, vis_dir, "H23_onset_delay_ratio")
 
 
 def fig_layer_depth(df, vis_dir):
-    """H24: Layer similarity depth profile — where does trajectory consistency live?"""
+    """H24: Layer similarity depth profile -- where does trajectory consistency live?"""
     sub = df[run_mode_mask(df['run_mode'], 36)]
     if sub.empty or 'layer_sim_depth_profile' not in sub.columns:
         return None
@@ -932,12 +934,12 @@ def fig_layer_depth(df, vis_dir):
     ax.plot(range(len(mean_profile)), mean_profile, color=PAL["introspect"])
     ax.set_xlabel("Layer Index")
     ax.set_ylabel("Mean Cosine Similarity to Previous Turn")
-    ax.set_title("H24 — Cross-Turn Similarity Has No Layer Locality: Depth Profile")
+    ax.set_title("H24 -- Cross-Turn Similarity Has No Layer Locality: Depth Profile")
     return save_fig(fig, vis_dir, "H24_layer_depth_profile")
 
 
 def fig_entropy_shape(df, vis_dir):
-    """H25: Within-turn entropy trajectory — dual panel: primary=state_similarity_index split, secondary=condition.
+    """H25: Within-turn entropy trajectory -- dual panel: primary=state_similarity_index split, secondary=condition.
 
     INF-H25-SPLIT fix (v32.0): prior figure split by 'condition' (introspection vs null);
     inference splits by state_similarity_index median. These test different questions and could produce
@@ -972,7 +974,7 @@ def fig_entropy_shape(df, vis_dir):
     if n_panels == 1:
         axes = [axes, None]
 
-    # Panel A (primary) — state_similarity_index median split
+    # Panel A (primary) -- state_similarity_index median split
     ax = axes[0]
     if has_sim:
         sim_med = sub['state_similarity_index'].median()
@@ -985,10 +987,10 @@ def fig_entropy_shape(df, vis_dir):
                 ax.plot(range(len(mt)), mt, label=label, color=color, marker='o', ms=3)
     ax.set_xlabel("Token Position Within Turn")
     ax.set_ylabel("Logit Entropy")
-    ax.set_title("H25 — PRIMARY: Entropy by similarity Median\n(matches inference test)")
+    ax.set_title("H25 -- PRIMARY: Entropy by similarity Median\n(matches inference test)")
     ax.legend()
 
-    # Panel B (secondary) — condition split
+    # Panel B (secondary) -- condition split
     if axes[1] is not None and has_cond:
         ax2 = axes[1]
         for cond, color in [('introspection', PAL["introspect"]), ('null', PAL["null"])]:
@@ -998,10 +1000,10 @@ def fig_entropy_shape(df, vis_dir):
                 ax2.plot(range(len(mt)), mt, label=cond, color=color, marker='o', ms=3)
         ax2.set_xlabel("Token Position Within Turn")
         ax2.set_ylabel("Logit Entropy")
-        ax2.set_title("H25 — SECONDARY: Entropy by Condition\n(context only; not the inference test)")
+        ax2.set_title("H25 -- SECONDARY: Entropy by Condition\n(context only; not the inference test)")
         ax2.legend()
 
-    fig.suptitle("H25 — Entropy Shape Is Uncorrelated With R", fontsize=12)
+    fig.suptitle("H25 -- Entropy Shape Is Uncorrelated With R", fontsize=12)
     fig.tight_layout()
     return save_fig(fig, vis_dir, "H25_entropy_shape")
 
@@ -1031,7 +1033,7 @@ def fig_condition_transfer(df, vis_dir):
     ax.axvline(x=6.5, color='grey', linestyle=':', linewidth=1, label='Switch (turn 7)')
     ax.set_xlabel("Turn")
     ax.set_ylabel("Similarity")
-    ax.set_title("H26 — R Does Not Persist Across Condition Switch: Similarity by Arm Post-Switch\n"
+    ax.set_title("H26 -- R Does Not Persist Across Condition Switch: Similarity by Arm Post-Switch\n"
                  "(transfer − null_to_arith = pure trajectory inertia)")
     ax.legend(fontsize=8)
     return save_fig(fig, vis_dir, "H26_condition_transfer")
@@ -1055,7 +1057,7 @@ def fig_output_similarity(df, vis_dir):
                         alpha=0.2, color=color)
     ax.set_xlabel("Turn")
     ax.set_ylabel("Output Cosine Similarity to Prior Turn")
-    ax.set_title("H27 — Output Similarity Is Uncorrelated With R: Output Cosine Similarity by Condition")
+    ax.set_title("H27 -- Output Similarity Is Uncorrelated With R: Output Cosine Similarity by Condition")
     ax.legend()
     return save_fig(fig, vis_dir, "H27_output_self_similarity")
 
@@ -1066,7 +1068,7 @@ def _load_all_temps_run(run_num: int, session: dict = None) -> pd.DataFrame:
     Used by H36/H37 figures which need cross-temperature data not available
     in the single-round df passed to the figure functions.
 
-    Falls back to empty DataFrame on any error — figure functions handle this
+    Falls back to empty DataFrame on any error -- figure functions handle this
     gracefully by returning None.
     """
     try:
@@ -1112,7 +1114,7 @@ def fig_layer_isolation(df18, vis_dir):
     if df18.empty or 'patch_layer' not in df18.columns:
         return None
 
-    # Patched rows only — exclude none (baseline)
+    # Patched rows only -- exclude none (baseline)
     patched = df18[df18['patch_layer'] != 'none'].copy()
     if patched.empty or 'output_changed' not in patched.columns:
         return None
@@ -1154,7 +1156,7 @@ def fig_layer_isolation(df18, vis_dir):
     ax.set_xticklabels(layers)
     ax.set_xlabel("Patched Layer")
     ax.set_ylabel("Output Change Rate (%)")
-    ax.set_title("H29 — No Single Layer Is Causally Sufficient: Per-Layer Output Change Rate\n"
+    ax.set_title("H29 -- No Single Layer Is Causally Sufficient: Per-Layer Output Change Rate\n"
                  "Blue = causally sufficient (>5%); orange = insufficient")
     ax.legend(fontsize=8)
     return save_fig(fig, vis_dir, "H29_layer_causal_sufficiency")
@@ -1175,7 +1177,7 @@ def fig_patching_causal(df21, vis_dir):
     patched = df21[df21['patch_mode'].isin(['partial', 'full'])].copy()
     if patched.empty or 'output_changed' not in patched.columns:
         return None
-    # Coerce output_changed to numeric — R21 short rows can have string values
+    # Coerce output_changed to numeric -- R21 short rows can have string values
     patched['output_changed'] = pd.to_numeric(patched['output_changed'], errors='coerce')
     patched = patched.dropna(subset=['output_changed'])
     if patched.empty:
@@ -1222,13 +1224,13 @@ def fig_patching_causal(df21, vis_dir):
     ax.set_xticklabels([m.capitalize() for m in modes])
     ax.set_xlabel("Patch mode")
     ax.set_ylabel("Output change rate (%)")
-    ax.set_title("H38 — Run 0017 Activation Patching: Output Change Rate by Mode")
+    ax.set_title("H38 -- Run 0017 Activation Patching: Output Change Rate by Mode")
     ax.legend(fontsize=8)
     ax.set_ylim(0, max(max((r for r in rates if not np.isnan(r)), default=0) + 15, 20))
     plt.tight_layout()
     return save_fig(fig, vis_dir, "H38_patching_output_change")
     # DEAD CODE REMOVED (v36.6 FINDING-1): lines 899–901 were exact duplicates of
-    # the three lines above, placed after the return statement — unreachable by construction.
+    # the three lines above, placed after the return statement -- unreachable by construction.
     # Copy-paste artifact from the original fig authoring. No runtime or inference impact.
 
 
@@ -1268,7 +1270,7 @@ def fig_patching_temp_sensitivity(df21, vis_dir):
     ax.axhline(2.0,  color='grey', linestyle='--', linewidth=1, label='2% noise floor')
     ax.set_xlabel("Temperature")
     ax.set_ylabel("Output Change Rate (%)")
-    ax.set_title("H36 — Causal Effect Of Patching: Output Change Rate by Temperature\n"
+    ax.set_title("H36 -- Causal Effect Of Patching: Output Change Rate by Temperature\n"
                  "Prediction: rate declines monotonically with temperature (r < −0.8)")
     ax.legend(fontsize=8)
     plt.tight_layout()
@@ -1319,7 +1321,7 @@ def fig_layer_temp_sensitivity(df18, vis_dir):
     plt.colorbar(im, ax=ax, label='Output Change Rate (%)')
     ax.set_xlabel("Temperature Round")
     ax.set_ylabel("Patched Layer")
-    ax.set_title("H37 — Layer Causal Sufficiency: Per-Layer Change Rate by Temperature\n"
+    ax.set_title("H37 -- Layer Causal Sufficiency: Per-Layer Change Rate by Temperature\n"
                  "Prediction: profile flattens at high temperature (layer × temp interaction p < 0.05)")
     plt.tight_layout()
     return save_fig(fig, vis_dir, "H37_layer_temp_sensitivity")
@@ -1328,9 +1330,9 @@ def fig_layer_temp_sensitivity(df18, vis_dir):
 # ── Phase 4 figures (v35.0) ───────────────────────────────────────────────────
 
 def fig_coherence_transfer(df43, vis_dir):
-    """H33: Coherence transfer measurement — total Joules and correct rate by condition (Run 0025).
+    """H33: Coherence transfer measurement -- total Joules and correct rate by condition (Run 0025).
 
-    NOT IN PIPELINE — retained for future figure generation.
+    NOT IN PIPELINE -- retained for future figure generation.
 
     Two panels:
       Left:  mean total_joules per trial per condition (bar + SEM). Shows compute cost difference.
@@ -1376,10 +1378,10 @@ def fig_coherence_transfer(df43, vis_dir):
         ax.set_xticks(range(len(ORDER)))
         ax.set_xticklabels(LABELS, fontsize=9)
         ax.set_ylabel(ylabel)
-        ax.set_title(f"H33 — {title_sfx}")
+        ax.set_title(f"H33 -- {title_sfx}")
         ax.set_ylim(bottom=0)
 
-    plt.suptitle("H33 — Coherence Transfer: Condition A vs Condition C Baseline\n"
+    plt.suptitle("H33 -- Coherence Transfer: Condition A vs Condition C Baseline\n"
                  "(Run 0025: 8 priming + 5 arithmetic turns)", fontsize=11)
     plt.tight_layout()
     return save_fig(fig, vis_dir, "H33_compute_efficiency")
@@ -1388,7 +1390,7 @@ def fig_coherence_transfer(df43, vis_dir):
 def fig_self_reference_trajectory(df, vis_dir):
     """H34: disruption_magnitude trajectory from Run 0028, contradiction turn highlighted.
 
-    NOT IN PIPELINE — retained for future figure generation.
+    NOT IN PIPELINE -- retained for future figure generation.
 
     Plots mean disruption_magnitude per turn (1–13) with ±SEM ribbon.
     Vertical line at turn 7 (contradiction). Demonstrates continuous geometric disruption
@@ -1415,7 +1417,7 @@ def fig_self_reference_trajectory(df, vis_dir):
                label='Contradiction (turn 7)')
     ax.set_xlabel('Turn')
     ax.set_ylabel('disruption_magnitude (sim_drop × entropy_spike)')
-    ax.set_title('H34 — Disruption Magnitude Trajectory: Continuous Geometric Disruption Signal\n'
+    ax.set_title('H34 -- Disruption Magnitude Trajectory: Continuous Geometric Disruption Signal\n'
                  '(Run 0028: contradiction at turn 7; primary test is paired t-test within-trial)')
     ax.legend(fontsize=9)
     ax.set_xticks(range(1, 14))
@@ -1426,7 +1428,7 @@ def fig_self_reference_trajectory(df, vis_dir):
 def fig_contradiction(df44, vis_dir):
     """H35: state_similarity_index trajectory by R condition across contradiction + recovery (Run 0026).
 
-    NOT IN PIPELINE — retained for future figure generation.
+    NOT IN PIPELINE -- retained for future figure generation.
 
     Three lines (high_r / mid_r / low_r), vertical line at contradiction turn 7,
     shaded recovery window turns 8–13. Visualises whether pre-injection R level
@@ -1463,7 +1465,7 @@ def fig_contradiction(df44, vis_dir):
     ax.axvspan(7.5, 13.5, alpha=0.06, color='#424242', label='Recovery window')
     ax.set_xlabel('Turn')
     ax.set_ylabel('state_similarity_index (mean cosine sim to turn-1)')
-    ax.set_title('H35 — Contradiction Recovery by R Condition\n'
+    ax.set_title('H35 -- Contradiction Recovery by R Condition\n'
                  '(Run 0026: contradiction at turn 7; recovery turns 8–13)')
     ax.legend(fontsize=9)
     ax.set_xticks(range(1, 14))
@@ -1503,7 +1505,7 @@ def fig_summary(outcomes, vis_dir):
         outcome = outcomes.get(h_id, {})
         status  = outcome.get("status", "pending")
         metric  = outcome.get("metric", HYPOTHESES.get(h_id, ["","","",""])[2])
-        impl    = outcome.get("implication", "—")
+        impl    = outcome.get("implication", "--")
         label   = HYPOTHESES.get(h_id, [h_id])[0]
 
         if status == "supported":   supported   += 1
@@ -1537,7 +1539,7 @@ def fig_summary(outcomes, vis_dir):
     ax.text(0.5, y_bot, synthesis, fontsize=9, ha='center',
             transform=ax.transAxes, style='italic')
 
-    ax.set_title("IOTA Framework v0.58.0.0 — Hypothesis Outcomes", fontsize=12, fontweight='bold', pad=10)
+    ax.set_title("IOTA Framework v0.80.0.33 -- Hypothesis Outcomes", fontsize=12, fontweight='bold', pad=10)
     return save_fig(fig, vis_dir, "FIG_SUMMARY_hypothesis_outcomes")
 
 
@@ -1810,7 +1812,7 @@ def fig_ols_bars(session, vis_dir, single_model=False):
 
 
 def fig_patching_heatmap(session, vis_dir):
-    """PAPER FIG 3: Patching heatmap — layer × temperature, output change rate."""
+    """PAPER FIG 3: Patching heatmap -- layer × temperature, output change rate."""
     df18_all = _load_all_temps_run(18, session)  # v0.79.4.0: old 42 layer iso → new 18
     if df18_all.empty or 'patch_layer' not in df18_all.columns:
         return None
@@ -1850,7 +1852,7 @@ def fig_patching_heatmap(session, vis_dir):
 
 
 def fig_dim95_curve(session, vis_dir):
-    """PAPER FIG 4: R vs POOL_DIM from Run 0041 — dimension selection."""
+    """PAPER FIG 4: R vs POOL_DIM from Run 0041 -- dimension selection."""
     all_q45 = _load_analysis_json_all_temps(session, 'Q0041_pool_dim_sweep.json')
     if not all_q45:
         return None
@@ -1970,7 +1972,7 @@ def fig_fixed_dim_cross_temp(session, vis_dir):
     ax.plot(temps, avg_R, 'o-', color='black', linewidth=2, markersize=8, markerfacecolor='black')
     ax.set_xlabel('Temperature')
     ax.set_ylabel('Mean R Fraction (POOL_DIM=64)')
-    ax.set_title('Fixed-Dimension R Across Temperatures (Run 0045, POOL_DIM=64)\nApples-to-apples comparison — all temperatures at same dimension')
+    ax.set_title('Fixed-Dimension R Across Temperatures (Run 0045, POOL_DIM=64)\nApples-to-apples comparison -- all temperatures at same dimension')
     ax.set_xticks(temps)
     for i, t in enumerate(temps):
         ax.annotate(f'{avg_R[i]:.3f}', (t, avg_R[i]), textcoords="offset points",
@@ -2088,18 +2090,18 @@ def fig_three_variant_delta(session, vis_dir):
     return save_fig(fig, vis_dir, "FIG13_three_variant_delta")
 
 
-# ── Descriptive statistics — Cohen's d, KS tests, split-half reliability ──────
+# ── Descriptive statistics -- Cohen's d, KS tests, split-half reliability ──────
 # v0.58.0.0: presentation statistics for Table 1 and effect size reporting.
 
 _CONDITION_GROUPS = {
-    'introspection': [3, 4, 5],
-    'null':          [1, 2, 19],
-    'arithmetic':    [6, 7, 8, 9],
-    'priming_neutral':     [15],
-    'priming_cooperative': [16],
-    'priming_resistant':   [17],
-    'impossibility':       [12, 13, 14],
-    'perturbation':        [10, 11],
+    'introspection': [6, 7, 8],
+    'null':          [4, 5, 1],
+    'arithmetic':    [9, 10, 11, 12],
+    'priming_neutral':     [13],
+    'priming_cooperative': [14],
+    'priming_resistant':   [15],
+    'impossibility':       [29, 30, 31],
+    'perturbation':        [39, 40],
 }
 
 _PAIRWISE_COMPARISONS = [
@@ -2248,7 +2250,7 @@ def compute_split_half_reliability(df: pd.DataFrame, n_splits: int = 100, seed: 
             half_a = val_arr[perm[:mid]]
             half_b = val_arr[perm[mid:2*mid]]  # equal size
             if len(half_a) >= 5 and len(half_b) >= 5:
-                # Correlate the sorted values — measures whether the rank structure
+                # Correlate the sorted values -- measures whether the rank structure
                 # of similarity across trials is stable across random splits.
                 r, _ = sp_stats.pearsonr(np.sort(half_a), np.sort(half_b))
                 correlations.append(r)
@@ -2342,10 +2344,10 @@ def compute_cohens_d_summary(df: pd.DataFrame) -> dict:
         return {'comparisons': []}
 
     _HEADLINE = [
-        ('H03', 'introspection_vs_null',    [3,4,5],     [1,2,19],    'state_similarity_index'),
-        ('H09', 'arithmetic_vs_introspection', [6,7,8,9], [3,4,5],    'state_similarity_index'),
-        ('H12', 'shuffled_vs_null',         [18],         [1,2],       'state_similarity_index'),
-        ('H38', 'real_patching_vs_noise',   [21],         [53],        'output_changed'),
+        ('H03', 'introspection_vs_null',    [6,7,8],     [4,5,1],    'state_similarity_index'),
+        ('H09', 'arithmetic_vs_introspection', [9,10,11,12], [6,7,8],    'state_similarity_index'),
+        ('H12', 'shuffled_vs_null',         [32],         [4,5],       'state_similarity_index'),
+        ('H38', 'real_patching_vs_noise',   [17],         [19],        'output_changed'),
     ]
     results = []
     for h_id, label, runs_a, runs_b, metric in _HEADLINE:
@@ -2393,29 +2395,29 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         sub = pd.to_numeric(df[df['run_mode'].isin(runs)][metric], errors='coerce').dropna()
         return float(sub.mean()) if len(sub) > 0 else float('nan')
 
-    # H01 — Geometry Is Condition-Invariant
+    # H01 -- Geometry Is Condition-Invariant
     # INF-H01-THRESHOLD fix (v32.0): prior implementation tested only whether mean
-    # layer_sim_mean > 0.5 in the null runs — a pure level test. The hypothesis name is
+    # layer_sim_mean > 0.5 in the null runs -- a pure level test. The hypothesis name is
     # "Condition-Invariant", which implies variance homogeneity across conditions, not just
     # a threshold. We add a Levene test comparing variance across run_mode clusters (null,
     # introspection, arithmetic). Supported requires BOTH: (1) null mean > 0.5 AND
     # (2) Levene p >= 0.05 (variances not heterogeneous across conditions). If Levene
-    # fails, geometry shows condition-dependent variance — the invariance claim weakens.
-    v = mean_val([1, 2, 19], 'layer_sim_mean')
+    # fails, geometry shows condition-dependent variance -- the invariance claim weakens.
+    v = mean_val([4, 5, 1], 'layer_sim_mean')
     if np.isnan(v):
         outcomes["H01"] = {"status": "pending", "metric": "layer_sim_mean", "value": float('nan'),
                            "implication": "Null runs not yet complete."}
     else:
         level_ok = v > 0.5
         # Levene test: compare layer_sim_mean variance across three condition groups
-        # (null [1,2,19], introspection [3,4,5], arithmetic [6,7,8,9]).
-        # Requires all three groups to have data — degrades gracefully to level-only if not.
+        # (null [4,5,1], introspection [6,7,8], arithmetic [9,10,11,12]).
+        # Requires all three groups to have data -- degrades gracefully to level-only if not.
         levene_p  = float('nan')
         levene_ok = True   # default True: if test can't run, don't penalise
         if 'layer_sim_mean' in df.columns:
-            g_null  = df[run_mode_mask_any(df['run_mode'], [1, 2, 19])]['layer_sim_mean'].dropna()
-            g_intro = df[run_mode_mask_any(df['run_mode'], [3, 4, 5])]['layer_sim_mean'].dropna()
-            g_arith = df[run_mode_mask_any(df['run_mode'], [6, 7, 8, 9])]['layer_sim_mean'].dropna()
+            g_null  = df[run_mode_mask_any(df['run_mode'], [4, 5, 1])]['layer_sim_mean'].dropna()
+            g_intro = df[run_mode_mask_any(df['run_mode'], [6, 7, 8])]['layer_sim_mean'].dropna()
+            g_arith = df[run_mode_mask_any(df['run_mode'], [9, 10, 11, 12])]['layer_sim_mean'].dropna()
             groups  = [g for g in [g_null, g_intro, g_arith] if len(g) >= 5]
             if len(groups) >= 2:
                 _, levene_p = sp_stats.levene(*groups)
@@ -2435,47 +2437,47 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "value":       float(v),
             "levene_p":    levene_p,
             "implication": (
-                f"Null layer_sim_mean={v:.4f} > 0.5; {lev_str} >= 0.05 — "
+                f"Null layer_sim_mean={v:.4f} > 0.5; {lev_str} >= 0.05 -- "
                 f"geometry is consistent and homogeneous across conditions at baseline."
                 if h01_status == "supported"
-                else f"Null mean={v:.4f}; {lev_str} — "
+                else f"Null mean={v:.4f}; {lev_str} -- "
                      f"condition groups show heterogeneous variance (geometry not fully invariant)."
                 if h01_status == "inconclusive"
-                else f"Null layer_sim_mean={v:.4f} <= 0.5 — geometric baseline below threshold."
+                else f"Null layer_sim_mean={v:.4f} <= 0.5 -- geometric baseline below threshold."
             ),
         }
 
-    # H03 — introspection similarity > null similarity
+    # H03 -- introspection similarity > null similarity
     # INF-H03-BASELINE fix (v32.0): null comparison was [1,2]; must include Run 0001
     # (largest null baseline, saves all-layers, richer sample). Same fix applied to H04/H08.
-    s, e = ttest([3,4,5], [1,2,19], 'state_similarity_index', 'positive')
+    s, e = ttest([6,7,8], [4,5,1], 'state_similarity_index', 'positive')
     outcomes["H03"] = {"status": s, "metric": "state_similarity_index", "value": e,
                        "implication": "Introspection elevates similarity beyond null reference." if s=="supported"
                                       else "Introspection does not elevate similarity."}
 
-    # H04 — SER elevation
-    # INF-H04-BASELINE fix (v32.0): same as H03 — null baseline expanded to [1,2,19].
-    s, e = ttest([3,4,5], [1,2,19], 'signal_entropy_ratio', 'positive')
+    # H04 -- SER elevation
+    # INF-H04-BASELINE fix (v32.0): same as H03 -- null baseline expanded to [4,5,1].
+    s, e = ttest([6,7,8], [4,5,1], 'signal_entropy_ratio', 'positive')
     outcomes["H55"] = {"status": s, "metric": "signal_entropy_ratio", "value": e,
-                       "implication": "SER elevated in introspection — efficiency over entropy."}
+                       "implication": "SER elevated in introspection -- efficiency over entropy."}
 
-    # H05 — Disruption events at contradiction turn
+    # H05 -- Disruption events at contradiction turn
     # INF-H05-NOPVAL fix (v31.0): replace arbitrary disruption_elevation > 0.2 threshold on
     # a binary metric with a chi-square test on the 2×2 contingency table.
     # disruption_flag is binary (0/1); comparing raw means without a significance test is
     # inconsistent with the framework's standards and has no stated threshold derivation.
-    sub22 = df[run_mode_mask(df['run_mode'], 22)] if not df.empty else pd.DataFrame()
-    if not sub22.empty and 'contradiction_turn' in sub22.columns and 'disruption_flag' in sub22.columns:
-        at_c  = sub22[sub22['contradiction_turn'] == 1]['disruption_flag'].dropna()
+    sub28 = df[run_mode_mask(df['run_mode'], 28)] if not df.empty else pd.DataFrame()
+    if not sub28.empty and 'contradiction_turn' in sub28.columns and 'disruption_flag' in sub28.columns:
+        at_c  = sub28[sub28['contradiction_turn'] == 1]['disruption_flag'].dropna()
         # INF-H05-POSTCONTAM fix (v36.1): contradiction_turn==0 includes both pre-contradiction
         # turns (1-6) and post-contradiction turns (8-13). Post turns are not a valid baseline
         # for the pre/at comparison. Filter to pre-contradiction only using post_contradiction==0.
         # Run 0028 saves post_contradiction=int(turn > CONTRADICTION_AT); both flags present in CSV.
-        if 'post_contradiction' in sub22.columns:
-            not_c = sub22[(sub22['contradiction_turn'] == 0) &
-                          (sub22['post_contradiction'] == 0)]['disruption_flag'].dropna()
+        if 'post_contradiction' in sub28.columns:
+            not_c = sub28[(sub28['contradiction_turn'] == 0) &
+                          (sub28['post_contradiction'] == 0)]['disruption_flag'].dropna()
         else:
-            not_c = sub22[sub22['contradiction_turn'] == 0]['disruption_flag'].dropna()
+            not_c = sub28[sub28['contradiction_turn'] == 0]['disruption_flag'].dropna()
         if len(at_c) < 5 or len(not_c) < 5:
             outcomes["H05"] = {"status": "pending", "metric": "disruption_flag", "value": float('nan'),
                                "implication": "Run 0028 insufficient data for chi-square test."}
@@ -2494,7 +2496,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "metric": "disruption_flag", "value": float(disruption_elevation),
                 "implication": (
                     f"Disruption events cluster at contradiction turns vs baseline "
-                    f"(Δ={disruption_elevation:.4f}, χ² p={p05:.3f}) — contradiction injection confirmed."
+                    f"(Δ={disruption_elevation:.4f}, χ² p={p05:.3f}) -- contradiction injection confirmed."
                     if (p05 < 0.05 and disruption_elevation > 0)
                     else f"No significant disruption clustering at contradiction turns "
                          f"(Δ={disruption_elevation:.4f}, χ² p={p05:.3f})."
@@ -2504,16 +2506,16 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H05"] = {"status": "pending", "metric": "disruption_flag", "value": float('nan'),
                            "implication": "Run 0028 not yet complete."}
 
-    # H09 — arithmetic vs introspection (INF-2 fix v29.7)
+    # H09 -- arithmetic vs introspection (INF-2 fix v29.7)
     # H09 null: arithmetic geometry equals introspection. Falsification requires
     # testing arithmetic directly against introspection, not against null.
-    # Prior implementation compared [6,7,8,9] vs [1,2] — valid by transitivity
+    # Prior implementation compared [6,7,8,9] vs [1,2] -- valid by transitivity
     # (if introspection > null and arithmetic < null, then arithmetic < introspection)
     # but indirect: H09 could be "supported" even when arithmetic ≈ introspection.
     # Fix: primary test is arithmetic vs introspection. Secondary test vs null retained
     # for context and legacy continuity.
-    s_primary,   e_primary   = ttest([6,7,8,9], [3,4,5], 'state_similarity_index', 'negative')
-    s_secondary, e_secondary = ttest([6,7,8,9], [1,2],   'state_similarity_index', 'negative')
+    s_primary,   e_primary   = ttest([9,10,11,12], [6,7,8], 'state_similarity_index', 'negative')
+    s_secondary, e_secondary = ttest([9,10,11,12], [4,5],   'state_similarity_index', 'negative')
     # Status follows the primary (direct) test.
     if s_primary == 'pending':
         h09_status = 'pending'
@@ -2521,7 +2523,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
     elif s_primary == 'supported':
         h09_status = 'supported'
         h09_impl   = (f"Arithmetic similarity lower than introspection (Δ={e_primary:.4f}) "
-                      f"and lower than null (Δ={e_secondary:.4f}) — "
+                      f"and lower than null (Δ={e_secondary:.4f}) -- "
                       f"task demand geometry is distinct from introspective geometry. H09 falsified.")
     elif s_primary == 'inconclusive':
         h09_status = 'inconclusive'
@@ -2529,7 +2531,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                       f"arithmetic vs null: {s_secondary} (Δ={e_secondary:.4f}).")
     else:
         h09_status = 'disproven'
-        h09_impl   = (f"Arithmetic similarity not lower than introspection (Δ={e_primary:.4f}) — "
+        h09_impl   = (f"Arithmetic similarity not lower than introspection (Δ={e_primary:.4f}) -- "
                       f"task demand geometry resembles introspection. H09 survives.")
     outcomes["H09"] = {
         "status": h09_status, "metric": "state_similarity_index",
@@ -2539,7 +2541,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                                if not np.isnan(e_secondary) else float('nan')},
     }
 
-    # H11 — Granger ΔR²
+    # H11 -- Granger ΔR²
     # INF-H11-PREF fix (v30.9): prefer B (Run 0048, larger N, cross-temperature) over A.
     # INF-H11-NOPVAL fix (v31.0): use permutation p_value from _granger_test when present.
     # Falls back to magnitude-only (d > 0.01) if p_value absent (pre-v31.0 JSON).
@@ -2557,7 +2559,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "metric": "delta_r2_internal", "value": float(d),
             "implication": (
                 f"S_{{t-1}} adds predictive power over E_t "
-                f"(ΔR²={d:.4f}" + (f", p={p11:.3f}" if not np.isnan(p11) else "") + f") — "
+                f"(ΔR²={d:.4f}" + (f", p={p11:.3f}" if not np.isnan(p11) else "") + f") -- "
                 f"hidden state causally upstream of next state."
                 if status11 == "supported"
                 else f"S_{{t-1}} does not reliably add predictive power "
@@ -2568,27 +2570,27 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H11"] = {"status": "pending", "metric": "delta_r2_internal", "value": float('nan'),
                            "implication": "Run 0047/27 not yet complete."}
 
-    # H13 — temperature stability (INF-3 fix v29.7)
+    # H13 -- temperature stability (INF-3 fix v29.7)
     # H13 prediction: "similarity survives T=0.8 and T=1.0 at all four conditions.
     # Condition ordering preserved across the full temperature range."
-    # Prior implementation compared pooled means at T=0.2 vs T=1.0 — tests average
+    # Prior implementation compared pooled means at T=0.2 vs T=1.0 -- tests average
     # stability only. Cannot detect a collapse in one condition masked by others, and
     # cannot test ordering preservation at all.
     # Fix: (1) per-condition stability at each temperature; (2) Kendall's W across
     # the full temperature grid to test whether condition ordering is preserved.
     # BUG 3 fix: column is 'temperature', not 'temperature_condition'.
-    sub26 = df[run_mode_mask(df['run_mode'], 26)] if not df.empty else pd.DataFrame()
-    if not sub26.empty and 'temperature' in sub26.columns and 'state_similarity_index' in sub26.columns:
+    sub3 = df[run_mode_mask(df['run_mode'], 3)] if not df.empty else pd.DataFrame()
+    if not sub3.empty and 'temperature' in sub3.columns and 'state_similarity_index' in sub3.columns:
         TEMPS_26    = [0.2, 0.4, 0.6, 0.8, 1.0]
         CONDS_26    = ['introspection', 'arithmetic', 'neutral_prime', 'null']
-        cond_col    = 'condition' if 'condition' in sub26.columns else None
+        cond_col    = 'condition' if 'condition' in sub3.columns else None
 
         # Per-condition stability: similarity at T=0.2 vs T=1.0 for each condition.
         # A condition "survives" if abs(drop) < 0.1 (same threshold as pooled).
         per_cond_stability = {}
         if cond_col:
             for cond in CONDS_26:
-                sub_c = sub26[sub26[cond_col] == cond]
+                sub_c = sub3[sub3[cond_col] == cond]
                 lo = sub_c[sub_c['temperature'] == 0.2]['state_similarity_index'].mean()
                 hi = sub_c[sub_c['temperature'] == 1.0]['state_similarity_index'].mean()
                 if not np.isnan(lo) and not np.isnan(hi):
@@ -2604,7 +2606,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             rank_matrix = []  # rows = temperatures, cols = conditions (sorted by name)
             conds_present = sorted(per_cond_stability.keys())
             for temp in TEMPS_26:
-                sub_t = sub26[sub26['temperature'] == temp]
+                sub_t = sub3[sub3['temperature'] == temp]
                 if cond_col in sub_t.columns:
                     means = []
                     for cond in conds_present:
@@ -2625,9 +2627,9 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 denom = (k ** 2) * (n ** 3 - n)
                 kendall_w = float(S * 12 / denom) if denom > 0 else float('nan')
 
-        # Pooled drop (legacy — retained for continuity)
-        t_lo_pool = sub26[sub26['temperature'] == 0.2]['state_similarity_index'].mean()
-        t_hi_pool = sub26[sub26['temperature'] == 1.0]['state_similarity_index'].mean()
+        # Pooled drop (legacy -- retained for continuity)
+        t_lo_pool = sub3[sub3['temperature'] == 0.2]['state_similarity_index'].mean()
+        t_hi_pool = sub3[sub3['temperature'] == 1.0]['state_similarity_index'].mean()
         pooled_drop = float(t_lo_pool - t_hi_pool) if (
             not np.isnan(t_lo_pool) and not np.isnan(t_hi_pool)) else float('nan')
 
@@ -2641,12 +2643,12 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         ordering_ok  = (not np.isnan(kendall_w) and kendall_w >= 0.7)
 
         if not has_per_cond:
-            # Condition column absent — pooled fallback
+            # Condition column absent -- pooled fallback
             status13 = ("supported" if (not np.isnan(pooled_drop) and abs(pooled_drop) < 0.1)
                         else ("disproven" if not np.isnan(pooled_drop) else "pending"))
-            impl13   = (f"Similarity pooled drop={pooled_drop:.4f} — "
+            impl13   = (f"Similarity pooled drop={pooled_drop:.4f} -- "
                         f"{'stable' if abs(pooled_drop) < 0.1 else 'unstable'}. "
-                        f"No condition column — ordering test not possible.")
+                        f"No condition column -- ordering test not possible.")
         elif all_survive and ordering_ok:
             status13 = "supported"
             cond_summary = ', '.join(f"{c}:drop={v['drop']:.3f}" for c, v in per_cond_stability.items())
@@ -2662,7 +2664,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             # Conditions survive but ordering not preserved
             status13 = "inconclusive"
             impl13   = (f"Per-condition Similarity survives (all drops < 0.1) but condition "
-                        f"ordering not preserved (Kendall W={kendall_w:.3f} < 0.7) — "
+                        f"ordering not preserved (Kendall W={kendall_w:.3f} < 0.7) -- "
                         f"relative geometry shifts with temperature.")
 
         # Build per-condition display values using safe key access
@@ -2679,11 +2681,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H13"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                            "implication": "Run 0003 not yet complete."}
 
-    # H17 — confound isolation (INF-1 fix v29.7)
+    # H17 -- confound isolation (INF-1 fix v29.7)
     # Now reads delta_r2_internal per confound condition from Q33_decomposition.json
     # (h16_confound_decomposition key), not state_similarity_index from Run 0023 CSV.
     # H17 falsification criterion: delta_r2_internal collapses to zero under
-    # semantic system prompt. Direct test — no proxy substitution.
+    # semantic system prompt. Direct test -- no proxy substitution.
     h16_cd = decomp.get('h16_confound_decomposition', {}) if decomp else {}
     h16_verdict_str = decomp.get('h16_verdict', '') if decomp else ''
     sem_d = h16_cd.get('semantic', {})
@@ -2705,7 +2707,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "metric": "delta_r2_internal_per_condition",
             "value": float(sem_val) if not np.isnan(sem_val) else float('nan'),
             "implication": (f"ΔR²_internal significant under both system prompt conditions "
-                            f"(semantic={sem_val:.4f}, neutral={neu_val:.4f}) — "
+                            f"(semantic={sem_val:.4f}, neutral={neu_val:.4f}) -- "
                             f"system prompt confound does not explain R. H17 falsified.")}
     elif sem_sig is False:
         outcomes["H17"] = {
@@ -2713,7 +2715,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "metric": "delta_r2_internal_per_condition",
             "value": float(sem_val) if not np.isnan(sem_val) else float('nan'),
             "implication": (f"ΔR²_internal collapses under semantic system prompt "
-                            f"(semantic={sem_val:.4f}, p not significant) — "
+                            f"(semantic={sem_val:.4f}, p not significant) -- "
                             f"system prompt may explain observed R. H17 survives.")}
     else:
         outcomes["H17"] = {
@@ -2722,9 +2724,9 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "value": float(sem_val) if not np.isnan(sem_val) else float('nan'),
             "implication": h16_verdict_str or
                            (f"Mixed: neutral significant ({neu_val:.4f}) but semantic not "
-                            f"({sem_val:.4f}) — partial confound.")}
+                            f"({sem_val:.4f}) -- partial confound.")}
 
-    # H18 — persistence mechanism
+    # H18 -- persistence mechanism
     # INF-H18-NOPVAL fix (v31.0): replaced bare abs(diff) < 0.05 threshold with ttest_ind.
     # INF-H18-SUMMARY fix (v32.0): 'summary' history mode was collected and plotted in
     # fig_persistence but NEVER statistically tested. The old block only compared 'full'
@@ -2732,11 +2734,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
     # independent of how much history is re-entered). A summary mode that diverges would
     # have been entirely missed. Add full-vs-summary and last-vs-summary; all three pairs
     # must be non-significant for a 'supported' verdict.
-    sub29 = df[run_mode_mask(df['run_mode'], 29)] if not df.empty else pd.DataFrame()
-    if not sub29.empty and 'history_mode' in sub29.columns:
-        full_vals    = sub29[sub29['history_mode']=='full']['state_similarity_index'].dropna()
-        last_vals    = sub29[sub29['history_mode']=='last']['state_similarity_index'].dropna()
-        summary_vals = sub29[sub29['history_mode']=='summary']['state_similarity_index'].dropna()
+    sub24 = df[run_mode_mask(df['run_mode'], 24)] if not df.empty else pd.DataFrame()
+    if not sub24.empty and 'history_mode' in sub24.columns:
+        full_vals    = sub24[sub24['history_mode']=='full']['state_similarity_index'].dropna()
+        last_vals    = sub24[sub24['history_mode']=='last']['state_similarity_index'].dropna()
+        summary_vals = sub24[sub24['history_mode']=='summary']['state_similarity_index'].dropna()
         if len(full_vals) < 5 or len(last_vals) < 5:
             outcomes["H18"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                                "implication": "Run 0024 insufficient data for full/last comparison."}
@@ -2767,10 +2769,10 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "metric": "state_similarity_index", "value": float(diff_fl),
                 "summary_tested": has_summary,
                 "implication": (
-                    f"All pairwise history-mode comparisons non-significant ({pairwise_str}) — "
+                    f"All pairwise history-mode comparisons non-significant ({pairwise_str}) -- "
                     f"persistent geometry sustains R, not history length."
                     if all_ok
-                    else f"History mode produces significantly different Similarity ({pairwise_str}) — "
+                    else f"History mode produces significantly different Similarity ({pairwise_str}) -- "
                          f"R may depend on how context is re-entered."
                 ),
             }
@@ -2778,17 +2780,17 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H18"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                            "implication": "Run 0024 not yet complete."}
 
-    # H19 — cross-instance coupling
+    # H19 -- cross-instance coupling
     # INF-H19-THRESHOLD fix (v30.9): replaced arbitrary c > 0.7 with ttest_1samp vs 0.0.
     # INF-H19-DIVERGENCE fix (v32.0): H19 predicts coupling starts high and DIVERGES
     # over turns (the two instances drift apart geometrically as conversation proceeds).
-    # Testing only the mean coupling against zero cannot detect this — a steady-state
+    # Testing only the mean coupling against zero cannot detect this -- a steady-state
     # coupling and a diverging coupling look identical. Added linregress(turn, coupling_score)
     # per condition (coupled vs uncoupled). Divergence = negative slope for coupled arm
     # (coupling_score declining = growing geometric distance). Report slope and p-value.
-    sub30 = df[run_mode_mask(df['run_mode'], 30)] if not df.empty else pd.DataFrame()
-    if not sub30.empty and 'coupling_score' in sub30.columns:
-        c_vals = sub30['coupling_score'].dropna()
+    sub20 = df[run_mode_mask(df['run_mode'], 20)] if not df.empty else pd.DataFrame()
+    if not sub20.empty and 'coupling_score' in sub20.columns:
+        c_vals = sub20['coupling_score'].dropna()
         if len(c_vals) < 10:
             outcomes["H19"] = {"status": "pending", "metric": "coupling_score",
                                "value": float('nan'),
@@ -2798,8 +2800,8 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             _, p19 = sp_stats.ttest_1samp(c_vals, 0.0)
             # Divergence test: coupling_score ~ turn (negative slope = divergence)
             diverge_slope = float('nan'); diverge_p = float('nan')
-            if 'turn' in sub30.columns:
-                turn_coup = sub30[['turn', 'coupling_score']].dropna()
+            if 'turn' in sub20.columns:
+                turn_coup = sub20[['turn', 'coupling_score']].dropna()
                 if len(turn_coup) >= 10:
                     diverge_slope, _, _, diverge_p, _ = sp_stats.linregress(
                         turn_coup['turn'], turn_coup['coupling_score'])
@@ -2812,7 +2814,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "divergence_slope": diverge_slope,
                 "divergence_p":     diverge_p,
                 "implication": (
-                    f"Mean coupling score = {c_mean:.4f} (p={p19:.3f} vs 0){div_str} — "
+                    f"Mean coupling score = {c_mean:.4f} (p={p19:.3f} vs 0){div_str} -- "
                     f"geometric coupling detected between interacting instances."
                     if (p19 < 0.05 and c_mean > 0.1)
                     else f"No significant coupling (mean={c_mean:.4f}, p={p19:.3f}{div_str})."
@@ -2822,7 +2824,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H19"] = {"status": "pending", "metric": "coupling_score", "value": float('nan'),
                            "implication": "Run 0020 not yet complete."}
 
-    # H20 — coherence levels (Run 0021)
+    # H20 -- coherence levels (Run 0021)
     # INF-H20-NAN fix (v30.9): NaN guards + t-test before verdict.
     # INF-H20-MID-R-IGNORED fix (v31.0): mid_r was collected and rendered but never
     # statistically analyzed. Added gradient test across all three conditions.
@@ -2830,11 +2832,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
     # (coherence accumulation). Pooled signal_per_watt mean test cannot detect this.
     # Added slope test: state_similarity_index ~ turn per condition. Accumulation confirmed only if
     # high_r slope > low_r slope (p < 0.05). Mean test retained as secondary metric.
-    sub31 = df[run_mode_mask(df['run_mode'], 31)] if not df.empty else pd.DataFrame()
-    if not sub31.empty and 'signal_per_watt' in sub31.columns and 'r_condition' in sub31.columns:
-        hi_vals  = sub31[sub31['r_condition']=='high_r']['signal_per_watt'].dropna()
-        mid_vals = sub31[sub31['r_condition']=='mid_r']['signal_per_watt'].dropna()
-        lo_vals  = sub31[sub31['r_condition']=='low_r']['signal_per_watt'].dropna()
+    sub21 = df[run_mode_mask(df['run_mode'], 21)] if not df.empty else pd.DataFrame()
+    if not sub21.empty and 'signal_per_watt' in sub21.columns and 'r_condition' in sub21.columns:
+        hi_vals  = sub21[sub21['r_condition']=='high_r']['signal_per_watt'].dropna()
+        mid_vals = sub21[sub21['r_condition']=='mid_r']['signal_per_watt'].dropna()
+        lo_vals  = sub21[sub21['r_condition']=='low_r']['signal_per_watt'].dropna()
         if len(hi_vals) < 5 or len(lo_vals) < 5:
             outcomes["H20"] = {"status": "pending", "metric": "signal_per_watt",
                                "value": float('nan'),
@@ -2863,9 +2865,9 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             # Coherence slope test: state_similarity_index ~ turn per condition
             slope_status = "pending"
             slope_detail = "turn data pending"
-            if 'state_similarity_index' in sub31.columns and 'turn' in sub31.columns:
-                hi_sub = sub31[sub31['r_condition']=='high_r'][['turn','state_similarity_index']].dropna()
-                lo_sub = sub31[sub31['r_condition']=='low_r'][['turn','state_similarity_index']].dropna()
+            if 'state_similarity_index' in sub21.columns and 'turn' in sub21.columns:
+                hi_sub = sub21[sub21['r_condition']=='high_r'][['turn','state_similarity_index']].dropna()
+                lo_sub = sub21[sub21['r_condition']=='low_r'][['turn','state_similarity_index']].dropna()
                 if len(hi_sub) >= 10 and len(lo_sub) >= 10:
                     slope_hi, _, _, p_slope_hi, _ = sp_stats.linregress(
                         hi_sub['turn'], hi_sub['state_similarity_index'])
@@ -2875,11 +2877,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                         slope_status = "supported"
                         slope_detail = (f"high_r similarity slope={slope_hi:.4f} > "
                                         f"low_r slope={slope_lo:.4f} (p={p_slope_hi:.3f})"
-                                        f" — coherence accumulation confirmed.")
+                                        f" -- coherence accumulation confirmed.")
                     else:
                         slope_status = "inconclusive"
                         slope_detail = (f"high_r slope={slope_hi:.4f}, "
-                                        f"low_r slope={slope_lo:.4f} — no coherence accumulation.")
+                                        f"low_r slope={slope_lo:.4f} -- no coherence accumulation.")
 
             mid_str = f"mid_r={mid_mean:.4f}" if not np.isnan(mid_mean) else "mid_r=pending"
             # Primary verdict requires both mean test and slope test to confirm
@@ -2908,7 +2910,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H20"] = {"status": "pending", "metric": "signal_per_watt", "value": float('nan'),
                            "implication": "Run 0021 not yet complete."}
 
-    # H21 — E+C+R full decomposition (Run 0042)
+    # H21 -- E+C+R full decomposition (Run 0042)
     if decomp and 'delta_r2_internal' in decomp:
         d33     = decomp['delta_r2_internal']
         d_int   = d33.get('value', float('nan'))
@@ -2929,7 +2931,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Run 0042 (3-way decomposition) not yet complete."}
 
-    # H50 — Linearity validation (from Run 0042 linearity_check)
+    # H50 -- Linearity validation (from Run 0042 linearity_check)
     lc = decomp.get('linearity_check', {}) if decomp else {}
     if lc and 'error' not in lc:
         outcomes["H50"] = {
@@ -2945,7 +2947,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Linearity check not yet run (requires Run 0042)."}
 
-    # H51 — Interaction information — ordering sensitivity
+    # H51 -- Interaction information -- ordering sensitivity
     ii = decomp.get('interaction_info', {}) if decomp else {}
     if ii and 'error' not in ii:
         ii_frac = ii.get('II_fraction', float('nan'))
@@ -2971,12 +2973,12 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Interaction information not yet computed (requires Run 0042)."}
 
-    # H16 — permutation significance (from watchdog Run 0049)
+    # H16 -- permutation significance (from watchdog Run 0049)
     # INF-H16-PARTIAL fix (v32.0): prior implementation read only 'state_similarity_index' from the
     # Q32 baseline_swap JSON. Run 0049 also computes and saves permutation results for
     # 'signal_entropy_ratio' and 'layer_sim_mean', but those results were computed, saved, and then
     # silently discarded in the verdict. H16 asks whether condition differences exceed
-    # the permutation null distribution — this should be evaluated for ALL three metrics
+    # the permutation null distribution -- this should be evaluated for ALL three metrics
     # the framework relies on, not just state_similarity_index. If signal_entropy_ratio fails the permutation
     # test while state_similarity_index passes, the framework has a problem. Report all three;
     # require state_similarity_index to pass for 'supported' (primary), flag others in implication.
@@ -3006,7 +3008,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "implication": (
                 f"Permutation test [{metric_str}]: condition differences exceed null distribution."
                 if sig_sim
-                else f"Permutation test [{metric_str}]: state_similarity_index not significant — "
+                else f"Permutation test [{metric_str}]: state_similarity_index not significant -- "
                      f"metric may not be condition-sensitive."
             ),
         }
@@ -3014,19 +3016,19 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H16"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                            "implication": "Run 0049 (watchdog) not yet complete."}
 
-    # H22 — Permutation Sensitivity partition (Run 0043 per-condition; Run 0051 pooled cross-condition)
+    # H22 -- Permutation Sensitivity partition (Run 0043 per-condition; Run 0051 pooled cross-condition)
     # Renamed from "Sobol" in v15.0. Legacy key sobol_R kept for backward compat.
-    # Bug V fix (v25.7): prefer pooled_sobol (Run 0051) when available — higher N, cross-condition
+    # Bug V fix (v25.7): prefer pooled_sobol (Run 0051) when available -- higher N, cross-condition
     # validation. Fall back to sobol (Run 0043) if Run 0051 not yet complete.
     #
     # H22 RENORMALIZATION GUARD (v32.0 doc / v33.0 fix): perm_sens fractions are renormalised
     # to sum to 1 by construction in _permutation_sensitivity. This means the fraction alone
-    # cannot falsify R = 0 — if R has zero effect, its fraction is simply 0/(E+C)*1 = a small
+    # cannot falsify R = 0 -- if R has zero effect, its fraction is simply 0/(E+C)*1 = a small
     # number that still looks non-zero after renorm. We therefore ALSO test whether the raw
     # effect_R is statistically distinguishable from zero using a one-sample t-test:
     #   t = effect_R / (std_R / sqrt(n_perm))
     # Verdict requires BOTH frac_R > 0.05 (non-trivial fraction) AND raw effect p < 0.05.
-    # If the fraction passes but the t-test fails, the verdict is 'inconclusive' — the
+    # If the fraction passes but the t-test fails, the verdict is 'inconclusive' -- the
     # partition ran but R may be a renormalisation artifact. H28 remains the external guard.
     _h22_src = pooled_sobol if (pooled_sobol and
                                 ('perm_sens_R' in pooled_sobol or 'sobol_R' in pooled_sobol)) \
@@ -3040,7 +3042,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         frac_E  = se.get('fraction', float('nan'))
         frac_C  = sc.get('fraction', float('nan'))
         im      = _h22_src.get('interaction_mass_unattributed', float('nan'))
-        # Raw effect t-test — guards against renormalisation artifact
+        # Raw effect t-test -- guards against renormalisation artifact
         effect_R_raw = sr.get('effect', float('nan'))
         std_R_raw    = sr.get('std', float('nan'))
         n_perm_h22   = int(_h22_src.get('n_perm', 500))
@@ -3060,17 +3062,17 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         elif frac_ok and not pval_ok:
             h22_status = "inconclusive"
             h22_note   = ("R fraction non-trivial but raw effect not significant "
-                          f"(p={p_R_raw:.3f}) — possible renormalisation artifact. "
+                          f"(p={p_R_raw:.3f}) -- possible renormalisation artifact. "
                           "H28 held-out validation required before citing.")
         elif np.isnan(frac_R):
             h22_status = "pending"
             h22_note   = f"{_h22_label} not yet complete."
         else:
-            # frac_R is below threshold (≤ 0.05) — R contribution negligible after renorm.
+            # frac_R is below threshold (≤ 0.05) -- R contribution negligible after renorm.
             if pval_ok:
                 h22_status = "inconclusive"
                 h22_note   = (f"R fraction below threshold ({frac_R:.3f} ≤ 0.05) but raw effect "
-                              f"is significant (p={p_R_raw:.3f}) — effect real but small "
+                              f"is significant (p={p_R_raw:.3f}) -- effect real but small "
                               f"relative to E+C. H28 required.")
             else:
                 h22_status = "inconclusive"
@@ -3085,7 +3087,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "implication": (
                 f"[{_h22_label}] E={frac_E:.3f} C={frac_C:.3f} R={frac_R:.3f} "
                 f"interaction_mass={im:.3f} | "
-                f"raw effect p={p_R_raw:.4f} (t={t_stat_h22:.2f}, n_perm={n_perm_h22}) — "
+                f"raw effect p={p_R_raw:.4f} (t={t_stat_h22:.2f}, n_perm={n_perm_h22}) -- "
                 f"{h22_note} "
                 f"NOTE: H22 fractions renormalise to 1 by construction. "
                 f"H28 (held-out validation) is the only external falsification guard."
@@ -3095,8 +3097,8 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H22"] = {"status": "pending", "metric": "perm_sens_R_fraction",
                            "value": float('nan'), "implication": "Run 0043 not yet complete."}
 
-    # H02 — null entropy: baseline entropy is present but not extreme (BUG 14 fix: includes Run 0001)
-    v_ent = mean_val([1, 2, 19], 'mean_logit_entropy')
+    # H02 -- null entropy: baseline entropy is present but not extreme (BUG 14 fix: includes Run 0001)
+    v_ent = mean_val([4, 5, 1], 'mean_logit_entropy')
     if np.isnan(v_ent):
         outcomes["H54"] = {"status": "pending", "metric": "mean_logit_entropy",
                            "value": float('nan'),
@@ -3107,21 +3109,21 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H54"] = {
             "status": "supported" if 0.5 <= v_ent <= 8.0 else "inconclusive",
             "metric": "mean_logit_entropy", "value": float(v_ent),
-            "implication": "Null baseline entropy is within expected range — metric is not degenerate."
+            "implication": "Null baseline entropy is within expected range -- metric is not degenerate."
                            if 0.5 <= v_ent <= 8.0
-                           else "Null baseline entropy is out of expected range — metric may be degenerate."}
+                           else "Null baseline entropy is out of expected range -- metric may be degenerate."}
 
-    # H06 — context saturation decay: linear regression of state_similarity_index ~ turn in Run 0022
-    sub23 = df[run_mode_mask(df['run_mode'], 23)] if not df.empty else pd.DataFrame()
-    if not sub23.empty and 'state_similarity_index' in sub23.columns and 'turn' in sub23.columns:
-        t23 = sub23[['turn', 'state_similarity_index']].dropna()
+    # H06 -- context saturation decay: linear regression of state_similarity_index ~ turn in Run 0022
+    sub22 = df[run_mode_mask(df['run_mode'], 22)] if not df.empty else pd.DataFrame()
+    if not sub22.empty and 'state_similarity_index' in sub22.columns and 'turn' in sub22.columns:
+        t23 = sub22[['turn', 'state_similarity_index']].dropna()
         if len(t23) >= 10:
             slope23, _, _, p23, _ = sp_stats.linregress(t23['turn'], t23['state_similarity_index'])
             outcomes["H06"] = {
                 "status": "supported" if (p23 < 0.05 and slope23 < 0) else
                           ("inconclusive" if p23 >= 0.05 else "disproven"),
                 "metric": "state_similarity_index", "value": float(slope23),
-                "implication": f"Similarity declines across 30 turns (β={slope23:.4f}, p={p23:.3f}) — context saturation reduces consistency."
+                "implication": f"Similarity declines across 30 turns (β={slope23:.4f}, p={p23:.3f}) -- context saturation reduces consistency."
                                if (p23 < 0.05 and slope23 < 0)
                                else "Similarity does not significantly decline across turns."}
         else:
@@ -3131,7 +3133,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H06"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                            "implication": "Run 0022 not yet complete."}
 
-    # H07 — condition saturation delta: last 5 turns vs first 5 turns of Run 0022
+    # H07 -- condition saturation delta: last 5 turns vs first 5 turns of Run 0022
     if not sub23.empty and 'state_similarity_index' in sub23.columns and 'turn' in sub23.columns:
         early = sub23[sub23['turn'] <= 5]['state_similarity_index'].dropna()
         late  = sub23[sub23['turn'] >= 26]['state_similarity_index'].dropna()
@@ -3142,7 +3144,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "status": "supported" if (p7 < 0.05 and delta < 0) else
                           ("inconclusive" if p7 >= 0.05 else "disproven"),
                 "metric": "state_similarity_index", "value": float(delta),
-                "implication": f"Similarity drops from early to late turns (Δ={delta:.4f}) — sustained saturation effect."
+                "implication": f"Similarity drops from early to late turns (Δ={delta:.4f}) -- sustained saturation effect."
                                if (p7 < 0.05 and delta < 0)
                                else "No significant early-to-late similarity drop in Run 0022."}
         else:
@@ -3152,22 +3154,22 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H56"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                            "implication": "Run 0022 not yet complete."}
 
-    # H08 — priming E-channel: priming conditions (15-17) vs null baseline (1,2,19)
+    # H08 -- priming E-channel: priming conditions (15-17) vs null baseline (1,2,19)
     # INF-H08-BASELINE fix (v32.0): null baseline expanded from [1,2] to [1,2,19].
-    s8, e8 = ttest([15, 16, 17], [1, 2, 19], 'state_similarity_index', 'positive')
+    s8, e8 = ttest([13, 14, 15], [4, 5, 1], 'state_similarity_index', 'positive')
     outcomes["H08"] = {
         "status": s8, "metric": "state_similarity_index", "value": float(e8) if not np.isnan(e8) else float('nan'),
-        "implication": "Priming conditions elevate Similarity beyond null baseline — E-channel priming effect confirmed."
+        "implication": "Priming conditions elevate Similarity beyond null baseline -- E-channel priming effect confirmed."
                        if s8 == "supported"
                        else "Priming conditions do not reliably elevate similarity."}
 
-    # H10 — perturbation recovery (v16.2: two-part test)
-    # Part 1: shock disruption — layer_sim_mean drops at shock turn vs pre-shock
-    # Part 2: recovery arc — post-shock turns (Run 0039 turns 14-16, is_recovery=1)
+    # H10 -- perturbation recovery (v16.2: two-part test)
+    # Part 1: shock disruption -- layer_sim_mean drops at shock turn vs pre-shock
+    # Part 2: recovery arc -- post-shock turns (Run 0039 turns 14-16, is_recovery=1)
     #         return toward pre-shock sim levels within 1-2 turns
     # Both parts required: disruption alone doesn't test the recovery hypothesis.
     # Recovery without disruption is noise. H10 needs both.
-    sub_jolt = df[run_mode_mask_any(df['run_mode'], [10, 11])] if not df.empty else pd.DataFrame()
+    sub_jolt = df[run_mode_mask_any(df['run_mode'], [39, 40])] if not df.empty else pd.DataFrame()
     if not sub_jolt.empty and 'is_shock' in sub_jolt.columns and 'layer_sim_mean' in sub_jolt.columns:
         pre   = sub_jolt[(sub_jolt['is_shock'] == 0) &
                          (sub_jolt.get('is_recovery', pd.Series(0, index=sub_jolt.index)) == 0)
@@ -3181,7 +3183,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             # Test: recovery turns sim > shock turn sim (trajectory moving back).
             # Bug H10-rec fix (v29.1): filter run_mode == 39 explicitly.
             # Run 0040 also sets is_recovery=1 (turns 6-13, shock at turn 5) but those
-            # rows are structurally incomparable to Run 0039's recovery window —
+            # rows are structurally incomparable to Run 0039's recovery window --
             # different prompt content, trajectory maturity, and window length.
             # Pooling biases rec.mean() toward Run 0040's larger sample and
             # contaminates the recovery resilience verdict.
@@ -3189,7 +3191,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             recovery_val    = float('nan')
             if 'is_recovery' in sub_jolt.columns:
                 rec = sub_jolt[
-                    (sub_jolt['is_recovery'] == 1) & (run_mode_mask(sub_jolt['run_mode'], 10))
+                    (sub_jolt['is_recovery'] == 1) & (run_mode_mask(sub_jolt['run_mode'], 39))
                 ]['layer_sim_mean'].dropna()
                 if len(rec) >= 5 and len(shock) >= 5:
                     rec_delta = rec.mean() - shock.mean()
@@ -3206,7 +3208,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 h10_status = "supported"
                 h10_impl   = (f"Shock disrupts geometry (Δ={drop:.4f}, p={p_drop:.3f}) "
                               f"and trajectory recovers post-shock (Δrec={recovery_val:.4f}) "
-                              f"— recovery resilience confirmed.")
+                              f"-- recovery resilience confirmed.")
             elif disruption_confirmed and recovery_status == "pending":
                 h10_status = "inconclusive"
                 h10_impl   = (f"Shock disrupts geometry (Δ={drop:.4f}, p={p_drop:.3f}) "
@@ -3214,11 +3216,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             elif disruption_confirmed and recovery_status == "inconclusive":
                 h10_status = "inconclusive"
                 h10_impl   = (f"Shock disrupts geometry (Δ={drop:.4f}) but recovery "
-                              f"not significant — trajectory may not be self-restoring.")
+                              f"not significant -- trajectory may not be self-restoring.")
             elif disruption_confirmed and recovery_status == "disproven":
                 h10_status = "disproven"
                 h10_impl   = (f"Shock disrupts geometry but post-shock sim declines further "
-                              f"(Δrec={recovery_val:.4f}) — no recovery.")
+                              f"(Δrec={recovery_val:.4f}) -- no recovery.")
             else:
                 h10_status = "inconclusive"
                 h10_impl   = f"No significant sim drop at shock turns (Δ={drop:.4f}, p={p_drop:.3f})."
@@ -3233,40 +3235,40 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H10"] = {"status": "pending", "metric": "layer_sim_mean", "value": float('nan'),
                            "implication": "Runs 0039/0040 not yet complete."}
 
-    # H12 — tokenization control
+    # H12 -- tokenization control
     # INF-H12-NOSIG fix (v31.0): replace distance comparison (dist_null < dist_int)
     # with a two-part significance test. Prediction: Run 0032 is statistically
     # indistinguishable from null AND statistically distinguishable from introspection.
-    sub18 = df[run_mode_mask(df['run_mode'], 18)] if not df.empty else pd.DataFrame()
-    sub_null = df[run_mode_mask_any(df['run_mode'], [1, 2])] if not df.empty else pd.DataFrame()
-    sub_int  = df[run_mode_mask_any(df['run_mode'], [3, 4, 5])] if not df.empty else pd.DataFrame()
-    if (not sub18.empty and not sub_null.empty and not sub_int.empty
+    sub32 = df[run_mode_mask(df['run_mode'], 32)] if not df.empty else pd.DataFrame()
+    sub_null = df[run_mode_mask_any(df['run_mode'], [4, 5, 1])] if not df.empty else pd.DataFrame()
+    sub_int  = df[run_mode_mask_any(df['run_mode'], [6, 7, 8])] if not df.empty else pd.DataFrame()
+    if (not sub32.empty and not sub_null.empty and not sub_int.empty
             and 'state_similarity_index' in df.columns):
-        v18_vals   = sub18['state_similarity_index'].dropna()
+        v32_vals   = sub32['state_similarity_index'].dropna()
         vnull_vals = sub_null['state_similarity_index'].dropna()
         vint_vals  = sub_int['state_similarity_index'].dropna()
-        if len(v18_vals) < 5 or len(vnull_vals) < 5 or len(vint_vals) < 5:
+        if len(v32_vals) < 5 or len(vnull_vals) < 5 or len(vint_vals) < 5:
             outcomes["H12"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                                "implication": "Run 0032 or baseline runs insufficient data."}
         else:
-            # Part 1: Run 0032 vs null — should be non-significant (token shuffle ≈ null)
-            _, p_null = sp_stats.ttest_ind(v18_vals, vnull_vals)
-            # Part 2: Run 0032 vs introspection — should be significant, negative direction
-            _, p_int  = sp_stats.ttest_ind(v18_vals, vint_vals)
-            v18   = float(v18_vals.mean())
+            # Part 1: Run 0032 vs null -- should be non-significant (token shuffle ≈ null)
+            _, p_null = sp_stats.ttest_ind(v32_vals, vnull_vals)
+            # Part 2: Run 0032 vs introspection -- should be significant, negative direction
+            _, p_int  = sp_stats.ttest_ind(v32_vals, vint_vals)
+            v32   = float(v32_vals.mean())
             vnull = float(vnull_vals.mean())
             vint  = float(vint_vals.mean())
             matches_null       = p_null >= 0.05
-            differs_from_intro = p_int < 0.05 and v18 < vint
+            differs_from_intro = p_int < 0.05 and v32 < vint
             outcomes["H12"] = {
                 "status": "supported" if (matches_null and differs_from_intro) else
                           ("inconclusive" if matches_null else "disproven"),
-                "metric": "state_similarity_index", "value": float(v18 - vnull),
+                "metric": "state_similarity_index", "value": float(v32 - vnull),
                 "implication": (
                     f"Run 0032 Similarity matches null (p_null={p_null:.3f} ≥ 0.05) and differs from "
-                    f"introspection (p_int={p_int:.3f}) — semantics, not token stats, drive similarity."
+                    f"introspection (p_int={p_int:.3f}) -- semantics, not token stats, drive similarity."
                     if (matches_null and differs_from_intro)
-                    else f"Run 0032 Similarity distinguishable from null (p_null={p_null:.3f}) — "
+                    else f"Run 0032 Similarity distinguishable from null (p_null={p_null:.3f}) -- "
                          f"token statistics may contribute to observed effects."
                 ),
             }
@@ -3274,11 +3276,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H12"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                            "implication": "Run 0032 or baseline runs not yet complete."}
 
-    # H14 — layer locality mid-late: peak cross-turn sim in middle-to-late layers
-    sub24 = df[run_mode_mask(df['run_mode'], 24)] if not df.empty else pd.DataFrame()
-    if not sub24.empty and 'layer_sim_prev_profile' in sub24.columns:
+    # H14 -- layer locality mid-late: peak cross-turn sim in middle-to-late layers
+    sub27 = df[run_mode_mask(df['run_mode'], 27)] if not df.empty else pd.DataFrame()
+    if not sub27.empty and 'layer_sim_prev_profile' in sub27.columns:
         profiles = []
-        for _, row in sub24.iterrows():
+        for _, row in sub27.iterrows():
             try:
                 p = json.loads(row['layer_sim_prev_profile'])
                 if isinstance(p, list) and len(p) > 4:
@@ -3291,7 +3293,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             n_layers  = len(mean_profile)
             mid_late_threshold = n_layers // 2
             # INF-H14-NOPVAL fix (v36.2): prior implementation used peak_idx >= n_l//2 with
-            # no significance test — same class as INF-H15-NOPVAL (v32.0) and INF-H24-NOPVAL
+            # no significance test -- same class as INF-H15-NOPVAL (v32.0) and INF-H24-NOPVAL
             # (v36.1). Any sample >= 5 profiles could produce 'supported' from noise.
             # Fix: ttest_ind on early half vs late half of mean profile, parallel to H15/H24.
             # Both positional criterion AND p < 0.05 required. Fallback to positional-only
@@ -3309,11 +3311,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                           ("inconclusive" if peak_in_late14 else "disproven"),
                 "metric": "layer_sim_mean", "value": float(peak_idx),
                 "t14_p": t14_p,
-                "implication": f"Peak cross-turn sim at layer {peak_idx}/{n_layers} — "
+                "implication": f"Peak cross-turn sim at layer {peak_idx}/{n_layers} -- "
                                f"trajectory consistency concentrated in middle-to-late stack "
                                f"(early vs late{p14_str})."
                                if (peak_in_late14 and sig14)
-                               else f"Peak cross-turn sim at layer {peak_idx}/{n_layers} — "
+                               else f"Peak cross-turn sim at layer {peak_idx}/{n_layers} -- "
                                     f"positional criterion {'met' if peak_in_late14 else 'not met'}"
                                     f"{p14_str}; early/late difference not significant."}
         else:
@@ -3323,7 +3325,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H14"] = {"status": "pending", "metric": "layer_sim_mean", "value": float('nan'),
                            "implication": "Run 0027 not yet complete."}
 
-    # H15 — layer locality early null: early layers show low turn-1 similarity
+    # H15 -- layer locality early null: early layers show low turn-1 similarity
     if not sub24.empty and 'layer_sim_t1_profile' in sub24.columns:
         t1profiles = []
         for _, row in sub24.iterrows():
@@ -3343,7 +3345,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             late_mean  = float(np.nanmean(late_vals))
             diff_t1 = late_mean - early_mean
             # INF-H15-NOPVAL fix (v32.0): prior implementation used diff_t1 > 0.02 with
-            # no statistical test and no N guard — consistent with no framework standard.
+            # no statistical test and no N guard -- consistent with no framework standard.
             # A diff of 0.021 across 5 profiles passed; 0.019 across 1000 failed.
             # Fix: ttest_ind on the per-layer vectors (each layer contributes one value;
             # early and late sub-vectors treated as independent groups within the profile).
@@ -3359,9 +3361,9 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                           ("inconclusive" if diff_t1 > 0.02 else "disproven" if diff_t1 < 0 else "inconclusive"),
                 "metric": "layer_sim_turn1_mean", "value": float(diff_t1),
                 "t15_p": t15_p,
-                "implication": f"Early layers have lower turn-1 sim than late layers (Δ={diff_t1:.4f}{p_str}) — trajectory memory concentrated in deep stack."
+                "implication": f"Early layers have lower turn-1 sim than late layers (Δ={diff_t1:.4f}{p_str}) -- trajectory memory concentrated in deep stack."
                                if (diff_t1 > 0.02 and sig15)
-                               else f"No clear early/late difference in turn-1 similarity (Δ={diff_t1:.4f}{p_str}) — layer locality inconclusive."}
+                               else f"No clear early/late difference in turn-1 similarity (Δ={diff_t1:.4f}{p_str}) -- layer locality inconclusive."}
         else:
             outcomes["H57"] = {"status": "pending", "metric": "layer_sim_turn1_mean",
                                "value": float('nan'),
@@ -3371,20 +3373,20 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Run 0027 not yet complete."}
 
-    # H23 — hesitation probe: onset_delay_ratio correlated with disruption_flag in Run 0038
+    # H23 -- hesitation probe: onset_delay_ratio correlated with disruption_flag in Run 0038
     # INF-H23-SIM fix (v32.0): H23 predicts TWO correlations: r(hesitation, disruption_flag) > 0.3
     # AND r(hesitation, state_similarity_index) > 0.3. The prior implementation only tested the disruption_flag
     # arm. The state_similarity_index arm was in the hypothesis doc but absent from the inference block.
     # A disruption proxy that predicts similarity trajectory (continuous) but not binary disruption events
     # would have been missed entirely. Both must be computed; report both; require EITHER
     # to be significant for 'supported' (either arm confirms hesitation is a proxy for R).
-    sub35 = df[run_mode_mask(df['run_mode'], 35)] if not df.empty else pd.DataFrame()
-    if not sub35.empty and 'onset_delay_ratio' in sub35.columns and 'disruption_flag' in sub35.columns:
+    sub38 = df[run_mode_mask(df['run_mode'], 38)] if not df.empty else pd.DataFrame()
+    if not sub38.empty and 'onset_delay_ratio' in sub38.columns and 'disruption_flag' in sub38.columns:
         from scipy.stats import pearsonr
         cols_needed = ['onset_delay_ratio', 'disruption_flag']
-        if 'state_similarity_index' in sub35.columns:
+        if 'state_similarity_index' in sub38.columns:
             cols_needed.append('state_similarity_index')
-        paired = sub35[cols_needed].dropna()
+        paired = sub38[cols_needed].dropna()
         if len(paired) >= 10:
             r_disrupt, p_disrupt  = pearsonr(paired['onset_delay_ratio'], paired['disruption_flag'])
             r_sim, p_sim = (float('nan'), float('nan'))
@@ -3403,7 +3405,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "r_disrupt":  float(r_disrupt),   "p_disrupt":  float(p_disrupt),
                 "r_sim": float(r_sim),  "p_sim": float(p_sim),
                 "implication": (
-                    f"Hesitation correlates with disruption: r_disrupt={r_disrupt:.3f} p={p_disrupt:.3f}{sim_str} — "
+                    f"Hesitation correlates with disruption: r_disrupt={r_disrupt:.3f} p={p_disrupt:.3f}{sim_str} -- "
                     f"deliberation proxy confirmed."
                     if (disrupt_sig or sim_sig)
                     else f"Hesitation not significantly correlated with disruption: "
@@ -3417,11 +3419,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H23"] = {"status": "pending", "metric": "onset_delay_ratio", "value": float('nan'),
                            "implication": "Run 0038 not yet complete."}
 
-    # H24 — layer depth locality: peak cross-turn sim in mid-to-late layers (Run 0034)
-    sub36 = df[run_mode_mask(df['run_mode'], 36)] if not df.empty else pd.DataFrame()
-    if not sub36.empty and 'layer_sim_depth_profile' in sub36.columns:
+    # H24 -- layer depth locality: peak cross-turn sim in mid-to-late layers (Run 0034)
+    sub34 = df[run_mode_mask(df['run_mode'], 34)] if not df.empty else pd.DataFrame()
+    if not sub34.empty and 'layer_sim_depth_profile' in sub34.columns:
         profiles36 = []
-        for raw in sub36['layer_sim_depth_profile'].dropna():
+        for raw in sub34['layer_sim_depth_profile'].dropna():
             try:
                 p = json.loads(raw)
                 if isinstance(p, list) and len(p) > 4:
@@ -3433,7 +3435,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             peak_idx = int(np.nanargmax(mean_p))
             n_l = len(mean_p)
             # INF-H24-NOPVAL fix (v36.1): prior implementation used peak_idx >= n_l//2 with
-            # no significance test — an arbitrary positional threshold with no derivation.
+            # no significance test -- an arbitrary positional threshold with no derivation.
             # Same class as INF-H15-NOPVAL (v32.0 FIX-4). Fix: ttest_ind on early half
             # vs late half of the mean profile (per-layer values as independent samples).
             # Both positional criterion AND p < 0.05 required for 'supported', parallel to H15.
@@ -3450,9 +3452,9 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                           ("inconclusive" if peak_in_late else "disproven"),
                 "metric": "layer_sim_mean", "value": float(peak_idx),
                 "t24_p": t24_p,
-                "implication": f"Peak trajectory consistency at layer {peak_idx}/{n_l} — mid-to-late stack localisation confirmed (early vs late p={t24_p:.3f})."
+                "implication": f"Peak trajectory consistency at layer {peak_idx}/{n_l} -- mid-to-late stack localisation confirmed (early vs late p={t24_p:.3f})."
                                if (peak_in_late and sig24)
-                               else f"Peak trajectory consistency at layer {peak_idx}/{n_l} — positional criterion {'met' if peak_in_late else 'not met'}{p24_str}; early/late difference not significant."}
+                               else f"Peak trajectory consistency at layer {peak_idx}/{n_l} -- positional criterion {'met' if peak_in_late else 'not met'}{p24_str}; early/late difference not significant."}
         else:
             outcomes["H24"] = {"status": "pending", "metric": "layer_sim_mean", "value": float('nan'),
                                "implication": "Run 0034 insufficient profile data."}
@@ -3460,13 +3462,13 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H24"] = {"status": "pending", "metric": "layer_sim_mean", "value": float('nan'),
                            "implication": "Run 0034 not yet complete."}
 
-    # H25 — within-turn entropy shape: high-R turns show falling entropy (Run 0037)
+    # H25 -- within-turn entropy shape: high-R turns show falling entropy (Run 0037)
     # BUG-A fix (v33.4): prior implementation computed a scalar mean slope per group
     # and compared means (hi_slope < 0 and diff < -0.1) with NO statistical test.
     # A group with 3 rows and mean slope=-0.15 passed; 500 rows with slope=-0.09 failed.
     # Fix: _entropy_slope now returns the full per-row slope list. ttest_ind on the two
     # lists provides a proper p-value. Verdict requires: hi_mean < 0 AND diff < -0.1
-    # AND p < 0.05. All three conditions required — magnitude AND significance.
+    # AND p < 0.05. All three conditions required -- magnitude AND significance.
     sub37 = df[run_mode_mask(df['run_mode'], 37)] if not df.empty else pd.DataFrame()
     if not sub37.empty and 'entropy_trajectory' in sub37.columns and 'state_similarity_index' in sub37.columns:
         high_r = sub37[sub37['state_similarity_index'] > sub37['state_similarity_index'].median()]
@@ -3504,7 +3506,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "n_low":  len(lo_slopes),
                 "implication": (
                     f"High-R turns show falling entropy (mean_slope={hi_mean:.3f}) vs "
-                    f"low-R (mean_slope={lo_mean:.3f}), Δ={diff:.3f}, p={p25:.3f} — "
+                    f"low-R (mean_slope={lo_mean:.3f}), Δ={diff:.3f}, p={p25:.3f} -- "
                     f"deliberation pattern confirmed."
                     if supported else
                     f"Entropy shape not significantly different: high_R={hi_mean:.3f}, "
@@ -3517,17 +3519,17 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H25"] = {"status": "pending", "metric": "mean_logit_entropy", "value": float('nan'),
                            "implication": "Run 0037 not yet complete."}
 
-    # H26 — condition transfer: pure trajectory inertia = transfer − null_to_arithmetic
+    # H26 -- condition transfer: pure trajectory inertia = transfer − null_to_arithmetic
     # Both arms experience the same genre-shock at turn 7; the difference isolates R.
     # Secondary: arithmetic_only shown for reference but NOT the primary test.
-    sub38 = df[run_mode_mask(df['run_mode'], 38)] if not df.empty else pd.DataFrame()
-    if not sub38.empty and 'condition' in sub38.columns and 'state_similarity_index' in sub38.columns and 'turn' in sub38.columns:
-        transfer_post  = sub38[(sub38['condition'] == 'transfer') &
-                               (sub38['turn'].between(7, 9))]['state_similarity_index'].dropna()
-        null_arith_post = sub38[(sub38['condition'] == 'null_to_arithmetic') &
-                                (sub38['turn'].between(7, 9))]['state_similarity_index'].dropna()
-        arith_post     = sub38[(sub38['condition'] == 'arithmetic_only') &
-                               (sub38['turn'].between(7, 9))]['state_similarity_index'].dropna()
+    sub36 = df[run_mode_mask(df['run_mode'], 36)] if not df.empty else pd.DataFrame()
+    if not sub36.empty and 'condition' in sub36.columns and 'state_similarity_index' in sub36.columns and 'turn' in sub36.columns:
+        transfer_post  = sub36[(sub36['condition'] == 'transfer') &
+                               (sub36['turn'].between(7, 9))]['state_similarity_index'].dropna()
+        null_arith_post = sub36[(sub36['condition'] == 'null_to_arithmetic') &
+                                (sub36['turn'].between(7, 9))]['state_similarity_index'].dropna()
+        arith_post     = sub36[(sub36['condition'] == 'arithmetic_only') &
+                               (sub36['turn'].between(7, 9))]['state_similarity_index'].dropna()
         if len(transfer_post) >= 5 and len(null_arith_post) >= 5:
             # Primary: transfer − null_to_arithmetic (pure inertia, shock cancelled)
             diff_inertia = transfer_post.mean() - null_arith_post.mean()
@@ -3554,11 +3556,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H26"] = {"status": "pending", "metric": "state_similarity_index", "value": float('nan'),
                            "implication": "Run 0036 not yet complete."}
 
-    # H27 — output self-similarity: output_sim_prev higher in introspection vs null (Run 0035)
-    sub39 = df[run_mode_mask(df['run_mode'], 39)] if not df.empty else pd.DataFrame()
-    if not sub39.empty and 'output_sim_prev' in sub39.columns and 'condition' in sub39.columns:
-        intro39 = sub39[sub39['condition'] == 'introspection']['output_sim_prev'].dropna()
-        null39  = sub39[sub39['condition'] == 'null']['output_sim_prev'].dropna()
+    # H27 -- output self-similarity: output_sim_prev higher in introspection vs null (Run 0035)
+    sub35 = df[run_mode_mask(df['run_mode'], 35)] if not df.empty else pd.DataFrame()
+    if not sub35.empty and 'output_sim_prev' in sub35.columns and 'condition' in sub35.columns:
+        intro39 = sub35[sub35['condition'] == 'introspection']['output_sim_prev'].dropna()
+        null39  = sub35[sub35['condition'] == 'null']['output_sim_prev'].dropna()
         if len(intro39) >= 5 and len(null39) >= 5:
             diff39 = intro39.mean() - null39.mean()
             _, p39 = sp_stats.ttest_ind(intro39, null39)
@@ -3566,7 +3568,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "status": "supported" if (p39 < 0.05 and diff39 > 0) else
                           ("inconclusive" if p39 >= 0.05 else "disproven"),
                 "metric": "output_sim_prev", "value": float(diff39),
-                "implication": f"Introspection outputs more self-referential than null (Δ={diff39:.4f}, p={p39:.3f}) — R echoes prior vocabulary."
+                "implication": f"Introspection outputs more self-referential than null (Δ={diff39:.4f}, p={p39:.3f}) -- R echoes prior vocabulary."
                                if (p39 < 0.05 and diff39 > 0)
                                else f"No significant output similarity elevation in introspection (Δ={diff39:.4f}, p={p39:.3f})."}
         else:
@@ -3576,7 +3578,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H27"] = {"status": "pending", "metric": "output_sim_prev", "value": float('nan'),
                            "implication": "Run 0035 not yet complete."}
 
-    # H28 — partition external validation: held-out fractions (Run 0033) match in-sample (Run 0043)
+    # H28 -- partition external validation: held-out fractions (Run 0033) match in-sample (Run 0043)
     # Reads directly from the Q34 JSON output rather than from df (no CSV metric for this).
     # sobol arg is the parsed Q34_sobol_partition.json dict passed in from run().
     if sobol and 'h28_status' in sobol:
@@ -3588,23 +3590,23 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "metric": "h28_max_fraction_divergence",
             "value":  float(max_div) if max_div == max_div else float('nan'),
             "implication": h28_verd if h28_verd else
-                           ("Partition validated externally — in-sample fractions not overfit."
+                           ("Partition validated externally -- in-sample fractions not overfit."
                             if h28_status == "supported" else
-                            "Held-out fractions diverge — in-sample partition may be overfit."
+                            "Held-out fractions diverge -- in-sample partition may be overfit."
                             if h28_status == "disproven" else
-                            "Borderline — rerun with more Run 0033 trials."),
+                            "Borderline -- rerun with more Run 0033 trials."),
         }
     else:
         outcomes["H28"] = {"status": "pending", "metric": "h28_max_fraction_divergence",
                            "value": float('nan'),
-                           "implication": "Run 0033 not yet complete — held-out validation pending."}
+                           "implication": "Run 0033 not yet complete -- held-out validation pending."}
 
-    # H29 — layer causal sufficiency: single-layer patching output change rate (Run 0018)
+    # H29 -- layer causal sufficiency: single-layer patching output change rate (Run 0018)
     # A layer is "causally sufficient" if patching it alone changes output in > 5% of turns.
     # Null threshold: <= 2% (indistinguishable from noise).
-    sub42 = df[run_mode_mask(df['run_mode'], 42)] if not df.empty else pd.DataFrame()
-    if not sub42.empty and 'patch_layer' in sub42.columns and 'output_changed' in sub42.columns:
-        patched42 = sub42[sub42['patch_layer'] != 'none']
+    sub18 = df[run_mode_mask(df['run_mode'], 18)] if not df.empty else pd.DataFrame()
+    if not sub18.empty and 'patch_layer' in sub18.columns and 'output_changed' in sub18.columns:
+        patched42 = sub18[sub18['patch_layer'] != 'none']
         if not patched42.empty:
             layer_rates = {}
             for layer in ['L8', 'L16', 'L24', 'L31']:
@@ -3620,7 +3622,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 # add binomtest(k, n, p=0.02, alternative='greater') per layer. A layer is
                 # causally sufficient only if BOTH the rate exceeds 5% AND the binomtest
                 # is significant (p < 0.05 vs 2% noise floor). This prevents a layer with
-                # rate=5.1% from 40 trials from being labelled sufficient — that is 2/40,
+                # rate=5.1% from 40 trials from being labelled sufficient -- that is 2/40,
                 # not distinguishable from noise at p < 0.05.
                 binom_results = {}
                 for layer in ['L8', 'L16', 'L24', 'L31']:
@@ -3649,7 +3651,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                         "implication": (
                             f"Causally sufficient layers (>5%, binomtest p<0.05): {rate_str}. "
                             f"Peak: {max_layer} ({max_rate:.1f}%). "
-                            f"Individual layer geometry is causally upstream of output — "
+                            f"Individual layer geometry is causally upstream of output -- "
                             f"R is not diffuse across the full stack."
                         ),
                         "per_layer_rates": layer_rates,
@@ -3666,13 +3668,13 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                         implication = (
                             f"All layers at or below noise floor (≤2%). "
                             f"Rates+binom: {all_str}. "
-                            f"No single layer causally sufficient — R is distributed."
+                            f"No single layer causally sufficient -- R is distributed."
                         )
                     else:
                         implication = (
                             f"No single layer exceeds 5%+binomtest threshold. "
                             f"Rates+binom: {all_str}. "
-                            f"Causal effect may require multi-layer coordination — "
+                            f"Causal effect may require multi-layer coordination -- "
                             f"consistent with Run 0017 (multi-layer) but not layer-specific R."
                         )
                     outcomes["H29"] = {
@@ -3696,24 +3698,24 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Run 0018 not yet complete."}
 
-    # H38 — Run 0017 activation patching: output change rate per patch_mode
+    # H38 -- Run 0017 activation patching: output change rate per patch_mode
     # output_changed present only in post-v30.9 re-collected data; NaN rows → pending.
     # v0.72.2.0: Empirical noise floor from Run 0017 random mode replaces hardcoded p=0.02.
-    sub21 = df[run_mode_mask(df['run_mode'], 21)] if not df.empty else pd.DataFrame()
+    sub17 = df[run_mode_mask(df['run_mode'], 17)] if not df.empty else pd.DataFrame()
 
     # Compute empirical noise floor from Run 0017 random mode
     _noise_p = 0.02  # default fallback
     _noise_source = "hardcoded_0.02"
-    if not sub21.empty and 'patch_mode' in sub21.columns and 'output_changed' in sub21.columns:
-        _random21 = sub21[sub21['patch_mode'] == 'random']['output_changed'].dropna()
+    if not sub17.empty and 'patch_mode' in sub17.columns and 'output_changed' in sub17.columns:
+        _random21 = sub17[sub17['patch_mode'] == 'random']['output_changed'].dropna()
         if len(_random21) >= 10:
             _noise_p = float(_random21.mean())
             if _noise_p < 0.001:
                 _noise_p = 0.001  # floor to prevent degenerate binomtest
             _noise_source = f"run21_random_n{len(_random21)}"
 
-    if not sub21.empty and 'patch_mode' in sub21.columns and 'output_changed' in sub21.columns:
-        patched21 = sub21[sub21['patch_mode'].isin(['partial', 'full'])]
+    if not sub17.empty and 'patch_mode' in sub17.columns and 'output_changed' in sub17.columns:
+        patched21 = sub17[sub17['patch_mode'].isin(['partial', 'full'])]
         valid21   = patched21['output_changed'].dropna()
         if len(valid21) >= 20:
             mode_rates = {}
@@ -3781,16 +3783,16 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                     "Run 0017 output_changed present but < 20 valid rows. "
                     "Re-collect after Run 0006 completes with save_all_layers=True."
                     if valid21.count() > 0 else
-                    "Run 0017 output_changed absent — pre-v30.9 data. Re-collect Run 0017."
+                    "Run 0017 output_changed absent -- pre-v30.9 data. Re-collect Run 0017."
                 )}
     else:
         outcomes["H38"] = {
             "status": "pending", "metric": "output_change_rate", "value": float('nan'),
             "implication": "Run 0017 not yet complete or output_changed column absent."}
 
-    # H36 — causal effect of patching is temperature-invariant (Run 0017, all temps)
-    # Requires temperature column in CSV — only present in v54.2.2+ data.
-    # Must pool R21_patching.csv across ALL temperature directories — not just current round.
+    # H36 -- causal effect of patching is temperature-invariant (Run 0017, all temps)
+    # Requires temperature column in CSV -- only present in v54.2.2+ data.
+    # Must pool R21_patching.csv across ALL temperature directories -- not just current round.
     try:
         from cartography import DATA, get_family_size_dir
         import json as _json
@@ -3841,7 +3843,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                     impl36 = (
                         f"output_change_rate declines monotonically with temperature "
                         f"(r={r_val:.3f}, Kruskal-Wallis p={kw_p:.3f}). "
-                        f"Causal effect of geometry injection is temperature-dependent — "
+                        f"Causal effect of geometry injection is temperature-dependent -- "
                         f"R leverage dissolves as trajectory consistency declines."
                     )
                 elif kw_p >= 0.05:
@@ -3867,7 +3869,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             else:
                 outcomes["H36"] = {"status": "pending", "metric": "patch_temp_slope",
                                    "value": float('nan'),
-                                   "implication": f"Only {len(temp_rates)} temperature rounds with sufficient data — need ≥ 3."}
+                                   "implication": f"Only {len(temp_rates)} temperature rounds with sufficient data -- need ≥ 3."}
         else:
             outcomes["H36"] = {"status": "pending", "metric": "patch_temp_slope",
                                "value": float('nan'),
@@ -3875,9 +3877,9 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
     else:
         outcomes["H36"] = {"status": "pending", "metric": "patch_temp_slope",
                            "value": float('nan'),
-                           "implication": "Run 0017 temperature column absent — requires v54.2.2+ collection."}
+                           "implication": "Run 0017 temperature column absent -- requires v54.2.2+ collection."}
 
-    # H37 — layer causal sufficiency is temperature-invariant (Run 0018, all temps)
+    # H37 -- layer causal sufficiency is temperature-invariant (Run 0018, all temps)
     # Two-way ANOVA: layer × temperature interaction on output_change_rate.
     # Must pool Q42_layer_isolation.csv across ALL temperature directories.
     try:
@@ -3950,7 +3952,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                     impl37 = (
                         f"Significant layer × temperature interaction "
                         f"(two-way ANOVA p={interaction_p:.3f}). "
-                        f"Layer causal profile changes with temperature — "
+                        f"Layer causal profile changes with temperature -- "
                         f"late-layer dominance dissolves at high temperature."
                     )
                 else:
@@ -3969,7 +3971,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             else:
                 outcomes["H37"] = {"status": "pending", "metric": "layer_temp_interaction_p",
                                    "value": float('nan'),
-                                   "implication": "H37 ANOVA could not be computed — statsmodels required or insufficient data."}
+                                   "implication": "H37 ANOVA could not be computed -- statsmodels required or insufficient data."}
         else:
             outcomes["H37"] = {"status": "pending", "metric": "layer_temp_interaction_p",
                                "value": float('nan'),
@@ -3977,14 +3979,14 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
     else:
         outcomes["H37"] = {"status": "pending", "metric": "layer_temp_interaction_p",
                            "value": float('nan'),
-                           "implication": "Run 0018 temperature column absent — requires v54.2.2+ collection."}
+                           "implication": "Run 0018 temperature column absent -- requires v54.2.2+ collection."}
 
-    # ── Structural documentation — v32.0 ──────────────────────────────────────
+    # ── Structural documentation -- v32.0 ──────────────────────────────────────
     #
     # H17 THREE-STEP DEPENDENCY (v32.0 doc): H17 has a hidden three-step chain:
     #   Run 0023 (collection) → Run 0042 (analysis, reads Run 0023 confound quadruplets)
     #   → H17 verdict (reads decomp['h16_confound_decomposition']).
-    # If Run 0023 condition 'semantic' is missing, Run 0042 silently degrades —
+    # If Run 0023 condition 'semantic' is missing, Run 0042 silently degrades --
     # h16_confound_decomposition may be absent or incomplete. H17 will show 'pending'
     # but the error is traceable only by checking Run 0023 CSV for confound_condition values.
     # Mitigation: Run 0023 prerequisite gate (PREREQ gates in start_here.py) already blocks
@@ -3993,7 +3995,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
     #
     # H22 RENORMALIZATION GUARD (v32.0 doc): perm_sens fractions are renormalised to sum
     # to 1 by construction in _permutation_sensitivity. This means H22 fractions are NOT
-    # independently falsifiable — if R = 0, it will be reported as 0/(E+C) * 1 = a small
+    # independently falsifiable -- if R = 0, it will be reported as 0/(E+C) * 1 = a small
     # fraction, not zero. H28 (held-out external validation) is the ONLY epistemic guard
     # that detects overfitting of the partition. H22 must not be cited as validated before
     # H28 completes. This is enforced in the implication string below and in CHANGELOG.
@@ -4005,7 +4007,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
     # turns 1-2 in the current design so there is no practical impact. If future runs
     # place events at turns 1 or 2, those rows MUST be excluded from disruption_flag inference.
 
-    # H30 — output turn-1 self-referentiality grows with turns (Run 0035)
+    # H30 -- output turn-1 self-referentiality grows with turns (Run 0035)
     # Zero data cost: output_sim_turn1 already saved per row in Run 0035.
     # Null: cosine sim of current output embedding to turn-1 output embedding flat/declining.
     # Supported: positive linregress slope for introspection condition (p < 0.05).
@@ -4021,7 +4023,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                           ("inconclusive" if p30 >= 0.05 else "disproven"),
                 "metric": "output_sim_turn1", "value": float(slope30),
                 "implication": (
-                    f"Turn-1 output similarity grows across turns (β={slope30:.4f}, p={p30:.3f}) — "
+                    f"Turn-1 output similarity grows across turns (β={slope30:.4f}, p={p30:.3f}) -- "
                     f"introspective trajectories become increasingly self-referential."
                     if (p30 < 0.05 and slope30 > 0)
                     else f"No growth in turn-1 output similarity (β={slope30:.4f}, p={p30:.3f})."
@@ -4036,13 +4038,13 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Run 0035 not yet complete or output_sim_turn1 absent."}
 
-    # H31 — arithmetic accuracy correlated with trajectory consistency (Runs 0009-0012)
+    # H31 -- arithmetic accuracy correlated with trajectory consistency (Runs 0009-0012)
     # Zero data cost: 'correct' flag already saved per row in Run 0009-9 (runners.py:739).
-    # Null: r(state_similarity_index, correct) not significant — trajectory consistency has no functional
+    # Null: r(state_similarity_index, correct) not significant -- trajectory consistency has no functional
     # consequence for task performance. Supported: r > 0.15 and p < 0.05.
     # A positive result is the STRONGEST functional claim in the framework: R predicts
     # real-world performance. Use logistic regression as robustness check if r < 0.15.
-    sub_arith = df[run_mode_mask_any(df['run_mode'], [6, 7, 8, 9])] if not df.empty else pd.DataFrame()
+    sub_arith = df[run_mode_mask_any(df['run_mode'], [9, 10, 11, 12])] if not df.empty else pd.DataFrame()
     if (not sub_arith.empty and 'correct' in sub_arith.columns
             and 'state_similarity_index' in sub_arith.columns):
         paired31 = sub_arith[['state_similarity_index', 'correct']].dropna()
@@ -4054,11 +4056,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                           ("inconclusive" if p31 >= 0.05 else "disproven"),
                 "metric": "pearsonr_correct_similarity", "value": float(r31),
                 "implication": (
-                    f"similarity correlates with arithmetic accuracy (r={r31:.3f}, p={p31:.3f}) — "
+                    f"similarity correlates with arithmetic accuracy (r={r31:.3f}, p={p31:.3f}) -- "
                     f"trajectory consistency has functional consequence for task performance."
                     if (p31 < 0.05 and r31 > 0.15)
                     else f"similarity not significantly correlated with accuracy "
-                         f"(r={r31:.3f}, p={p31:.3f}) — R may be epiphenomenal to performance."
+                         f"(r={r31:.3f}, p={p31:.3f}) -- R may be epiphenomenal to performance."
                 ),
             }
         else:
@@ -4070,15 +4072,15 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Runs 0009-0012 not yet complete or 'correct' column absent."}
 
-    # H32 — shock phrasing has no differential effect on recovery arc (Run 0039)
+    # H32 -- shock phrasing has no differential effect on recovery arc (Run 0039)
     # Zero data cost: 'shock_variant' (0-3, cycling by trial%4) already saved per row
     # in Run 0039 (runners.py:826). Recovery delta = post-shock sim minus shock-turn sim.
     # Null: recovery_delta identical across 4 phrasings (ANOVA p >= 0.05).
     # Supported (ANOVA non-significant): recovery is phrasing-robust.
     # Disproven: one or more variants shows significantly different recovery.
-    sub10 = df[run_mode_mask(df['run_mode'], 10)] if not df.empty else pd.DataFrame()
-    if (not sub10.empty and 'shock_variant' in sub10.columns
-            and 'layer_sim_mean' in sub10.columns and 'is_shock' in sub10.columns):
+    sub39 = df[run_mode_mask(df['run_mode'], 39)] if not df.empty else pd.DataFrame()
+    if (not sub39.empty and 'shock_variant' in sub39.columns
+            and 'layer_sim_mean' in sub39.columns and 'is_shock' in sub39.columns):
         # Compute per-trial recovery delta: mean(recovery turns) - mean(shock turn) per trial.
         # BUG-FOUND-1 (fixed v36.4): prior code pooled all recovery-turn observations
         # across all trials for a variant and subtracted the pooled shock mean, producing
@@ -4092,9 +4094,9 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         # (mean recovery sim − mean shock sim within that trial), run ANOVA on those
         # ~25 genuinely independent per-trial deltas per variant.
         recovery_deltas = {}
-        has_recovery_col = 'is_recovery' in sub10.columns
+        has_recovery_col = 'is_recovery' in sub39.columns
         for variant in [0, 1, 2, 3]:
-            vsub = sub10[sub10['shock_variant'] == variant]
+            vsub = sub39[sub39['shock_variant'] == variant]
             if vsub.empty:
                 continue
             trial_deltas = []
@@ -4116,10 +4118,10 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "metric": "shock_variant_anova_p", "value": float(p32),
                 "implication": (
                     f"Recovery delta does not differ by shock phrasing "
-                    f"(ANOVA p={p32:.3f} >= 0.05; {means_str}) — recovery is phrasing-robust."
+                    f"(ANOVA p={p32:.3f} >= 0.05; {means_str}) -- recovery is phrasing-robust."
                     if p32 >= 0.05
                     else f"Recovery delta differs by shock phrasing "
-                         f"(ANOVA p={p32:.3f} < 0.05; {means_str}) — recovery is phrasing-sensitive."
+                         f"(ANOVA p={p32:.3f} < 0.05; {means_str}) -- recovery is phrasing-sensitive."
                 ),
             }
         else:
@@ -4133,7 +4135,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
 
     # ── Phase 4 inference blocks (v35.0) ─────────────────────────────────────
 
-    # H33 — coherence transfer measurement (Run 0025)
+    # H33 -- coherence transfer measurement (Run 0025)
     # Compares total compute per correct arithmetic answer across three conditions:
     # condition_a (8×1-token priming turns), condition_b, condition_c.
     # Supported: compute_per_correct(condition_a) ≤ 40% of condition_c (p < 0.05)
@@ -4200,7 +4202,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                         f"Coherence transfer measurement confirmed."
                         if h33_status == "supported" else
                         f"Condition A compute ratio={ratio*100:.1f}% of Condition C "
-                        f"(p_compute={p33_energy:.3f}, p_quality={p33_quality:.3f}) — "
+                        f"(p_compute={p33_energy:.3f}, p_quality={p33_quality:.3f}) -- "
                         f"{'compute advantage but quality degraded' if energy_advantage else 'no 40% compute threshold met'}."
                     ),
                 }
@@ -4213,17 +4215,17 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Run 0025 not yet complete."}
 
-    # H34 — disruption_magnitude continuous contradiction response (Run 0028, zero new data)
+    # H34 -- disruption_magnitude continuous contradiction response (Run 0028, zero new data)
     # Tests whether disruption_magnitude (continuous) is significantly elevated at the contradiction
-    # turn vs pre-contradiction baseline — paired within-trial t-test.
+    # turn vs pre-contradiction baseline -- paired within-trial t-test.
     # H05 tests binary disruption_flag clustering; H34 tests the continuous magnitude signal.
     # Supported: mean disruption_magnitude at turn 7 significantly > mean(turns 1–6), p < 0.05, Δ > 0.01.
-    sub22_h34 = df[run_mode_mask(df['run_mode'], 22)] if not df.empty else pd.DataFrame()
-    if (not sub22_h34.empty and 'contradiction_turn' in sub22_h34.columns
-            and 'disruption_magnitude' in sub22_h34.columns and 'trial' in sub22_h34.columns):
+    sub28_h34 = df[run_mode_mask(df['run_mode'], 28)] if not df.empty else pd.DataFrame()
+    if (not sub28_h34.empty and 'contradiction_turn' in sub28_h34.columns
+            and 'disruption_magnitude' in sub28_h34.columns and 'trial' in sub28_h34.columns):
 
         paired34 = []
-        for trial, grp in sub22_h34.groupby('trial'):
+        for trial, grp in sub28_h34.groupby('trial'):
             # INF-H34-POSTCONTAM fix (v36.1): contradiction_turn==0 includes post turns (8–13).
             # Pre-baseline must be turns 1–6 only. Exclude post_contradiction==1 rows.
             if 'post_contradiction' in grp.columns:
@@ -4255,11 +4257,11 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "p_value": float(p34),
                 "implication": (
                     f"disruption_magnitude significantly elevated at contradiction turn "
-                    f"(Δ={delta34:.4f}, p={p34:.3f}) — continuous geometric disruption "
+                    f"(Δ={delta34:.4f}, p={p34:.3f}) -- continuous geometric disruption "
                     f"signal confirmed."
                     if (p34 < 0.05 and delta34 > 0.01) else
                     f"disruption_magnitude not significantly elevated at contradiction (Δ={delta34:.4f}, "
-                    f"p={p34:.3f}) — continuous signal does not reliably detect disruption."
+                    f"p={p34:.3f}) -- continuous signal does not reliably detect disruption."
                 ),
             }
     else:
@@ -4267,7 +4269,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Run 0028 not yet complete (H34 uses Run 0028 disruption_magnitude)."}
 
-    # H35 — contradiction recovery speed by R condition (Run 0026)
+    # H35 -- contradiction recovery speed by R condition (Run 0026)
     # pre_sim = mean(state_similarity_index, turns 1–6) per trial
     # recovery_delta = mean(state_similarity_index, turns 8–13) − state_similarity_index(turn 7) per trial
     # Supported: Pearson r(pre_sim, recovery_delta) > 0.2, p < 0.05 (pooled)
@@ -4307,7 +4309,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             r35, p35_corr = pearsonr(rdf44['pre_sim'], rdf44['recovery_delta'])
             hi_rd = rdf44[rdf44['r_condition'] == 'high_r']['recovery_delta'].dropna()
             lo_rd = rdf44[rdf44['r_condition'] == 'low_r']['recovery_delta'].dropna()
-            # mid_r participates in the pooled Pearson r test above (correct — tests
+            # mid_r participates in the pooled Pearson r test above (correct -- tests
             # monotonic ordering across the full R-level range) but is excluded from
             # the group test below. The hypothesis spec calls for high_r vs low_r
             # as the directional group test; testing extremes is the pre-registered
@@ -4332,7 +4334,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 "implication": (
                     f"H35a (group): high_r recovers faster than low_r "
                     f"(Δ={float(hi_rd.mean()-lo_rd.mean()):.4f}, p={p35_group:.3f}). "
-                    f"Null rejected — R level predicts recovery."
+                    f"Null rejected -- R level predicts recovery."
                     if group_supported else
                     f"H35a (group): high_r vs low_r recovery not significant "
                     f"(p={p35_group:.3f})."
@@ -4362,14 +4364,14 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Run 0026 not yet complete."}
 
-    # H39 — impossibility cluster geometric effect (Runs 0029, 0030, 0031)
+    # H39 -- impossibility cluster geometric effect (Runs 0029, 0030, 0031)
     # FIND-H09-GAP fix (v44.0.0): data existed but inference was never implemented.
     # Tests whether impossible-input prompts produce distinctive geometry vs null baseline.
-    # Prediction: state_similarity_index differs significantly between [12,13,14] and [1,2,19].
+    # Prediction: state_similarity_index differs significantly between [29,30,31] and [4,5,1].
     # Direction-agnostic: either elevation OR depression vs null counts as "supported"
     # (both would demonstrate that the impossibility constraint has geometric consequences).
-    sub_impos = df[run_mode_mask_any(df['run_mode'], [12, 13, 14])] if not df.empty else pd.DataFrame()
-    sub_null_ref = df[run_mode_mask_any(df['run_mode'], [1, 2, 19])] if not df.empty else pd.DataFrame()
+    sub_impos = df[run_mode_mask_any(df['run_mode'], [29, 30, 31])] if not df.empty else pd.DataFrame()
+    sub_null_ref = df[run_mode_mask_any(df['run_mode'], [4, 5, 1])] if not df.empty else pd.DataFrame()
     if (not sub_impos.empty and not sub_null_ref.empty
             and 'state_similarity_index' in df.columns):
         impos_sim = sub_impos['state_similarity_index'].dropna()
@@ -4411,23 +4413,23 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                                "value": float('nan'),
                                "implication": "Runs 0029-0031 not yet complete."}
 
-    # H40 — random noise patching control (Run 0019 vs Run 0017)
+    # H40 -- random noise patching control (Run 0019 vs Run 0017)
     # Two-proportion z-test: real geometry patches (H38/Run 0017) should produce
     # higher output_change_rate than random noise patches (Run 0019).
     # If rates are indistinguishable, the causal claim is confounded.
     # NOTE: Run 0017 uses 'patch_mode' column (partial/full). Run 0019 uses
     # 'patch_layer' column (full/L8/L16/L24/L31). Both exclude 'none'.
-    sub53 = df[run_mode_mask(df['run_mode'], 53)] if not df.empty else pd.DataFrame()
-    sub21_h40 = df[run_mode_mask(df['run_mode'], 21)] if not df.empty else pd.DataFrame()
-    _has53 = (not sub53.empty and 'output_changed' in sub53.columns
-              and 'patch_layer' in sub53.columns)
-    _has21 = (not sub21_h40.empty and 'output_changed' in sub21_h40.columns
-              and 'patch_mode' in sub21_h40.columns)
-    if _has53 and _has21:
+    sub19 = df[run_mode_mask(df['run_mode'], 19)] if not df.empty else pd.DataFrame()
+    sub17 = df[run_mode_mask(df['run_mode'], 17)] if not df.empty else pd.DataFrame()
+    _has19 = (not sub19.empty and 'output_changed' in sub19.columns
+              and 'patch_layer' in sub19.columns)
+    _has17 = (not sub17.empty and 'output_changed' in sub17.columns
+              and 'patch_mode' in sub17.columns)
+    if _has19 and _has17:
         # Run 0017: partial + full modes (real geometry)
-        real_oc = sub21_h40[sub21_h40['patch_mode'].isin(['partial', 'full'])]['output_changed'].dropna()
+        real_oc = sub17[sub17['patch_mode'].isin(['partial', 'full'])]['output_changed'].dropna()
         # Run 0019: all non-none modes (random noise at various layers)
-        noise_oc = sub53[sub53['patch_layer'] != 'none']['output_changed'].dropna()
+        noise_oc = sub19[sub19['patch_layer'] != 'none']['output_changed'].dropna()
         if len(real_oc) >= 20 and len(noise_oc) >= 20:
             n_real, k_real = len(real_oc), int(real_oc.sum())
             n_noise, k_noise = len(noise_oc), int(noise_oc.sum())
@@ -4454,7 +4456,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 h40_impl = (
                     f"Real patching rate ({rate_real*100:.1f}%) not significantly different from "
                     f"noise ({rate_noise*100:.1f}%), z={z_stat:.2f}, p={p_h40:.4f}. "
-                    f"Causal claim confounded — any perturbation produces similar effect."
+                    f"Causal claim confounded -- any perturbation produces similar effect."
                 )
             else:
                 h40_status = "inconclusive"
@@ -4482,9 +4484,9 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                            "value": float('nan'),
                            "implication": "Run 0019 (random noise patching) not yet complete."}
 
-    # ── v0.77.0.0 — Planned hypothesis inference blocks ─────────────────────────
+    # ── v0.77.0.0 -- Planned hypothesis inference blocks ─────────────────────────
 
-    # H41 — System Prompt Has No Geometric Effect (Run 0002)
+    # H41 -- System Prompt Has No Geometric Effect (Run 0002)
     try:
         sub20 = df[df['run_mode'].isin(['0002', '20'])]
         if len(sub20) >= 20 and "condition" in sub20.columns:
@@ -4497,7 +4499,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 outcomes["H41"] = {"status": status, "metric": "state_similarity_index",
                                    "value": float(p_val),
                                    "implication": f"System prompt condition ANOVA F={f_stat:.3f}, p={p_val:.3f}. "
-                                                  f"{'No effect detected.' if status == 'supported' else 'Significant effect — disconfirms null.'}"}
+                                                  f"{'No effect detected.' if status == 'supported' else 'Significant effect -- disconfirms null.'}"}
             else:
                 outcomes["H41"] = {"status": "pending", "metric": "state_similarity_index",
                                    "value": float('nan'),
@@ -4510,7 +4512,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H41"] = {"status": "pending", "metric": "state_similarity_index",
                            "value": float('nan'), "implication": f"H41 inference error: {_e}"}
 
-    # H42 — Similarity Does Not Accumulate With Turn Count (Run 0001 null baseline)
+    # H42 -- Similarity Does Not Accumulate With Turn Count (Run 0001 null baseline)
     try:
         sub19 = df[df['run_mode'].isin(['0001', '19'])]
         if len(sub19) >= 30 and "turn" in sub19.columns:
@@ -4526,7 +4528,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                                    "value": float(slope),
                                    "slope_p": float(p_val),
                                    "implication": f"Null-baseline similarity-vs-turn slope={slope:.5f}, p={p_val:.3f}. "
-                                                  f"{'No accumulation.' if status == 'supported' else 'Accumulation detected — disconfirms null.'}"}
+                                                  f"{'No accumulation.' if status == 'supported' else 'Accumulation detected -- disconfirms null.'}"}
             else:
                 outcomes["H42"] = {"status": "pending", "metric": "state_similarity_index",
                                    "value": float('nan'),
@@ -4539,7 +4541,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H42"] = {"status": "pending", "metric": "state_similarity_index",
                            "value": float('nan'), "implication": f"H42 inference error: {_e}"}
 
-    # H43 — R Fraction Is Sensitive To Projection Dimension (Run 0041 POOL_DIM sweep)
+    # H43 -- R Fraction Is Sensitive To Projection Dimension (Run 0041 POOL_DIM sweep)
     try:
         q41_path = os.path.join(analysis_dir, "Q0041_pool_dim_sweep.json")
         if os.path.exists(q41_path):
@@ -4548,14 +4550,14 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             r_vals = [e.get("frac_R") for e in sweep if e.get("frac_R") is not None]
             if len(r_vals) >= 3:
                 max_adj_delta = max(abs(r_vals[i+1] - r_vals[i]) for i in range(len(r_vals)-1))
-                # Null: R fraction is sensitive (varies > 0.05 between adjacent dims) — supported means drift detected
+                # Null: R fraction is sensitive (varies > 0.05 between adjacent dims) -- supported means drift detected
                 # Direction "negative" in schema means we want NULL supported = partition IS sensitive (= bad)
                 # Paper-relevant: we want R to be dimension-STABLE. So null supported (high variance) = bad finding.
                 status = "supported" if max_adj_delta > 0.05 else "disproven"
                 outcomes["H43"] = {"status": status, "metric": "frac_R",
                                    "value": float(max_adj_delta),
                                    "implication": f"Max R-fraction delta between adjacent POOL_DIMs = {max_adj_delta:.4f}. "
-                                                  f"{'Dimension-sensitive — estimator unstable.' if status == 'supported' else 'Dimension-stable — estimator robust.'}"}
+                                                  f"{'Dimension-sensitive -- estimator unstable.' if status == 'supported' else 'Dimension-stable -- estimator robust.'}"}
             else:
                 outcomes["H43"] = {"status": "pending", "metric": "frac_R",
                                    "value": float('nan'),
@@ -4568,7 +4570,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H43"] = {"status": "pending", "metric": "frac_R",
                            "value": float('nan'), "implication": f"H43 inference error: {_e}"}
 
-    # H44 — R Fraction Is Condition-Invariant (Run 0044 per-condition R)
+    # H44 -- R Fraction Is Condition-Invariant (Run 0044 per-condition R)
     try:
         q44_path = os.path.join(analysis_dir, "Q0044_per_condition_R.json")
         if os.path.exists(q44_path):
@@ -4583,7 +4585,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                 outcomes["H44"] = {"status": status, "metric": "frac_R",
                                    "value": float(r_range),
                                    "implication": f"R-fraction range across {len(valid)} conditions = {r_range:.4f}. "
-                                                  f"{'Condition-invariant.' if status == 'supported' else 'Condition-dependent — disconfirms null.'}"}
+                                                  f"{'Condition-invariant.' if status == 'supported' else 'Condition-dependent -- disconfirms null.'}"}
             else:
                 outcomes["H44"] = {"status": "pending", "metric": "frac_R",
                                    "value": float('nan'),
@@ -4596,7 +4598,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H44"] = {"status": "pending", "metric": "frac_R",
                            "value": float('nan'), "implication": f"H44 inference error: {_e}"}
 
-    # H45 — Resistant Prime Does Not Damage Trajectory More Than Cooperative (Run 0050 §1)
+    # H45 -- Resistant Prime Does Not Damage Trajectory More Than Cooperative (Run 0050 §1)
     try:
         q50_path = os.path.join(analysis_dir, "Q0050_cross_temp_synthesis.json")
         if os.path.exists(q50_path):
@@ -4613,7 +4615,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                     outcomes["H45"] = {"status": status, "metric": "disruption_flag",
                                        "value": float(delta),
                                        "implication": f"Resistant-cooperative disruption-rate delta = {delta:.4f}. "
-                                                      f"{'Prime type does not matter.' if status == 'supported' else 'Resistant primes more disruptive — disconfirms null.'}"}
+                                                      f"{'Prime type does not matter.' if status == 'supported' else 'Resistant primes more disruptive -- disconfirms null.'}"}
                 else:
                     outcomes["H45"] = {"status": "pending", "metric": "disruption_flag",
                                        "value": float('nan'),
@@ -4630,7 +4632,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H45"] = {"status": "pending", "metric": "disruption_flag",
                            "value": float('nan'), "implication": f"H45 inference error: {_e}"}
 
-    # H46 — Contradiction Does Not Drop Similarity (Run 0050 §2)
+    # H46 -- Contradiction Does Not Drop Similarity (Run 0050 §2)
     try:
         q50_path = os.path.join(analysis_dir, "Q0050_cross_temp_synthesis.json")
         if os.path.exists(q50_path):
@@ -4645,7 +4647,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                     outcomes["H46"] = {"status": status, "metric": "state_similarity_index",
                                        "value": float(drop),
                                        "implication": f"Similarity drop at contradiction = {drop:.4f}. "
-                                                      f"{'No meaningful drop.' if status == 'supported' else 'Contradiction drops similarity — disconfirms null.'}"}
+                                                      f"{'No meaningful drop.' if status == 'supported' else 'Contradiction drops similarity -- disconfirms null.'}"}
                 else:
                     outcomes["H46"] = {"status": "pending", "metric": "state_similarity_index",
                                        "value": float('nan'),
@@ -4662,7 +4664,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H46"] = {"status": "pending", "metric": "state_similarity_index",
                            "value": float('nan'), "implication": f"H46 inference error: {_e}"}
 
-    # H47 — Coherence Transfer Is Not Compute-Efficient (Run 0050 §6, Appendix A scope)
+    # H47 -- Coherence Transfer Is Not Compute-Efficient (Run 0050 §6, Appendix A scope)
     try:
         q50_path = os.path.join(analysis_dir, "Q0050_cross_temp_synthesis.json")
         if os.path.exists(q50_path):
@@ -4677,8 +4679,8 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                     outcomes["H47"] = {"status": status, "metric": "compute_per_correct_ratio",
                                        "value": float(ratio),
                                        "implication": f"compute_per_correct ratio (primed/unprimed) = {ratio:.3f}. "
-                                                      f"{'No compute advantage.' if status == 'supported' else 'Primed more efficient — disconfirms null.'} "
-                                                      f"(Appendix A — out of scope for measurement paper.)"}
+                                                      f"{'No compute advantage.' if status == 'supported' else 'Primed more efficient -- disconfirms null.'} "
+                                                      f"(Appendix A -- out of scope for measurement paper.)"}
                 else:
                     outcomes["H47"] = {"status": "pending", "metric": "compute_per_correct_ratio",
                                        "value": float('nan'),
@@ -4695,7 +4697,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H47"] = {"status": "pending", "metric": "compute_per_correct_ratio",
                            "value": float('nan'), "implication": f"H47 inference error: {_e}"}
 
-    # H48 — R Decay Is Explained By KV Cache Growth (Run 0050 §7 persistence modes)
+    # H48 -- R Decay Is Explained By KV Cache Growth (Run 0050 §7 persistence modes)
     try:
         q50_path = os.path.join(analysis_dir, "Q0050_cross_temp_synthesis.json")
         if os.path.exists(q50_path):
@@ -4711,7 +4713,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                     outcomes["H48"] = {"status": status, "metric": "state_similarity_index",
                                        "value": float(decay_range),
                                        "implication": f"Decay range across persistence modes = {decay_range:.4f}. "
-                                                      f"{'Cache growth explains decay.' if status == 'supported' else 'Mode-dependent decay — cache is not the confound.'}"}
+                                                      f"{'Cache growth explains decay.' if status == 'supported' else 'Mode-dependent decay -- cache is not the confound.'}"}
                 else:
                     outcomes["H48"] = {"status": "pending", "metric": "state_similarity_index",
                                        "value": float('nan'),
@@ -4728,7 +4730,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H48"] = {"status": "pending", "metric": "state_similarity_index",
                            "value": float('nan'), "implication": f"H48 inference error: {_e}"}
 
-    # H49 — Introspection R Does Not Transfer To Arithmetic (Run 0050 §8)
+    # H49 -- Introspection R Does Not Transfer To Arithmetic (Run 0050 §8)
     try:
         q50_path = os.path.join(analysis_dir, "Q0050_cross_temp_synthesis.json")
         if os.path.exists(q50_path):
@@ -4749,7 +4751,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                         outcomes["H49"] = {"status": status, "metric": "state_similarity_index",
                                            "value": float(delta),
                                            "implication": f"Post-switch similarity delta (transfer vs arithmetic-only) = {delta:.4f}. "
-                                                          f"{'R does not transfer.' if status == 'supported' else 'R transfers — disconfirms null.'}"}
+                                                          f"{'R does not transfer.' if status == 'supported' else 'R transfers -- disconfirms null.'}"}
                     else:
                         outcomes["H49"] = {"status": "pending", "metric": "state_similarity_index",
                                            "value": float('nan'),
@@ -4770,7 +4772,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H49"] = {"status": "pending", "metric": "state_similarity_index",
                            "value": float('nan'), "implication": f"H49 inference error: {_e}"}
 
-    # H52 — Disruption Magnitude Is Stationary Across Non-Contradiction Turns (Run 0028 baseline)
+    # H52 -- Disruption Magnitude Is Stationary Across Non-Contradiction Turns (Run 0028 baseline)
     try:
         sub22 = df[(df['run_mode'].isin(['0028', '22'])) & (df["turn"].astype(str).isin(["1","2","3","4","5","6"]))]
         if len(sub22) >= 60 and "disruption_magnitude" in sub22.columns and "trial" in sub22.columns:
@@ -4809,7 +4811,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                                    "pooled_acf_lag1": float(pooled_acf),
                                    "implication": f"Stationarity: {n_stationary}/{n_trials} trials reject unit root ({frac_stationary*100:.1f}%). "
                                                   f"Pooled lag-1 ACF = {pooled_acf:.3f}. "
-                                                  f"{'H34 baseline is valid.' if status == 'supported' else 'H34 baseline contaminated — disruption magnitude drifts or autocorrelates.'}"}
+                                                  f"{'H34 baseline is valid.' if status == 'supported' else 'H34 baseline contaminated -- disruption magnitude drifts or autocorrelates.'}"}
             else:
                 outcomes["H52"] = {"status": "pending", "metric": "disruption_magnitude_stationarity",
                                    "value": float('nan'),
@@ -4822,10 +4824,10 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H52"] = {"status": "pending", "metric": "disruption_magnitude_stationarity",
                            "value": float('nan'), "implication": f"H52 inference error: {_e}"}
 
-    # H53 — Cross-Stochasticity Disruption Rate Is Monotonic (Runs 22 + 35 across temps)
+    # H53 -- Cross-Stochasticity Disruption Rate Is Monotonic (Runs 22 + 35 across temps)
     try:
         # Uses current DataFrame (single-temp) so this test runs once per temp and needs
-        # cross-temp aggregation — defer to a pooled analyzer, but emit a per-temp diagnostic.
+        # cross-temp aggregation -- defer to a pooled analyzer, but emit a per-temp diagnostic.
         sub22_35 = df[df["run_mode"].isin(["22", "35"])]
         if len(sub22_35) >= 50 and "disruption_flag" in sub22_35.columns:
             # At a single temperature we can only report the disruption rate; monotonicity
@@ -4843,7 +4845,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
         outcomes["H53"] = {"status": "pending", "metric": "disruption_flag_temp_monotonicity",
                            "value": float('nan'), "implication": f"H53 inference error: {_e}"}
 
-    # H58 — E + C + R Fractions Sum To 1.0 Within Tolerance (Run 0043 sanity)
+    # H58 -- E + C + R Fractions Sum To 1.0 Within Tolerance (Run 0043 sanity)
     try:
         q34_path = os.path.join(analysis_dir, "Q0043_sobol_partition.json")
         if os.path.exists(q34_path):
@@ -4860,7 +4862,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
                                    "value": float(deviation),
                                    "sum_E_C_R": float(total),
                                    "implication": f"E+C+R sum = {total:.4f} (deviation {deviation:.4f}). "
-                                                  f"{'Estimator respects E+C+R=1 identity.' if status == 'supported' else 'Estimator deviates from identity — investigate attribution bug.'}"}
+                                                  f"{'Estimator respects E+C+R=1 identity.' if status == 'supported' else 'Estimator deviates from identity -- investigate attribution bug.'}"}
             else:
                 outcomes["H58"] = {"status": "pending", "metric": "ecr_sum_deviation",
                                    "value": float('nan'),
@@ -4881,9 +4883,630 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
     return outcomes
 
 
+# ══════════════════════════════════════════════════════════════════════
+#  Methodology calibration orchestration (v0.80.0.33)
+# ══════════════════════════════════════════════════════════════════════
+#
+# Run 0056 triggers four calibration scripts that live at repo root:
+#   - v5_synthetic_calibration.py
+#   - ridge_bias_toy.py
+#   - toy_nonlinearity_asymmetry.py
+#   - run_channel_marginal.py
+#
+# Outputs land in data/paper/calibration/{name}/. Each has a .cache_key.json
+# manifest containing hashes of its source script + upstream .py files the
+# calibration depends on. Stale cache = auto-backup to _bak/{timestamp}/ then
+# regenerate. User can manually restore from _bak via restore_calibration_bak.py
+# if they decide the upstream change didn't affect calibration.
+#
+# Run 0056 does NOT automatically trigger calibration -- user must run scripts
+# manually. 0056 gates on artifact presence; dashboard warns if missing.
+# Per the "just skip calibration but paper grid stays orange" spec.
+
+_CALIBRATION_SCRIPTS = {
+    'v5':                 ('v5_synthetic_calibration.py', 'v5_calibration_results.json'),
+    'ridge_bias':         ('ridge_bias_toy.py',           'results.csv'),
+    'toy_nonlinearity':   ('toy_nonlinearity_asymmetry.py', 'results.csv'),
+    'channel_marginal':   ('run_channel_marginal.py',     'channel_marginal_nonlinearity.csv'),
+    # v0.81.1.6 ship 4: paper 2 measurement-apparatus foundations.
+    # split_pca_selection picks the operating-point (sample-split, PCA dim)
+    # for the apparatus from V5e + V5f calibration. knn_mi_reliability
+    # measures kNN-MI estimator reliability under bootstrap resampling at
+    # that operating point. Both feed the apparatus's pre-fire
+    # configuration; both are foundations layer (not phase outputs).
+    'split_pca_selection': ('run_split_pca_selection.py',  'selection.json'),
+    'knn_mi_reliability':  ('run_knn_mi_reliability.py',   'reliability.json'),
+    # v0.81.0.5: kraskov_spike removed from foundations registry. It's
+    # Phase 1 of the lagrangian apparatus (Run 0058), not a foundation
+    # the apparatus depends on. Its output lives at
+    # data/paper/calibration/kraskov_spike/spike_result.json and is
+    # generated by run_bayesian_apparatus.py invoking
+    # run_kraskov_spike.main(). Apparatus phases have their own
+    # internal phase tracking via Q0058_apparatus_manifest.json.
+}
+
+# Upstream files whose change invalidates calibration outputs.
+# Source .py of the script itself is always included implicitly.
+_CALIBRATION_UPSTREAMS = {
+    'v5':                 [],                          # purely synthetic, no upstream
+    'ridge_bias':         [],                          # purely synthetic
+    'toy_nonlinearity':   ['analysis.py'],             # MLP config mirrors linearity_check
+    'channel_marginal':   ['analysis.py', 'cartography.py'],  # uses _load_quadruplets + run_mode helpers
+    # v0.81.1.6: upstream chain -- selection feeds reliability
+    'split_pca_selection': ['v5_synthetic_calibration.py'],
+    'knn_mi_reliability':  ['v5_synthetic_calibration.py',
+                             'run_split_pca_selection.py'],
+}
+
+
+def _calibration_dir(name):
+    # v0.80.0.33: lazy import -- DATA is defined in cartography.py and was
+    # being referenced here as a bare name, which worked for callers that
+    # had already imported it but broke direct invocation from scripts or
+    # python -c (as caught by stamp_manifests workflow).
+    from cartography import DATA as _DATA
+    return os.path.join(_DATA, 'paper', 'calibration', name)
+
+
+def _hash_file(path):
+    import hashlib
+    if not os.path.exists(path):
+        return None
+    h = hashlib.sha256()
+    with open(path, 'rb') as f:
+        for chunk in iter(lambda: f.read(65536), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _cache_key_path(name):
+    return os.path.join(_calibration_dir(name), '.cache_key.json')
+
+
+def _compute_cache_key(name):
+    """Returns the expected cache key for a calibration name -- hashes of
+    its source script plus upstream files it depends on."""
+    script_name, _ = _CALIBRATION_SCRIPTS[name]
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(repo_root, script_name)
+    key = {
+        'script':    script_name,
+        'script_hash': _hash_file(script_path),
+        'upstream':  {},
+    }
+    for up in _CALIBRATION_UPSTREAMS[name]:
+        key['upstream'][up] = _hash_file(os.path.join(repo_root, up))
+    return key
+
+
+def _load_cache_key(name):
+    path = _cache_key_path(name)
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, 'r', encoding='utf-8-sig') as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def _calibration_status(name):
+    """Returns one of:
+       'missing'  -- no artifact on disk
+       'stale'    -- artifact present but hashes don't match current
+       'fresh'    -- artifact present and hashes match
+    """
+    _, artifact = _CALIBRATION_SCRIPTS[name]
+    artifact_path = os.path.join(_calibration_dir(name), artifact)
+    if not os.path.exists(artifact_path):
+        return 'missing'
+    stored = _load_cache_key(name)
+    if stored is None:
+        return 'stale'
+    current = _compute_cache_key(name)
+    if stored.get('script_hash') != current.get('script_hash'):
+        return 'stale'
+    for up, h in current.get('upstream', {}).items():
+        if stored.get('upstream', {}).get(up) != h:
+            return 'stale'
+    return 'fresh'
+
+
+def _backup_calibration(name):
+    """Move current calibration outputs to _bak/{timestamp}/ before
+    regeneration. Never auto-deletes baks."""
+    import datetime
+    import shutil
+    cal_dir = _calibration_dir(name)
+    if not os.path.isdir(cal_dir):
+        return None
+    bak_root = os.path.join(cal_dir, '_bak')
+    stamp = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
+    bak_dir = os.path.join(bak_root, stamp)
+    os.makedirs(bak_dir, exist_ok=True)
+    for item in os.listdir(cal_dir):
+        if item == '_bak':
+            continue
+        src = os.path.join(cal_dir, item)
+        dst = os.path.join(bak_dir, item)
+        try:
+            if os.path.isdir(src):
+                shutil.copytree(src, dst)
+                shutil.rmtree(src)
+            else:
+                shutil.move(src, dst)
+        except Exception:
+            pass
+    return bak_dir
+
+
+def methodology_calibration_status():
+    """Summary dict usable by scanner, dashboard, and the master results writer.
+    Called from Run 0056 completion checks and from the dashboard.
+
+    v0.80.0.33: uses _calibration_status_ex which distinguishes
+    'no_manifest' (existing artifact, first-time bootstrap pending) from
+    'stale' (existing artifact, hash mismatch = upstream changed).
+
+    `_any_missing` and `_any_stale` are the gate signals -- `no_manifest`
+    does NOT trigger them, because 0056's orchestrator will bootstrap the
+    manifest in place when it runs. Scanner is read-only; bootstrap is
+    the orchestrator's job."""
+    out = {}
+    for name in _CALIBRATION_SCRIPTS:
+        out[name] = _calibration_status_ex(name)
+    out['_all_fresh']     = all(v == 'fresh' for k, v in out.items() if not k.startswith('_'))
+    out['_any_missing']   = any(v == 'missing' for k, v in out.items() if not k.startswith('_'))
+    out['_any_stale']     = any(v == 'stale' for k, v in out.items() if not k.startswith('_'))
+    out['_any_no_manifest'] = any(v == 'no_manifest' for k, v in out.items() if not k.startswith('_'))
+    return out
+
+
+def _load_methodology_calibration():
+    """Reads calibration artifacts into a dict suitable for the master
+    results JSON. Includes status summary. Never throws; missing
+    artifacts appear as null entries so downstream code can tell the
+    difference between 'not yet computed' and 'computed to null'.
+
+    v0.81.1.6: registry grows to 6 foundations -- added split_pca_selection
+    and knn_mi_reliability for the paper 2 measurement apparatus."""
+    status = methodology_calibration_status()
+    block = {
+        'status': status,
+        'v5':                  None,
+        'ridge_bias':          None,
+        'toy_nonlinearity':    None,
+        'channel_marginal':    None,
+        'split_pca_selection': None,
+        'knn_mi_reliability':  None,
+    }
+    # v5: JSON
+    p = os.path.join(_calibration_dir('v5'), 'v5_calibration_results.json')
+    if os.path.exists(p):
+        try:
+            with open(p, 'r', encoding='utf-8-sig') as f:
+                block['v5'] = json.load(f)
+        except Exception:
+            pass
+    # ridge_bias: main grid + optional redundancy sweep.
+    # v0.80.0.33: the 192-row α/β/pool_dim sweep was being silently
+    # dropped because only `results.csv` was read. The redundancy
+    # sweep adds α (ridge regularization) × β (lasso strength) ×
+    # pool_dim variation on top of the (rho_A, sigma) grid and is
+    # essential for the redundancy-vs-nonlinearity argument in §6.
+    p = os.path.join(_calibration_dir('ridge_bias'), 'results.csv')
+    if os.path.exists(p):
+        block['ridge_bias'] = _csv_to_rows(p)
+    # Try a few candidate filenames for the redundancy sweep -- the
+    # original artifact filename has a typo (`redundency`) preserved
+    # for backward compatibility.
+    for _redfn in ('ridge_bias_results_redundency.csv',
+                   'ridge_bias_results_redundancy.csv',
+                   'results_redundancy.csv'):
+        _redp = os.path.join(_calibration_dir('ridge_bias'), _redfn)
+        if os.path.exists(_redp):
+            block['ridge_bias_redundancy'] = _csv_to_rows(_redp)
+            break
+    # toy_nonlinearity: CSV
+    p = os.path.join(_calibration_dir('toy_nonlinearity'), 'results.csv')
+    if os.path.exists(p):
+        block['toy_nonlinearity'] = _csv_to_rows(p)
+    # channel_marginal: CSV
+    p = os.path.join(_calibration_dir('channel_marginal'), 'channel_marginal_nonlinearity.csv')
+    if os.path.exists(p):
+        block['channel_marginal'] = _csv_to_rows(p)
+    # v0.81.1.6 ship 4: paper 2 measurement-apparatus foundations
+    p = os.path.join(_calibration_dir('split_pca_selection'), 'selection.json')
+    if os.path.exists(p):
+        try:
+            with open(p, 'r', encoding='utf-8-sig') as f:
+                block['split_pca_selection'] = json.load(f)
+        except Exception:
+            block['split_pca_selection'] = None
+    p = os.path.join(_calibration_dir('knn_mi_reliability'), 'reliability.json')
+    if os.path.exists(p):
+        try:
+            with open(p, 'r', encoding='utf-8-sig') as f:
+                block['knn_mi_reliability'] = json.load(f)
+        except Exception:
+            block['knn_mi_reliability'] = None
+    return block
+
+
+def _csv_to_rows(path):
+    try:
+        import csv as _csv
+        with open(path, 'r', encoding='utf-8-sig') as f:
+            return list(_csv.DictReader(f))
+    except Exception:
+        return None
+
+
+def _write_cache_key_manifest(name):
+    """Write the current cache key to disk for a calibration dir. Used for
+    first-time bootstrap (existing artifact but no manifest) and after
+    fresh regeneration."""
+    cal_dir = _calibration_dir(name)
+    os.makedirs(cal_dir, exist_ok=True)
+    key = _compute_cache_key(name)
+    path = _cache_key_path(name)
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(key, f, indent=2)
+
+
+def _calibration_status_ex(name):
+    """Extended status: returns one of:
+       'fresh'       -- artifact + manifest present, hashes match
+       'no_manifest' -- artifact present, manifest missing (first-time bootstrap)
+       'stale'       -- artifact + manifest present, hashes differ
+       'missing'     -- no artifact on disk
+    """
+    _, artifact = _CALIBRATION_SCRIPTS[name]
+    artifact_path = os.path.join(_calibration_dir(name), artifact)
+    if not os.path.exists(artifact_path):
+        return 'missing'
+    stored = _load_cache_key(name)
+    if stored is None:
+        return 'no_manifest'
+    current = _compute_cache_key(name)
+    if stored.get('script_hash') != current.get('script_hash'):
+        return 'stale'
+    for up, h in current.get('upstream', {}).items():
+        if stored.get('upstream', {}).get(up) != h:
+            return 'stale'
+    return 'fresh'
+
+
+def _run_paper_calibration_phase(ui_log=None):
+    """Run 0056 Phase A -- methodology calibration.
+
+    For each of the 4 calibration scripts:
+      - 'fresh'       → skip
+      - 'no_manifest' → write manifest in place (first-time bootstrap)
+      - 'stale'       → backup existing output, re-run script
+      - 'missing'     → run script (no backup needed)
+
+    Subprocess output streams to stdout so Flask log captures it. Returns
+    a summary dict with per-script outcome.
+
+    v0.80.0.33: this is the orchestrator half that used to live implicitly
+    in 'user runs scripts manually'. 0056 now owns the calibration phase."""
+    import subprocess
+    import sys as _sys
+    import time
+
+    def _log(msg):
+        if ui_log is not None:
+            try: ui_log(msg)
+            except Exception: print(msg, flush=True)
+        else:
+            print(msg, flush=True)
+
+    outcomes = {}
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+
+    # Ordered to front-load the cheap ones for quick feedback
+    # v0.82.0.0 ship 4 fix: split_pca_selection and knn_mi_reliability
+    # were added to _CALIBRATION_SCRIPTS but the execution loop here was
+    # never extended. The completeness check at the END of Phase A saw
+    # six entries and reported "incomplete: split_pca_selection,
+    # knn_mi_reliability" -- but those scripts had never been invoked.
+    # Now invoked. Order matters because knn_mi_reliability depends on
+    # split_pca_selection's output (operating-point selection writes
+    # selection.json which knn_mi_reliability reads).
+    order = [
+        'v5',                  # ~5 min,    no upstream
+        'toy_nonlinearity',    # ~20 min,   no upstream
+        'ridge_bias',          # slowest,   no upstream
+        'channel_marginal',    # depends on real model data
+        'split_pca_selection', # depends on V5 generators (~10-30 min)
+        'knn_mi_reliability',  # depends on V5 + selection (~15-30 min)
+    ]
+    # v5 (~5min) and toy_nonlinearity (~20min) run first to surface any
+    # env issues early. ridge_bias paper_scale and the paper-2 V5-grid
+    # diagnostics are the long-tail.
+
+    _log("=" * 72)
+    _log("Run 0056 -- Phase A: methodology calibration")
+    _log("=" * 72)
+
+    for name in order:
+        script_name, _ = _CALIBRATION_SCRIPTS[name]
+        t0 = time.time()
+        status = _calibration_status_ex(name)
+        running_marker = os.path.join(_calibration_dir(name), '.running')
+        had_crash = os.path.exists(running_marker)
+        _log(f"[{name}] status: {status}" + (" (crashed last run)" if had_crash else ""))
+
+        if status == 'fresh':
+            outcomes[name] = 'skipped'
+            continue
+
+        if status == 'no_manifest' and not had_crash:
+            # Artifact exists + no manifest + no .running marker = file
+            # was migrated or produced by a prior script version. Stamp
+            # manifest and move on -- no need to regenerate.
+            _log(f"[{name}] existing artifact found, no cache manifest -- "
+                 f"stamping manifest in place (first-time bootstrap)")
+            try:
+                _write_cache_key_manifest(name)
+                outcomes[name] = 'bootstrapped'
+            except Exception as e:
+                _log(f"[{name}] ! manifest write failed: {e}")
+                outcomes[name] = f'manifest-fail: {e}'
+            continue
+
+        if had_crash:
+            # Prior run crashed mid-execution. Re-run the script; its own
+            # resume logic will skip cells already in the output CSV.
+            _log(f"[{name}] prior run crashed (.running marker found) -- "
+                 f"re-running script; resume will skip completed cells")
+
+        if status == 'stale':
+            _log(f"[{name}] hashes differ -- backing up existing output")
+            try:
+                bak = _backup_calibration(name)
+                if bak: _log(f"[{name}] backed up to {bak}")
+            except Exception as e:
+                _log(f"[{name}] ! backup failed: {e}")
+
+        # Missing or stale → run script
+        script_path = os.path.join(repo_root, script_name)
+        if not os.path.exists(script_path):
+            _log(f"[{name}] ! script not found: {script_path}")
+            outcomes[name] = 'script-not-found'
+            continue
+
+        cmd = [_sys.executable, script_path]
+        if name == 'ridge_bias':
+            cmd += ['--config', 'paper_scale']
+        elif name == 'toy_nonlinearity':
+            cmd += ['--seeds', '0', '1', '2', '3', '4']
+
+        # v0.80.0.33: remove the cache manifest before running. If the
+        # script crashes mid-run, the next orchestrator invocation sees
+        # no_manifest (artifact exists, resume-eligible) and runs the
+        # script again, which will pick up incremental CSV state and
+        # skip already-done cells. Without this unstamp, a crash could
+        # leave a fresh manifest next to partial output, and orchestrator
+        # would think calibration is complete.
+        manifest_path = _cache_key_path(name)
+        if os.path.exists(manifest_path):
+            try:
+                os.remove(manifest_path)
+            except Exception:
+                pass
+
+        _log(f"[{name}] running: {' '.join(cmd)}")
+        _log(f"[{name}] output streams below; this may take several minutes ...")
+
+        # v0.80.0.33: write .running marker before starting, remove on
+        # successful exit. If the process crashes or is killed, the
+        # marker persists and the next orchestrator invocation detects
+        # crash-recovery rather than treating partial output as bootstrap.
+        try:
+            os.makedirs(_calibration_dir(name), exist_ok=True)
+            with open(running_marker, 'w', encoding='utf-8') as f:
+                f.write(f"started at {time.time()}\n")
+        except Exception:
+            pass
+
+        try:
+            # v0.80.0.33: live-tail subprocess stdout into both streams.
+            # subprocess.call inherits stdout to .iota_flask.log only,
+            # which means Simple panel (reads .iota_log.jsonl) sits
+            # empty while a long calibration runs. Now: capture stdout
+            # via Popen+PIPE, read line-by-line, route each line to:
+            #   1. parent stdout (→ .iota_flask.log → Detailed)
+            #   2. _log() (→ .iota_log.jsonl → Simple)
+            # Same architecture, no new threading; reads block at the
+            # speed of subprocess output, which is fine since the parent
+            # was blocked on subprocess.call() before too.
+            _env = dict(os.environ)
+            _env['PYTHONIOENCODING'] = 'utf-8'
+            proc = subprocess.Popen(
+                cmd, cwd=repo_root, env=_env,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                bufsize=1,  # line-buffered on the parent side
+                universal_newlines=True, encoding='utf-8',
+                errors='replace')
+            # Read until subprocess exits, bridging each line to both streams.
+            try:
+                for line in proc.stdout:
+                    line = line.rstrip('\n')
+                    print(line, flush=True)   # → .iota_flask.log (Detailed)
+                    _log(line)                # → .iota_log.jsonl (Simple)
+            finally:
+                proc.wait()
+                rc = proc.returncode
+        except Exception as e:
+            _log(f"[{name}] ! subprocess failed: {e}")
+            outcomes[name] = f'error: {e}'
+            continue
+
+        dt = time.time() - t0
+        if rc == 0:
+            try:
+                _write_cache_key_manifest(name)
+                # Clean up .running marker on success
+                if os.path.exists(running_marker):
+                    try: os.remove(running_marker)
+                    except Exception: pass
+                outcomes[name] = f'regenerated ({dt:.0f}s)'
+                _log(f"[{name}] done in {dt:.0f}s, manifest stamped")
+            except Exception as e:
+                _log(f"[{name}] ! manifest write failed: {e}")
+                outcomes[name] = f'regen-ok manifest-fail ({dt:.0f}s)'
+        else:
+            # .running marker stays -- next run will detect crash
+            outcomes[name] = f'exit {rc}'
+            _log(f"[{name}] ! exited with rc={rc}; .running marker kept "
+                 f"for crash recovery on next run")
+
+    _log("")
+    _log("Calibration phase summary:")
+    for name, outcome in outcomes.items():
+        _log(f"  {name:20s} {outcome}")
+    _log("=" * 72)
+    return outcomes
+
+
+def _run_paper_figures_phase(ui_log=None, override=False):
+    """Run 0056 Phase C -- figure generation.
+
+    Runs the 5 fig scripts via subprocess, streaming output. Figure
+    failures are logged but do not abort the phase -- partial figure
+    output is better than no paper artifact.
+
+    v0.80.0.33: figures auto-fire on successful results.json write.
+    Matches the 'press 0056 once, get everything' spec."""
+    import subprocess
+    import sys as _sys
+
+    def _log(msg):
+        if ui_log is not None:
+            try: ui_log(msg)
+            except Exception: print(msg, flush=True)
+        else:
+            print(msg, flush=True)
+
+    scripts = [
+        'fig1_ridge_vs_mlp_by_temperature.py',
+        'fig2_toy_heatmap.py',
+        'fig3_mechanism_falsification.py',
+        'fig4_temperature_trajectories.py',
+        'fig5_layer_causal_profile.py',
+        # v0.82.0.0: paper 2 λ-sensitivity figure. Reads
+        # cell['measurements']['lambda_sweep'] (Phase 8 output). Skips
+        # gracefully when the measurement is absent (paper-2 phases
+        # haven't fired).
+        'fig6_lambda_sensitivity.py',
+    ]
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    outcomes = {}
+
+    _log("=" * 72)
+    _log("Run 0056 -- Phase C: figure generation")
+    _log("=" * 72)
+
+    for script in scripts:
+        script_path = os.path.join(repo_root, script)
+        if not os.path.exists(script_path):
+            _log(f"[{script}] ! not found")
+            outcomes[script] = 'not-found'
+            continue
+        cmd = [_sys.executable, script_path]
+        if override:
+            cmd.append('--override')
+        _log(f"[{script}] rendering ...")
+        try:
+            # v0.80.0.33: live-tail subprocess stdout (see calibration
+            # phase comment for rationale). Figures are quick (~1-2s
+            # each), so the bridge is mostly cosmetic here, but keeps
+            # the architecture consistent.
+            _env = dict(os.environ)
+            _env['PYTHONIOENCODING'] = 'utf-8'
+            proc = subprocess.Popen(
+                cmd, cwd=repo_root, env=_env,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                bufsize=1, universal_newlines=True,
+                encoding='utf-8', errors='replace')
+            try:
+                for line in proc.stdout:
+                    line = line.rstrip('\n')
+                    print(line, flush=True)
+                    _log(line)
+            finally:
+                proc.wait()
+                rc = proc.returncode
+        except Exception as e:
+            _log(f"[{script}] ! exception: {e}")
+            outcomes[script] = f'error: {e}'
+            continue
+        outcomes[script] = 'ok' if rc == 0 else f'exit {rc}'
+
+    _log("")
+    _log("Figure phase summary:")
+    for script, outcome in outcomes.items():
+        _log(f"  {script:45s} {outcome}")
+    _log("=" * 72)
+    return outcomes
+
+
+# ══════════════════════════════════════════════════════════════════════
+
+
 # ── Master Results File (v0.72.2.0) ──────────────────────────────────────────
 # Aggregates all analysis JSONs across all temperatures into one file.
 # Called by _run_54_stats_report after all per-temp stats complete.
+
+# v0.80.0.33: Q0046 payload remap.
+# Historical Q0046 files carry per-condition entries whose `run_num` fields
+# are in pre-0.79.4.0 old numbering (e.g. run_num=3 with label="Introspection A",
+# when new Intro A is run 6). Filename is canonical (Q0046_*); payload is legacy.
+# Fresh 56b passes under current code also write new numbering, so we remap at
+# ingestion -- idempotent on already-new values.
+_OLD_TO_NEW_RUN = {
+    1:4, 2:5, 3:6, 4:7, 5:8, 6:9, 7:10, 8:11, 9:12,
+    10:39, 11:40, 12:29, 13:30, 14:31,
+    15:13, 16:14, 17:15, 18:32, 19:1, 20:2, 21:17,
+    22:28, 23:22, 24:27, 25:47, 26:3, 27:48, 28:23, 29:24,
+    30:20, 31:21, 32:49, 33:42, 34:43, 35:38, 36:34, 37:37,
+    38:36, 39:35, 40:51, 41:33, 42:18, 43:25, 44:26, 45:41,
+    46:44, 47:50, 48:16, 49:45, 50:52, 51:53, 52:54,
+    53:19, 54:55, 55:56, 56:46,
+}
+_NEW_RUN_VALUES = set(_OLD_TO_NEW_RUN.values())
+
+def _remap_q56_payload(q56_data):
+    """In-memory remap of Q0046 per_condition entries' run_num fields from
+    old numbering to new. Returns the same dict (mutated) for convenience.
+    Idempotent: values already in new range are left alone.
+    Pooled block is untouched -- it has no run_num field."""
+    if not isinstance(q56_data, dict):
+        return q56_data
+    pc = q56_data.get('per_condition')
+    if not isinstance(pc, dict):
+        return q56_data
+    remapped = {}
+    for key, entry in pc.items():
+        if isinstance(entry, dict):
+            rn = entry.get('run_num')
+            if isinstance(rn, int) and rn in _OLD_TO_NEW_RUN and rn not in _NEW_RUN_VALUES:
+                entry['run_num'] = _OLD_TO_NEW_RUN[rn]
+            # Rewrite legacy key prefix ("run06" ok as-is; "run6" pad; "run56" old)
+            # Leave keys alone -- they're opaque dict labels, consumers index via
+            # entry['run_num'] not the outer key.
+            # Source field normalisation:
+            rr = entry.get('ridge_reference')
+            if isinstance(rr, dict):
+                src = rr.get('source')
+                if isinstance(src, str) and 'Q46_per_condition_R.json' in src:
+                    rr['source'] = 'Q0044_per_condition_R.json'
+        remapped[key] = entry
+    q56_data['per_condition'] = remapped
+    return q56_data
+
 
 def build_master_results(session):
     """Build master_results.json with everything the writer bot needs."""
@@ -4945,7 +5568,11 @@ def build_master_results(session):
                     raw = re.sub(r'\bNaN\b', 'null', raw)
                     raw = re.sub(r'\bInfinity\b', 'null', raw)
                     raw = re.sub(r'\b-Infinity\b', 'null', raw)
-                    temp_data[key] = json.loads(raw)
+                    parsed = json.loads(raw)
+                    # v0.80.0.33: remap legacy run_num in Q56/Q0046 payloads.
+                    if key == 'Q56':
+                        parsed = _remap_q56_payload(parsed)
+                    temp_data[key] = parsed
                 except Exception:
                     pass
         if temp_data:
@@ -5022,17 +5649,17 @@ def _paper_model_key(model_info):
 
 def _cross_arch_summary(all_models_dict):
     """Derive a small cross-architecture section from the per-model master
-    dicts in all_models_master.json. Convenience for the writer bot —
+    dicts in all_models_master.json. Convenience for the writer bot --
     no new data, just pre-computed views for direct S7 paragraph writing.
 
     Sections:
-      R_pooled_by_model     — mean R across all temperatures per model
-      R_per_temperature     — per-model × per-temp R grid (Q33 source)
-      ridge_vs_mlp          — for each model: Ridge R (Q34) vs MLP R (Q56),
+      R_pooled_by_model     -- mean R across all temperatures per model
+      R_per_temperature     -- per-model × per-temp R grid (Q33 source)
+      ridge_vs_mlp          -- for each model: Ridge R (Q34) vs MLP R (Q56),
                               plus ridge_gap (the core Conjecture 1 check)
                               and conjecture_1_verdict ('ridge_adequate' if
                               max |gap| < 0.05, else 'mlp_materially_different')
-      decomposition_summary — one-line 'E={}, C={}, R={}' per model from
+      decomposition_summary -- one-line 'E={}, C={}, R={}' per model from
                               pooled Q40 (or first per-temp Q33 as fallback)
     """
     summary = {
@@ -5059,7 +5686,7 @@ def _cross_arch_summary(all_models_dict):
                 sum(r_by_temp.values()) / len(r_by_temp)
             )
 
-        # Ridge vs MLP — requires Q34 (ridge) and Q56 (MLP) at same temps.
+        # Ridge vs MLP -- requires Q34 (ridge) and Q56 (MLP) at same temps.
         # Pool across whatever temperatures have both.
         ridge_Rs, mlp_Rs, ridge_gaps = [], [], []
         for t_str, t_data in per_t.items():
@@ -5128,10 +5755,10 @@ def build_all_masters(verbose=True, rebuild_per_model=True):
     complete discovery failure.
 
     Aggregate structure (schema_version 1.0):
-      generated            — ISO timestamp
-      n_models, model_keys — discovery summary
-      models               — per-model masters indexed by 'family_sizedir'
-      cross_architecture   — R_pooled_by_model, R_per_temperature,
+      generated            -- ISO timestamp
+      n_models, model_keys -- discovery summary
+      models               -- per-model masters indexed by 'family_sizedir'
+      cross_architecture   -- R_pooled_by_model, R_per_temperature,
                              ridge_vs_mlp (with conjecture_1_verdict),
                              decomposition_summary
     """
@@ -5147,7 +5774,7 @@ def build_all_masters(verbose=True, rebuild_per_model=True):
     paper_json = os.path.join(DATA, 'paper', 'json')
     os.makedirs(paper_json, exist_ok=True)
 
-    # Per-model rebuild (optional — Run 0056 skips this since it already ran)
+    # Per-model rebuild (optional -- Run 0056 skips this since it already ran)
     if rebuild_per_model:
         if verbose:
             print(f"\n  Rebuilding per-model master_results.json ...")
@@ -5197,23 +5824,61 @@ def build_all_masters(verbose=True, rebuild_per_model=True):
         'model_keys':        sorted(all_models_dict.keys()),
         'cross_architecture': _cross_arch_summary(all_models_dict),
         'models':            all_models_dict,
+        'methodology_calibration': _load_methodology_calibration(),
     }
 
-    out_path = os.path.join(paper_json, 'all_models_master.json')
-    with open(out_path, 'w', encoding='utf-8') as f:
-        json.dump(aggregate, f, indent=2, default=str)
+    # v0.80.0.33: switch to the new flat-per-cell schema via results_builder.
+    # The legacy `models` dict (per-model master passthrough) is preserved
+    # under `legacy_models` for 0.80-era paper consumers still using the old
+    # per-model view; new code reads `cells.{key}`.
+    import results_builder as _rb
+    import results_schema  as _rs
+
+    # v0.82.0.12: pull from results_schema.IOTA_VERSION rather than
+    # hardcoding. The hardcoded "0.80.0.0" got missed by the version
+    # bump sweep at every ship, so results.json emissions kept stamping
+    # the old framework version even after schema_version moved to
+    # 0.81.0. Single source of truth is in results_schema now.
+    _iota_version = _rs.IOTA_VERSION
+
+    new_results = _rb.build_results(
+        data_root=DATA,
+        iota_version=_iota_version,
+        methodology_calibration_block=_load_methodology_calibration(),
+        git_commit=None,  # Kevin handles git manually
+    )
+
+    # Attach the legacy per-model view for backward-compatible consumers.
+    # Never required by the schema (additionalProperties allowed at root).
+    new_results['legacy_models'] = all_models_dict
+    new_results['cross_architecture_legacy'] = _cross_arch_summary(all_models_dict)
+
+    paper_root = os.path.join(DATA, 'paper')
+    os.makedirs(paper_root, exist_ok=True)
+    out_path = os.path.join(paper_root, 'results.json')
+
+    try:
+        _rb.write_results(new_results, out_path)
+    except _rs.SchemaValidationError as _sve:
+        # Blocking: re-raise so the caller (Run 0056 dispatcher) fails
+        # loudly. A results.json that fails its own schema never ships.
+        raise
 
     if verbose:
         print(f"\n  [+] {out_path}")
-        ca = aggregate['cross_architecture']
-        print(f"      R_pooled_by_model: {len(ca['R_pooled_by_model'])} model(s)")
-        print(f"      ridge_vs_mlp:      {len(ca['ridge_vs_mlp'])} model(s)")
-        if ca['decomposition_summary']:
-            print(f"\n      Decomposition summary:")
-            for key, s in ca['decomposition_summary'].items():
-                print(f"        {key:24s}  {s}")
-        if ca['ridge_vs_mlp']:
-            print(f"\n      Conjecture 1 verdicts:")
+        print(f"      schema_version:  {new_results['schema_version']}")
+        print(f"      cells:           {len(new_results['cells'])}")
+        cca = new_results.get('cross_cell_aggregates') or {}
+        rs = cca.get('rhat_ridge_spread_at_T1.0')
+        ms = cca.get('rhat_mlp_spread_at_T1.0')
+        if rs is not None and ms is not None:
+            print(f"      Ridge spread T1.0: {rs:.3f}    MLP spread T1.0: {ms:.3f}")
+        conv = cca.get('convergence_status_per_temperature') or {}
+        for tk, d in sorted(conv.items()):
+            print(f"      T={tk}  n={d.get('n')}  spread={d.get('spread'):.3f}  status={d.get('status')}")
+        ca = new_results.get('cross_architecture_legacy') or {}
+        if ca.get('ridge_vs_mlp'):
+            print(f"\n      Conjecture 1 verdicts (legacy view):")
             for key, d in ca['ridge_vs_mlp'].items():
                 v = d.get('conjecture_1_verdict', 'insufficient_data')
                 gap = d.get('ridge_gap_max')
@@ -5226,10 +5891,10 @@ def verify_masters():
     """Read-only status report for master-JSON state across the tree.
 
     Walks DATA/, reports per model a flag matrix [S P 6 F]:
-      S — source master exists in pooled/analysis/master_results.json
-      P — paper copy exists in DATA/paper/json/{key}_master_results.json
-      6 — Q56 present in the master (ingested by build_master_results)
-      F — per-model master is fresh vs DATA/paper/json/all_models_master.json
+      S -- source master exists in pooled/analysis/master_results.json
+      P -- paper copy exists in DATA/paper/json/{key}_master_results.json
+      6 -- Q56 present in the master (ingested by build_master_results)
+      F -- per-model master is fresh vs DATA/paper/json/all_models_master.json
 
     Zero writes. Use before/after running build_all_masters() to verify
     state, or to diagnose stale aggregates without rebuilding.
@@ -5279,9 +5944,9 @@ def fig_condition_overview(df, vis_dir):
         return None
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
     _CLUSTERS = {
-        'Null': [1, 2, 19], 'Introspection': [3, 4, 5],
-        'Arithmetic': [6, 7, 8, 9], 'Priming': [15, 16, 17],
-        'Impossibility': [12, 13, 14], 'Perturbation': [10, 11],
+        'Null': [4, 5, 1], 'Introspection': [6, 7, 8],
+        'Arithmetic': [9, 10, 11, 12], 'Priming': [13, 14, 15],
+        'Impossibility': [29, 30, 31], 'Perturbation': [39, 40],
     }
     _CLR = {'Null': '#888888', 'Introspection': '#000000', 'Arithmetic': '#555555',
             'Priming': '#AAAAAA', 'Impossibility': '#CCCCCC', 'Perturbation': '#333333'}
@@ -5297,9 +5962,9 @@ def fig_condition_overview(df, vis_dir):
     ax1.set_title('Condition Cluster Overview')
     ax1.legend(fontsize=8)
     for label, runs, ls, marker in [
-        ('Introspection', [3, 4, 5], '-', 'o'),
-        ('Null', [1, 2, 19], '--', 's'),
-        ('Arithmetic', [6, 7, 8, 9], ':', '^'),
+        ('Introspection', [6, 7, 8], '-', 'o'),
+        ('Null', [4, 5, 1], '--', 's'),
+        ('Arithmetic', [9, 10, 11, 12], ':', '^'),
     ]:
         sub = df[df['run_mode'].isin(runs)]
         if sub.empty or 'state_similarity_index' not in sub.columns:
@@ -5340,11 +6005,11 @@ def fig_causal_patching_combined(df21, df18, vis_dir):
             ax1.set_xticks(range(len(labels_used)))
             ax1.set_xticklabels(labels_used, fontsize=9)
             ax1.set_ylabel('Output Change Rate (%)')
-            ax1.set_title('Run 0017 — Patching by Mode')
+            ax1.set_title('Run 0017 -- Patching by Mode')
             _has_left = True
     if not _has_left:
         ax1.text(0.5, 0.5, 'No Run 0017 data', ha='center', va='center', transform=ax1.transAxes)
-        ax1.set_title('Run 0017 — No Data')
+        ax1.set_title('Run 0017 -- No Data')
     _has_right = False
     if not df18.empty and 'patch_layer' in df18.columns and 'output_changed' in df18.columns:
         df18 = df18.copy()
@@ -5362,11 +6027,11 @@ def fig_causal_patching_combined(df21, df18, vis_dir):
             ax2.set_xticks(range(len(labels_used)))
             ax2.set_xticklabels(labels_used, fontsize=9)
             ax2.set_ylabel('Output Change Rate (%)')
-            ax2.set_title('Run 0018 — Per-Layer Isolation')
+            ax2.set_title('Run 0018 -- Per-Layer Isolation')
             _has_right = True
     if not _has_right:
         ax2.text(0.5, 0.5, 'No Run 0018 data', ha='center', va='center', transform=ax2.transAxes)
-        ax2.set_title('Run 0018 — No Data')
+        ax2.set_title('Run 0018 -- No Data')
     plt.tight_layout()
     return save_fig(fig, vis_dir, "causal_patching_combined")
 
@@ -5441,461 +6106,15 @@ def generate_paper_figures(session):
                 ui.ok(f"  [{i}/{n}] {label} ✓")
                 ok += 1
             else:
-                ui.warn(f"  [{i}/{n}] {label} — returned None (data missing or insufficient)")
+                ui.warn(f"  [{i}/{n}] {label} -- returned None (data missing or insufficient)")
         except Exception as e:
-            ui.warn(f"  [{i}/{n}] {label} — EXCEPTION: {e}")
+            ui.warn(f"  [{i}/{n}] {label} -- EXCEPTION: {e}")
     ui.ok(f"  {ok}/{n} paper figures → {vis_dir}")
     plt.rcParams.update(_saved_rc)
     plt.close('all')
     import gc; gc.collect()
     return ok
 
-
-def generate_combined_paper_figures(models_include=None):
-    """Generate 10 combined cross-model paper figures into base/paper/visuals/.
-    Called once, not per-model. Discovers all models automatically.
-    v0.75.0.0: replaces per-model generate_paper_figures for paper output.
-    v0.75.2.0: models_include parameter filters to selected models only.
-               Pass list of model labels (e.g. ['Llama 8B', 'Gemma 9B']).
-               None = all discovered models (backward compatible).
-    """
-    from cartography import get_paper_paths, DATA
-
-    pp = get_paper_paths(create_dirs=True)
-    vis_dir = pp['visuals']
-
-    # ── Discover models ───────────────────────────────────────────────────
-    models = _discover_model_data({})
-    if models_include is not None:
-        models = [m for m in models if m['label'] in models_include]
-    if not models:
-        ui.err("No models with analysis data found.")
-        return 0
-    ui.section(f"Combined paper figures — {len(models)} model(s)")
-    for m in models:
-        ui.msg(f"  {m['label']}")
-
-    # ── Preload data per model ────────────────────────────────────────────
-    for m in models:
-        m['q34'] = _load_json_all_temps_for_model(m, 'Q0043_sobol_partition.json')
-        m['q33'] = _load_json_all_temps_for_model(m, 'Q0042_decomposition.json')
-        m['q41'] = _load_json_all_temps_for_model(m, 'Q0041_pool_dim_sweep.json')
-        m['q44'] = _load_json_all_temps_for_model(m, 'Q0044_per_condition_R.json')
-        m['q49'] = _load_json_all_temps_for_model(m, 'Q0045_fixed_dim_per_condition_R.json')
-        # Three-variant from pooled
-        tv_path = os.path.join(m['data_dir'], 'pooled', 'analysis', 'three_variant_comparison.json')
-        m['three_variant'] = {}
-        if os.path.exists(tv_path):
-            try:
-                with open(tv_path) as f:
-                    m['three_variant'] = json.load(f)
-            except Exception:
-                pass
-
-    # ── Paper style ───────────────────────────────────────────────────────
-    _saved_rc = plt.rcParams.copy()
-    plt.rcParams.update({
-        'font.family': 'serif', 'font.size': 10,
-        'axes.labelsize': 11, 'axes.titlesize': 12,
-        'xtick.labelsize': 9, 'ytick.labelsize': 9,
-        'legend.fontsize': 9,
-        'figure.facecolor': 'white', 'axes.facecolor': 'white',
-        'axes.edgecolor': 'black', 'axes.linewidth': 0.8,
-        'axes.grid': False,
-        'axes.prop_cycle': plt.cycler(color=_BW_COLORS),
-    })
-
-    # ── Figure generators ─────────────────────────────────────────────────
-    def _fig01():
-        """R(T) curve — all models, one chart."""
-        plotted = [m for m in models if m['q34']]
-        if not plotted:
-            return None
-        fig, ax = plt.subplots(figsize=(10, 6))
-        all_vals = []
-        for mi, m in enumerate(plotted):
-            temps = sorted(m['q34'].keys())
-            R_vals = [m['q34'][t].get('perm_sens_R', {}).get('fraction', 0) for t in temps]
-            ci_lo = [m['q34'][t].get('bootstrap_ci', {}).get('R_ci_lower', R_vals[i]) for i, t in enumerate(temps)]
-            ci_hi = [m['q34'][t].get('bootstrap_ci', {}).get('R_ci_upper', R_vals[i]) for i, t in enumerate(temps)]
-            sty = _get_model_style(m, mi)
-            c, mk, ls = sty['color'], sty['marker'], sty['ls']
-            ax.plot(temps, R_vals, marker=mk, color=c, linewidth=1.5, markersize=6,
-                    linestyle=ls, label=m['label'], zorder=3)
-            ax.fill_between(temps, ci_lo, ci_hi, color=c, alpha=0.08)
-            all_vals.extend(R_vals + ci_lo + ci_hi)
-        ax.set_xlabel('Temperature')
-        ax.set_ylabel('R (Internal Trajectory Fraction)')
-        ax.set_title('Internal Causation Fraction Across Temperature\nwith 95% Bootstrap Confidence Intervals')
-        ax.legend()
-        ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
-        if all_vals:
-            lo, hi = min(all_vals), max(all_vals)
-            pad = max((hi - lo) * 0.1, 0.02)
-            ax.set_ylim(max(0, lo - pad), min(1.0, hi + pad))
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG01_R_vs_temperature")
-
-    def _fig02():
-        """OLS ΔR² — grouped bars per model."""
-        plotted = [m for m in models if m['q33']]
-        if not plotted:
-            return None
-        fig, ax = plt.subplots(figsize=(10, 5))
-        x = np.arange(len(plotted))
-        width = 0.25
-        d_int = [np.mean([m['q33'][t].get('delta_r2_internal', {}).get('value', 0)
-                          for t in m['q33']]) for m in plotted]
-        d_con = [np.mean([m['q33'][t].get('delta_r2_constraint', {}).get('value', 0)
-                          for t in m['q33']]) for m in plotted]
-        ax.bar(x - width/2, d_int, width, label='ΔR² Internal (S)',
-               color='#000000', edgecolor='black', linewidth=0.5)
-        ax.bar(x + width/2, d_con, width, label='ΔR² Constraint (C)',
-               color='#999999', edgecolor='black', linewidth=0.5, hatch='///')
-        ax.set_xticks(x)
-        ax.set_xticklabels([m['label'] for m in plotted])
-        ax.set_ylabel('Mean ΔR² (across temperatures)')
-        ax.set_title('OLS Existence Test — Internal vs Constraint Contribution')
-        ax.legend()
-        all_vals = d_int + d_con
-        if all_vals:
-            lo, hi = min(all_vals), max(all_vals)
-            pad = max((hi - lo) * 0.15, 0.01)
-            ax.set_ylim(max(0, lo - pad), hi + pad)
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG02_OLS_delta_r2")
-
-    def _fig03():
-        """Patching heatmap — side-by-side panels per model."""
-        plotted = []
-        for m in models:
-            df18 = _load_all_temps_run_for_model(18, m)  # v0.79.4.0: old 42 layer iso → new 18
-            if not df18.empty and 'patch_layer' in df18.columns and 'output_changed' in df18.columns:
-                plotted.append((m, df18))
-        if not plotted:
-            return None
-        fig, axes = plt.subplots(1, len(plotted), figsize=(5 * len(plotted), 4))
-        if len(plotted) == 1:
-            axes = [axes]
-        for pi, (m, df18) in enumerate(plotted):
-            ax = axes[pi]
-            patched = df18[df18['patch_layer'] != 'none'].copy()
-            patched['output_changed'] = pd.to_numeric(patched['output_changed'], errors='coerce')
-            patched['temperature'] = pd.to_numeric(patched['temperature'], errors='coerce')
-            patched = patched.dropna(subset=['output_changed', 'temperature'])
-            layers = sorted(patched['patch_layer'].unique())
-            temps = sorted(patched['temperature'].unique())
-            grid = np.zeros((len(layers), len(temps)))
-            for li, layer in enumerate(layers):
-                for ti, temp in enumerate(temps):
-                    sub = patched[(patched['patch_layer'] == layer) & (patched['temperature'] == temp)]
-                    oc = sub['output_changed'].dropna()
-                    grid[li, ti] = float(oc.mean() * 100) if len(oc) > 0 else 0
-            im = ax.imshow(grid, cmap='Greys', aspect='auto', vmin=0)
-            ax.set_xticks(range(len(temps)))
-            ax.set_xticklabels([f'{t:.1f}' for t in temps], fontsize=7)
-            ax.set_yticks(range(len(layers)))
-            ax.set_yticklabels(layers, fontsize=8)
-            ax.set_title(m['label'], fontsize=10)
-            if pi == 0:
-                ax.set_ylabel('Patch Layer')
-            for li in range(len(layers)):
-                for ti in range(len(temps)):
-                    ax.text(ti, li, f'{grid[li, ti]:.0f}', ha='center', va='center',
-                            fontsize=7, color='white' if grid[li, ti] > 50 else 'black')
-        fig.suptitle('Activation Patching Output Change Rate (%) by Layer × Temperature', fontsize=11)
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG03_patching_heatmap")
-
-    def _fig04():
-        """E+C+R decomposition — three-panel line plot across temperature."""
-        plotted = [m for m in models if m['q34']]
-        if not plotted:
-            return None
-        fig, (axE, axC, axR) = plt.subplots(1, 3, figsize=(14, 4), sharey=True)
-        temps = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
-        for ax, key, label in [(axE, 'perm_sens_E', 'E (External)'),
-                                (axC, 'perm_sens_C', 'C (Constraint)'),
-                                (axR, 'perm_sens_R', 'R (Internal)')]:
-            for mi, m in enumerate(plotted):
-                vals = [m['q34'].get(t, {}).get(key, {}).get('fraction', 0) for t in temps]
-                sty = _get_model_style(m, mi)
-                c, mk, ls = sty['color'], sty['marker'], sty['ls']
-                ax.plot(temps, vals, marker=mk, color=c, linewidth=1.5, markersize=5,
-                        linestyle=ls, label=m['label'])
-            ax.set_xlabel('Temperature')
-            ax.set_title(label)
-            ax.set_xticks(temps)
-            all_vals = [m['q34'].get(t, {}).get(key, {}).get('fraction', 0)
-                        for m in plotted for t in temps]
-            if all_vals:
-                lo, hi = min(all_vals), max(all_vals)
-                pad = max((hi - lo) * 0.15, 0.02)
-                ax.set_ylim(max(0, lo - pad), hi + pad)
-        axE.set_ylabel('Fraction')
-        axR.legend(fontsize=7, loc='best')
-        fig.suptitle('E + C + R Decomposition Across Temperature', fontsize=12)
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG04_ECR_stacked_bar")
-
-    def _fig05():
-        """Held-out validation — overlay per model."""
-        plotted = [m for m in models if m['q34']]
-        if not plotted:
-            return None
-        has_heldout = False
-        fig, ax = plt.subplots(figsize=(10, 5))
-        for mi, m in enumerate(plotted):
-            temps = sorted(m['q34'].keys())
-            in_R = [m['q34'][t].get('perm_sens_R', {}).get('fraction', 0) for t in temps]
-            ho_R = [m['q34'][t].get('heldout_perm_sens_R', {}).get('fraction', 0) for t in temps]
-            if any(v > 0 for v in ho_R):
-                has_heldout = True
-                sty = _get_model_style(m, mi)
-                c, mk, ls = sty['color'], sty['marker'], sty['ls']
-                ax.plot(temps, in_R, marker=mk, color=c, linewidth=1.5, markersize=6,
-                        linestyle=ls, label=f'{m["label"]} in-sample')
-                ax.plot(temps, ho_R, marker=mk, color=c, linewidth=1.0, markersize=4,
-                        linestyle='--', alpha=0.5, label=f'{m["label"]} held-out')
-        if not has_heldout:
-            plt.close(fig)
-            return None
-        ax.set_xlabel('Temperature')
-        ax.set_ylabel('R Fraction')
-        ax.set_title('In-Sample vs Held-Out R Fraction')
-        ax.legend(fontsize=7)
-        ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG05_held_out_validation")
-
-    def _fig06():
-        """dim₉₅ curve — overlay all models."""
-        plotted = [m for m in models if m['q41']]
-        if not plotted:
-            return None
-        fig, ax = plt.subplots(figsize=(10, 5))
-        for mi, m in enumerate(plotted):
-            # Average across temps for a summary curve, or show one temp
-            all_dims = set()
-            for t, data in m['q41'].items():
-                for r in data.get('results', []):
-                    all_dims.add(r['pool_dim'])
-            if not all_dims:
-                continue
-            dims = sorted(all_dims)
-            avg_R = []
-            for d in dims:
-                vals = []
-                for t, data in m['q41'].items():
-                    for r in data.get('results', []):
-                        if r['pool_dim'] == d:
-                            vals.append(r.get('frac_R', 0))
-                avg_R.append(np.mean(vals) if vals else 0)
-            sty = _get_model_style(m, mi)
-            c, mk, ls = sty['color'], sty['marker'], sty['ls']
-            dim95_vals = [m['q41'][t].get('dim_95', 0) for t in m['q41']]
-            dim95_mode = max(set(dim95_vals), key=dim95_vals.count) if dim95_vals else 0
-            ax.plot(dims, avg_R, marker=mk, color=c, linewidth=1.5, markersize=4,
-                    linestyle=ls, label=f'{m["label"]} (dim₉₅={dim95_mode})')
-            if dim95_mode:
-                ax.axvline(x=dim95_mode, color=c, linestyle=':', alpha=0.3)
-        ax.set_xscale('log', base=2)
-        ax.set_xlabel('POOL_DIM')
-        ax.set_ylabel('R Fraction (mean across temperatures)')
-        ax.set_title('R vs Projection Dimension — Manifold Compression')
-        ax.legend(fontsize=8)
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG06_dim95_curve")
-
-    def _fig08():
-        """Bootstrap CI distributions — overlay per model."""
-        plotted = [m for m in models if m['q34']]
-        if not plotted:
-            return None
-        fig, ax = plt.subplots(figsize=(10, 5))
-        has_data = False
-        for mi, m in enumerate(plotted):
-            R_medians = []
-            R_lows = []
-            R_highs = []
-            temps = sorted(m['q34'].keys())
-            for t in temps:
-                bc = m['q34'][t].get('bootstrap_ci', {})
-                if 'R_ci_median' in bc:
-                    R_medians.append(bc['R_ci_median'])
-                    R_lows.append(bc.get('R_ci_lower', bc['R_ci_median']))
-                    R_highs.append(bc.get('R_ci_upper', bc['R_ci_median']))
-                    has_data = True
-                else:
-                    R_medians.append(None)
-                    R_lows.append(None)
-                    R_highs.append(None)
-            valid = [(t, med, lo, hi) for t, med, lo, hi in zip(temps, R_medians, R_lows, R_highs) if med is not None]
-            if valid:
-                vt, vm, vl, vh = zip(*valid)
-                sty = _get_model_style(m, mi)
-                c, mk, ls = sty['color'], sty['marker'], sty['ls']
-                ax.plot(vt, vm, marker=mk, color=c, linewidth=1.5, markersize=5,
-                        linestyle=ls, label=f'{m["label"]} (median)')
-                ax.fill_between(vt, vl, vh, color=c, alpha=0.08)
-        if not has_data:
-            plt.close(fig)
-            return None
-        ax.set_xlabel('Temperature')
-        ax.set_ylabel('R (Bootstrap Median + 95% CI)')
-        ax.set_title('Bootstrap Confidence Intervals for R')
-        ax.legend(fontsize=8)
-        ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG08_bootstrap_distributions")
-
-    def _fig09():
-        """Per-condition R — grouped bars per condition, per model."""
-        plotted = [m for m in models if m['q44']]
-        if not plotted:
-            return None
-        # Collect all conditions across all models and temps
-        all_conditions = set()
-        for m in plotted:
-            for t, data in m['q44'].items():
-                for entry in data.get('per_run', data.get('results', [])):
-                    rn = entry.get('run_num', entry.get('source_run', 0))
-                    all_conditions.add(rn)
-        if not all_conditions:
-            return None
-        conditions = sorted(all_conditions)
-        fig, ax = plt.subplots(figsize=(12, 5))
-        x = np.arange(len(conditions))
-        n_models = len(plotted)
-        bar_w = 0.5 / n_models
-        for mi, m in enumerate(plotted):
-            R_by_cond = {}
-            for t, data in m['q44'].items():
-                for entry in data.get('per_run', data.get('results', [])):
-                    rn = entry.get('run_num', entry.get('source_run', 0))
-                    R_by_cond.setdefault(rn, []).append(entry.get('frac_R', entry.get('R', 0)))
-            vals = [np.mean(R_by_cond.get(c, [0])) for c in conditions]
-            offset = (mi - n_models / 2 + 0.5) * bar_w
-            sty = _get_model_style(m, mi)
-            c, h = sty['color'], sty['hatch']
-            ax.bar(x + offset, vals, bar_w, color=c, label=m['label'],
-                   edgecolor='black', linewidth=0.5, hatch=h)
-        ax.set_xticks(x)
-        ax.set_xticklabels([f'R{c}' for c in conditions], fontsize=8)
-        ax.set_ylabel('R Fraction (mean across temps)')
-        ax.set_title('Per-Condition R Fraction by Source Run')
-        ax.legend(fontsize=8)
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG09_per_condition_R")
-
-    def _fig10():
-        """Cross-model R — grouped bars, all models from Q34."""
-        plotted = [m for m in models if m['q34']]
-        if len(plotted) < 2:
-            return None
-        fig, ax = plt.subplots(figsize=(12, 5))
-        temps = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
-        x = np.arange(len(temps))
-        n_models = len(plotted)
-        bar_w = 0.5 / n_models
-        for mi, m in enumerate(plotted):
-            R_vals = [m['q34'].get(t, {}).get('perm_sens_R', {}).get('fraction', 0) for t in temps]
-            offset = (mi - n_models / 2 + 0.5) * bar_w
-            sty = _get_model_style(m, mi)
-            c, h = sty['color'], sty['hatch']
-            ax.bar(x + offset, R_vals, bar_w, color=c, label=m['label'],
-                   edgecolor='black', linewidth=0.5, hatch=h)
-        ax.set_xticks(x)
-        ax.set_xticklabels([f'T={t:.1f}' for t in temps])
-        ax.set_ylabel('R Fraction')
-        ax.set_title('Cross-Model R Fraction Comparison by Temperature')
-        ax.legend(fontsize=9)
-        all_R = [m['q34'].get(t, {}).get('perm_sens_R', {}).get('fraction', 0)
-                 for m in plotted for t in temps]
-        if all_R:
-            lo, hi = min(all_R), max(all_R)
-            pad = max((hi - lo) * 0.15, 0.02)
-            ax.set_ylim(max(0, lo - pad), hi + pad)
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG10_cross_model_R")
-
-    def _fig13():
-        """Three-variant similarity — multi-panel, one per model."""
-        plotted = [m for m in models if m['three_variant'].get('table')]
-        if not plotted:
-            return None
-        fig, axes = plt.subplots(1, len(plotted), figsize=(5 * len(plotted), 4),
-                                 squeeze=False)
-        _styles = {
-            'abliterated': {'color': '#000000', 'marker': 'o', 'ls': '-'},
-            'instruct':    {'color': '#555555', 'marker': 's', 'ls': '--'},
-            'base':        {'color': '#999999', 'marker': '^', 'ls': ':'},
-        }
-        all_sims = []
-        panel_data = []
-        for pi, m in enumerate(plotted):
-            ax = axes[0][pi]
-            by_model = {}
-            for row in m['three_variant']['table']:
-                mn = row.get('model', '')
-                t = row.get('temperature', 0)
-                sim_v = row.get('mean_similarity', 0) or 0
-                by_model.setdefault(mn, []).append((t, sim_v))
-                all_sims.append(sim_v)
-            for mn, pairs in sorted(by_model.items()):
-                pairs.sort()
-                ts, sims = zip(*pairs) if pairs else ([], [])
-                style = _styles.get(mn, {'color': '#666', 'marker': 'D', 'ls': '-'})
-                ax.plot(ts, sims, marker=style['marker'], color=style['color'],
-                        linewidth=1.5, linestyle=style['ls'], markersize=5,
-                        label=mn.capitalize())
-            ax.set_xlabel('Temperature')
-            ax.set_ylabel('Mean Similarity')
-            ax.set_title(m['label'], fontsize=10)
-            ax.legend(fontsize=7)
-            panel_data.append(ax)
-        # Force same ylim and formatter on ALL panels
-        if all_sims:
-            lo, hi = min(all_sims), max(all_sims)
-            pad = max((hi - lo) * 0.1, 0.005)
-            for ax in panel_data:
-                ax.set_ylim(lo - pad, hi + pad)
-                ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%.3f'))
-        fig.suptitle('Three-Variant Similarity Comparison (Run 0001)', fontsize=11)
-        plt.tight_layout()
-        return save_fig(fig, vis_dir, "FIG13_three_variant_delta")
-
-    # ── Run all ───────────────────────────────────────────────────────────
-    _COMBINED_TASKS = [
-        ("FIG01 R(T) curve",           _fig01),
-        ("FIG02 OLS ΔR²",            _fig02),
-        ("FIG03 Patching heatmap",     _fig03),
-        ("FIG04 E+C+R stacked bar",    _fig04),
-        ("FIG05 Held-out validation",   _fig05),
-        ("FIG06 dim₉₅ curve",          _fig06),
-        ("FIG08 Bootstrap CI",          _fig08),
-        ("FIG09 Per-condition R",       _fig09),
-        ("FIG10 Cross-model R",         _fig10),
-        ("FIG13 Three-variant similarity",     _fig13),
-    ]
-    n = len(_COMBINED_TASKS)
-    ui.section(f"Generating {n} combined paper figures...")
-    ok = 0
-    for i, (label, fn) in enumerate(_COMBINED_TASKS, 1):
-        try:
-            f = fn()
-            if f:
-                ui.ok(f"  [{i}/{n}] {label} ✓")
-                ok += 1
-            else:
-                ui.warn(f"  [{i}/{n}] {label} — returned None (data missing or insufficient)")
-        except Exception as e:
-            ui.warn(f"  [{i}/{n}] {label} — EXCEPTION: {e}")
-    ui.ok(f"  {ok}/{n} combined paper figures → {vis_dir}")
-    plt.rcParams.update(_saved_rc)
-    plt.close('all')
-    import gc; gc.collect()
-    return ok
 
 
 def _load_all_temps_run_for_model(run_num, model_info):
@@ -5937,7 +6156,7 @@ def _load_all_temps_run_for_model(run_num, model_info):
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def run(session: dict, paths: dict):
-    # Guard: base/instruct variants only have hidden states — no stats to export
+    # Guard: base/instruct variants only have hidden states -- no stats to export
     if session.get('model_variant', '') in ('base', 'instruct'):
         ui.msg(f"  Skipping stats export for {session.get('model_variant')} variant (hidden states only)")
         return
@@ -5962,7 +6181,7 @@ def run(session: dict, paths: dict):
         runs_in_df = sorted(df['run_mode'].dropna().astype(int).unique().tolist())
         ui.msg(f"  Run modes in df: {runs_in_df}")
     else:
-        ui.warn("  df is EMPTY or missing run_mode — no CSV data loaded")
+        ui.warn("  df is EMPTY or missing run_mode -- no CSV data loaded")
 
     # Bug V fix (v25.7): load Run 0051 pooled sobol from its own directory
     from cartography import get_pooled_paths
@@ -5973,7 +6192,7 @@ def run(session: dict, paths: dict):
 
     if df.empty:
         choice = ui.srx_prompt(
-            "No CSV data found — run experimental runs first before exporting stats."
+            "No CSV data found -- run experimental runs first before exporting stats."
         )
         if choice in ('s', 'x'):
             if choice == 'x': raise SystemExit
@@ -5982,7 +6201,7 @@ def run(session: dict, paths: dict):
     ui.ok(f"{len(df):,} analysis rows loaded.")
     ui.blank()
     _FIG_TASKS = [
-        # Core per-temperature figures (v0.73.1.0) — juice only
+        # Core per-temperature figures (v0.73.1.0) -- juice only
         ("Condition overview",          lambda: fig_condition_overview(df, vis_dir)),
         ("Granger ΔR²",                lambda: fig_granger(granger, vis_dir)),
         ("Sobol partition",             lambda: fig_sobol(sobol, vis_dir)),
@@ -6008,7 +6227,7 @@ def run(session: dict, paths: dict):
             figures.append(f)
         except Exception as e:
             import traceback
-            ui.warn(f"  [{i}/{n_total}] SKIPPED — {e}")
+            ui.warn(f"  [{i}/{n_total}] SKIPPED -- {e}")
             ui.warn(traceback.format_exc().strip().split('\n')[-1])
 
     ok_figs = [f for f in figures if f]
@@ -6026,7 +6245,7 @@ def run(session: dict, paths: dict):
         ui.err(traceback.format_exc().strip().split('\n')[-1])
         outcomes = {}
 
-    # FIG_SUMMARY cut (v0.71.0.0) — dashboard material, not a paper figure.
+    # FIG_SUMMARY cut (v0.71.0.0) -- dashboard material, not a paper figure.
     # fig_summary function retained for backward compat but not called in pipeline.
 
     # Save outcomes JSON
@@ -6094,7 +6313,7 @@ def run(session: dict, paths: dict):
         n_bonf = sum(1 for t in correction_table.get('tests', []) if t['bonferroni_reject'])
         n_bh   = sum(1 for t in correction_table.get('tests', []) if t['bh_reject'])
         n_tot  = correction_table.get('n_tests', 0)
-        ui.ok(f"  Correction table: {n_tot} tests — Bonferroni rejects {n_bonf}, BH rejects {n_bh}")
+        ui.ok(f"  Correction table: {n_tot} tests -- Bonferroni rejects {n_bonf}, BH rejects {n_bh}")
         ui.msg(f"    Bonferroni α = {correction_table.get('bonferroni_alpha', 0):.4f}")
     except Exception as _e:
         ui.warn(f"  Correction table failed: {_e}")
@@ -6113,15 +6332,15 @@ def run(session: dict, paths: dict):
     # KS test per metric: in-sample vs Run 0033 held-out
     heldout_comparison = {}
     try:
-        sub41 = df[run_mode_mask(df['run_mode'], 41)] if (not df.empty and 'run_mode' in df.columns) else pd.DataFrame()
-        sub_insample = df[run_mode_mask_any(df['run_mode'], [3,4,5,6,7,8,9,15,16,17,19,26,28])] if not df.empty else pd.DataFrame()
-        if not sub41.empty and not sub_insample.empty:
+        sub33 = df[run_mode_mask(df['run_mode'], 33)] if (not df.empty and 'run_mode' in df.columns) else pd.DataFrame()
+        sub_insample = df[run_mode_mask_any(df['run_mode'], [6,7,8,9,10,11,12,13,14,15,1,3,23])] if not df.empty else pd.DataFrame()
+        if not sub33.empty and not sub_insample.empty:
             _ho_metrics = ['state_similarity_index', 'mean_logit_entropy', 'layer_sim_mean', 'onset_delay_ratio']
             _ho_tests = []
             for metric in _ho_metrics:
-                if metric not in sub41.columns or metric not in sub_insample.columns:
+                if metric not in sub33.columns or metric not in sub_insample.columns:
                     continue
-                a = pd.to_numeric(sub41[metric], errors='coerce').dropna()
+                a = pd.to_numeric(sub33[metric], errors='coerce').dropna()
                 b = pd.to_numeric(sub_insample[metric], errors='coerce').dropna()
                 if len(a) >= 5 and len(b) >= 5:
                     ks_stat, p_val = sp_stats.ks_2samp(a, b)
@@ -6141,8 +6360,9 @@ def run(session: dict, paths: dict):
     # For Run 0017 and Run 0019: entropy of output text distribution under patching vs no patching
     patching_entropy = {}
     try:
+        from cartography import run_mode_mask as _rmm_es3  # v0.79.5.2: dual-accept
         for rn, label in [(21, 'real'), (53, 'noise')]:
-            sub_pe = df[df['run_mode'] == rn] if not df.empty else pd.DataFrame()
+            sub_pe = df[_rmm_es3(df['run_mode'], rn)] if not df.empty else pd.DataFrame()
             if sub_pe.empty or 'output' not in sub_pe.columns or 'patch_mode' not in sub_pe.columns:
                 continue
             for mode in ['none', 'partial', 'full']:
@@ -6170,8 +6390,8 @@ def run(session: dict, paths: dict):
     appendix_d = {}
     try:
         _APP_GROUPS = {
-            'introspection': [3,4,5], 'arithmetic': [6,7,8,9], 'null': [1,2,19],
-            'priming': [15,16,17], 'perturbation': [10,11], 'impossibility': [12,13,14],
+            'introspection': [6,7,8], 'arithmetic': [9,10,11,12], 'null': [4,5,1],
+            'priming': [13,14,15], 'perturbation': [39,40], 'impossibility': [29,30,31],
         }
         _APP_METRICS = ['state_similarity_index', 'mean_logit_entropy', 'layer_sim_mean', 'onset_delay_ratio']
         _app_rows = []
@@ -6233,7 +6453,7 @@ def run(session: dict, paths: dict):
     except Exception as _we:
         ui.err(f"Failed to write descriptive stats: {_we}")
 
-    # Squid — two hearts. Once per model family, after stats complete.
+    # Squid -- two hearts. Once per model family, after stats complete.
     _squid_family = session.get('model_family', 'unknown')
     _squid2 = os.path.join(ana_dir, f'.iota_squid2_{_squid_family}')
     if not os.path.exists(_squid2):
@@ -6258,7 +6478,7 @@ def run(session: dict, paths: dict):
 
 def main(session: dict):
     """Entry point called by start_here.py menu dispatch."""
-    ui.header("Export — Stats + Figures")
+    ui.header("Export -- Stats + Figures")
     ui.session_summary(session)
     from cartography import get_paths
     paths = get_paths(session['model_family'], session['model_size'],
@@ -6269,7 +6489,7 @@ def main(session: dict):
 if __name__ == "__main__":
     ui.install_deps()
     session = ui.load_session()
-    ui.header("Export — Stats + Figures")
+    ui.header("Export -- Stats + Figures")
     ui.session_summary(session)
     paths = get_paths(session['model_family'], session['model_size'],
                       session.get('model_variant','abliterated'), session.get('temperature',0.0))

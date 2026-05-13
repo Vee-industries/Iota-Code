@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — LIVE DASHBOARD  v0.79.4.9
+IOTA FRAMEWORK — LIVE DASHBOARD  v1.0.0
 =======================================
 Full run-control web UI + live monitoring.
 
@@ -142,6 +142,21 @@ _SERVER_START = time.time()  # when Flask process started — used for idle cloc
 _active_total = 0.0  # accumulated seconds where a run (data or analysis) was active
 _last_active_start = None  # timestamp when current run started
 
+# v0.79.5.6: queue-fire concurrency guards. Prior versions had no mutex around
+# the read-clear-check of _queued_runs in _fire_queued_runs. SSE gen() runs
+# per-connection (browsers reconnect on network blips or 15s watchdog timeout
+# — see line ~3502-3507 — so stale gen threads overlap with new ones). Two
+# gens can both see `not web_running AND _queued_runs` and race into the fire
+# path. The 2-second daemon-thread sleep in _autofire compounds the window:
+# _proc still points at the old completed subprocess, so _running() returns
+# False to anyone checking during that window. Result: double-fire of the
+# same queued spec. Fix: mutex + in-flight flag + same-spec debounce.
+_queue_fire_lock = threading.Lock()
+_queue_fire_inflight = False   # True between _fire_queued_runs commit and daemon Popen
+_last_fired_spec = None        # last qr string actually dispatched
+_last_fired_ts = 0.0           # wall-clock at last dispatch
+_QUEUE_FIRE_DEDUP_SEC = 60.0   # suppress same-spec re-fires within this window
+
 
 def _log_separator(label=""):
     """Append a separator line with datetime stamp to the log."""
@@ -217,7 +232,7 @@ def _rst():
     try:
         if os.path.exists(STATUS_FILE):
             with open(STATUS_FILE,encoding='utf-8') as f: return json.load(f)
-    except: pass
+    except (OSError, json.JSONDecodeError): pass  # v0.83.4: tighten _rst except
     return {}
 
 def _rsess():
@@ -225,7 +240,7 @@ def _rsess():
         try:
             with open(SESSION_FILE) as f: s=json.load(f)
             return {**_DS,**s}
-        except: pass
+        except (OSError, json.JSONDecodeError): pass  # v0.83.4: tighten SESSION read
     return dict(_DS)
 
 def _wsess(upd):
@@ -235,7 +250,7 @@ def _wsess(upd):
     ok={"trials","temperature","seed","runs","model_path","model_name",
         "model_family","model_size","model_variant","quantization",
         "clear_cache","force_gc","unload_between_runs","hf_token",
-        "r19_passes","et_mode_overrides",
+        "r01_passes","et_mode_overrides",
         "patch_modes_17","patch_modes_18","patch_modes_19","r3_cells","mc_conds",
         "restore_runs","low_priority","active_temps","cross_model_include"}
     for k,v in upd.items():
@@ -309,50 +324,102 @@ def _fire_queued_runs():
     """Called from SSE gen() when session ends and _queued_runs is set.
     Clears the queue and launches the staged runs in a daemon thread.
     Guards against firing while another session is already active.
+
+    v0.79.5.6: concurrency-hardened. Prior version had no mutex, no
+    in-flight tracking, and no same-spec dedup. Three failure modes the
+    hardening prevents:
+
+    (1) Two SSE gens (e.g., from a browser reconnect where the old gen
+        thread on the server hasn't observed the disconnect yet) both
+        pass the `not web_running and _queued_runs` guard and both call
+        _fire_queued_runs. Without a lock, both read `qr = _queued_runs`
+        before either clears it → both spawn daemon threads → both fire
+        the subprocess.
+
+    (2) The 2-second daemon-thread sleep creates a window where _proc
+        still points at the old completed subprocess and _running()
+        returns False. If something re-sets _queued_runs during that
+        window, SSE fires again before the new subprocess has registered.
+
+    (3) Sequential re-fire: some path we haven't fully characterized
+        (possibly a JS re-queue on reconnect, possibly an SSE message
+        deliver-after-disconnect edge case) sets _queued_runs to the
+        same spec that was just fired after the first subprocess
+        completes. The dedup window catches this and logs which spec
+        and how long after — that log line, when it appears, is the
+        diagnostic for the next sweep.
     """
-    global _queued_runs
-    if _running():
-        # Session still active — do not fire. SSE will retry on next tick.
-        return
-    qr = _queued_runs
-    _queued_runs = None
-    if not qr:
-        return
-    def _autofire():
-        import time as _t
-        _t.sleep(2)  # Brief pause so SSE sends the cleared-queue state first
-        if _running():
-            # Another session started in the 2s window — abort auto-fire
-            print(f"  [queue] auto-fire aborted — session already active", flush=True)
+    global _queued_runs, _queue_fire_inflight, _last_fired_spec, _last_fired_ts
+    with _queue_fire_lock:
+        if _queue_fire_inflight:
+            # A prior fire is still in its pre-Popen window. Reject.
             return
-        _wsess({"runs": qr})
-        log = os.path.join(ROOT, ".iota_flask.log")
-        _log_separator("queue-autofire: " + qr)
+        if _running():
+            # Session still active — do not fire. SSE will retry on next tick.
+            return
+        qr = _queued_runs
+        _queued_runs = None
+        if not qr:
+            return
+        # Same-spec dedup: if the exact same qr was just dispatched within
+        # the dedup window, log and suppress. The log line here is the
+        # diagnostic — if it ever fires, the log tells us the qr value
+        # and the elapsed seconds since the prior fire, which localizes
+        # whatever is re-setting _queued_runs.
+        _now = time.time()
+        if qr == _last_fired_spec and (_now - _last_fired_ts) < _QUEUE_FIRE_DEDUP_SEC:
+            print(f"  [queue] auto-fire suppressed — same spec {qr!r} "
+                  f"fired {_now - _last_fired_ts:.1f}s ago "
+                  f"(dedup window {_QUEUE_FIRE_DEDUP_SEC:.0f}s)", flush=True)
+            return
+        _last_fired_spec = qr
+        _last_fired_ts = _now
+        _queue_fire_inflight = True
+
+    def _autofire():
+        global _queue_fire_inflight
         try:
-            lf = open(log, 'a')
+            import time as _t
+            _t.sleep(2)  # Brief pause so SSE sends the cleared-queue state first
+            if _running():
+                # Another session started in the 2s window — abort auto-fire
+                print(f"  [queue] auto-fire aborted — session already active", flush=True)
+                return
+            _wsess({"runs": qr})
+            log = os.path.join(ROOT, ".iota_flask.log")
+            _log_separator("queue-autofire: " + qr)
             try:
-                if qr.startswith('all-temps:'):
-                    # Analysis runs at all temperatures
-                    _atr = qr.split(':', 1)[1]
-                    p = subprocess.Popen(
-                        [sys.executable, os.path.join(ROOT, "start_here.py"),
-                         "--all-temps-runs", _atr],
-                        stdout=lf, stderr=subprocess.STDOUT, start_new_session=True)
-                else:
-                    p = subprocess.Popen(
-                        [sys.executable, os.path.join(ROOT, "start_here.py"),
-                         "--headless", "--auto-run", qr],
-                        stdout=lf, stderr=subprocess.STDOUT, start_new_session=True)
-            finally:
-                lf.close()
-            global _proc, _pruns, _last_active_start
-            with _plock:
-                _proc = p
-                _pruns = qr
-                _last_active_start = time.time()
-            _write_pid(p.pid)
-        except Exception as e:
-            print(f"  [queue] Auto-fire failed: {e}", flush=True)
+                lf = open(log, 'a')
+                try:
+                    if qr.startswith('all-temps:'):
+                        # Analysis runs at all temperatures
+                        _atr = qr.split(':', 1)[1]
+                        p = subprocess.Popen(
+                            [sys.executable, os.path.join(ROOT, "start_here.py"),
+                             "--all-temps-runs", _atr],
+                            stdout=lf, stderr=subprocess.STDOUT, start_new_session=True)
+                    else:
+                        p = subprocess.Popen(
+                            [sys.executable, os.path.join(ROOT, "start_here.py"),
+                             "--headless", "--auto-run", qr],
+                            stdout=lf, stderr=subprocess.STDOUT, start_new_session=True)
+                finally:
+                    lf.close()
+                global _proc, _pruns, _last_active_start
+                with _plock:
+                    _proc = p
+                    _pruns = qr
+                    _last_active_start = time.time()
+                _write_pid(p.pid)
+            except Exception as e:
+                print(f"  [queue] Auto-fire failed: {e}", flush=True)
+        finally:
+            # Always clear in-flight regardless of spawn success. If the
+            # subprocess did launch, _proc/_running() is now the gate.
+            # If it failed, the flag must not be left set or future fires
+            # would be permanently blocked.
+            with _queue_fire_lock:
+                _queue_fire_inflight = False
     threading.Thread(target=_autofire, daemon=True).start()
 
 def _scan():
@@ -419,7 +486,7 @@ def stream():
                     _raw = json.dumps(st)
                     _raw = _raw.replace('NaN', 'null').replace('Infinity', 'null').replace('-Infinity', 'null')
                     yield f"data: {_raw}\n\n"
-            except: pass
+            except Exception: pass  # v0.83.4: SSE tick robustness (lets interrupts through)
             ticks+=1
             time.sleep(0.1)
     return Response(gen(),mimetype="text/event-stream",
@@ -703,7 +770,7 @@ def factory_reset_ep():
         fp=os.path.join(ROOT,f)
         if os.path.exists(fp):
             try: os.remove(fp); deleted+=1
-            except: pass
+            except OSError: pass  # v0.83.1: cleanup excepts tightened
     return jsonify({"ok":True,"deleted":deleted})
 
 @app.route("/run",methods=["POST"])
@@ -715,6 +782,15 @@ def run_ep():
     d=request.get_json(force=True,silent=True) or {}
     runs=str(d.get("runs","")).strip()
     if not runs: return jsonify({"ok":False,"error":"No runs specified."}),400
+    # v0.79.5.4 [DISP]: dispatch instrumentation — raw /run POST payload.
+    # Temporary. Characterizes Run-N-selected → Run-M-fires routing anomaly.
+    _disp_modes = {k: d.get(k) for k in ('r01_passes','et_mode_overrides',
+                   'patch_modes_17','patch_modes_18','patch_modes_19',
+                   'r3_cells','mc_conds')
+                   if d.get(k) is not None}
+    print(f"[DISP] /run POST: runs={runs!r} all_models={bool(d.get('all_models'))} "
+          f"trials={d.get('trials','?')} temp={d.get('temperature','?')} "
+          f"modes={_disp_modes or '{}'}", flush=True)
     cfg={}
     for k in ("trials","temperature","seed"):
         if k in d: cfg[k]=d[k]
@@ -723,7 +799,10 @@ def run_ep():
     # Save pass-mode overrides written by dashboard launch buttons.
     # Write mode overrides — grid launches strip these keys so they're None;
     # popup launches set them explicitly. None clears stale overrides.
-    _wsess({"r19_passes": d.get("r19_passes"),
+    # v0.80.0.44: r01_passes (was r19_passes pre-rename). Accept old key
+    # in payload for backward compatibility with cached frontend code.
+    _r01_passes = d.get("r01_passes") or d.get("r19_passes")
+    _wsess({"r01_passes": _r01_passes,
             "et_mode_overrides": d.get("et_mode_overrides"),
             "patch_modes_17": d.get("patch_modes_17"),
             "patch_modes_18": d.get("patch_modes_18"),
@@ -736,10 +815,27 @@ def run_ep():
         except Exception: pass
     # BUG-43G: was truncation. Now appends separator — scroll-up history preserved.
     _log_separator("run: " + str(runs))
+    # v0.80.0.44: on Windows the .iota_flask.log file can be locked by
+    # another process (e.g., a tailing editor, a prior Flask instance, or
+    # antivirus scanner). Rather than crash the run on permission denied,
+    # fall back to a per-PID log file so output goes somewhere useful.
     try:
         lf=open(log,'a')
+    except (PermissionError, OSError) as _le:
+        fallback=os.path.join(ROOT, f'.iota_flask.log.{os.getpid()}')
         try:
-            # v0.79.4.9: --all-models dispatch iterates every discovered
+            lf=open(fallback,'a')
+            sys.stderr.write(
+                f"[log] could not open .iota_flask.log ({_le}); "
+                f"using {os.path.basename(fallback)} for this session\n")
+        except Exception:
+            lf=open(os.devnull, 'w')
+            sys.stderr.write(
+                f"[log] could not open .iota_flask.log or fallback; "
+                f"subprocess output discarded\n")
+    try:
+        try:
+            # v0.79.4.15: --all-models dispatch iterates every discovered
             # model in DATA/, firing the requested runs against each in
             # sequence. The runs string itself can be auto-temp, all-temps:N,
             # or a plain run list — --all-models is an outer iteration wrapper.
@@ -969,7 +1065,7 @@ def clear_data_ep():
                     if d == 'deterministic': _all_temps.append(0.0)
                     elif d.startswith('temp_'):
                         try: _all_temps.append(float(d[5:]))
-                        except: pass
+                        except ValueError: pass  # v0.83.4: malformed temp_X dir name
             for rn in _parse_runs(runs_str):
                 for t in _all_temps:
                     _clear_run_at_temp(rn, t)
@@ -1199,6 +1295,14 @@ def all_temps_complete_ep():
         import start_here as sh
         # Generation runs — everything except analysis-only runs
         _GEN_RUNS = set(range(1, 41))  # v0.79.4.0: all 40 data-collection runs
+        # v0.79.6.1: Analysis runs required for model-complete.
+        # Run 0046 (MLP decomposition, old Q56) carries the Ridge-vs-MLP
+        # comparison load-bearing for the H50 finding (paper §8.1). Without
+        # it, master JSON ingestion lacks ridge_gap per model and all_models
+        # _master.json's conjecture_1_verdict is unreliable. Model card must
+        # show incomplete until Q0046 is present and has per-condition data
+        # (scanner.py enforces the per-condition completeness gate).
+        _REQUIRED_ANALYSIS_RUNS = {46}
         conditions_status = {}
         all_done = True
         n_conditions = 0
@@ -1217,12 +1321,16 @@ def all_temps_complete_ep():
             status = sh._scan_runs(paths, s.get('trials',100))
             done_runs = {r for r in _GEN_RUNS if status.get(r) == 'done'}
             missing = _GEN_RUNS - done_runs
-            cond_done = len(missing) == 0
+            # v0.79.6.1: also require mandatory analysis runs done
+            analysis_done = {r for r in _REQUIRED_ANALYSIS_RUNS if status.get(r) == 'done'}
+            analysis_missing = _REQUIRED_ANALYSIS_RUNS - analysis_done
+            cond_done = (len(missing) == 0 and len(analysis_missing) == 0)
             conditions_status[cond] = {
                 "done": cond_done,
                 "n_done": len(done_runs),
                 "n_total": len(_GEN_RUNS),
                 "missing": sorted(missing) if missing else [],
+                "analysis_missing": sorted(analysis_missing) if analysis_missing else [],
             }
             if not cond_done:
                 all_done = False
@@ -1299,12 +1407,12 @@ def models_collected_ep():
     if not isinstance(_active, list) or not _active:
         _active = _STANDARD
     _DATA_CSVS = {k: v for k, v in RUN_CSV.items() if v is not None}
-    # v0.79.4.9: post-renumber. Pooled = {50, 51}, cross-model = {52, 53, 54},
+    # v0.79.4.15: post-renumber. Pooled = {50, 51}, cross-model = {52, 53, 54},
     # output = {55, 56}. Naming reflects execution-order positions.
     from cartography import DualKeyRunSet as _DKRSet
     _POOLED_RUNS = _DKRSet({50, 51})
     _CROSS_MODEL_RUNS = _DKRSet({52, 53, 54})
-    _OUTPUT_RUNS = _DKRSet({55, 56})
+    _OUTPUT_RUNS = _DKRSet({55, 56, 57, 58, 59})  # v0.81.1.0: 0058 = apparatus, 0059 = paper assembly. Cross-model output runs all excluded from per-temp analysis count.
     _PER_TEMP_ANA = {k: v for k, v in ANALYSIS_JSON.items()
                      if k not in _POOLED_RUNS
                      and k not in _CROSS_MODEL_RUNS
@@ -1333,7 +1441,7 @@ def models_collected_ep():
                             _disk_temps.add(0.0)
                         elif d.startswith('temp_'):
                             try: _disk_temps.add(float(d[5:]))
-                            except: pass
+                            except ValueError: pass  # v0.83.4: malformed temp_X dir name (disk_temps)
                     _show_temps = sorted(set(_active) | _disk_temps)
                     for temp in _show_temps:
                         paths = get_paths(family, size, variant, temp,
@@ -1457,17 +1565,18 @@ def temp_grid_ep():
             status = scan_runs(paths, n_trials)
             ts = f"{temp:.1f}"
             for run_num, st in status.items():
-                rn = str(run_num)
+                # v0.79.4.15: normalize key to plain int-string to match JS
+                # consumer, which calls _tempGrid[String(n)] with n=1..56.
+                # scan_runs may yield 4-digit string keys post-renumber.
+                try:
+                    rn = str(int(run_num))
+                except (ValueError, TypeError):
+                    rn = str(run_num)
                 if rn not in grid:
                     grid[rn] = {}
                 grid[rn][ts] = st
-            # DEBUG — remove after fixing Run 0019 issue
-            if 19 in status:  # v0.79.4.0: old R53 random patching → new 19
-                _debug.append(f"T={temp} Run53={status[53]}")
-            else:
-                csv_dir = paths.get('csv', '')
-                csv53 = os.path.join(csv_dir, 'R0019_random_patching.csv')
-                _debug.append(f"T={temp} Run53=NOT_IN_STATUS csv_exists={os.path.exists(csv53)}")
+            # v0.79.4.15: scan_runs may yield 4-digit or int keys depending
+            # on DualKey storage form. Normalize already handled above.
     except Exception as e:
         _debug.append(f"CRASHED: {e}")
     return jsonify({"grid": grid, "temps": temps, "_debug": _debug})
@@ -1545,7 +1654,7 @@ def _csv_max_mtime(csv_dir):
             try:
                 mt = os.path.getmtime(os.path.join(csv_dir, f))
                 if mt > mx: mx = mt
-            except: pass
+            except OSError: pass  # v0.83.4: getmtime can fail on stale FS handles
     return mx
 
 @app.route("/hyp_live")
@@ -1640,7 +1749,7 @@ def resume_ep():
 
 @app.route("/scan")
 def scan_ep():
-    # v0.79.4.9: accept optional query params to scan a specific model/temp
+    # v0.79.4.15: accept optional query params to scan a specific model/temp
     # without mutating the session. Used by navToAllModels in the dashboard
     # to overlay per-model status into the All-Models aggregate grid.
     fam = request.args.get('family')
@@ -1661,13 +1770,19 @@ def scan_ep():
             paths = get_paths(fam, _sz_in, var, _t, create_dirs=False)
             import start_here as sh
             status = sh._scan_runs(paths, s.get('trials', 100))
-            # Return raw dict to match the shape of the session-scoped
-            # default path — consumers index by run_num directly.
-            return jsonify({str(k): v for k, v in status.items()})
+            # v0.79.4.15: normalize keys to plain int-string to match JS
+            # paintGrid consumer (ALL.forEach calls _tempGrid[String(n)] w/ int n).
+            def _norm_k(k):
+                try: return str(int(k))
+                except (ValueError, TypeError): return str(k)
+            return jsonify({_norm_k(k): v for k, v in status.items()})
         except Exception as e:
             return jsonify({'error': str(e)})
     # Default: session-scoped scan (existing behaviour).
-    return jsonify({str(k):v for k,v in _scan().items()})
+    def _norm_k(k):
+        try: return str(int(k))
+        except (ValueError, TypeError): return str(k)
+    return jsonify({_norm_k(k): v for k, v in _scan().items()})
 
 @app.route("/scan_debug")
 def scan_debug_ep():
@@ -1749,10 +1864,10 @@ def run_detail_ep():
             import glob as _g
             abl_trials = {}
             if os.path.exists(fpath):
-                from orchestration_core import canonical_read as _cr19
-                cols19 = _cr19(fpath, ('run_mode', 'trial', 'priming'))
-                for i, t in enumerate(cols19.get('trial', [])):
-                    if cols19.get('priming') and cols19['priming'][i] == '1':
+                from orchestration_core import canonical_read as _cr01
+                cols01 = _cr01(fpath, ('run_mode', 'trial', 'priming'))
+                for i, t in enumerate(cols01.get('trial', [])):
+                    if cols01.get('priming') and cols01['priming'][i] == '1':
                         continue
                     try:
                         tn = int(t)
@@ -1764,7 +1879,7 @@ def run_detail_ep():
             # v42.1.11: base/instruct are sibling variant dirs.
             # Derive from hid_dir: .../abliterated/cond/hidden_states
             #                    → .../base/cond/hidden_states
-            def _r19_sibling(base_hid, variant):
+            def _r01_sibling(base_hid, variant):
                 try:
                     _cond    = os.path.dirname(base_hid)
                     _size    = os.path.dirname(os.path.dirname(_cond))
@@ -1774,23 +1889,23 @@ def run_detail_ep():
                     return os.path.join(base_hid, variant)  # v42.1.10 fallback
 
             base_trials = set()
-            for _bd in [_r19_sibling(hid_dir, 'base'), os.path.join(hid_dir, 'base')]:
-                for f in _g.glob(os.path.join(_bd, 'R19_*_base_trial*_turn01.npy')):
+            for _bd in [_r01_sibling(hid_dir, 'base'), os.path.join(hid_dir, 'base')]:
+                for f in _g.glob(os.path.join(_bd, 'R0001_*_base_trial*_turn01.npy')):
                     try: base_trials.add(int(os.path.basename(f).split('_trial')[1].split('_')[0]))
                     except Exception: pass
             n_base = len(base_trials)
 
             inst_trials = set()
-            for _id in [_r19_sibling(hid_dir, 'instruct'), os.path.join(hid_dir, 'instruct')]:
-                for f in _g.glob(os.path.join(_id, 'R19_*_instruct_trial*_turn01.npy')):
+            for _id in [_r01_sibling(hid_dir, 'instruct'), os.path.join(hid_dir, 'instruct')]:
+                for f in _g.glob(os.path.join(_id, 'R0001_*_instruct_trial*_turn01.npy')):
                     try: inst_trials.add(int(os.path.basename(f).split('_trial')[1].split('_')[0]))
                     except Exception: pass
             n_inst = len(inst_trials)
 
             # BUG-PASS4-SENTINEL: accept ct_global_mean.npy as fallback when
             # sentinel absent — covers vector passes run on pre-v42.1.2 code.
-            pass4 = (len(_g.glob(os.path.join(hid_dir, 'R19_*_pass4_ok.stamp'))) > 0 or
-                     len(_g.glob(os.path.join(hid_dir, 'R19_*_ct_global_mean.npy'))) > 0)
+            pass4 = (len(_g.glob(os.path.join(hid_dir, 'R0001_*_pass4_ok.stamp'))) > 0 or
+                     len(_g.glob(os.path.join(hid_dir, 'R0001_*_ct_global_mean.npy'))) > 0)
 
             all_done = (n_abl >= n_trials and n_base >= n_trials
                         and n_inst >= n_trials and pass4)
@@ -1798,8 +1913,8 @@ def run_detail_ep():
             st19 = 'done' if all_done else 'missing' if nothing else 'partial'
             # Diagnostic: include exact paths scanned so misroutes show up
             # in the run detail popup without reading source.
-            _base_scan_dir = _r19_sibling(hid_dir, 'base')
-            _inst_scan_dir = _r19_sibling(hid_dir, 'instruct')
+            _base_scan_dir = _r01_sibling(hid_dir, 'base')
+            _inst_scan_dir = _r01_sibling(hid_dir, 'instruct')
             return jsonify({
                 'run': run_num, 'desc': desc, 'status': st19,
                 'n_trials': n_trials * 3,
@@ -1944,7 +2059,12 @@ def run_detail_ep():
                         _PR  = _hdr.index('priming')              if 'priming'               in _hdr else -1
                         for _r in _rows[1:]:
                             _rlen=len(_r)
-                            if _RM>=0 and _RM<_rlen and _r[_RM]!='26': continue
+                            # v0.80.0.44: run_mode now '0003' post-renumber.
+                            # Accept both new ('0003') and legacy ('26') values
+                            # for migration tolerance. Pre-fix this row filter
+                            # rejected every row → cell_max empty → popup
+                            # showed nothing complete despite CSV having data.
+                            if _RM>=0 and _RM<_rlen and _r[_RM] not in ('0003','26'): continue
                             if _PR>=0 and _PR<_rlen and _r[_PR]=='1':  continue
                             if any(i<0 or i>=_rlen for i in [_TI,_CO,_TE]): continue
                             try:
@@ -2013,10 +2133,11 @@ def run_detail_ep():
                     # Global trial values (R20: 0-499) would be cut off by
                     # the old 0<=trial<n_trials filter, showing only condition 0.
                     cond_trials = {cv: set() for cv in _cond_set}
+                    from cartography import run_mode_matches as _rmm_mc2  # v0.79.5.2: dual-accept
                     for _r2 in _rmc2[1:]:
                         _rlen2=len(_r2)
                         if _prmc2<_rlen2 and _r2[_prmc2]=='1': continue
-                        if _rmmc2<_rlen2 and _r2[_rmmc2]!=str(run_num): continue
+                        if _rmmc2<_rlen2 and not _rmm_mc2(_r2[_rmmc2], run_num): continue
                         if _thmc2<0 or _thmc2>=_rlen2: continue
                         try: _tn2=int(float(_r2[_thmc2]))
                         except (ValueError,TypeError): continue
@@ -2038,7 +2159,7 @@ def run_detail_ep():
             all_mc_done = n_done == n_conds
             any_mc_started = any(c['n'] > 0 for c in mc_status)
             _mc_st = 'done' if all_mc_done else 'missing' if not any_mc_started else 'partial'
-            # v0.79.4.9: MC-run ET short-circuit removed. Source runs
+            # v0.79.4.15: MC-run ET short-circuit removed. Source runs
             # (including Run 0002) report plain done/partial/missing based
             # on CSV only. ET state for all sources aggregated into Run 0016.
             return jsonify({'run': run_num, 'desc': desc, 'status': _mc_st,
@@ -2060,7 +2181,7 @@ def run_detail_ep():
         from orchestration_core import canonical_read as _cr_std
         cols = _cr_std(fpath, ('run_mode', 'trial', 'priming'))
         trial_turns = {}
-        # v0.79.4.9: dual-accept canonical 4-digit and legacy integer-string
+        # v0.79.4.15: dual-accept canonical 4-digit and legacy integer-string
         from cartography import run_mode_matches as _rmm_chk_ep
         for i, t in enumerate(cols.get('trial', [])):
             if cols.get('priming') and cols['priming'][i] == '1':
@@ -2087,7 +2208,7 @@ def run_detail_ep():
         missing    = sorted(all_trials - set(trial_turns.keys()))
         n_complete = sum(1 for v in trial_turns.values() if v >= expected)
         csv_done   = n_complete >= n_trials
-        # v0.79.4.9: per-source ET short-circuit removed. Source runs
+        # v0.79.4.15: per-source ET short-circuit removed. Source runs
         # (1-9, 15-17, 20) report plain done/partial/missing based on CSV.
         # ET coverage now aggregated into Run 0016 (E_t recovery meta-run).
         status = 'done' if csv_done else 'partial' if trial_turns else 'missing'
@@ -2361,7 +2482,14 @@ def prereq_check_ep():
         return jsonify({"ok": False, "error": str(e)}), 500
 
 @app.route("/descs")
-def descs_ep(): return jsonify({str(k):v for k,v in _descs().items()})
+def descs_ep():
+    # v0.79.4.15: normalize keys to plain int-string — RUN_MAP canonical
+    # storage is 4-digit strings post-renumber, but JS reads descs[String(n)]
+    # with integer n from ALL array (unpadded).
+    def _n(k):
+        try: return str(int(k))
+        except (ValueError, TypeError): return str(k)
+    return jsonify({_n(k): v for k, v in _descs().items()})
 
 @app.route("/whatnext")
 def wn_ep(): return jsonify({"text":_whatnext()})
@@ -2386,6 +2514,141 @@ def rawlog_ep():
     except Exception as e:
         return jsonify({"lines": [f"(rawlog error: {e})"], "size": 0})
     return jsonify({"lines": [], "size": 0})
+
+@app.route("/scan_cross_model")
+def scan_cross_model_ep():
+    """v0.80.0.44: cross-model / paper card data. Returns the five
+    cross-model + paper-level runs with per-run contributor lists,
+    model discovery, and calibration status for the banner."""
+    try:
+        from scanner import scan_cross_model as _scm
+        return jsonify(_scm())
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+
+@app.route("/run_progress")
+def run_progress_ep():
+    """v0.80.0.44: parse the live .iota_flask.log tail for run progress.
+
+    Returns the most recent phase header (Phase A/B/C) and the most
+    recent [N/M] cell counter from any calibration script's progress
+    line. Front-end displays this on the 0056 row while a run is
+    active, so the user can see "channel_marginal 14/24 (58%)"
+    without watching the Detailed log.
+
+    Output schema:
+      {
+        active: bool,            # is anything actively running?
+        phase: 'A' | 'B' | 'C' | None,
+        script: str | None,      # e.g. 'channel_marginal'
+        n_done: int | None,
+        n_total: int | None,
+        last_line: str | None,   # for debug; the line we parsed
+      }
+    """
+    import re
+    out = {'active': False, 'phase': None, 'script': None,
+           'n_done': None, 'n_total': None, 'last_line': None}
+    log_path = os.path.join(ROOT, '.iota_flask.log')
+    if not os.path.exists(log_path):
+        return jsonify(out)
+    try:
+        # Read last ~32KB of the log — covers ~500 lines on average,
+        # plenty to find the current phase + most recent N/M counter.
+        size = os.path.getsize(log_path)
+        with open(log_path, 'rb') as f:
+            if size > 32768:
+                f.seek(size - 32768)
+                f.read(1)  # discard partial first line
+            tail = f.read().decode('utf-8', errors='replace')
+        lines = tail.split('\n')
+        # Find most recent Phase header
+        phase_re = re.compile(r'Run \d{4} \u2014 Phase ([ABC])')
+        # Find most recent [N/M] counter from calibration scripts
+        # Examples seen in logs:
+        #   "[1/24] gemma/2b_4bit/abliterated/deterministic ..."
+        #   "[ 5/45] nl_S=0.00 ..."
+        #   "[60/60] SKIP (cached) ..."
+        nm_re = re.compile(r'^\s*\[\s*(\d+)\s*/\s*(\d+)\s*\]')
+        # Track which calibration script is currently running so we can
+        # label the progress line. Most recent "[name] running:" wins.
+        run_re = re.compile(r'^\[([\w_]+)\]\s+running:')
+        # Has the run actually completed?
+        end_re = re.compile(r'Run \d{4} complete \(exit \d+\)')
+
+        last_phase = None
+        last_nm = None
+        last_script = None
+        run_completed_after_last_phase = False
+
+        for line in lines:
+            m = phase_re.search(line)
+            if m:
+                last_phase = m.group(1)
+                run_completed_after_last_phase = False
+                last_nm = None  # reset cell counter on phase change
+                continue
+            m = run_re.match(line)
+            if m:
+                last_script = m.group(1)
+                last_nm = None
+                continue
+            m = nm_re.match(line)
+            if m:
+                last_nm = (int(m.group(1)), int(m.group(2)), line.rstrip())
+                continue
+            if end_re.search(line):
+                run_completed_after_last_phase = True
+
+        if last_phase is not None and not run_completed_after_last_phase:
+            out['active'] = True
+            out['phase'] = last_phase
+            if last_script:
+                out['script'] = last_script
+            if last_nm:
+                out['n_done'], out['n_total'], out['last_line'] = last_nm
+    except Exception as e:
+        out['error'] = str(e)
+    return jsonify(out)
+
+
+@app.route("/calibration_status")
+def calibration_status_ep():
+    """v0.80.0.44: methodology calibration status for the 4 paper artifacts.
+    Returned to the dashboard so the 0056 paper cell can display a warning
+    banner when calibration is missing or stale."""
+    try:
+        import export_stats as _es
+        st = _es.methodology_calibration_status()
+        # Surface a human-readable banner string the frontend can render.
+        missing = [k for k, v in st.items()
+                   if not k.startswith('_') and v == 'missing']
+        stale   = [k for k, v in st.items()
+                   if not k.startswith('_') and v == 'stale']
+        parts = []
+        if missing:
+            parts.append(f"missing: {', '.join(missing)}")
+        if stale:
+            parts.append(f"stale: {', '.join(stale)}")
+        banner = ''
+        if parts:
+            banner = ('Run 0056 results are not valid for publication until '
+                      'methodology calibration completes. ' + ' | '.join(parts) +
+                      '. Run: v5_synthetic_calibration.py, ridge_bias_toy.py, '
+                      'toy_nonlinearity_asymmetry.py, run_channel_marginal.py.')
+        return jsonify({
+            'per_script':  {k: v for k, v in st.items() if not k.startswith('_')},
+            'all_fresh':   bool(st.get('_all_fresh')),
+            'any_missing': bool(st.get('_any_missing')),
+            'any_stale':   bool(st.get('_any_stale')),
+            'banner':      banner,
+        })
+    except Exception as e:
+        return jsonify({'error': str(e), 'all_fresh': False,
+                        'any_missing': True, 'any_stale': False,
+                        'banner': f'calibration_status error: {e}'})
+
 
 @app.route("/")
 def index(): return Response(DASH, mimetype='text/html',
@@ -2539,7 +2802,7 @@ body{background:var(--bg);color:var(--t);font-family:var(--fn);font-size:12px;
 /* ── Panel headers ── */
 .panel-hdr{display:flex;align-items:center;justify-content:space-between;
   padding:5px 10px;background:var(--bg2);border-bottom:1px solid var(--b1);flex-shrink:0}
-.panel-title{font-size:9px;letter-spacing:.14em;color:var(--t3);text-transform:uppercase}
+.panel-title{font-size:9px;letter-spacing:.14em;color:var(--ac);text-transform:uppercase}
 .panel-hdr-right{display:flex;align-items:center;gap:5px}
 
 /* ── Grid panel ── */
@@ -2950,13 +3213,13 @@ canvas.spk{width:100%;height:60px;display:block}
   </div>
 </div>
 
-<!-- Run 0056: Cross-model paper assembly — model selection (v0.75.2.2) -->
+<!-- Run 0059: Cross-model paper assembly — model selection (v0.75.2.2; renumbered 56→58 in v0.80.0.44, then 58→59 in v0.80.0.51) -->
 <div id="r55pop" role="dialog" aria-label="Paper Assembly — Model Selection" style="display:none;
   position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;
   background:var(--bg2);border:2px solid var(--b1);border-radius:8px;padding:0;
   min-width:340px;max-width:500px;box-shadow:0 8px 32px rgba(0,0,0,.5)">
   <div class="rdp-hd">
-    <span class="rdp-title">Run 0056 — Paper Assembly</span>
+    <span class="rdp-title">Run 0059 — Paper Assembly</span>
     <button class="rdp-close" onclick="closeR55Pop()" title="Close">&times;</button>
   </div>
   <div class="rdp-body" id="r55Body" style="padding:8px 12px">
@@ -2978,7 +3241,7 @@ canvas.spk{width:100%;height:60px;display:block}
 <!-- Toolbar (fixed) -->
 <div id="tb" role="toolbar" aria-label="Run controls">
   <div class="tb-left">
-    <div class="logo">IOTA<span>v0.79.4.9</span></div>
+    <div class="logo">IOTA<span>v1.0.0</span></div>
     <div class="tb-status">
       <div class="dot" id="dot" title="Green = run active · Grey = idle"></div>
       <span id="stx" title="Current run status">idle</span>
@@ -3066,19 +3329,47 @@ canvas.spk{width:100%;height:60px;display:block}
   <!-- Left column: grid (top) + metrics (bottom) -->
   <div id="left-col">
 
-    <!-- Grid panel -->
-    <div id="panel-grid">
-      <div class="panel-hdr">
-        <span class="panel-title">Runs &#x2193; run in order</span>
-        <div class="panel-hdr-right">
-          <span id="gsn" style="font-size:9px;color:var(--t2)">scanning&#8230;</span>
-        </div>
+    <!-- Cross-model / Paper card (v0.80.0.44: panel-hdr style for teal title + underline) -->
+    <div id="panel-xmcard" style="
+      background:var(--bg2); border:1px solid var(--bd);
+      border-radius:6px;
+      font-size:11px; overflow:hidden; flex-shrink:0;
+      display:flex; flex-direction:column;
+      min-height:38px; max-height:80vh;">
+      <div id="xmHeader" class="panel-hdr">
+        <span style="display:flex;align-items:center;gap:6px">
+          <span id="xmChevron" onclick="toggleXmCard()" style="font-size:10px;
+                display:inline-block;color:var(--t3);cursor:pointer;
+                padding:2px 4px;
+                transition:transform 0.15s">&#9660;</span>
+          <span class="panel-title">Cross-model / Paper</span>
+          <span id="xmCalBanner" style="
+            font-size:9px; color:var(--wa); font-weight:500; display:none;
+            text-transform:none; letter-spacing:0; margin-left:6px"></span>
+        </span>
+        <button class="expand-btn" onclick="togXmExpand()"
+                title="Expand cross-model panel">&#x26F6;</button>
       </div>
+      <div id="xmRows" style="display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;
+                              padding:8px 10px;overflow:auto">
+        <div style="color:var(--t2);font-size:10px">loading&#8230;</div>
+      </div>
+    </div>
+
+    <!-- Cross-model splitter (v0.80.0.44) -->
+    <div id="xmspl" title="Drag to resize cross-model card"
+         style="height:4px;background:var(--b1);cursor:row-resize;flex-shrink:0"
+         aria-hidden="true"></div>
+
+    <!-- Grid panel (v0.80.0.44: header bar dropped, chevron+expand moved to breadcrumb) -->
+    <div id="panel-grid">
       <div id="grid-scroll">
-        <div class="run-order-note" id="gridSummary"></div>
-        <!-- Navigation breadcrumb -->
-        <div class="nav-bc" id="navBc">
-          <span class="bc-link" id="bcModels" onclick="navTo(1)">Models</span>
+        <!-- Navigation breadcrumb (v0.80.0.44: hosts the panel chevron + expand) -->
+        <div class="nav-bc" id="navBc" style="display:flex;align-items:center;gap:8px">
+          <span class="pnl-chev" data-target="panel-grid" style="cursor:pointer;
+            font-size:10px;color:var(--t3);user-select:none;
+            display:inline-block;transition:transform 0.15s">&#9660;</span>
+          <span class="bc-link" id="bcModels" onclick="navTo(1)" style="color:var(--ac)">Models</span>
           <span class="bc-sep" id="bcSep1" style="display:none"> &#x203a; </span>
           <select class="bc-select" id="bcTempSel" style="display:none" onchange="onBcTempChange()">
             <option value="all">All Temps</option>
@@ -3089,6 +3380,9 @@ canvas.spk{width:100%;height:60px;display:block}
             <option value="0.8">T=0.8</option>
             <option value="1.0">T=1.0</option>
           </select>
+          <span style="flex:1"></span>
+          <button class="expand-btn" onclick="togGridExpand()"
+                  title="Expand grid panel">&#x26F6;</button>
         </div>
         <!-- Layer 1: Model Select -->
         <div id="lyr1" class="lyr on">
@@ -3130,13 +3424,15 @@ canvas.spk{width:100%;height:60px;display:block}
         <div id="lyr2" class="lyr">
           <div class="lyr-loading" id="lyr2Loading" style="display:none"><div class="ld-spin"></div><div class="ld-text">Loading temperature data...</div></div>
           <div class="preset-bar" role="group" aria-label="Run presets">
-            <button class="pr" onclick="selP('1-55',this)" title="All runs across every phase">All</button>
-            <button class="pr" onclick="selP('1-24,26,28-31,35-39,41-44,53',this)" title="Data Collection — GPU generation runs, temp-indep + Phase B + Phase D + Phase EFC">Collection</button>
-            <button class="pr" onclick="selP('25,27,32-34,45,46,49,56',this)" title="Per-Temperature Analysis — POOL_DIM calibration, E+C+R, permutation, per-condition R, MLP validation">Analysis</button>
-            <button class="pr" onclick="selP('40,47',this)" title="Pooled Analysis — cross-temperature within one model">Pooled</button>
-            <button class="pr" onclick="selP('50,51,52',this)" title="Cross-Model Analysis — pairwise R comparison, condition concordance, cross-model summary">Cross-Model</button>
-            <button class="pr" onclick="selP('54,55',this)" title="Paper Output — stats report, master JSONs, paper assembly">Paper</button>
-            <button class="pr et-pr" onclick="openEtPop()" title="E_t Recovery &#x2014; run base-model pass to extract E_t embeddings for Runs 0004&#x2013;0015">E&#x2094; Recovery</button>
+            <!-- v0.80.0.44: Independents button removed; Analysis preset
+                 now covers 41-49 (chain 41-46 + independents 47-49).
+                 v0.80.0.44: presets reconciled against post-renumber RUN_MAP.
+                 Cross-Model (52-54) + Paper (55-56) removed from this bar —
+                 they have dedicated buttons on the cross-model card at top. -->
+            <button class="pr" onclick="selP('1-51',this)" title="All per-temp runs (collection 1-40 + per-temp analysis 41-49 + pooled 50-51)">All</button>
+            <button class="pr" onclick="selP('1-40',this)" title="Data Collection — GPU generation runs (Phase A/B/G/D/EFC, runs 1-40)">Collection</button>
+            <button class="pr" onclick="selP('41-49',this)" title="Per-Temperature Analysis — POOL_DIM → E+C+R → partition → R fractions, plus Granger A/B + Baseline swap (runs 41-49)">Analysis</button>
+            <button class="pr" onclick="selP('50,51',this)" title="Pooled Analysis — cross-temperature within one model (runs 50-51)">Pooled</button>
           </div>
           <div class="phase-grid" id="phaseGrid" role="group" aria-label="Individual run selection"></div>
           <div class="legend" aria-label="Run status legend">
@@ -3177,8 +3473,13 @@ canvas.spk{width:100%;height:60px;display:block}
     <!-- Metrics panel -->
     <div id="panel-metrics">
       <div class="panel-hdr" style="display:flex;justify-content:space-between;align-items:center">
-        <span class="panel-title">Live
-          <span id="mRn" style="color:var(--t2);font-size:9px;letter-spacing:0;text-transform:none;margin-left:5px">&#8212;</span>
+        <span style="display:flex;align-items:center">
+          <span class="pnl-chev" data-target="panel-metrics" style="cursor:pointer;
+            font-size:10px;color:var(--t2);user-select:none;margin-right:6px;
+            display:inline-block;transition:transform 0.15s">&#9660;</span>
+          <span class="panel-title">Live
+            <span id="mRn" style="color:var(--t2);font-size:9px;letter-spacing:0;text-transform:none;margin-left:5px">&#8212;</span>
+          </span>
         </span>
         <button class="expand-btn" id="metricsExpand" onclick="togMetricsExpand()" title="Expand metrics over grid">&#x26F6;</button>
       </div>
@@ -3220,6 +3521,9 @@ canvas.spk{width:100%;height:60px;display:block}
   <!-- Right panel: tabbed -->
   <div id="panel-right">
     <div class="tab-bar" role="tablist" aria-label="Dashboard panels">
+      <span class="pnl-chev" data-target="panel-right" style="cursor:pointer;
+        font-size:10px;color:var(--t2);user-select:none;padding:0 8px;
+        display:inline-flex;align-items:center;transition:transform 0.15s">&#9660;</span>
       <button class="tab on" id="tC" role="tab" aria-selected="true" aria-controls="pC" onclick="sw('C')">Console</button>
       <button class="tab" id="tH" role="tab" aria-selected="false" aria-controls="pH" onclick="sw('H')">Hypotheses</button>
       <button class="tab" id="tN" role="tab" aria-selected="false" aria-controls="pN" onclick="sw('N')">Settings</button>
@@ -3227,8 +3531,20 @@ canvas.spk{width:100%;height:60px;display:block}
 
     <!-- Console pane -->
     <div class="pane on" id="pC" role="tabpanel" aria-labelledby="tC">
-      <div style="display:flex;justify-content:center;padding:2px 6px 2px 0;flex-shrink:0;
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 6px 2px 6px;flex-shrink:0;
         background:var(--bg2);border-bottom:1px solid var(--b1)">
+        <!-- v0.79.5.18: Simple/Detailed console view toggle. Simple reads .iota_log.jsonl
+             (curated ui.* output). Detailed reads .iota_flask.log (raw subprocess stdout —
+             everything, including plain print() debug output, tracebacks, [DISP] prints
+             that don't route through ui.msg). One-time infrastructure fix: any future
+             plain-print debug output is automatically visible in Detailed without
+             re-routing every site through ui.*. -->
+        <div style="display:flex;gap:4px">
+          <button id="conModeSimple" class="btn on" style="font-size:9px;padding:2px 8px" onclick="setConMode('simple')"
+            title="Curated ui.* output only (.iota_log.jsonl)">Simple</button>
+          <button id="conModeDetailed" class="btn" style="font-size:9px;padding:2px 8px" onclick="setConMode('detailed')"
+            title="Raw subprocess stdout — everything (.iota_flask.log)">Detailed</button>
+        </div>
         <button class="btn" style="font-size:9px;padding:2px 8px" onclick="clrC()"
           title="Clear console (Ctrl+L)" aria-label="Clear console">Clear</button>
       </div>
@@ -3408,7 +3724,7 @@ let es;
 // v0.77.1.3: updated to match start_here.EXECUTION_ORDER exactly.
 // Adds Run 0046 (after Run 0044) and cross-model runs 0052,0053,0054,0056 that were
 // missing. Primarily used for the hypothesis launcher queue ordering.
-// v0.79.4.9: renumber — EXEC_ORDER is now simply 1..56 (IDs = positions).
+// v0.79.4.15: renumber — EXEC_ORDER is now simply 1..56 (IDs = positions).
 const EXEC_ORDER=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
   16,
   17,18,19,
@@ -3420,17 +3736,26 @@ const EXEC_ORDER=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
 
 // Phase groupings for the grid — new-ID phase boundaries
 const PHASES=[
+  // v0.80.0.44: Cross-Model (52-54) + Paper (55-56) entries removed
+  // entirely. They have their own card at the top of the dashboard
+  // (the cross-model / paper card) and shouldn't appear in the
+  // per-temp / all-temps grid. Including them here rendered both
+  // the section headers AND the cell tiles in a context where they
+  // can't actually be run per-temperature.
+  // v0.79.5.18: full run list including Run 16. The 0.79.5.11–0.79.5.12
+  // attempts to hide Run 16 as a selection button were a misread of
+  // Kevin's intent — he wanted to remove the yellow "E_t Recovery"
+  // preset button above the grid, NOT strip Run 16 from the grid cells.
+  // Grid cells for all runs 1-49 + 50-51 are fully clickable/selectable.
   {label:'Data Collection',runs:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
     16,
     17,18,19,
     20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]},
   {label:'Analysis',runs:[41,42,43,44,45,46,47,48,49]},
   {label:'Pooled',runs:[50,51]},
-  {label:'Cross-Model',runs:[52,53,54]},
-  {label:'Paper',runs:[55,56]},
 ];
 const ALL=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,
-           25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56];
+           25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51];
 
 const H_PHASES={
   // v0.77.1.3: UI labels aligned with HYPOTHESES registry in export_stats.py.
@@ -3634,12 +3959,20 @@ function applyS(s){
     updateLogRate(run);updateScanRate(run);
     if(run){
       // Timer is server-driven — no client-side accumulation needed
+      // v0.80.0.44: start the 0056 progress poller. It self-clears
+      // on inactive state, so safe to run for any run number — only
+      // surfaces during 0056's Phase A/B/C output.
+      if(typeof startXmProgressPoll==='function')startXmProgressPoll();
     } else {
       stopRawlog();setTimeout(doScan,500);_stopRdpPoll();
       // Refresh hypothesis outcomes after run completes
       setTimeout(()=>{_hypLoaded=false;loadHyp();},2000);
       // Auto-fire is handled server-side; just show toast if there were queued runs
       if(s.queued_runs){toast('Starting queued runs: '+s.queued_runs,'ok');}
+      // v0.80.0.44: stop progress poll on run end. Last poll already
+      // cleared the span via active=false branch, but stop the
+      // interval too.
+      if(typeof stopXmProgressPoll==='function')stopXmProgressPoll();
     }
     if(run&&_rdpRun!=null)_startRdpPoll();
     _prevRunning=run;
@@ -3668,11 +4001,29 @@ function colorMv(id,v,hi,lo,vlo){
 
 // ── Console — scroll-to-load history ─────────────────────────────────────────
 async function pollLog(){
+  // v0.79.5.19 [DIAG-CON]: tick visibility + response content. Reveals
+  // whether pollLog is firing at all and whether responses carry lines.
+  console.log('[DIAG-CON pollLog] tick _conMode=',_conMode,'LLN=',LLN);
   try{const r=await fetch('/log?since='+LLN);const d=await r.json();
-  const ls=d.lines||[];if(ls.length>0){ls.forEach(addL);}
-  if(d.total!=null)LLN=d.total;}catch(e){}
+  const ls=d.lines||[];
+  console.log('[DIAG-CON pollLog] resp total=',d.total,'lines=',ls.length,'_conMode=',_conMode);
+  if(ls.length>0){ls.forEach(addL);}
+  if(d.total!=null)LLN=d.total;}catch(e){console.log('[DIAG-CON pollLog] error',e);}
 }
-function updateLogRate(r){clearInterval(logInterval);if(r){logInterval=setInterval(pollLog,2000);}}
+function updateLogRate(r){
+  // v0.80.0.44: when run ends, keep polling at idle rate (10s) instead
+  // of nulling the interval. Previously updateLogRate(false) set
+  // logInterval=null which left Simple panel completely silent until
+  // a tab-switch or mode-toggle restarted it. The user reported having
+  // to visit Detailed and switch back just to see Simple update.
+  // Idle-rate polling continues to catch any new lines the server
+  // produces (manifest stamps, post-run summaries, etc.) without
+  // needing manual intervention.
+  console.log('[DIAG-CON updateLogRate] r=',r,'prevLogInterval=',!!logInterval);
+  clearInterval(logInterval);
+  logInterval=setInterval(pollLog, r?2000:10000);
+  console.log('[DIAG-CON updateLogRate] polling resumed at',(r?2:10)+'s');
+}
 
 // Load older history when user scrolls near the top
 async function _loadHistory(){
@@ -3688,16 +4039,14 @@ async function _loadHistory(){
     LOG_START=start;
     if(lines.length>0){
       const con=document.getElementById('con');
-      const prevH=con.scrollHeight;
-      // Prepend lines in order
+      const prevH=con?con.scrollHeight:0;
       const frag=document.createDocumentFragment();
       lines.forEach(l=>{
         const el=_makeLogEl(l);
         if(el)frag.appendChild(el);
       });
-      con.insertBefore(frag,con.firstChild);
-      // Restore scroll position so view doesn't jump
-      con.scrollTop=con.scrollTop+(con.scrollHeight-prevH);
+      if(con)con.insertBefore(frag,con.firstChild);
+      if(con)con.scrollTop=con.scrollTop+(con.scrollHeight-prevH);
     }
     if(ind){
       if(LOG_START<=0){ind.classList.remove('on');}
@@ -3734,6 +4083,7 @@ document.addEventListener('visibilitychange',()=>{
 
 function _makeLogEl(l){
   if(!l)return null;
+  if(_conMode==='detailed')return null;   // detailed poll owns #con
   if(_sevFilter&&l.kind!==_sevFilter)return null;
   if(_searchStr&&!(l.text||'').toLowerCase().includes(_searchStr))return null;
   const d=document.createElement('div');
@@ -3747,12 +4097,22 @@ function _makeLogEl(l){
 }
 function addL(l){
   if(!l)return;
-  if(_sevFilter&&l.kind!==_sevFilter)return;
-  if(_searchStr&&!(l.text||'').toLowerCase().includes(_searchStr))return;
-  const con=document.getElementById('con');if(!con)return;
-  const d=_makeLogEl(l);if(!d)return;
-  con.appendChild(d);
-  if(AS){while(con.childNodes.length>1000)con.removeChild(con.firstChild);con.scrollTop=1e9;}
+  if(_conMode==='detailed')return;        // detailed poll owns #con
+  if(_sevFilter&&l.kind!==_sevFilter){console.log('[DIAG-CON addL] filtered by sevFilter=',_sevFilter);return;}
+  if(_searchStr&&!(l.text||'').toLowerCase().includes(_searchStr)){console.log('[DIAG-CON addL] filtered by searchStr=',_searchStr);return;}
+  const con=document.getElementById('con');
+  if(!con){console.log('[DIAG-CON addL] #con element not found');return;}
+  try{
+    const d=_makeLogEl(l);
+    if(!d){console.log('[DIAG-CON addL] _makeLogEl returned null for kind=',l&&l.kind);return;}
+    con.appendChild(d);
+    if(AS){while(con.childNodes.length>1000)con.removeChild(con.firstChild);con.scrollTop=1e9;}
+  }catch(err){
+    // v0.79.5.19 [DIAG-CON]: if render threw, initial tail-200 batch
+    // would abort silently inside _addLBatch — that's candidate (b) for
+    // the populate-after-toggle bug. Surface it.
+    console.log('[DIAG-CON addL] THREW',err,'on line',l);
+  }
 }
 function clrC(){
   var c=document.getElementById('con');if(c)c.innerHTML='';
@@ -3777,6 +4137,22 @@ function conRefresh(){
 }
 let _metricsExpanded=false;
 let _savedLh=null;
+let _gridExpanded=false;
+function togGridExpand(){
+  const grid=document.getElementById('panel-grid');
+  const hspl=document.getElementById('hspl');
+  const metrics=document.getElementById('panel-metrics');
+  _gridExpanded=!_gridExpanded;
+  if(_gridExpanded){
+    if(metrics)metrics.style.display='none';
+    if(hspl)hspl.style.display='none';
+    if(grid)grid.style.flex='1';
+  } else {
+    if(metrics)metrics.style.display='';
+    if(hspl)hspl.style.display='';
+    if(grid)grid.style.flex='';
+  }
+}
 function togMetricsExpand(){
   const btn=document.getElementById('metricsExpand');
   const grid=document.getElementById('panel-grid');
@@ -3833,8 +4209,109 @@ function _addLBatch(lines,onDone,CHUNK){
 }
 
 // ── Rawlog ────────────────────────────────────────────────────────────────────
+// v0.79.5.18: two modes now. startRawlog/_detailedPoll both read /rawlog,
+// but with different lifecycles. startRawlog is the legacy loading-phase
+// surface — fires when a run is loading and JSONL hasn't started yet, stops
+// as soon as JSONL produces lines. _detailedPoll is the new user-toggled
+// Detailed mode — runs continuously while _conMode==='detailed', ignores
+// JSONL activity, shows raw subprocess stdout tail.
 let _rawlogSize=0;
+let _conMode='simple';       // 'simple' | 'detailed'
+let _detailedSize=0;
+let _detailedInterval=null;
+
+function setConMode(mode){
+  if(_conMode===mode)return;
+  // v0.79.5.19 [DIAG-CON]: mode transition with LLN + polling state.
+  // Combined with pollLog/updateLogRate diag, reveals whether a Simple→
+  // Detailed→Simple bounce is traversing with polling still live.
+  console.log('[DIAG-CON setConMode] from=',_conMode,'to=',mode,'LLN=',LLN,'logIntervalActive=',!!logInterval);
+  _conMode=mode;
+  const bS=document.getElementById('conModeSimple');
+  const bD=document.getElementById('conModeDetailed');
+  if(bS)bS.classList.toggle('on',mode==='simple');
+  if(bD)bD.classList.toggle('on',mode==='detailed');
+  // v0.79.5.18: revert to single-container design. #con is now the
+  // sole rendering target again (pre-0.79.5.14). Clear on mode
+  // switch, start the appropriate poller, let addL / _detailedPoll
+  // write directly to #con. The 0.79.5.14 two-region approach
+  // somehow left content invisible despite 11+ .ll divs in DOM
+  // (confirmed via DevTools after 0.79.5.16 diagnostic and
+  // 0.79.5.18 flex-context CSS attempt). Rather than keep chasing
+  // the invisibility, return to the known-working single-container
+  // pattern from 0.79.5.10. Toggle-race risk returns as a minor
+  // cosmetic issue; Simple working is the priority.
+  const con=document.getElementById('con');
+  if(con)con.innerHTML='';
+  if(mode==='detailed'){
+    stopRawlog();
+    _detailedSize=0;
+    _detailedPoll();
+    if(_detailedInterval)clearInterval(_detailedInterval);
+    _detailedInterval=setInterval(_detailedPoll,2000);
+  } else {
+    if(_detailedInterval){clearInterval(_detailedInterval);_detailedInterval=null;}
+    _simpleRepopulate();
+    // v0.80.0.44: Simple panel only updated after a Detailed visit because
+    // logInterval was being nulled out (likely by transient updateLogRate(false)
+    // from SSE reconnect or run-end transition that didn't restart on the
+    // next state change). On every Simple-mode entry, force-restart the
+    // log poller at the appropriate rate.
+    clearInterval(logInterval);
+    logInterval=setInterval(pollLog,_prevRunning?2000:10000);
+    pollLog();  // immediate update so user doesn't wait for first interval tick
+  }
+}
+
+async function _simpleRepopulate(){
+  // v0.79.5.19 [DIAG-CON]: tail-200 repopulate visibility. Shows whether
+  // the fetch returns real content and where LLN lands after the repaint.
+  console.log('[DIAG-CON _simpleRepopulate] entry LLN=',LLN);
+  try{
+    const r=await fetch('/log?tail=200');
+    if(_conMode!=='simple'){console.log('[DIAG-CON _simpleRepopulate] mode flipped during fetch, abort');return;}
+    const d=await r.json();
+    if(_conMode!=='simple')return;
+    console.log('[DIAG-CON _simpleRepopulate] fetched total=',d.total,'lines=',(d.lines||[]).length);
+    const con=document.getElementById('con');
+    if(!con)return;
+    con.innerHTML='';
+    (d.lines||[]).forEach(addL);
+    if(d.total!=null)LLN=d.total;
+    LOG_START=Math.max(0,LLN-200);
+    console.log('[DIAG-CON _simpleRepopulate] done LLN=',LLN,'logIntervalActive=',!!logInterval);
+    if(AS)con.scrollTop=1e9;
+  } catch(e){console.log('[DIAG-CON _simpleRepopulate] error',e);}
+}
+
+async function _detailedPoll(){
+  if(_conMode!=='detailed')return;
+  try{
+    const r=await fetch('/rawlog?n=400');
+    if(_conMode!=='detailed')return;
+    const d=await r.json();
+    if(_conMode!=='detailed')return;
+    const sz=d.size||0;
+    if(sz!==_detailedSize){
+      _detailedSize=sz;
+      const con=document.getElementById('con');
+      if(con){
+        con.innerHTML='';
+        (d.lines||[]).forEach(t=>{
+          if(!t.trim())return;
+          const el=document.createElement('div');
+          el.className='ll raw';
+          el.textContent=t;
+          con.appendChild(el);
+        });
+        if(AS)con.scrollTop=1e9;
+      }
+    }
+  } catch(e){}
+}
+
 async function startRawlog(){
+  if(_conMode==='detailed')return;   // detailed poll owns #con in this mode
   if(_rawlogActive)return;_rawlogActive=true;
   _rawlogSize=0;
   async function _poll(){
@@ -3845,13 +4322,11 @@ async function startRawlog(){
       return;}
     try{const r=await fetch('/rawlog?n=40');const d=await r.json();
     const sz=d.size||0;
-    // Only append if file grew
     if(sz>_rawlogSize){
       _rawlogSize=sz;
       const ls=d.lines||[];
       if(ls.length){
         const con=document.getElementById('con');
-        // Clear previous rawlog lines and replace with current tail
         if(con){
           con.querySelectorAll('.ll.raw').forEach(el=>el.remove());
           ls.forEach(t=>{if(t.trim()){const el=document.createElement('div');
@@ -3993,6 +4468,10 @@ function updateSelInfo(){
   }
 }
 function toggleRun(n,multi,shift,cell){
+  // v0.80.0.44: any cell-level click breaks the preset match, so clear
+  // preset highlights up front. Keeps the preset-bar visual state in
+  // sync with what selR actually holds.
+  document.querySelectorAll('.pr.hi').forEach(b=>b.classList.remove('hi'));
   if(shift&&_lastRun!=null){
     // Range select: fill between _lastRun and n using visual grid order (PHASES)
     const VISUAL_ORDER=PHASES.flatMap(p=>p.runs);
@@ -4005,7 +4484,8 @@ function toggleRun(n,multi,shift,cell){
     // Ctrl/Cmd: toggle this run without affecting others
     if(selR.has(n))selR.delete(n);else selR.add(n);
   } else {
-    // Single click: select only this run
+    // Single click: select only this run, or deselect if it's already
+    // the sole selection (toggle-off behavior consistent with clearSel).
     const had=selR.has(n)&&selR.size===1;
     selR.clear();
     if(!had)selR.add(n);
@@ -4036,6 +4516,25 @@ let _navModel=null; // {family,size,variant,label}
 function navTo(layer, temp){
   _navLayer=layer;
   _navTemp=temp||null;
+  // v0.80.0.44: clear grid selection on every nav transition.
+  // Selection state shouldn't bleed across model picker ↔ all-temps
+  // ↔ per-temp views. Each view is a fresh decision context for the
+  // user — preserving selection across nav was clumsy because a
+  // selection made in one view doesn't necessarily make sense in
+  // another (e.g. ranges valid for all-temps may be meaningless in
+  // per-temp). Always start clean via the unified clearSel().
+  // Order matters: _navLayer set first so clearSel's paintGrid()
+  // renders against the new layer, not the old one.
+  if(typeof clearSel==='function')clearSel();
+  // v0.80.0.44: cross-model card only shows in the Models picker view
+  // (layer 1). Drilling into a specific model puts the user in single-
+  // model context where the cross-model card's aggregated content is
+  // meaningless — it would imply you can "run 0052 for this one model"
+  // which isn't a coherent operation.
+  const xm=document.getElementById('panel-xmcard');
+  const xmspl=document.getElementById('xmspl');
+  if(xm) xm.style.display = (layer===1) ? '' : 'none';
+  if(xmspl) xmspl.style.display = (layer===1) ? '' : 'none';
   // Show/hide layers
   const l1=document.getElementById('lyr1');
   const l2=document.getElementById('lyr2');
@@ -4103,7 +4602,7 @@ function navToModel(m){
   // Prior version showed cached data instantly for "snappy" switching; in
   // practice the cache never invalidated so users saw whatever the grid
   // looked like last time they visited the model, not what's on disk now.
-  // v0.79.4.9: clear the all-models sentinel so a real-model nav resets it.
+  // v0.79.4.15: clear the all-models sentinel so a real-model nav resets it.
   _allModelsMode=null;
   _navModel=m;
   scanSt={};_tempGrid={};descs={};
@@ -4137,7 +4636,7 @@ function navToModel(m){
     .catch(()=>{_gridBusy=false;_setRunBtnEnabled(true);});
 }
 
-// v0.79.4.9: "All Models" dispatch. Sets _allModelsMode sentinel; the grid
+// v0.79.4.15: "All Models" dispatch. Sets _allModelsMode sentinel; the grid
 // renders with a neutral "cross-model" status (derived by the highest
 // completion across discovered models — shows what's pending across the
 // fleet). doLaunch routes to the orchestrator's --all-models path when
@@ -4189,12 +4688,15 @@ function navToAllModels(models){
 
 function paintGrid(){
   const allMode=(_navLayer===2);
-  // v0.79.4.9: in All-Models view, scanSt already holds the cross-model
+  // v0.79.4.15: in All-Models view, scanSt already holds the cross-model
   // aggregate (per-run status across the fleet). Bypass the _tempGrid
   // path entirely — per-temp data would require per-model, per-temp scans
   // which are prohibitively expensive and not what this view represents.
   const allModelsView=!!(_allModelsMode&&_allModelsMode.models);
   const tgLoaded=Object.keys(_tempGrid).length>0;
+  // v0.80.0.44: _XPAPER filter removed. Cross-model + Paper runs are no
+  // longer in PHASES so their cells never exist in DOM. The
+  // `if(!c)return` below skips lookups for the missing IDs.
   ALL.forEach(n=>{const c=document.getElementById('rc'+n);if(!c)return;
     let st,m;
     if(allMode && !allModelsView){
@@ -4221,7 +4723,7 @@ function paintGrid(){
     c.setAttribute('aria-label','Run '+n+(_d?' - '+_d:'')+' - '+st);
   });
   if(allMode && allModelsView){
-    // v0.79.4.9: All-Models progress banner — sum across fleet.
+    // v0.79.4.15: All-Models progress banner — sum across fleet.
     const done=Object.values(scanSt).filter(v=>v==='done').length;
     const part=Object.values(scanSt).filter(v=>v==='partial').length;
     const total=ALL.length;
@@ -4233,7 +4735,12 @@ function paintGrid(){
   if(allMode){
     const tgKeys=Object.keys(_tempGrid);
     if(tgKeys.length>0){
-      const allDone=tgKeys.filter(k=>{const v=Object.values(_tempGrid[k]);return v.filter(s=>s==='done').length>=6;}).length;
+      // v0.80.0.44: ALL is now [1..51] so its length is the right
+      // denominator. _XPAPER filter removed since the runs aren't
+      // present in ALL anymore.
+      const allDone=tgKeys.filter(k=>{
+        const v=Object.values(_tempGrid[k]);
+        return v.filter(s=>s==='done').length>=6;}).length;
       S('gsn','All Temps: '+allDone+'/'+ALL.length+' complete at all 6 temperatures');
       // Weighted progress: data collection ~90% of time, analysis ~10%
       let dataCells=0,dataOk=0,anaCells=0,anaOk=0;
@@ -4252,10 +4759,10 @@ function paintGrid(){
       S('gsn','Loading...');
     }
   } else {
-    // v0.79.4.9: needs_et / et_partial no longer emitted by scanner.
+    // v0.79.4.15: needs_et / et_partial no longer emitted by scanner.
     // Run 0016 (E_t recovery meta-run) carries its own done/partial/missing.
     const done=Object.values(scanSt).filter(v=>v==='done').length;
-    const r48=scanSt['48']||'missing';
+    const r48=scanSt['16']||'missing';  // v0.79.4.0: E_t meta-run renumbered 48 → 16
     const r48note=r48==='done'?'':r48==='partial'?' \\u00b7 E\\u209c partial':' \\u00b7 E\\u209c pending';
     S('gsn','T='+(_navTemp!=null?Number(_navTemp).toFixed(1):'?')+': '+done+'/'+ALL.length+' done'+r48note);
   }
@@ -4282,27 +4789,11 @@ async function buildModelCards(){
       container.innerHTML='<div style="color:var(--t3);font-size:11px;padding:12px">No models collected yet. Add a model below to start.</div>';
       return;
     }
-    // v0.79.4.9: "All Models" synthetic card at the top of the list.
-    // When selected, runs fan out across every discovered model (smart
-    // loader groups runs by model to minimize subprocess startup cost).
-    // Skipped when only one model is present — no point showing it.
-    if(models.length>=2){
-      const allCard=document.createElement('div');
-      allCard.className='model-card all-models';
-      const nModels=models.length;
-      const nLabels=models.map(m=>m.label).join(', ');
-      allCard.innerHTML='<div class="mc-name">All Models</div>'+
-        '<div class="mc-thead" style="color:var(--ac);opacity:0.7">DISPATCH ACROSS EVERY MODEL</div>'+
-        '<div class="mc-tr" style="color:var(--t2);padding-top:6px">'+
-          '<span class="mc-tl" style="min-width:auto">'+nModels+' models</span></div>'+
-        '<div class="mc-tr" style="color:var(--t3);font-size:10px;opacity:0.75">'+
-          escH(nLabels.length>60?nLabels.slice(0,57)+'...':nLabels)+'</div>'+
-        '<div class="mc-summary" style="border-top-color:rgba(80,140,220,0.3)">'+
-          'Select runs \u2192 hit play \u2192 fires on all models sequentially'+
-        '</div>';
-      allCard.onclick=()=>navToAllModels(models);
-      container.appendChild(allCard);
-    }
+    // v0.79.4.15: "All Models" synthetic card at the top of the list.
+    // v0.80.0.44: All Models picker tile removed. Cross-model paper runs
+    // (0052/0053/0054/0055/0056) live on the cross-model card and dispatch
+    // across all models internally. The fan-out-arbitrary-runs use case
+    // didn't justify its own tile.
     models.forEach(m=>{
       const card=document.createElement('div');card.className='model-card';
       const dpt=m.data_per_temp||0;
@@ -4530,11 +5021,12 @@ async function onTempChange(){
   paintGrid();doScan();
 }
 function selP(spec,btn){
+  // v0.80.0.44: clicking an already-highlighted preset clears the
+  // selection (toggle-off behavior). Uses unified clearSel() for
+  // consistency with the × button and nav transitions.
   if(btn&&btn.classList.contains('hi')){
-    document.querySelectorAll('.pr').forEach(b=>b.classList.remove('hi'));
-    selR.clear();paintGrid();
-    const ri=document.getElementById('ri');if(ri)ri.value='';
-    updateSelInfo();return;
+    clearSel();
+    return;
   }
   document.querySelectorAll('.pr').forEach(b=>b.classList.remove('hi'));
   if(btn)btn.classList.add('hi');
@@ -4552,11 +5044,27 @@ function selP(spec,btn){
 }
 function goRun(n){selP(String(n),null);}
 
+// v0.80.0.44: standardized grid-selection clear. Used by:
+//   - The × button in the run-input row (was wired to clearSel but
+//     the function didn't exist — clicking did nothing silently).
+//   - navTo() on every layer transition.
+//   - Anywhere else the grid needs a hard reset.
+// Single point of truth for what "clear selection" means: empty selR,
+// drop preset highlights, blank the run-input field, refresh visuals.
+function clearSel(){
+  selR.clear();
+  document.querySelectorAll('.pr.hi').forEach(b=>b.classList.remove('hi'));
+  const ri=document.getElementById('ri');
+  if(ri)ri.value='';
+  paintGrid();
+  if(typeof updateSelInfo==='function')updateSelInfo();
+}
+
 // ── Scan ──────────────────────────────────────────────────────────────────────
 function updateScanRate(r){clearInterval(scanInterval);scanInterval=setInterval(()=>{doScan();if(r)loadTempGrid();},r?30000:120000);}
 let _atcTick=0;
 async function doScan(){
-  // v0.79.4.9: while in All-Models view, a single session-scoped /scan
+  // v0.79.4.15: while in All-Models view, a single session-scoped /scan
   // returns the currently-set model's status and would overwrite the
   // cross-model aggregate. Refresh the aggregate instead by re-running
   // navToAllModels' per-model overlay logic inline.
@@ -5119,6 +5627,59 @@ async function doClearQueue(){
   }catch(e){}
 }
 const _ANALYSIS_RUN_SET=new Set([41,42,43,44,45,46,47,48,49,50,51]);
+
+// v0.79.5.18: client-side mirror of start_here.py _PREREQS for pre-
+// dispatch prerequisite checking. Keep in sync manually with the
+// Python dict — if you add a prereq entry there, mirror it here.
+// Inner keys are the dependency run numbers (ints for JS convenience;
+// server-side uses 4-digit strings and DualKeyRunDict normalizes both).
+// Server-side _check_prereqs remains authoritative; this is UX sugar.
+const _PREREQS_JS={
+  16:{1:'ct_global_mean.npy + et_global_mean.npy baseline vectors'},
+  17:{6:'all-layers .npy for activation patching'},
+  18:{6:'all-layers .npy for layer isolation'},
+  19:{6:'all-layers .npy for random patching'},
+  42:{1:'E_t+C_t source',2:'E_t+C_t source',3:'E_t+C_t source',
+      4:'E_t+C_t source',5:'E_t+C_t source',6:'E_t+C_t source',
+      7:'E_t+C_t source',8:'E_t+C_t source',9:'E_t+C_t source',
+      10:'E_t+C_t source',11:'E_t+C_t source',12:'E_t+C_t source',
+      13:'E_t+C_t source',14:'E_t+C_t source',15:'E_t+C_t source',
+      16:'E_t meta-run output',23:'E_t+C_t source'},
+  43:{42:'decomposition Ridge model',33:'held-out Stage 2 CSV'},
+  46:{42:'decomposition',43:'permutation sensitivity',44:'per-condition R'},
+  47:{1:'hidden .npy for Granger A'},
+  48:{3:'temp grid for Granger B'},
+  49:{4:'Phase 1 CSV',5:'Phase 1 CSV',6:'Phase 1 CSV',7:'Phase 1 CSV',
+      8:'Phase 1 CSV',9:'Phase 1 CSV',10:'Phase 1 CSV',11:'Phase 1 CSV',
+      12:'Phase 1 CSV',39:'Phase 1 CSV',40:'Phase 1 CSV',29:'Phase 1 CSV',
+      30:'Phase 1 CSV',31:'Phase 1 CSV',13:'Phase 1 CSV',14:'Phase 1 CSV',
+      15:'Phase 1 CSV',32:'Phase 1 CSV',1:'Phase 1 CSV',2:'Phase 1 CSV'},
+  51:{42:'decomposition for pooled',43:'permutation sensitivity for pooled'},
+};
+
+function _checkPrereqsJS(runNums){
+  // Returns list of {run, prereq, status, desc} for unmet prereqs.
+  // runNums is a Set or array of int run numbers.
+  // Empty list = all prereqs satisfied (or no prereqs defined).
+  const unmet=[];
+  const arr=[...runNums];
+  for(const n of arr){
+    const prereqs=_PREREQS_JS[n]||{};
+    for(const pnumStr of Object.keys(prereqs)){
+      const pnum=parseInt(pnumStr);
+      // Status lookup: scanSt keys are 4-digit strings post-renumber;
+      // try both forms for safety.
+      const stat=scanSt[String(pnum).padStart(4,'0')]||scanSt[String(pnum)]||'missing';
+      if(stat!=='done'){
+        // Skip if the prereq is also in the current selection — it'll
+        // run first per EXECUTION_ORDER before the dependent run.
+        if(arr.includes(pnum))continue;
+        unmet.push({run:n,prereq:pnum,status:stat,desc:prereqs[pnumStr]});
+      }
+    }
+  }
+  return unmet;
+}
 function _parseRunNums(s){
   const nums=new Set();
   for(const p of s.split(',')){
@@ -5133,27 +5694,62 @@ async function doLaunch(force){
   if(_prevRunning){toast('Already running - use Queue button to stage runs','wa');return;}
   const runs=_getSelectedRuns();
   if(!runs&&!force){toast('Select runs first','wa');return;}
-  // v0.75.2.2: Run 0056 intercept — show model selection popup whenever 55 is included
-  const _parsed55=_parseRunNums(runs||'');
-  console.log('[R55] doLaunch runs=',runs,'parsed=',_parsed55,'has55=',_parsed55.has(55));
-  if(_parsed55.has(55)){
-    // Store the full selection so other runs (50,51,52) launch alongside 55
-    window._r55OtherRuns=[..._parsed55].filter(r=>r!==55).sort((a,b)=>a-b).join(',');
-    console.log('[R55] Opening popup, otherRuns=',window._r55OtherRuns);
+  // v0.79.5.18: client-side prerequisite check. Server-side _check_prereqs
+  // is authoritative (runs again in headless dispatch per-run), but this
+  // catches unmet prereqs at click-time with immediate toast feedback —
+  // no subprocess spawn, no hunt-through-log. Mirrors the authoritative
+  // _PREREQS dict in start_here.py (kept in sync manually; cross-ref
+  // _PREREQS there when adding entries).
+  const _unmet=_checkPrereqsJS(_parseRunNums(runs||''));
+  if(_unmet.length){
+    const msg=_unmet.slice(0,3).map(u=>'Run '+u.run+' needs Run '+u.prereq+' ('+u.status+')').join('; ');
+    const more=_unmet.length>3?' +'+(_unmet.length-3)+' more':'';
+    toast('Prereqs not met: '+msg+more,'wa');
+    return;
+  }
+  // v0.80.0.51: Run 0059 (paper assembly, was 0058) intercept — show model
+  // selection popup whenever 58 is included. Pre-0.80.0.44 this code
+  // checked _parsed.has(55), a legacy artifact from before the
+  // 0.79.4 renumber when paper assembly was Run 55. After the
+  // renumber paper assembly moved to Run 56 but the intercept didn't
+  // follow, leaving the popup mis-pointed at the stats-export run.
+  // 0.80.0.51: paper assembly is now Run 0059 (was 0058 in 0.80.0.44).
+  // intercept correctly fires for 58.
+  const _parsed58=_parseRunNums(runs||'');
+  console.log('[R58] doLaunch runs=',runs,'parsed=',_parsed58,'has58=',_parsed58.has(58));
+  if(_parsed58.has(58)){
+    // Store the full selection so other runs launch alongside 58
+    window._r55OtherRuns=[..._parsed58].filter(r=>r!==58).sort((a,b)=>a-b).join(',');
+    console.log('[R58] Opening popup, otherRuns=',window._r55OtherRuns);
     openR55Pop();return;
   }
   let effectiveRuns=runs;
   // Layer 2 = all-temps, Layer 3 = per-temp
   if(_navLayer===2){
     if(!runs){toast('Select runs first','wa');return;}
-    // v0.76.0.4: if user selected collection runs, route to auto-temp
-    // so missing temperature directories get collected. all-temps-runs only
-    // analyzes existing temps with data — silent no-op on fresh FP16 model.
-    // v0.79.4.0: renumber. Collection runs are contiguous 1-40 in new numbering.
+    // v0.79.5.5: size-of-selection gate. Single-run selections at Layer 2
+    // route to all-temps:N regardless of _COLLECT membership — picking
+    // exactly one run at the all-temps level means "run this one across
+    // available temps," not "fire whole-fleet collection." Multi-run
+    // selections with any _COLLECT member still bloom to auto-temp
+    // (whole-fleet collection at every incomplete temp) per the original
+    // design from v0.76.0.4.
+    //
+    // Prior iteration (0.79.4.17): Run 16 was surgically removed from
+    // _COLLECT because single-selection Run 16 bloomed to whole-fleet
+    // collection. The 0.79.5.5 length gate generalizes the fix — Run 16's
+    // removal from _COLLECT is now redundant but preserved (no functional
+    // effect either way).
+    //
+    // Symptom that motivated the 0.79.5.5 change: Kevin selected only
+    // Run 2 at Layer 2 for diagnostic purposes. Pre-fix: _hasCollect=true
+    // → effectiveRuns='auto-temp' → backend queued all 40 runs starting
+    // with Run 1. Post-fix: single-run gate makes _hasCollect=false →
+    // effectiveRuns='all-temps:2' → backend runs only Run 2 across temps.
     const _sel2=_parseRunNums(runs);
-    const _COLLECT=new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+    const _COLLECT=new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,   17,18,19,20,
                             21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]);
-    const _hasCollect=[..._sel2].some(r=>_COLLECT.has(r));
+    const _hasCollect = _sel2.length > 1 && [..._sel2].some(r=>_COLLECT.has(r));
     effectiveRuns=_hasCollect ? 'auto-temp' : ('all-temps:'+runs);
   } else if(_navLayer===3){
     const _sel=_parseRunNums(runs);
@@ -5171,7 +5767,7 @@ async function doLaunch(force){
     // Clear stale mode overrides — only popup launches should set these
     delete s.patch_modes_17;delete s.patch_modes_18;delete s.patch_modes_19;
     delete s.r3_cells;delete s.mc_conds;
-    // v0.79.4.9: if the user navigated from the "All Models" synthetic
+    // v0.79.4.15: if the user navigated from the "All Models" synthetic
     // card, tell the server to fan out across every discovered model.
     // The server spawns start_here.py --all-models which iterates the
     // model list, dispatching effectiveRuns to each in sequence.
@@ -5290,13 +5886,13 @@ async function _refreshRdp(n){
     const _rhyps=Object.entries(_hypDeps||{}).filter(([k,v])=>(v.data_runs||[]).includes(n)).map(([k])=>k);
     if(_rhyps.length){html+='<div style="font-size:8px;color:var(--t3);margin-bottom:4px">Tests: '+escH(_rhyps.join(', '))+'</div>';}
     if(d.run1){
-      const r19=d.run1;
-      const nt=r19.n_trials||100;
+      const r01=d.run1;
+      const nt=r01.n_trials||100;
       const passes=[
-        {key:'abliterated', label:'abliterated', n:r19.abliterated||0},
-        {key:'base',        label:'base',        n:r19.base||0},
-        {key:'instruct',    label:'instruct',    n:r19.instruct||0},
-        {key:'pass4',       label:'vectors',     n:r19.pass4?1:0, total:1},
+        {key:'abliterated', label:'abliterated', n:r01.abliterated||0},
+        {key:'base',        label:'base',        n:r01.base||0},
+        {key:'instruct',    label:'instruct',    n:r01.instruct||0},
+        {key:'pass4',       label:'vectors',     n:r01.pass4?1:0, total:1},
       ];
       html+='<div class="rdp-row"><span class="rdp-lbl">Expected</span>'+
         '<span class="rdp-val">3 passes \u00d7 '+nt+' trials + vectors</span></div>';
@@ -5497,7 +6093,7 @@ async function showRdp(n,cell){
   try{
   // Layer 2 (all-temps): show temperature breakdown instead of run detail
   // Pooled and cross-model runs don't have per-temp data — show standard detail
-  const _POOLED_RUNS=new Set([50,51,52,53,54,55,56]);
+  const _POOLED_RUNS=new Set([50,51,52,53,54,55,56,57,58]);  // v0.80.0.44: 57+58 are output runs
   if(_navLayer===2&&_tempGrid[String(n)]&&!_POOLED_RUNS.has(n)){
     const tg=_tempGrid[String(n)];
     const _pdesc=descs[String(n)]||'';
@@ -5849,7 +6445,7 @@ async function launchR55(){
     s.cross_model_include=selected.map(m=>m.label);
     // Include other runs (50,51,52) that were selected alongside 55
     const other=window._r55OtherRuns||'';
-    const allRuns=other?other+',55':'55';
+    const allRuns=other?other+',59':'59';  // v0.80.0.51: paper assembly is now Run 0059
     s.runs=(_navLayer===2)?'all-temps:'+allRuns:allRuns;
     const r=await fetch('/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(s)});
     const d=await r.json();
@@ -6112,19 +6708,311 @@ fetch('/descs').then(r=>r.json()).then(d=>{
 }).catch(()=>{});
 // Load recent console history on page load
 fetch('/log?tail=200').then(r=>r.json()).then(d=>{
+  // v0.79.5.19 [DIAG-CON]: initial tail-200 — the fetch that can block
+  // for tens of seconds while the sparse index builds on a 1GB log.
+  console.log('[DIAG-CON initial] tail-200 returned total=',d.total,'lines=',(d.lines||[]).length,'_conMode=',_conMode);
   const con=document.getElementById('con');
   _addLBatch(d.lines||[],()=>{
     LLN=d.total||(d.lines||[]).length;
     LOG_START=Math.max(0,LLN-200);
-    logInterval=setInterval(pollLog,10000);
+    console.log('[DIAG-CON initial] onDone LLN=',LLN,'_conMode=',_conMode,'priorLogInterval=',!!logInterval);
+    // v0.80.0.44: respect SSE-set run state if it's already arrived.
+    // Previously hardcoded 10s, which clobbered the 2s rate that
+    // updateLogRate(true) had set during SSE applyS arriving before
+    // the slow tail-200 fetch resolved. Result: Simple panel polled
+    // every 10s while a run was active, appearing dead until tab
+    // switch. Now check _prevRunning — if a run is active, poll at
+    // 2s; otherwise default 10s.
+    logInterval=setInterval(pollLog,_prevRunning?2000:10000);
     if(AS&&con)con.scrollTop=1e9;
     // Show scroll indicator if there's history above
     const ind=document.getElementById('con-load-indicator');
     if(ind&&LOG_START>0){ind.textContent='\\u25b2 scroll up to load history';ind.classList.add('on');}
   });
-}).catch(()=>{logInterval=setInterval(pollLog,10000);});
+}).catch(()=>{logInterval=setInterval(pollLog,_prevRunning?2000:10000);});
 setTimeout(doScan,800);updateScanRate(false);
 checkResumeState();
+
+// ── Cross-model / Paper card (v0.80.0.44: collapsible + resizable + expand) ───
+function toggleXmCard(){
+  const card=document.getElementById('panel-xmcard');
+  const rows=document.getElementById('xmRows');
+  const chev=document.getElementById('xmChevron');
+  if(!card||!rows) return;
+  const collapsed=rows.style.display==='none';
+  if(collapsed){
+    rows.style.display='grid';
+    if(chev) chev.style.transform='rotate(0deg)';
+    card.style.maxHeight='80vh';
+    card.style.minHeight='';
+  } else {
+    rows.style.display='none';
+    if(chev) chev.style.transform='rotate(-90deg)';
+    card.style.maxHeight='38px';
+    card.style.minHeight='38px';
+  }
+}
+let _xmExpanded=false;
+function togXmExpand(){
+  const card=document.getElementById('panel-xmcard');
+  if(!card) return;
+  _xmExpanded=!_xmExpanded;
+  if(_xmExpanded){
+    card.style.maxHeight='90vh';
+    card.style.minHeight='60vh';
+  } else {
+    card.style.maxHeight='80vh';
+    card.style.minHeight='';
+  }
+}
+function _xmShortLabel(prefix){
+  // 'gemma_2b_4bit' → 'gemma 2B Q4'; 'gemma_2b_fp16' → 'gemma 2B FP16';
+  // 'llama_8b_4bit' → 'llama 8B Q4'
+  const parts=(prefix||'').split('_');
+  if(parts.length<3) return prefix||'?';
+  const fam=parts[0];
+  const size=parts[1].toUpperCase();   // 8B, 2B, 9B
+  const quant=parts.slice(2).join('_').toLowerCase();
+  let q=quant;
+  if(quant==='4bit') q='Q4';
+  else if(quant==='8bit') q='Q8';
+  else if(quant==='fp16') q='FP16';
+  else if(quant==='fp32') q='FP32';
+  return fam+' '+size+' '+q;
+}
+function renderXmCard(d){
+  const rows=document.getElementById('xmRows');
+  const ban=document.getElementById('xmCalBanner');
+  if(!rows) return;
+  if(d.error){ rows.innerHTML='<span style="color:var(--er)">error: '+d.error+'</span>'; return; }
+  const runs=d.runs||{};
+  const cal=d.calibration||{};
+  const allModels=d.models||[];
+  const names={
+    '0052':'Cross-model R compare',
+    '0053':'Condition concordance',
+    '0054':'Cross-model paper summary',
+    '0055':'Stats export (all models)',
+    '0056':'Methodology calibration',
+    '0057':'Function-class sensitivity',
+    '0058':'Lagrangian apparatus',
+    '0059':'Paper assembly',
+  };
+  let html='';
+  for(const rk of ['0052','0053','0054','0055','0056','0057','0058','0059']){
+    const r=runs[rk]||{};
+    const contribSet=new Set(r.contributors||[]);
+    // v0.80.0.44: trust server status. Front-end used to derive status
+    // from chip counts to keep chips and pill consistent, but for 0056
+    // contributors come from results.json cells (not file presence), so
+    // an empty contributors list with calibration progress can correctly
+    // be 'partial' on the server but render 'missing' from chip counts.
+    // Server has the full picture; front-end uses what it returned.
+    const st = r.status || 'missing';
+    // Map status → .rc class so the button uses existing grid palette
+    const rcCls = st==='done' ? 'done' : (st==='partial' ? 'part' : 'miss');
+    const label=names[rk]||rk;
+    // Build chip strip
+    let chips='';
+    for(const m of allModels){
+      const inc=contribSet.has(m.prefix);
+      const short=_xmShortLabel(m.prefix);
+      const mark=inc?'&#10003;':'&#9675;';
+      const chipCol=inc?'var(--go)':'var(--t3)';
+      const chipOpacity=inc?'1':'0.45';
+      // v0.80.0.44: drop checkmark/circle mark and border. Color alone
+      // speaks: green = included, dim gray = not. Less visual noise per chip.
+      chips+='<span style="display:inline-flex;align-items:center;'
+        +'font-size:9px;padding:2px 6px;color:'+chipCol+';opacity:'+chipOpacity+';'
+        +'font-weight:'+(inc?'600':'400')+'">'+short+'</span>';
+    }
+    // v0.80.0.44: run number is a status TAG, not a button. Same color
+    // grammar as before (gray/amber/green = miss/part/done) but no
+    // cursor:pointer, no click handler. The green Run button on the
+    // right is the only action affordance.
+    const shortNum=String(parseInt(rk,10));  // "0052" → "52"
+    // v0.80.0.44: progress span for the 0056 row, updated by
+    // pollXmProgress() against /run_progress endpoint.
+    const progressSlot = (rk === '0056' || rk === '0058' || rk === '0059')
+      ? '<span id="xm-progress-'+rk+'" style="font-size:9px;color:var(--ac);margin-left:8px"></span>'
+      : '';
+    html+='<div style="display:flex;flex-direction:column;gap:4px;padding:6px 8px;'
+      +'border:1px solid var(--bd);border-radius:4px;background:var(--bg1)">'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<div class="rc '+rcCls+'" '
+      +'style="width:29px;height:29px;font-size:11px;font-weight:700;flex-shrink:0" '
+      +'title="'+st.toUpperCase()+'">'+shortNum+'</div>'
+      +'<span style="flex:1;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+label+progressSlot+'</span>'
+      +'<button class="xm-run-btn" data-run="'+rk+'" '
+      +'style="font-size:10px;padding:3px 10px;border-radius:3px;border:none;'
+      +'background:var(--go);color:var(--bg);font-weight:600;cursor:pointer;flex-shrink:0" '
+      +'title="Run '+rk+'">&#9654; Run</button>'
+      +'</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:3px">'+chips+'</div>'
+      +'</div>';
+  }
+  rows.innerHTML=html;
+  // Delegated click handlers for the run buttons (avoids inline onclick quote issues)
+  rows.querySelectorAll('.xm-run-btn').forEach(b=>{
+    b.addEventListener('click', ()=>launchXmRun(b.getAttribute('data-run')));
+  });
+
+  // Calibration banner
+  if(ban){
+    if(cal && (cal._any_missing||cal._any_stale)){
+      const miss=[]; const stale=[];
+      for(const k of Object.keys(cal)){
+        if(k.startsWith('_')) continue;
+        if(cal[k]==='missing') miss.push(k);
+        else if(cal[k]==='stale') stale.push(k);
+      }
+      let msg='&#9888; calibration ';
+      if(miss.length) msg+='missing: '+miss.join(', ');
+      if(stale.length) msg+=(miss.length?' | ':'')+'stale: '+stale.join(', ');
+      ban.innerHTML=msg; ban.style.display='inline';
+    } else {
+      ban.style.display='none';
+    }
+  }
+}
+function refreshXmCard(){
+  fetch('/scan_cross_model').then(r=>r.json()).then(renderXmCard)
+    .catch(e=>{const r=document.getElementById('xmRows');
+      if(r) r.innerHTML='<span style="color:var(--er)">fetch failed: '+e+'</span>';});
+}
+
+// v0.80.0.51: live progress indicator for 0056 (calibration), 0058 (apparatus), 0059 (paper)
+// (paper assembly) rows — both can run long enough to want a progress
+// readout. Polls /run_progress every 3s; updates whichever span exists
+// (only one of 0056/0058/0059 should be active at a time).
+let _xmProgressInterval=null;
+async function pollXmProgress(){
+  const spans=['xm-progress-0056','xm-progress-0058','xm-progress-0059']
+    .map(id=>document.getElementById(id)).filter(s=>s);
+  if(!spans.length) return;
+  try{
+    const r=await fetch('/run_progress');
+    const d=await r.json();
+    if(!d.active){ spans.forEach(s=>s.textContent=''); return; }
+    let txt='Phase '+(d.phase||'?');
+    if(d.script) txt+=' \u2014 '+d.script;
+    if(d.n_done!=null && d.n_total!=null){
+      const pct=Math.round(100*d.n_done/d.n_total);
+      txt+=' '+d.n_done+'/'+d.n_total+' ('+pct+'%)';
+    }
+    // Best-effort: if server tells us which run is active, only show on
+    // that span. Otherwise show on both (only one will be visible at a
+    // time anyway since the other run isn't dispatched).
+    const activeRun=String(d.run||'');
+    if(activeRun){
+      spans.forEach(s=>{
+        if(s.id.endsWith(activeRun.padStart(4,'0'))) s.textContent=txt;
+        else s.textContent='';
+      });
+    } else {
+      spans.forEach(s=>s.textContent=txt);
+    }
+  }catch(e){ /* swallow — progress is non-critical */ }
+}
+function startXmProgressPoll(){
+  if(_xmProgressInterval) return;
+  pollXmProgress();
+  _xmProgressInterval=setInterval(pollXmProgress,3000);
+}
+function stopXmProgressPoll(){
+  if(_xmProgressInterval){
+    clearInterval(_xmProgressInterval);
+    _xmProgressInterval=null;
+  }
+  // v0.80.0.51: clear all progress spans (0056 calibration + 0058 apparatus + 0059 paper assembly)
+  ['xm-progress-0056','xm-progress-0058','xm-progress-0059'].forEach(id=>{
+    const s=document.getElementById(id);
+    if(s) s.textContent='';
+  });
+}
+function launchXmRun(runKey){
+  // v0.80.0.44: /run endpoint reads d.get("runs") (plural, string),
+  // not d.get("run") (singular, int). Previous code sent {run: 56} →
+  // server read empty string → 400 BAD REQUEST. Send {runs: "56"}.
+  const rn=String(parseInt(runKey,10));
+  fetch('/run',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({runs:rn})})
+    .then(r=>r.json()).then(d=>{
+      if(d&&d.ok===false){alert('launch failed: '+(d.error||'unknown'));return;}
+      setTimeout(refreshXmCard,2000);
+    })
+    .catch(e=>alert('launch failed: '+e));
+}
+// Drag handler for xmspl splitter — resizes the cross-model card height
+(function(){
+  const spl=document.getElementById('xmspl');
+  const card=document.getElementById('panel-xmcard');
+  if(!spl||!card) return;
+  let dragging=false, startY=0, startH=0;
+  spl.addEventListener('mousedown',e=>{
+    dragging=true; startY=e.clientY;
+    startH=card.getBoundingClientRect().height;
+    spl.style.background='var(--ac)';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!dragging) return;
+    const dy=e.clientY-startY;
+    const newH=Math.max(38, Math.min(window.innerHeight*0.85, startH+dy));
+    card.style.maxHeight=newH+'px';
+    card.style.minHeight=newH+'px';
+  });
+  document.addEventListener('mouseup',()=>{
+    if(dragging){ dragging=false; spl.style.background='var(--b1)'; }
+  });
+})();
+// v0.80.0.44: shared panel-collapse chevrons. Any element with class
+// .pnl-chev and a data-target attribute toggles collapse on that panel.
+// Works for panel-grid, panel-metrics, panel-right.
+// On collapse: hide non-header children AND shrink the panel itself to
+// its header height so it doesn't leave an empty box behind.
+document.addEventListener('click',(e)=>{
+  const t=e.target;
+  if(!t||!t.classList||!t.classList.contains('pnl-chev')) return;
+  const targetId=t.getAttribute('data-target');
+  if(!targetId) return;
+  const panel=document.getElementById(targetId);
+  if(!panel) return;
+  const hdr=panel.querySelector('.panel-hdr, .tab-bar');
+  const collapsed=panel.classList.toggle('pnl-collapsed');
+  if(collapsed){
+    // Remember expanded height so we can restore exactly
+    panel._prevFlex = panel.style.flex || '';
+    panel._prevHeight = panel.style.height || '';
+    panel._prevMinH = panel.style.minHeight || '';
+  }
+  for(const child of panel.children){
+    if(child===hdr) continue;
+    if(collapsed) child.style.display='none';
+    else child.style.display='';
+  }
+  if(collapsed){
+    panel.style.flex='0 0 auto';
+    panel.style.height='auto';
+    panel.style.minHeight='0';
+  } else {
+    panel.style.flex=panel._prevFlex||'';
+    panel.style.height=panel._prevHeight||'';
+    panel.style.minHeight=panel._prevMinH||'';
+  }
+  t.style.transform=collapsed?'rotate(-90deg)':'rotate(0deg)';
+  e.stopPropagation();
+});
+// v0.80.0.44: no auto-refresh interval. Card loads lazily on first
+// explicit refresh click. Previous 15s interval was causing perceived
+// slowness on page load.
+// Fire once after initial page render has settled, then stop.
+setTimeout(refreshXmCard, 3000);
+// v0.80.0.44: start 0056 progress poll on init too, in case a run is
+// already active when the page loads (e.g. user refreshed mid-run).
+// pollXmProgress self-clears when no active run, so this is cheap.
+setTimeout(()=>{ if(typeof startXmProgressPoll==='function') startXmProgressPoll(); }, 3500);
+
 </script>
 </body>
 </html>"""

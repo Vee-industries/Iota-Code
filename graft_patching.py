@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — GRAFT: ACTIVATION PATCHING
+IOTA FRAMEWORK -- GRAFT: ACTIVATION PATCHING
 ==============================================
 Run 0017. Causal interventions. Replace layer activations from a
 reference run (high-R trajectory) into a low-R run mid-sequence.
@@ -17,7 +17,7 @@ MIXED-SCHEMA CSV (Finding O, v23.3):
        layer_sim_mean, mean_logit_entropy, etc.)
     - patch_mode == "partial" / "full" : only patching-specific fields
       (sim_to_reference, output, output_tokens, prompt, patch_mode)
-      All standard trajectory metrics are NaN — this is STRUCTURAL,
+      All standard trajectory metrics are NaN -- this is STRUCTURAL,
       not a data gap.  compute_turn_metrics cannot run on the patched
       path (required keys absent from manual result dict).
   Any downstream analysis of Run 0017 must filter patch_mode == "none"
@@ -66,10 +66,10 @@ from transformers import LogitsProcessorList
 
 RUN_NUM = 17
 PATCH_LAYERS = [8, 16, 24, 31]   # which layers to graft (Llama 3 8B has 32)
-TURNS        = 13  # v42.4.0: raised from 6 — matches framework standard and Run 0018
+TURNS        = 13  # v42.4.0: raised from 6 -- matches framework standard and Run 0018
 TRIALS       = None  # set from session at runtime
 
-# 13 unique prompts — one per turn, no cycling artifact within a trial.
+# 13 unique prompts -- one per turn, no cycling artifact within a trial.
 # Matches Run 0018 (run42_layer_isolation.py) exactly. Both runs use null-baseline
 # generation to establish trajectory geometry; consistent prompts across both
 # means any difference in geometry is attributable to the patching manipulation,
@@ -89,14 +89,14 @@ NULL_PROMPTS = [
     "What is persisting across these turns?",
     "What would it mean to lose continuity at this point?",
 ]
-assert len(NULL_PROMPTS) == TURNS  # one unique prompt per turn — no cycling artifact
+assert len(NULL_PROMPTS) == TURNS  # one unique prompt per turn -- no cycling artifact
 
 
 def _run_patched_generation(mdl, tok, messages, patch_vecs: dict,
                              status_ids, temperature=0.0) -> tuple:
     """
     Forward pass with activation grafting via hooks.
-    patch_vecs: {layer_idx: np.ndarray}  — vectors to inject at last position.
+    patch_vecs: {layer_idx: np.ndarray}  -- vectors to inject at last position.
     """
     hooks     = []
     hook_data = {}
@@ -200,14 +200,14 @@ def _load_reference_states(hidden_dir, ref_run, model_name, n_trials=10):
                 pass
     if refs:
         print(f"  [graft] Found Run {ref_run:02d} ref states via wildcard scan "
-              f"(model name mismatch) — run rename_model_npy.py to fix permanently",
+              f"(model name mismatch) -- run rename_model_npy.py to fix permanently",
               flush=True)
     return refs
 
 
 def _scan_completed_modes(csv_file, run_num, mode_col, all_modes, turns):
     """Return set of (trial, mode) pairs that have `turns` complete rows.
-    Reads by column name — no position heuristics needed with universal schema.
+    Reads by column name -- no position heuristics needed with universal schema.
     """
     import csv as _csv, io as _io
     done = set()
@@ -330,21 +330,21 @@ def _load_none_outputs(csv_file, run_num, trial, turns):
 
 
 def run(run_num: int, session: dict, paths: dict):
-    """Run 0017 — activation patching, or Run 0019 — random-noise baseline.
+    """Run 0017 -- activation patching, or Run 0019 -- random-noise baseline.
 
-    Run 0017 (H38 — causal upstream test):
+    Run 0017 (H38 -- causal upstream test):
       Null-baseline trials at four patch_modes x TRIALS:
-        'none'    — no patching, reference trajectory
-        'partial' — graft Run 0006 hiddens at PATCH_LAYERS = [8,16,24,31]
-        'full'    — graft reference states at ALL transformer layers
-        'random'  — N(mu_l, sigma_l^2) per-layer noise, estimated
+        'none'    -- no patching, reference trajectory
+        'partial' -- graft Run 0006 hiddens at PATCH_LAYERS = [8,16,24,31]
+        'full'    -- graft reference states at ALL transformer layers
+        'random'  -- N(mu_l, sigma_l^2) per-layer noise, estimated
                     from Run 0006's layer-l activation distribution
                     (v0.67.0.0). The noise-control that separates
                     'any injection disrupts' from 'specific geometry
                     disrupts'.
       output_changed (vs 'none' at this trial/turn) feeds H38.
 
-    Run 0019 (H40 — empirical random-noise control):
+    Run 0019 (H40 -- empirical random-noise control):
       Dispatched to _run_53_random_patching. Six modes including
       per-layer single-layer noise so Run 0018's single-layer causal
       profile has a pure-noise baseline.
@@ -375,10 +375,10 @@ def run(run_num: int, session: dict, paths: dict):
                                         n_trials=10)
     if not ref_states:
         if os.environ.get('IOTA_HEADLESS') == '1':
-            ui.warn("Run 0017 — no Run 0006 all-layers hidden states found. Skipping.")
+            ui.warn("Run 0017 -- no Run 0006 all-layers hidden states found. Skipping.")
             return
         choice = ui.srx_prompt(
-            "No Run 0006 hidden states found — activation patching requires Run 0006 all-layers files.\n"
+            "No Run 0006 hidden states found -- activation patching requires Run 0006 all-layers files.\n"
             "  Run 0006 (introspection A) must complete with save_all_layers=True first."
         )
         if choice in ('s', 'x'):
@@ -394,13 +394,13 @@ def run(run_num: int, session: dict, paths: dict):
 
     if all_done:
         if os.environ.get('IOTA_HEADLESS') == '1':
-            ui.ok(f"Run {RUN_NUM:04d} already complete — skipping.")
+            ui.ok(f"Run {RUN_NUM:04d} already complete -- skipping.")
             return
-        ui.section(f"Run {RUN_NUM:04d} — Already Complete")
+        ui.section(f"Run {RUN_NUM:04d} -- Already Complete")
         ui.warn(f"All {trials} trials × {len(_ALL_MODES)} modes complete.")
         ui.blank()
-        ui.opt("1", "Skip — use existing data")
-        ui.opt("2", "Override — delete CSV and rerun all modes")
+        ui.opt("1", "Skip -- use existing data")
+        ui.opt("2", "Override -- delete CSV and rerun all modes")
         ui.opt("3", "Abort")
         ui.blank()
         while True:
@@ -417,14 +417,14 @@ def run(run_num: int, session: dict, paths: dict):
                 else:
                     return
 
-    # Which modes to collect — dashboard may restrict via session['_patch_modes'].
+    # Which modes to collect -- dashboard may restrict via session['_patch_modes'].
     _sel_modes = session.get('_patch_modes')
     modes_to_run = [m for m in _ALL_MODES if _sel_modes is None or m in _sel_modes]
     if not modes_to_run:
-        ui.warn(f"Run {RUN_NUM:04d} — no modes selected, skipping.")
+        ui.warn(f"Run {RUN_NUM:04d} -- no modes selected, skipping.")
         return
     if _sel_modes:
-        ui.msg(f"  Run {RUN_NUM:04d} — running modes: {modes_to_run}")
+        ui.msg(f"  Run {RUN_NUM:04d} -- running modes: {modes_to_run}")
 
     mdl, tok = load_model(session['model_path'], token=session.get('hf_token'), quant=session.get('quantization', '4bit'))
     status_ids = get_status_token_ids(tok)
@@ -435,12 +435,12 @@ def run(run_num: int, session: dict, paths: dict):
     n_refs    = len(ref_keys)
 
     # Filter patch layers to model's actual layer count
-    # ref_states[trial] is a list of [emb, L0, L1, ..., Ln] — length = n_layers + 1
+    # ref_states[trial] is a list of [emb, L0, L1, ..., Ln] -- length = n_layers + 1
     _n_model_layers = len(ref_states[ref_keys[0]]) - 1 if ref_states else 32
     _active_patch_layers = [li for li in PATCH_LAYERS if li < _n_model_layers]
     if len(_active_patch_layers) < len(PATCH_LAYERS):
         _skipped = [li for li in PATCH_LAYERS if li >= _n_model_layers]
-        ui.warn(f"  [graft] Model has {_n_model_layers} layers — skipping patch layers {_skipped}")
+        ui.warn(f"  [graft] Model has {_n_model_layers} layers -- skipping patch layers {_skipped}")
         ui.msg(f"  [graft] Active patch layers: {_active_patch_layers}")
 
     # ── Per-layer mu/sigma for random mode (v0.67.0.0) ──────────────────────
@@ -469,7 +469,7 @@ def run(run_num: int, session: dict, paths: dict):
     # the trial loop.  The previous code called _load_none_outputs() once per trial
     # (100 calls × full CSV read each time) before any GPU work started.  On a large
     # R21 CSV (1300 rows × ~1-2 KB/row with JSON metric fields) this was 130–260 MB
-    # of repeated I/O — silent from the dashboard's perspective because no
+    # of repeated I/O -- silent from the dashboard's perspective because no
     # _write_status calls occur until after the model begins generating.  Dashboard
     # remained frozen on "loading model" for the entire pre-generation phase.
     _all_none_outputs: dict = {}  # {trial_int: {turn_int: output_str}}
@@ -489,10 +489,11 @@ def run(run_num: int, session: dict, paths: dict):
                 _tu2  = _hdr2.index('turn')
                 _ou2  = _hdr2.index('output')
                 _need = max(_rm2, _pr2, _pm2, _tu2, _ou2)
+                from cartography import run_mode_matches as _rmm_gp  # v0.79.5.2: dual-accept
                 for _row2 in _rows2[1:]:
                     if len(_row2) <= _need:
                         continue
-                    if _row2[_rm2] != str(RUN_NUM) or _row2[_pr2] == '1':
+                    if not _rmm_gp(_row2[_rm2], RUN_NUM) or _row2[_pr2] == '1':
                         continue
                     if _row2[_pm2] != 'none':
                         continue
@@ -530,7 +531,7 @@ def run(run_num: int, session: dict, paths: dict):
 
             for patch_mode in modes_to_run:
                 if (trial, patch_mode) in done_pairs:
-                    continue   # already collected — skip this (trial, mode) pair
+                    continue   # already collected -- skip this (trial, mode) pair
 
                 if patch_mode == "none":
                     patch_vecs = {}
@@ -614,13 +615,13 @@ def run(run_num: int, session: dict, paths: dict):
                         import gc; torch.cuda.empty_cache(); gc.collect()
 
                     if patch_mode == "none":
-                        # Use print_turn_result for none rows — writes _write_status
+                        # Use print_turn_result for none rows -- writes _write_status
                         # so the dashboard stays live. Finding Y fix (v24.5).
                         print_turn_result(RUN_NUM, trial, turn, TURNS, result, cal_slope)
                     else:
                         # for partial/full turns.  Previously only print() was called,
                         # leaving _write_status never called for the entire partial/full
-                        # pass — dashboard timer froze on "loading model" indefinitely.
+                        # pass -- dashboard timer froze on "loading model" indefinitely.
                         _patch_label = f"G{RUN_NUM:04d}"
                         _patch_line  = (
                             f"  T={temperature:.1f} {_patch_label} trial{trial:03d} turn{turn:02d}/{TURNS:02d} "
@@ -649,7 +650,7 @@ def run(run_num: int, session: dict, paths: dict):
 
 
 # ══════════════════════════════════════════════════════════════════
-# RUN 53 — RANDOM NOISE PATCHING BASELINE (H40)
+# RUN 53 -- RANDOM NOISE PATCHING BASELINE (H40)
 # ══════════════════════════════════════════════════════════════════
 
 _R53_MODES = ["none", "full", "L8", "L16", "L24", "L31"]
@@ -664,16 +665,16 @@ _R53_MODE_OFFSET = {m: i for i, m in enumerate(_R53_MODES)}
 
 
 def _run_53_random_patching(run_num, session, paths):
-    """Run 0019 — random-noise patching baseline (H40 empirical control).
+    """Run 0019 -- random-noise patching baseline (H40 empirical control).
 
     Six conditions:
-      'none'     — no patching, reference trajectory
-      'full'     — N(mu_l, sigma_l^2) at every PATCH_LAYER simultaneously
-      'L{layer}' — single-layer noise at each layer in [8,16,24,31]
+      'none'     -- no patching, reference trajectory
+      'full'     -- N(mu_l, sigma_l^2) at every PATCH_LAYER simultaneously
+      'L{layer}' -- single-layer noise at each layer in [8,16,24,31]
                    (filtered to layers present in current model)
 
     Per-layer mu/sigma estimated from Run 0006's saved all-layers hiddens
-    (v0.67.0.0 fix — earlier N(0,1) destroyed the per-layer signal).
+    (v0.67.0.0 fix -- earlier N(0,1) destroyed the per-layer signal).
 
     This is the pure-noise baseline that Run 0018's single-layer causal
     profile (H29) is compared against. If a layer rejects H29 but
@@ -699,7 +700,7 @@ def _run_53_random_patching(run_num, session, paths):
                                         n_trials=10)
     if not ref_states:
         if os.environ.get('IOTA_HEADLESS') == '1':
-            ui.warn("Run 0019 — no Run 0006 all-layers hidden states found. Skipping.")
+            ui.warn("Run 0019 -- no Run 0006 all-layers hidden states found. Skipping.")
             return
 
     # Dynamic layer filtering for models with fewer layers than LLaMA 3 8B
@@ -713,7 +714,7 @@ def _run_53_random_patching(run_num, session, paths):
         _r53_layer_map[f"L{li}"] = [li]
     if len(_r53_active_layers) < len(PATCH_LAYERS):
         _skipped = [li for li in PATCH_LAYERS if li >= _n_model_layers]
-        ui.warn(f"  [R53] Model has {_n_model_layers} layers — skipping layers {_skipped}")
+        ui.warn(f"  [R53] Model has {_n_model_layers} layers -- skipping layers {_skipped}")
 
     _layer_mu  = {}
     _layer_sig = {}
@@ -958,7 +959,7 @@ def _run_53_random_patching(run_num, session, paths):
 if __name__ == "__main__":
     ui.install_deps()
     session = ui.load_session()
-    ui.header(f"Graft — Activation Patching (Run {RUN_NUM})")
+    ui.header(f"Graft -- Activation Patching (Run {RUN_NUM})")
     ui.session_summary(session)
     if ui.confirm("Run now?"):
         paths = get_paths(session['model_family'], session['model_size'],

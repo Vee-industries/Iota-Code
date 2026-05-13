@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — SHARED UI
+IOTA FRAMEWORK -- SHARED UI
 ============================
 Imported by start_here.py, runners.py, analysis.py, export_stats.py.
 Provides: console chrome, model selection, session management,
@@ -10,7 +10,7 @@ DO NOT run directly.
 v30.0 changes:
   - select_model() simplified: user picks family → size only.
     Variant is resolved internally by vault.get_preferred_variant().
-    Returns (name, path, family, size, variant) — 5-tuple.
+    Returns (name, path, family, size, variant) -- 5-tuple.
     Callers that previously unpacked 4 values must unpack 5.
   - VRAM detection: get_total_vram_gb(), get_available_vram_gb(),
     estimate_model_vram_gb(), check_vram_ok().
@@ -62,16 +62,65 @@ def header(title):
     pad = max(0, (W - len(title) - 2) // 2)
     print(" " * pad + f"  {title}  ")
     dbar()
-def _log(text, kind="turn"):
-    """Write to dashboard log file so console shows stats/analysis output."""
+# ─────────────────────────────────────────────
+# DASHBOARD JSONL LOG BRIDGE
+# ─────────────────────────────────────────────
+# v0.79.5.18 DIAG: _log() had "except: pass" eating every failure
+# silently. Result: if any call in the try block raised (path
+# resolution, file open, encoding, permission), _log returned
+# without writing to .iota_log.jsonl -- and without emitting any
+# trace anywhere. Every ui.msg/ok/warn/err/section still reached
+# stdout (→ .iota_flask.log → Detailed view), so runs looked
+# fine from Detailed. But Simple view, which reads .iota_log.jsonl,
+# stayed empty with no explanation.
+#
+# Two-part diagnostic hardening:
+#
+# (1) Resolve and cache the log path ONCE at module load. No
+#     per-call dynamic import of _find_root (possible failure
+#     mode under partial-import / circular-import scenarios
+#     in subprocess context). Single source of truth.
+#
+# (2) Replace silent pass with stderr emit. stderr reaches
+#     .iota_flask.log via Popen capture → visible in Detailed
+#     view. If _log fails during a run, you SEE why.
+#
+# After this ship deploys, the next run's Detailed view will
+# either show [ui._log FAILED] lines (reveal root cause for a
+# targeted 0.79.5.18 fix) or stay clean (meaning _log is
+# succeeding and the simple-view gap is elsewhere -- Flask-side
+# index, path mismatch between write location and read location,
+# etc. -- which narrows the investigation).
+try:
+    from cartography import _find_root as _cart_find_root
+    _LOG_PATH = os.path.join(_cart_find_root(), ".iota_log.jsonl")
+except Exception as _e:
+    _LOG_PATH = None
     try:
-        import json as _j, time as _t
-        from cartography import _find_root as _fr
-        entry = _j.dumps({"text": text, "kind": kind, "ts": _t.time()})
-        with open(os.path.join(_fr(), ".iota_log.jsonl"), 'a', encoding='utf-8') as _f:
-            _f.write(entry + "\n")
+        sys.stderr.write(f"[ui init] could not resolve _LOG_PATH at import: "
+                         f"{type(_e).__name__}: {_e}\n")
+        sys.stderr.flush()
     except Exception:
         pass
+
+def _log(text, kind="turn"):
+    """Write to dashboard log file so console shows stats/analysis output."""
+    if _LOG_PATH is None:
+        return
+    try:
+        entry = json.dumps({"text": text, "kind": kind, "ts": time.time()})
+        with open(_LOG_PATH, 'a', encoding='utf-8') as _f:
+            _f.write(entry + "\n")
+    except Exception as _e:
+        # Surface to stderr → .iota_flask.log → Detailed view.
+        # Truncate text to avoid spamming long payloads.
+        try:
+            _txt_preview = (text or '')[:80].replace('\n', ' ')
+            sys.stderr.write(f"[ui._log FAILED] {type(_e).__name__}: {_e} "
+                             f"-- path={_LOG_PATH!r} text={_txt_preview!r}\n")
+            sys.stderr.flush()
+        except Exception:
+            pass
 
 def section(title):
     """Print a section header: blank line, rule, indented title, rule.
@@ -106,31 +155,7 @@ def ok(text):
 def err(text):
     """Print an error-tagged line '[x] text' and echo with kind='err'."""
     print(f"  [x] {text}", flush=True); _log(text, kind="err")
-def enter_exit():
-    """Print a blank line and wait for Enter. Used as the terminal
-    dwell point before a process exits so the user can read final
-    output before the window closes."""
-    blank()
-    input("  Press Enter to exit...")
 
-
-def pick(prompt, valid, default=None, back=True):
-    """Interactive single-char menu. Loops until the user enters a
-    value in `valid` (case-insensitive) or 'b' if back=True.
-    Returns the selected raw lowercase string, or 'b' for back, or
-    `default` on empty input if default is set."""
-    if back:
-        opt("b", "Back")
-    blank()
-    while True:
-        raw = input(f"  {prompt} > ").strip().lower()
-        if not raw and default:
-            return default
-        if back and raw == 'b':
-            return 'b'
-        if raw in [str(v).lower() for v in valid]:
-            return raw
-        warn(f"Options: {', '.join(str(v) for v in valid)}")
 
 
 def confirm(prompt, default_yes=True):
@@ -210,7 +235,7 @@ DEFAULT_SESSION = {
 def load_session():
     """Load last_session.json and merge over DEFAULT_SESSION.
 
-    Strips the transient ``_log_ts`` key — setup_logging() writes it
+    Strips the transient ``_log_ts`` key -- setup_logging() writes it
     into session on first call; if persisted, the next session would
     reuse the timestamp and share a log file. Returns a dict that is
     guaranteed to have every DEFAULT_SESSION key, so callers can
@@ -232,7 +257,7 @@ def load_session():
 
 def save_session(session):
     """Write session dict to last_session.json with an updated ``_saved``
-    timestamp. Not atomic — for atomic session writes, export_flask
+    timestamp. Not atomic -- for atomic session writes, export_flask
     uses a tempfile+replace pattern (see _wsess there)."""
     session['_saved'] = datetime.datetime.now().isoformat()
     with open(SETTINGS_FILE, 'w') as f:
@@ -264,7 +289,7 @@ def get_total_vram_gb() -> float:
     """Return total VRAM in GB. Tries torch.cuda first for live
     readings, falls back to the vram_gb value cached in .iota_env.json
     (written by setup.py at install time). Returns 0.0 if neither
-    source answers — typically means CPU-only or no NVIDIA GPU."""
+    source answers -- typically means CPU-only or no NVIDIA GPU."""
     try:
         import torch
         if torch.cuda.is_available():
@@ -283,7 +308,7 @@ def get_available_vram_gb() -> float:
     """Return currently free VRAM in GB via torch.cuda.mem_get_info.
     Calls cuda.synchronize first so the reading reflects actually-
     freed memory rather than pending async operations. Falls back to
-    total VRAM if the query fails — a pessimistic estimate is still
+    total VRAM if the query fails -- a pessimistic estimate is still
     safer than zero here."""
     try:
         import torch
@@ -353,7 +378,7 @@ def check_vram_ok(model_path: str, quantization: str,
     """
     total  = get_total_vram_gb()
     if total == 0.0:
-        return True   # CPU mode — no VRAM limit to enforce
+        return True   # CPU mode -- no VRAM limit to enforce
 
     needed   = estimate_model_vram_gb(model_path, quantization)
     headroom = round(total - needed, 1)
@@ -382,7 +407,7 @@ def check_vram_ok(model_path: str, quantization: str,
         warn(f"VRAM is tight: ~{needed:.1f} GB needed, {total:.1f} GB available  "
              f"({headroom:.1f} GB headroom).")
         if not clear_cache:
-            warn("KV cache persistent — grows each turn. Consider clearing.")
+            warn("KV cache persistent -- grows each turn. Consider clearing.")
         blank()
 
     return True
@@ -406,7 +431,7 @@ def install_deps():
     scikit-learn -> sklearn). Try --break-system-packages first
     (needed on Debian/Ubuntu PEP 668 systems), fall back to plain
     install if that flag isn't recognised. Fails loudly per-package
-    but does not halt — a missing non-critical dep will surface
+    but does not halt -- a missing non-critical dep will surface
     naturally when a run tries to import it."""
     import importlib
     PKG_MAP = {"nvidia-ml-py": "pynvml", "scikit-learn": "sklearn"}
@@ -444,34 +469,12 @@ def install_deps():
 # QUANTIZATION MENU
 # ─────────────────────────────────────────────
 QUANT_OPTIONS = {
-    "1": ("4bit",  "4-bit NF4 double quant  [recommended — fits most consumer GPUs]"),
+    "1": ("4bit",  "4-bit NF4 double quant  [recommended -- fits most consumer GPUs]"),
     "2": ("8bit",  "8-bit LLM.int8          [~2× VRAM vs 4-bit]"),
     "3": ("16bit", "16-bit fp16/bf16        [~4× VRAM vs 4-bit]"),
     "4": ("fp32",  "fp32 full float32       [maximum VRAM, rarely needed]"),
 }
 
-
-def pick_quantization(current=None):
-    """Interactive quantization picker. Shows the user's VRAM alongside
-    the four quantization options (4bit/8bit/16bit/fp32) so they can
-    see whether their model will fit. The current selection is marked
-    with an arrow. Returns the new quant string or None for back."""
-    total = get_total_vram_gb()
-    while True:
-        section("Quantization")
-        if total > 0:
-            msg(f"Your GPU: {total:.1f} GB VRAM total")
-            blank()
-        for k, (v, label) in QUANT_OPTIONS.items():
-            marker = " ←" if v == current else ""
-            opt(k, f"{label}{marker}")
-        opt("b", "Back")
-        blank()
-        raw = input("  > ").strip().lower()
-        if raw == 'b': return None
-        if raw in QUANT_OPTIONS:
-            return QUANT_OPTIONS[raw][0]
-        warn("Enter 1–4 or b.")
 
 
 # ─────────────────────────────────────────────
@@ -482,7 +485,7 @@ def pick_cache_mode(current=True):
     """Interactive KV-cache-mode picker.
 
     Two modes: clear every turn (default, stable VRAM) or persistent
-    (cache accumulates across turns — can OOM on long runs and smaller
+    (cache accumulates across turns -- can OOM on long runs and smaller
     GPUs). Warns explicitly when VRAM < 12 GB and the user is about
     to enable persistent mode. Returns True (clear every turn), False
     (persistent), or None (back)."""
@@ -492,9 +495,9 @@ def pick_cache_mode(current=True):
     msg("The KV cache stores computed attention states across turns.")
     msg("Clearing it each turn gives stable, predictable VRAM usage.")
     blank()
-    opt("1", "Clear every turn  [default — stable VRAM]" + (" ←" if current else ""))
+    opt("1", "Clear every turn  [default -- stable VRAM]" + (" ←" if current else ""))
     blank()
-    opt("2", "Persistent  — cache accumulates across turns" + ("" if current else " ←"))
+    opt("2", "Persistent  -- cache accumulates across turns" + ("" if current else " ←"))
     blank()
     if total > 0 and total < 12.0:
         warn(f"  Your GPU has {total:.1f} GB. Persistent cache can cause OOM on long runs.")
@@ -515,7 +518,7 @@ def pick_cache_mode(current=True):
 # User flow: quick picks → OR browse by family → pick size → done.
 # No variant shown. Variant resolved internally by vault.get_preferred_variant().
 #
-# Returns (display_name, hf_path, family, size, variant) — 5-tuple.
+# Returns (display_name, hf_path, family, size, variant) -- 5-tuple.
 # ─────────────────────────────────────────────
 
 # Quick-pick list: (label, family, size, note)
@@ -533,7 +536,7 @@ _QUICK_PICKS = [
 def select_model(current_path=None):
     """
     Simplified model selection. User picks from quick list or browses by family/size.
-    Variant is NEVER shown — resolved by vault.get_preferred_variant() internally.
+    Variant is NEVER shown -- resolved by vault.get_preferred_variant() internally.
 
     Returns (display_name, hf_path, family, size, variant) or None for back.
     """
@@ -546,7 +549,7 @@ def select_model(current_path=None):
         blank()
         for i, (label, fam, sz, note) in enumerate(_QUICK_PICKS, 1):
             n, path, variant = get_preferred_variant(fam, sz)
-            suffix           = f"  — {note}" if note else ""
+            suffix           = f"  -- {note}" if note else ""
             opt(str(i), f"{label}{suffix}")
             msg(f"         {path}")
             blank()
@@ -595,7 +598,7 @@ def select_model(current_path=None):
 
 def _infer_variant(path: str) -> str:
     """Classify a model path as abliterated / instruct / base / unknown.
-    Thin wrapper around vault._classify_variant — kept here so the
+    Thin wrapper around vault._classify_variant -- kept here so the
     module boundary between UI and vault stays clean."""
     from vault import _classify_variant
     return _classify_variant(path)
@@ -604,7 +607,7 @@ def _infer_variant(path: str) -> str:
 def _browse_by_family():
     """Browse by family -> size. Returns 5-tuple (name, path, family,
     size, variant) or None for back. Variant is never shown to the
-    user — resolved internally via vault.get_preferred_variant()
+    user -- resolved internally via vault.get_preferred_variant()
     which picks abliterated > instruct > base > any."""
     from vault import FAMILIES, by_family, get_family_sizes, get_preferred_variant
 
@@ -637,7 +640,7 @@ def _pick_size(family_key: str):
         return None
 
     while True:
-        section(f"{FAMILIES[family_key]} — Size")
+        section(f"{FAMILIES[family_key]} -- Size")
         for i, sz in enumerate(sizes, 1):
             n, path, var = get_preferred_variant(family_key, sz)
             opt(str(i), f"{sz.upper()}")
@@ -662,167 +665,27 @@ def _pick_size(family_key: str):
 # RUN SELECTION
 # ─────────────────────────────────────────────
 
-def pick_runs():
-    """Interactive run-spec picker. DEAD CODE in current pipeline —
-    start_here.py uses its own _pick_runs() that reads live scan
-    state and shows pending counts. Retained for any external
-    callers and kept up to date with the current run roster
-    (1-44 full, plus Phase 4 additions in v35.0, run 0051 added v36.9)."""
-    # DEAD CODE — never called. start_here.py uses _pick_runs() instead (which
-    # reads live scan state and shows pending counts). Retained for any external
-    # callers but kept up to date. v36.9: updated stale "1-39,41,42" refs (missing
-    # runs 0051, 0025, 0026) and added Phase 4 option.
-    section("Run Selection")
-    blank()
-    opt("1", "All runs  0004–0026  (full sweep)")
-    opt("2", "Phase 1   1–21,42     (proof only)")
-    opt("3", "Phase 2   22–34,40,41 (quantify only)")
-    opt("4", "Phase 3   35–39       (extend only)")
-    opt("5", "Phase 4   43,44       (coherence + contradiction)")
-    opt("6", "Custom    (e.g.  1-5  or  3,7,12)")
-    opt("b", "Back")
-    blank()
-    while True:
-        raw = input("  > ").strip().lower()
-        if raw == 'b':  return None
-        if raw == '1':  return "1-44"
-        if raw == '2':  return "1-21,42"
-        if raw == '3':  return "22-34,40,41"
-        if raw == '4':  return "35-39"
-        if raw == '5':  return "43,44"
-        if raw == '6':
-            blank()
-            import re
-            while True:
-                raw2 = input("  Range or list (e.g. 1-5 or 3,7,12): ").strip()
-                if not raw2:
-                    return "1-44"
-                if re.fullmatch(r'[\d,\-]+', raw2):
-                    return raw2
-                warn("Use digits, commas, and hyphens only (e.g. 1-5 or 3,7,12).")
-        warn("Enter 1–6 or b.")
-
 
 # ─────────────────────────────────────────────
 # PARAMS
 # ─────────────────────────────────────────────
-
-def pick_params(session):
-    """Interactive parameter-edit menu. Lets the user toggle trials,
-    temperature, seed, and cache mode on the live session dict in
-    place. 'd' done exits preserving changes; 'b' back exits without
-    returning the session (caller keeps its previous reference).
-    Temperature is clipped to [0.0, 1.0] with a warn if out of range."""
-    while True:
-        section("Run Parameters")
-        opt("1", f"Trials per run : {session.get('trials', 100)}")
-        opt("2", f"Temperature    : {session.get('temperature', 0.0)}  (0.0 = deterministic)")
-        opt("3", f"Random seed    : {session.get('seed', 42)}")
-        cache_label = "cleared every turn" if session.get('clear_cache', True) else "persistent"
-        opt("4", f"Cache mode     : {cache_label}")
-        opt("d", "Done")
-        opt("b", "Back")
-        blank()
-        raw = input("  > ").strip().lower()
-        if raw == 'b': return None
-        if raw == 'd': return session
-        if raw == '1':
-            v = input("  Trials (default 100): ").strip()
-            if v.isdigit(): session['trials'] = int(v)
-        elif raw == '2':
-            v = input("  Temperature (0.0–1.0): ").strip()
-            try:
-                tv = round(float(v), 1)
-                tv_clipped = max(0.0, min(1.0, tv))
-                if tv_clipped != tv:
-                    warn(f"{tv} clipped to {tv_clipped} (range 0.0–1.0).")
-                session['temperature'] = tv_clipped
-            except ValueError:
-                warn("Must be a number 0.0–1.0.")
-        elif raw == '3':
-            v = input("  Seed: ").strip()
-            if v.isdigit(): session['seed'] = int(v)
-        elif raw == '4':
-            result = pick_cache_mode(session.get('clear_cache', True))
-            if result is not None:
-                session['clear_cache'] = result
 
 
 # ─────────────────────────────────────────────
 # RESUME / OVERRIDE
 # ─────────────────────────────────────────────
 
-def check_existing_trials(csv_file, run_num, requested_trials):
-    """
-    Check trial completion and return (action, start_trial).
-    action: 'run_all' | 'resume' | 'skip' | 'abort'
-
-    In headless mode (IOTA_HEADLESS=1): auto-skips complete runs,
-    auto-resumes partial runs without prompting.
-    """
-    from cartography import find_existing_trials
-    existing  = find_existing_trials(csv_file, run_num)
-    remaining = requested_trials - existing
-
-    # Headless auto-behaviour
-    if os.environ.get('IOTA_HEADLESS') == '1':
-        if existing == 0:          return 'run_all', 0
-        if existing >= requested_trials: return 'skip', existing
-        return 'resume', existing
-
-    if existing == 0:
-        return 'run_all', 0
-
-    if existing >= requested_trials:
-        section(f"Run {run_num:04d} — Already Complete")
-        warn(f"{existing}/{requested_trials} trials found.")
-        blank()
-        opt("1", "Skip — use existing data")
-        opt("2", "Override — delete and rerun")
-        opt("3", "Abort")
-        blank()
-        while True:
-            raw = input("  > ").strip().lower()
-            if raw == '1': return 'skip', existing
-            if raw == '2':
-                warn(f"This will delete {existing} trials of Run {run_num:04d}.")
-                if confirm("Delete existing data?", default_yes=False):
-                    _delete_run_data(csv_file, run_num)
-                    return 'run_all', 0
-                return 'skip', existing
-            if raw == '3': return 'abort', 0
-    else:
-        section(f"Run {run_num:04d} — Partial Data Found")
-        msg(f"{existing}/{requested_trials} trials done. {remaining} remaining.")
-        blank()
-        opt("1", f"Resume — run {remaining} more  [recommended]")
-        opt("2", "Override — start fresh")
-        opt("3", "Skip")
-        opt("4", "Abort")
-        blank()
-        while True:
-            raw = input("  > ").strip().lower()
-            if raw == '1': return 'resume', existing
-            if raw == '2':
-                warn(f"This will delete {existing} trials of Run {run_num:04d}.")
-                if confirm("Delete existing data?", default_yes=False):
-                    _delete_run_data(csv_file, run_num)
-                    return 'run_all', 0
-                return 'resume', existing
-            if raw == '3': return 'skip', existing
-            if raw == '4': return 'abort', 0
-
 
 def srx_prompt(message, run_num=None, skip_label="s", run_label="r"):
     """
     Show a data-quality gate. Returns skip_label or run_label.
     In headless mode, auto-returns skip_label and logs the skip.
-    run_num is optional — used in the section header if provided.
+    run_num is optional -- used in the section header if provided.
     """
     if os.environ.get('IOTA_HEADLESS') == '1':
         return run_label  # always proceed in headless mode
     if run_num is not None:
-        section(f"Run {run_num:04d} — Data Gate")
+        section(f"Run {run_num:04d} -- Data Gate")
     else:
         section("Data Gate")
     msg(message)
@@ -838,7 +701,7 @@ def srx_prompt(message, run_num=None, skip_label="s", run_label="r"):
 
 def _delete_run_data(csv_file, run_num):
     """Delete every CSV row and every .npy hidden-state file associated
-    with one run_num. Used by the 'Override — start fresh' branch of
+    with one run_num. Used by the 'Override -- start fresh' branch of
     check_existing_trials after explicit user confirmation. Also
     removes the corresponding analysis JSONs so a re-run produces
     coherent output."""
@@ -907,7 +770,7 @@ def check_crash_recovery():
     """Read and return the crash marker dict if present, or None.
     Prints a warning banner with the interrupted run/trial/time so
     the user knows what the next resume will do. Does not delete
-    the marker — prompt_crash_recovery owns that."""
+    the marker -- prompt_crash_recovery owns that."""
     if os.path.exists(CRASH_FILE):
         try:
             with open(CRASH_FILE, encoding='utf-8') as f:
@@ -922,18 +785,6 @@ def check_crash_recovery():
             pass
     return None
 
-
-def prompt_crash_recovery():
-    """Check for a crash marker and ask the user whether to resume.
-    Returns the crash dict if the user confirms resume, None
-    otherwise. A declined resume clears the marker so the next
-    launch starts fresh."""
-    crash = check_crash_recovery()
-    if crash:
-        if confirm("Resume from last interrupted point?", default_yes=True):
-            return crash
-        clear_crash_marker()
-    return None
 
 
 # ─────────────────────────────────────────────
@@ -962,7 +813,7 @@ class Progress:
 
     def update(self, n=1, metric_str=""):
         """Advance the bar by n units and re-render. Optional metric_str
-        is appended right of the ETA — used for live similarity/power
+        is appended right of the ETA -- used for live similarity/power
         readouts."""
         self.done += n
         self._render(metric_str)
@@ -1013,7 +864,7 @@ def setup_logging(session):
     Writes into logs/iota_run_{YYYYMMDD_HHMMSS}.log. The timestamp is
     cached on session['_log_ts'] (UI-16 fix) so resumed batches share
     one log file across subprocess invocations. Returns (log_fn,
-    log_file_path) — log_fn is a closure that appends a line to the
+    log_file_path) -- log_fn is a closure that appends a line to the
     file and optionally prints to stdout."""
     log_dir   = os.path.join(SCRIPT_DIR, "logs")
     os.makedirs(log_dir, exist_ok=True)

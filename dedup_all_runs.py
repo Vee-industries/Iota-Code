@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-IOTA — Universal CSV dedup/cap/cull v0.58.0.0
+IOTA -- Universal CSV dedup/cap/cull v0.58.0.0
 ================================================================
 Three passes per CSV:
 
-  1. DEDUP  — remove duplicate rows using key (run_mode, trial, turn, condition).
+  1. DEDUP  -- remove duplicate rows using key (run_mode, trial, turn, condition).
               All rows are header-width (universal schema). Read by column name.
 
-  2. CAP    — trim per-condition trial count to n_trials.
+  2. CAP    -- trim per-condition trial count to n_trials.
 
-  3. CULL   — remove incomplete trials (fewer than expected turns).
+  3. CULL   -- remove incomplete trials (fewer than expected turns).
 
 Dry-run by default. Pass --apply to write changes (backs up as .csv.bak).
 
@@ -27,7 +27,7 @@ from collections import defaultdict, Counter
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
-# All condition columns — ALL of them form the dedup key so R26 (condition +
+# All condition columns -- ALL of them form the dedup key so R26 (condition +
 # temperature_condition) is never falsely deduplicated across temperatures.
 _COND_COLS = [
     'condition', 'r_condition', 'history_mode', 'confound_condition',
@@ -72,7 +72,7 @@ def _read_rows(fpath):
 def _write_rows(fpath, header, kept):
     """Atomic overwrite: backs up fpath to fpath+'.bak' via shutil.copy2
     (preserves mtime), then writes header + kept rows with LF line endings.
-    .bak lets process_run be re-runnable — last good state is always on disk."""
+    .bak lets process_run be re-runnable -- last good state is always on disk."""
     shutil.copy2(fpath, fpath + '.bak')
     buf = io.StringIO()
     w = csv.writer(buf, lineterminator='\n')
@@ -85,17 +85,17 @@ def _write_rows(fpath, header, kept):
 def process_run(run_num, fpath, n_trials, dry_run=True, verbose=True):
     """Apply DEDUP -> CAP -> CULL passes to one run's CSV.
 
-    DEDUP  — collapse identical rows under compound key
+    DEDUP  -- collapse identical rows under compound key
              (run_mode, trial, turn, condition_concat). Condition key
              concatenates every condition column present in the CSV so
              multi-condition runs (R26, R28, etc.) aren't collapsed
              across conditions.
 
-    CAP    — trim per-condition rows down to n_trials * n_turns. Uses
+    CAP    -- trim per-condition rows down to n_trials * n_turns. Uses
              file_trial when present (multi-condition offset encoding),
              else plain trial. Keeps lowest trial indices.
 
-    CULL   — remove trials whose turn count falls short of the expected
+    CULL   -- remove trials whose turn count falls short of the expected
              per-condition turn count. Incomplete trials would bias
              analysis when loaded.
 
@@ -109,7 +109,7 @@ def process_run(run_num, fpath, n_trials, dry_run=True, verbose=True):
     header  = all_rows[0]
     n_hdr   = len(header)
 
-    # Build column index by name — canonical read, no position scanning
+    # Build column index by name -- canonical read, no position scanning
     idx = {c: i for i, c in enumerate(header)}
 
     rm_idx  = idx.get('run_mode', 0)
@@ -210,7 +210,7 @@ def process_run(run_num, fpath, n_trials, dry_run=True, verbose=True):
             trial_turns[cd][t] += 1
 
     # Compute expected_turns PER condition group, not globally.
-    # R43/R44 have mixed-turn phases (8 priming + 5 arithmetic) — global mode
+    # R43/R44 have mixed-turn phases (8 priming + 5 arithmetic) -- global mode
     # would be 8, causing all 5-turn arithmetic blocks to be incorrectly culled.
     incomplete = set()
     for cd, t_dict in trial_turns.items():
@@ -282,14 +282,14 @@ def main():
 
     csv_dir = paths.get('csv', '')
     mode_str = "DRY-RUN (no files changed)" if dry_run else "APPLY MODE"
-    print(f"\nIOTA dedup v3.0 — {mode_str}")
+    print(f"\nIOTA dedup v3.0 -- {mode_str}")
     print(f"n_trials={n_trials}  csv_dir={csv_dir}\n")
 
     total_removed = 0
     runs = {args.run: RUN_CSV[args.run]} if args.run else dict(RUN_CSV)
 
     # Run 0001 has a multi-pass structure (base → instruct → abliterated) that
-    # produces rows with identical (trial, turn) keys across passes — dedup
+    # produces rows with identical (trial, turn) keys across passes -- dedup
     # incorrectly treats them as duplicates and removes valid data.
     # v54.0.2: excluded from pre-run dedup in start_here.py.
     # v54.2.3: also excluded here for consistency.
@@ -306,7 +306,7 @@ def main():
             r = process_run(run_num, fpath, n_trials, dry_run=dry_run)
             total_removed += r['total']
         except Exception as e:
-            print(f"  Run {run_num:04d}: ERROR — {e}")
+            print(f"  Run {run_num:04d}: ERROR -- {e}")
 
     print(f"\nTotal rows {'would be' if dry_run else ''} removed: {total_removed}")
     if dry_run and total_removed > 0:

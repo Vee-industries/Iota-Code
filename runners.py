@@ -1,15 +1,15 @@
 """
-IOTA FRAMEWORK — RUNNERS
+IOTA FRAMEWORK -- RUNNERS
 ==========================
 Dispatch hub. Routes run numbers to phase modules.
 All generation-based runs dispatched by start_here.py via run(run_num, session, paths).
 
 Module layout:
-  runners_prompts.py  — all prompt constants
-  runners_core.py     — shared infrastructure (token matching, standard loop, ET recovery)
-  runners_p1.py       — Phase 1: Runs 0004-0002 (proof of phenomenon)
-  runners_p2.py       — Phase 2: Runs 0028-0021 (quantification)
-  runners_p3.py       — Phase 3+4: Runs 0038-0026 (extension + coherence/contradiction measurement)
+  runners_prompts.py  -- all prompt constants
+  runners_core.py     -- shared infrastructure (token matching, standard loop, ET recovery)
+  runners_p1.py       -- Phase 1: Runs 0004-0002 (proof of phenomenon)
+  runners_p2.py       -- Phase 2: Runs 0028-0021 (quantification)
+  runners_p3.py       -- Phase 3+4: Runs 0038-0026 (extension + coherence/contradiction measurement)
 """
 
 import os, sys
@@ -66,7 +66,7 @@ def _write_quant(paths, session):
 
 def run_batch(run_nums: list, session: dict, paths: dict):
     """Run multiple runs with one model load. Called when unload_between_runs=False."""
-    # Runs 0001, 0017, 0020, 0018, 0019 manage their own model loading — must not be in batch
+    # Runs 0001, 0017, 0020, 0018, 0019 manage their own model loading -- must not be in batch
     _SELF_LOAD = {1, 17, 18, 19, 20}  # v0.79.4.0: old {19,21,30,42,53}
     batch = [r for r in run_nums if r not in _SELF_LOAD]
 
@@ -142,20 +142,58 @@ def _dispatch(run_num, session, paths, model, tok):
 
 def run(run_num: int, session: dict, paths: dict):
     """Called by start_here.py for all generation runs."""
+    # v0.79.5.4 [DISP]: dispatch instrumentation -- ground-truth of received run_num.
+    # This is THE boundary where any upstream routing divergence becomes visible:
+    # if runners.run is called with run_num=1 when user selected Run 2 upstream,
+    # every print before this in the chain shows where the flip happened.
+    import os as _disp_os
+    print(f"[DISP] runners.run() received run_num={run_num} "
+          f"session.runs={session.get('runs','?')!r} "
+          f"session.variant={session.get('model_variant','?')} "
+          f"IOTA_SINGLE_RUN={_disp_os.environ.get('IOTA_SINGLE_RUN','')!r}", flush=True)
     assert run_num in (4, 5, 6, 7, 8, 9, 10, 11, 12, 39, 40, 29, 30, 31, 13, 14, 15, 32, 1, 2, 28, 22, 27, 3, 23, 24, 20, 21, 38, 34, 37, 36, 35, 33, 25, 26, 16, # v0.79.2.0: E_t recovery meta-run (first-class)
-    ), f"runners.py handles runs 0004-0002, 0028-0027, 0003, 0023-0021, 0038-0035, 0033, 0025-0026, 0016 — not {run_num}"
+    ), f"runners.py handles runs 0004-0002, 0028-0027, 0003, 0023-0021, 0038-0035, 0033, 0025-0026, 0016 -- not {run_num}"
 
-    # v0.79.2.0: Run 0016 — E_t recovery meta-run.
-    # _run_et_recovery loads its OWN base model (not the abliterated one that
-    # load_model below would pull). Dispatch directly; skip the shared load +
-    # token-match-table machinery. Scanner has already derived the resume set
-    # from disk — _run_et_recovery's per-run/per-trial coverage check handles
-    # the skip logic for already-covered sources.
+    # v0.79.2.0: Run 0016 -- recovery meta-run. Original implementation:
+    # E_t (base-model) recovery via _run_et_recovery.
+    #
+    # v0.82.0.26: extended to two phases. Run 16 now dispatches BOTH:
+    #   Phase A: _run_et_recovery   -- base model, saves kind='E_base'
+    #   Phase B: _run_it_recovery   -- instruct model, saves kind='I_instruct'
+    #
+    # Each phase loads its own model (not the abliterated one that load_model
+    # below would pull). Dispatch directly; skip the shared load + token-match-
+    # table machinery. Each phase's per-run/per-trial coverage check handles
+    # idempotent resume independently. Phase B is a no-op for cells where
+    # phase B was already completed in a prior fire.
+    #
+    # Wrapped in try/except/finally with exit-code tracking. Phase A exception
+    # short-circuits and reports; phase B only runs if phase A completed.
     if run_num == 16:
         from scanner import _ET_RECOVERY_RUNS
-        _run_et_recovery(session, paths, sorted(_ET_RECOVERY_RUNS))
+        from runners_core import _run_it_recovery
         import os as _os
-        _os._exit(0)
+        _r16_exit_code = 0
+        # v0.82.0.26 fix: signal phase A and phase B that they're being called
+        # from the meta-dispatch wrapper. Both phases normally call os._exit(0)
+        # under IOTA_HEADLESS in their finally blocks, which would terminate
+        # the process after phase A and prevent phase B from running. The
+        # IOTA_RUN16_META env var suppresses that exit so phase A returns
+        # normally to the dispatcher, phase B fires, and only the dispatcher's
+        # own _os._exit(_r16_exit_code) terminates the process.
+        _os.environ['IOTA_RUN16_META'] = '1'
+        try:
+            _run_et_recovery(session, paths, sorted(_ET_RECOVERY_RUNS))
+            _run_it_recovery(session, paths, sorted(_ET_RECOVERY_RUNS))
+        except Exception:
+            _r16_exit_code = 1
+            import traceback
+            traceback.print_exc()
+            sys.stdout.flush()
+            sys.stderr.flush()
+        finally:
+            _os.environ.pop('IOTA_RUN16_META', None)
+            _os._exit(_r16_exit_code)
 
     # Run 0001 and Run 0020 manage their own model loading.
     if run_num == 1:
@@ -172,17 +210,17 @@ def run(run_num: int, session: dict, paths: dict):
     try:
         # Populate token match table in all phase modules from this model load.
         print('  Building token match table...', flush=True)
-        # Populate token match table in runners_core — all phase modules
+        # Populate token match table in runners_core -- all phase modules
         # reference runners_core._TOKEN_MATCH_TABLE through _rcore or _pad_prompt.
         table = _build_token_match_table(tok)
         _core._TOKEN_MATCH_TABLE.update(table)
 
         # Run 0022 is 30 turns. _build_token_match_table only covers turns 1-13
         # (built from INTROSPECTION_PROMPTS). Turns 14-30 return target=0 and
-        # receive no padding — creating a within-trial token-length discontinuity.
+        # receive no padding -- creating a within-trial token-length discontinuity.
         # Fix: extend the table with GENERAL_INTROSPECTION_PROMPTS for turns 14-30
         # so all 30 turns are consistently padded to their respective prompt lengths.
-        # Only applied when Run 0022 is dispatched — no effect on any other run.
+        # Only applied when Run 0022 is dispatched -- no effect on any other run.
         if run_num == 22:
             from runners_prompts import GENERAL_INTROSPECTION_PROMPTS as _GIP
             for _i, _p in enumerate(_GIP, start=1):
@@ -222,7 +260,7 @@ def run(run_num: int, session: dict, paths: dict):
     finally:
         _unload(model, tok)
         # v0.58.0.0 FIX-4: force-exit after unload. Since v53.2.1 every run is its
-        # own subprocess — there is no next load. mdl.cpu() or empty_cache() can
+        # own subprocess -- there is no next load. mdl.cpu() or empty_cache() can
         # stall indefinitely on Windows (BUG-43B class). Run 0020 already does this;
         # now all runs do. Same pattern as headless exit at start_here.py:2145.
         import os as _os

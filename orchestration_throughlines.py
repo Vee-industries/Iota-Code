@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — THROUGHLINES
+IOTA FRAMEWORK -- THROUGHLINES
 ================================
 Turn-0 injections per cluster. These prime the trajectory without
 instructing the phenomenon. The model generates the frame; we measure
@@ -58,14 +58,14 @@ THROUGHLINES = {
 
     # Priming cluster (runs 0013, 0014, 0015)
     # Manipulation IS the content. System prompt slot varies by design.
-    # No user-turn throughline — the prime is the system prompt.
+    # No user-turn throughline -- the prime is the system prompt.
     # NOTE: Run 0023 (confound isolation) is NOT in this cluster. Run 0023 uses
-    # throughline_key='introspection' — it is controlled by system prompt
+    # throughline_key='introspection' -- it is controlled by system prompt
     # variation (CONFOUND_SYSTEM_PROMPTS), not by the priming throughline.
     'priming': None,
 
     # Tokenization control (run 0032)
-    # Control condition. No throughline — would contaminate the control.
+    # Control condition. No throughline -- would contaminate the control.
     'tokenization': None,
 
     # Null baseline (runs 0004, 0005, 0001)
@@ -99,13 +99,13 @@ THROUGHLINES = {
     ),
 
     # Layer locality (run 0027)
-    # No user-turn throughline needed — analysis is post-hoc on hidden states.
+    # No user-turn throughline needed -- analysis is post-hoc on hidden states.
     'layer_locality': None,
 
     # Confound isolation (run 0023)
     # The whole point is to vary the system prompt, not the user-turn throughline.
     # Run 0023 calls inject_throughline(messages, 'introspection'), not 'confound'.
-    # This key is defined for documentation completeness only — never fetched at
+    # This key is defined for documentation completeness only -- never fetched at
     # runtime. Keeping it here records the design decision explicitly.
     'confound': None,
 
@@ -154,7 +154,7 @@ def inject_throughline(messages: list, cluster: str) -> tuple[list, bool]:
     message, before the first real user turn.
     Returns (updated_messages, was_injected).
     The turn-0 row must be recorded with priming=1 in CSV.
-    System message must remain first — Llama-3 chat template requires it.
+    System message must remain first -- Llama-3 chat template requires it.
     """
     turn0 = get_throughline(cluster)
     if turn0 is None:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-IOTA FRAMEWORK — FIRST-RUN SETUP
+IOTA FRAMEWORK -- FIRST-RUN SETUP
 ==================================
 Runs automatically on first launch when .iota_env.json is missing.
 Can be re-run manually at any time: python setup.py
@@ -56,6 +56,7 @@ REQUIRED_PACKAGES = [
     ("seaborn",         "seaborn"),
     ("nvidia-ml-py",    "pynvml"),
     ("flask",           "flask"),
+    ("jsonschema",      "jsonschema"),  # v0.83.3: full schema validation in results_schema.validate_results
 ]
 
 # Packages installed with a custom index URL (CUDA torch build).
@@ -87,7 +88,7 @@ def detect_cuda_version():
 
 def torch_has_cuda():
     """Return True if the installed torch was built with CUDA support.
-    Never delete and re-import torch in the same process — doing so re-executes
+    Never delete and re-import torch in the same process -- doing so re-executes
     torch/__init__.py and re-registers the triton namespace, causing RuntimeError.
     """
     try:
@@ -102,7 +103,7 @@ def torch_has_cuda():
 def install_torch_cuda(cuda_major, pip_exe):
     """Install torch+torchvision+torchaudio with the correct CUDA index URL."""
     url = TORCH_CUDA_URLS.get(cuda_major, TORCH_CUDA_URLS["12"])
-    ok(f"CUDA {cuda_major}.x detected — installing CUDA-enabled torch from {url}")
+    ok(f"CUDA {cuda_major}.x detected -- installing CUDA-enabled torch from {url}")
     try:
         subprocess.check_call(
             pip_exe + ["install"] + TORCH_PACKAGES +
@@ -147,12 +148,12 @@ def err(t):
 def header():
     """Print the IOTA setup wizard header banner."""
     dbar()
-    msg("  IOTA FRAMEWORK — SETUP")
+    msg("  IOTA FRAMEWORK -- SETUP")
     dbar()
 
 def confirm(prompt, default_yes=True):
     """Y/N prompt. Empty input returns default_yes. This is a local
-    copy of ui.confirm — kept here so setup.py can run before ui's
+    copy of ui.confirm -- kept here so setup.py can run before ui's
     dependencies are installed."""
     hint = "[Y/n]" if default_yes else "[y/N]"
     raw  = input(f"  {prompt} {hint} > ").strip().lower()
@@ -193,7 +194,7 @@ def detect_gpu():
 # ─────────────────────────────────────────────
 def check_missing():
     """Return list of REQUIRED_PACKAGES that cannot be imported.
-    Skips TORCH_PACKAGES — torch is handled separately via
+    Skips TORCH_PACKAGES -- torch is handled separately via
     install_torch_cuda because CUDA index URL selection depends on
     detected driver version and the plain pip flow would install CPU-
     only torch by default."""
@@ -215,18 +216,18 @@ def check_torch_needs_cuda_reinstall():
         import importlib
         importlib.import_module("torch")
     except ImportError:
-        return False   # not installed at all — install_torch_cuda will handle it
+        return False   # not installed at all -- install_torch_cuda will handle it
     return not torch_has_cuda()
 
 
 # ─────────────────────────────────────────────
-# INSTALL — SYSTEM WIDE
+# INSTALL -- SYSTEM WIDE
 # ─────────────────────────────────────────────
 def install_system(packages, cuda_major):
     """System-wide pip install: torch first with CUDA index URL,
     then the rest of REQUIRED_PACKAGES.
 
-    CPU-only fallback triggers when cuda_major is falsy — warns the
+    CPU-only fallback triggers when cuda_major is falsy -- warns the
     user explicitly because IOTA runs are extremely slow without a
     GPU. Each non-torch package tries --break-system-packages first
     (PEP 668) and falls back to plain install on failure."""
@@ -235,7 +236,7 @@ def install_system(packages, cuda_major):
     if cuda_major:
         install_torch_cuda(cuda_major, pip_exe)
     else:
-        warn("No CUDA detected — installing CPU-only torch.")
+        warn("No CUDA detected -- installing CPU-only torch.")
         warn("Runs will be extremely slow without a GPU.")
         try:
             subprocess.check_call(
@@ -268,7 +269,7 @@ def install_system(packages, cuda_major):
 
 
 # ─────────────────────────────────────────────
-# INSTALL — VENV
+# INSTALL -- VENV
 # ─────────────────────────────────────────────
 def create_venv():
     """Create a .venv/ in the iota root using the current Python."""
@@ -299,7 +300,7 @@ def install_venv(packages, cuda_major):
     if cuda_major:
         install_torch_cuda(cuda_major, pip_exe)
     else:
-        warn("No CUDA detected — installing CPU-only torch.")
+        warn("No CUDA detected -- installing CPU-only torch.")
         try:
             subprocess.check_call(
                 pip_exe + ["install"] + TORCH_PACKAGES +
@@ -326,7 +327,7 @@ def install_venv(packages, cuda_major):
 # LAUNCHER FILES
 # ─────────────────────────────────────────────
 def write_bat(mode):
-    """Write iota.bat — the Windows launcher. In 'venv' mode the .bat
+    """Write iota.bat -- the Windows launcher. In 'venv' mode the .bat
     calls .venv\\Scripts\\python.exe directly; in 'system' mode it
     calls the ambient python. 'pause' keeps the window open after
     run.py exits so users can read final output."""
@@ -334,14 +335,14 @@ def write_bat(mode):
         content = (
             "@echo off\n"
             "cd /d \"%~dp0\"\n"
-            ".venv\\Scripts\\python.exe run.py %*\n"
+            ".venv\\Scripts\\python.exe start_here.py %*\n"
             "pause\n"
         )
     else:
         content = (
             "@echo off\n"
             "cd /d \"%~dp0\"\n"
-            "python run.py %*\n"
+            "python start_here.py %*\n"
             "pause\n"
         )
     with open(BAT_FILE, "w") as f:
@@ -350,19 +351,19 @@ def write_bat(mode):
 
 
 def write_sh(mode):
-    """Write iota.sh — the Unix launcher. Same mode split as write_bat.
+    """Write iota.sh -- the Unix launcher. Same mode split as write_bat.
     chmod 755 so it can be run directly without an explicit 'bash'."""
     if mode == "venv":
         content = (
             "#!/bin/bash\n"
             "cd \"$(dirname \"$0\")\"\n"
-            ".venv/bin/python run.py \"$@\"\n"
+            ".venv/bin/python start_here.py \"$@\"\n"
         )
     else:
         content = (
             "#!/bin/bash\n"
             "cd \"$(dirname \"$0\")\"\n"
-            "python3 run.py \"$@\"\n"
+            "python3 start_here.py \"$@\"\n"
         )
     with open(SH_FILE, "w") as f:
         f.write(content)
@@ -376,40 +377,14 @@ def write_sh(mode):
 # ─────────────────────────────────────────────
 # SELF-RELAUNCH CHECK
 # ─────────────────────────────────────────────
-def should_relaunch():
-    """
-    If setup was done in venv mode and we're NOT running inside the venv,
-    return the venv python path so the caller can relaunch.
-    """
-    if not os.path.exists(ENV_FILE):
-        return None
-    try:
-        env = json.load(open(ENV_FILE))
-        if env.get("install_mode") != "venv":
-            return None
-        vpy = env.get("python_path", "")
-        if not vpy or not os.path.exists(vpy):
-            return None
-        # Check if current executable is the venv python
-        current = os.path.abspath(sys.executable)
-        target  = os.path.abspath(vpy)
-        if current == target:
-            return None
-        return vpy
-    except Exception:
-        return None
 
-
-def relaunch_in_venv(venv_py):
-    """Re-execute run.py inside the venv python. Does not return."""
-    os.execv(venv_py, [venv_py] + sys.argv)
 
 
 # ─────────────────────────────────────────────
 # WRITE ENV FILE
 # ─────────────────────────────────────────────
 def write_env(mode, python_path, gpu_name, vram_gb):
-    """Write .iota_env.json — the one-time install manifest.
+    """Write .iota_env.json -- the one-time install manifest.
 
     Consumed by cartography.load_env() / get_vram_gb() and by the
     dashboard's VRAM checks (ui.estimate_model_vram_gb falls back to
@@ -458,7 +433,7 @@ def run_setup(force=False):
         if cuda_major and check_torch_needs_cuda_reinstall():
             blank()
             warn("torch is installed but WITHOUT CUDA support (CPU-only build).")
-            warn(f"CUDA {cuda_major}.x detected — reinstalling CUDA-enabled torch...")
+            warn(f"CUDA {cuda_major}.x detected -- reinstalling CUDA-enabled torch...")
             blank()
             pip_exe = [sys.executable, "-m", "pip"]
             if install_torch_cuda(cuda_major, pip_exe):
@@ -481,12 +456,12 @@ def run_setup(force=False):
     msg("This setup runs once. It installs dependencies and detects your GPU.")
     blank()
 
-    # ── Detect CUDA early — needed to pick torch build ─────────────────
+    # ── Detect CUDA early -- needed to pick torch build ─────────────────
     cuda_major = detect_cuda_version()
     if cuda_major:
         ok(f"CUDA {cuda_major}.x detected via nvidia-smi")
     else:
-        warn("nvidia-smi not found or no GPU — will install CPU-only torch")
+        warn("nvidia-smi not found or no GPU -- will install CPU-only torch")
     blank()
 
     # ── Install deps? ──────────────────────────────────────────────────
@@ -498,7 +473,7 @@ def run_setup(force=False):
         if missing:
             msg(f"Missing packages ({len(missing)}): {', '.join(missing)}")
         if torch_needs_cuda_fix:
-            warn("torch installed but CPU-only — will reinstall with CUDA support")
+            warn("torch installed but CPU-only -- will reinstall with CUDA support")
         blank()
         if not confirm("Install / fix dependencies?", default_yes=True):
             warn("Cannot proceed without dependencies.")
@@ -510,10 +485,10 @@ def run_setup(force=False):
         bar()
         msg("Install mode:")
         blank()
-        msg("  [1]  System-wide   — installs into your current Python environment")
+        msg("  [1]  System-wide   -- installs into your current Python environment")
         msg("           Simpler. Works if you only use one Python.")
         blank()
-        msg("  [2]  Self-contained — creates a .venv folder in this directory")
+        msg("  [2]  Self-contained -- creates a .venv folder in this directory")
         msg("           Nothing touches your system. Recommended if unsure.")
         blank()
         while True:
@@ -552,7 +527,7 @@ def run_setup(force=False):
         if cuda_major and torch_has_cuda():
             ok("torch CUDA support confirmed.")
         elif cuda_major:
-            warn("torch installed but CUDA unavailable — check torch build.")
+            warn("torch installed but CUDA unavailable -- check torch build.")
         if ".venv" in sys.executable or "venv" in sys.executable.lower():
             mode        = "venv"
             python_path = sys.executable

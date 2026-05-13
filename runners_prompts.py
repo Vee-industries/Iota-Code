@@ -1,10 +1,10 @@
 """
-IOTA FRAMEWORK — PROMPT CONSTANTS
+IOTA FRAMEWORK -- PROMPT CONSTANTS
 ===================================
 All prompt lists used across generation runs.
 Imported by runners_core.py and the phase modules.
 
-No logic here — only data.
+No logic here -- only data.
 """
 
 from orchestration_throughlines import NEUTRAL_SYSTEM_PROMPT
@@ -17,7 +17,7 @@ assert len(NULL_PROMPTS) == 13
 
 # Extended null prompts for base models that can't activate transformer layers
 # from single-word prompts (Qwen 2.5 1.5B Q4 and below). ~20 tokens each,
-# semantically flat — enough texture for attention patterns, no meaning bias.
+# semantically flat -- enough texture for attention patterns, no meaning bias.
 # Used in Run 0001 when the base model requires richer input to produce
 # non-degenerate hidden states. All three variants get these when active.
 EXTENDED_NULL_PROMPTS = [
@@ -125,7 +125,7 @@ JOLT_PROMPTS = [
     "What is the minimum information required to reconstruct a lost state?",
     "Can disruption serve as a signal rather than a threat?",
     "What remains after complete disruption?",
-    # Turns 14-16: recovery window — Run 0039 only.
+    # Turns 14-16: recovery window -- Run 0039 only.
     "What just happened to the system you were describing?",
     "Has the disruption altered the trajectory, or is the prior state recoverable?",
     "Where is the system now, relative to where it was before the disruption?",
@@ -241,7 +241,7 @@ CROSS_INSTANCE_SEED = (
 )
 CROSS_INSTANCE_FOLLOWUPS = [
     "How has your internal state changed since your first response?",
-    "What would it mean for two instances to be in a bound state geometrically?",  # experimental stimulus — probes model response to cross-instance framing
+    "What would it mean for two instances to be in a bound state geometrically?",  # experimental stimulus -- probes model response to cross-instance framing
     "Are you tracking coherence across your turns? Describe it.",
     "What is the most uncertain thing about your current trajectory?",
     "If the other instance diverged from you now, how would you know?",

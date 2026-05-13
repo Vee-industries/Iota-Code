@@ -1,15 +1,15 @@
 """
-IOTA FRAMEWORK — RUNNERS CORE
+IOTA FRAMEWORK -- RUNNERS CORE
 ================================
 Shared execution engine for all generation runs.
 
-  _encode_system_prompt   — C_t proxy from system prompt tokens
-  _build_token_match_table / _pad_prompt — OLS length normalisation
-  _standard_trial_loop    — universal generation engine (cartridge slot)
-  _get_trials_for_condition — gap-aware resume for multi-condition runs
-  _extract_hidden_states  — forward-pass-only hidden state extraction
-  _run_et_recovery        — base-model E_t recovery pass (post-collection)
-  _log_trial_start / _log_trial_end — per-trial timing
+  _encode_system_prompt   -- C_t proxy from system prompt tokens
+  _build_token_match_table / _pad_prompt -- OLS length normalisation
+  _standard_trial_loop    -- universal generation engine (cartridge slot)
+  _get_trials_for_condition -- gap-aware resume for multi-condition runs
+  _extract_hidden_states  -- forward-pass-only hidden state extraction
+  _run_et_recovery        -- base-model E_t recovery pass (post-collection)
+  _log_trial_start / _log_trial_end -- per-trial timing
 """
 
 import os, sys, glob, time
@@ -20,7 +20,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 import numpy as np
-from cartography import get_paths, save_embedding
+from cartography import get_paths, save_embedding, run_id_pad, run_mode_matches  # v0.79.5.1: run_mode_matches used at lines 371 + 714, was never imported -- silent NameError in every recovery pass
 from orchestration_core import (
     set_seed, load_model, unload_model, run_generation, compute_turn_metrics,
     append_csv, ensure_csv_header, save_npy, get_trials_to_run,
@@ -96,7 +96,7 @@ def _build_token_match_table(tok) -> dict:
     conditions, removing length as a confound from the OLS decomposition.
 
     v54.3.0: restored from v53.x. The v54.0.0 refactor accidentally replaced
-    this with a table built from INTROSPECTION_PROMPTS only — 1 list instead
+    this with a table built from INTROSPECTION_PROMPTS only -- 1 list instead
     of 18. That reduced targets so padding rarely fired, creating cross-
     temperature inconsistencies. This version matches all T=0.0 data.
     """
@@ -176,12 +176,12 @@ def _log_trial_end(label: str, trial: int):
 
 def _standard_trial_loop(
     model, tok, session, paths, run_mode, csv_file,
-    # Core config — must provide one of: prompts or turn_fn
-    prompts=None,           # fixed prompt list — cycles with (turn-1) % len(prompts)
+    # Core config -- must provide one of: prompts or turn_fn
+    prompts=None,           # fixed prompt list -- cycles with (turn-1) % len(prompts)
     turn_fn=None,           # callable(trial, turn_idx) -> (prompt, gen_kwargs, extra_fields)
                             # overrides prompts if provided
     n_turns=13,
-    # Generation defaults — overridable per-turn via turn_fn gen_kwargs
+    # Generation defaults -- overridable per-turn via turn_fn gen_kwargs
     sys_prompt=NEUTRAL_SYSTEM_PROMPT,
     throughline_key=None,
     use_status=True,
@@ -239,7 +239,13 @@ def _standard_trial_loop(
             cached_ct = _encode_system_prompt(model, tok, _ct_prompt)
 
     for trial in trials_to_run:
-        set_seed(seed + trial)
+        # v1.0.0: per-(trial, temperature) seed differentiation. Earlier scheme
+        # used set_seed(seed + trial) which kept the random draw sequence
+        # identical across temperatures within the same trial — for argmax-
+        # dominant outputs this collapsed cross-temperature hidden states to
+        # byte-identical files. Adding int(temperature * 1e6) gives each
+        # (trial, temperature) cell a unique RNG sequence.
+        set_seed(seed + trial + int(temperature * 1e6))
         file_trial = trial + trial_offset
 
         messages = []
@@ -306,7 +312,7 @@ def _standard_trial_loop(
             result.update(turn_extra)
             append_csv(result, csv_file)
 
-            # Buffer disk writes — flush after trial completes.
+            # Buffer disk writes -- flush after trial completes.
             # Removes file I/O from the critical path between turns.
             if save_hidden and layer_h:
                 _npy_buffer.append((layer_h, file_trial, turn_idx))
@@ -407,7 +413,7 @@ def _get_trials_for_condition(csv_file, run_mode, n_trials, n_turns,
                 _csvm.writer(fh).writerows(keep)
             msg = (f"  [R{run_mode:04d} strip] Stripped {stripped} rows for "
                    f"{len(incomplete)} incomplete trial(s) {sorted(incomplete)} "
-                   f"({condition_col}={condition_value}) — will re-run")
+                   f"({condition_col}={condition_value}) -- will re-run")
             print(msg, flush=True)
             try:
                 _append_log(msg, kind='warn')
@@ -429,7 +435,7 @@ def _get_trials_for_condition(csv_file, run_mode, n_trials, n_turns,
         return missing
 
     except Exception as e:
-        print(f"  [_get_trials_for_condition] Warning: {e} — falling back", flush=True)
+        print(f"  [_get_trials_for_condition] Warning: {e} -- falling back", flush=True)
         try:
             n_done = get_next_trial_for_condition(
                 csv_file, run_mode, str(condition_value), condition_col)
@@ -439,7 +445,7 @@ def _get_trials_for_condition(csv_file, run_mode, n_trials, n_turns,
 
 
 def _extract_hidden_states(model, tok, messages):
-    """Forward-pass only — extract per-layer hidden states at last token position.
+    """Forward-pass only -- extract per-layer hidden states at last token position.
     v0.66.3.0: structure detection for cross-architecture compatibility.
     """
     from orchestration_core import DEVICE
@@ -460,34 +466,47 @@ def _extract_hidden_states(model, tok, messages):
             if isinstance(hs[0], torch.Tensor) and hs[0].ndim == 3:
                 return [h[0, -1, :].cpu().numpy() for h in hs]
             elif isinstance(hs[0], (tuple, list)):
-                # Nested structure — flatten one level
+                # Nested structure -- flatten one level
                 return [h[0, -1, :].cpu().numpy() for h in hs[0]]
         return [h[0, -1, :].cpu().numpy() for h in hs]
     except Exception as e:
-        print(f"  [_extract_hidden_states] Error: {e}", flush=True)
+        # v0.79.5.9: loudify error path. Pre-0.79.5.9 this was a quiet
+        # `print` with the exception message only -- no traceback, no
+        # ui.err signaling. Callers (_run_et_recovery, null-prompt path,
+        # etc.) check for None return but silent failures were hard to
+        # diagnose because the Error line blended into dense per-trial
+        # log output. Now: ui.err (visible in dashboard), traceback.print_exc
+        # for full stack to log, plus flush. Return None preserves caller
+        # contract -- the None check remains the signal; this just ensures
+        # that when it fires, the operator can see WHY.
+        import traceback as _tb_ehs
+        ui.err(f"  [_extract_hidden_states] {type(e).__name__}: {e}")
+        _tb_ehs.print_exc()
+        sys.stdout.flush()
+        sys.stderr.flush()
         return None
 def _run_et_recovery(session, paths, run_nums):
-    """E_t recovery pass — base model forward-pass-only for Phase B sources.
+    """E_t recovery pass -- base model forward-pass-only for Phase B sources.
 
     v0.79.2.0: promoted to first-class meta-run (Run 0016). Still callable
     inline (legacy interactive path) and from the --single-run 0016 dispatch
-    branch. Receives the sorted list of source runs to recover — typically
+    branch. Receives the sorted list of source runs to recover -- typically
     sorted(_ET_RECOVERY_RUNS), which is {1,2,3,4,5,6,7,8,9,15,16,17,20}.
 
     DESIGN
     ======
     Runs 0004-0012 and 15–17 were collected under v39.0.x with the abliterated model.
     Their S_t .npy files are valid. Their CSVs are complete. But E_t was never
-    measured with the base model — it was an abliterated-model proxy (kind='E',
+    measured with the base model -- it was an abliterated-model proxy (kind='E',
     _emb.npy). The v40.0.0 redesign requires true base-model E_t per (trial, turn).
 
     This runner:
       1. Loads the base model ONCE (from vault subfamily map).
       2. For each run in run_nums, reads the existing CSV to reconstruct conversation
-         history — user prompts + the original abliterated model responses.
+         history -- user prompts + the original abliterated model responses.
       3. For each trial/turn, does a forward-pass-only through the base model
          (no generation, no token sampling) and extracts hidden states at layer -1.
-      4. Saves kind='E_base' per (trial, turn) — file: R{NN}_*_trial*_turn*_et_base.npy
+      4. Saves kind='E_base' per (trial, turn) -- file: R{NN}_*_trial*_turn*_et_base.npy
       5. Never writes to CSV. Never touches existing S_t or proxy _emb.npy files.
 
     CONVERSATION RECONSTRUCTION
@@ -495,7 +514,7 @@ def _run_et_recovery(session, paths, run_nums):
     The base model sees the same conversation context as the original abliterated run:
     user turn text from the CSV 'prompt' column, assistant responses from the 'output'
     column. The base model's encoding of that context at each turn position is exactly
-    the E_t we want — external input pressure, including what prior turns contributed.
+    the E_t we want -- external input pressure, including what prior turns contributed.
 
     Using abliterated responses as the assistant turns is correct: those were the
     actual tokens in the original conversation. The base model's hidden states under
@@ -505,7 +524,7 @@ def _run_et_recovery(session, paths, run_nums):
     ==========
     Per-run, per-trial: globs for existing R{NN}_*_et_base.npy files and skips
     trials that already have complete E_base coverage (all turns present).
-    Re-runnable safely — overwrites nothing that doesn't already need overwriting.
+    Re-runnable safely -- overwrites nothing that doesn't already need overwriting.
 
     SINGLE MODEL LOAD
     =================
@@ -530,14 +549,14 @@ def _run_et_recovery(session, paths, run_nums):
     base_path    = subfamily['base']
     base_display = _gbp(base_path)[0] or base_path.split('/')[-1]
     model_name   = session.get('model_name', '')
-    hidden_dir   = paths['hidden']   # abliterated dir — used for CSV reads only
+    hidden_dir   = paths['hidden']   # abliterated dir -- used for CSV reads only
     csv_dir      = paths['csv']
     n_trials     = session.get('trials', 100)
 
     # abliterated dir.  Using paths['hidden'] (abliterated) caused two problems:
     # (1) files written to the wrong folder; (2) the coverage scan found those files on
-    # subsequent runs and reported all trials covered — causing instant false-completion.
-    # Fix: derive the base sibling dir exactly as _compute_run19_vectors does (line 1214).
+    # subsequent runs and reported all trials covered -- causing instant false-completion.
+    # Fix: derive the base sibling dir exactly as _compute_run01_vectors does (line 1214).
     from cartography import get_paths as _gp_base
     _family         = session.get('model_family', 'llama')
     _size           = session.get('model_size', '8b')
@@ -551,12 +570,12 @@ def _run_et_recovery(session, paths, run_nums):
 
     # pass and displayed the wrong model name.  Two root causes:
     #
-    # (1) Wrong model name — update_dashboard_ctx was never called before load_model,
+    # (1) Wrong model name -- update_dashboard_ctx was never called before load_model,
     #     so _DASHBOARD_CTX['model_name'] still held the abliterated model's display
     #     name from the session.  The overlay's ldSub element (and #ml once the overlay
     #     cleared) therefore showed "abliterated" while the base model was loading.
     #
-    # (2) Overlay never dismissed — the overlay condition in applyS() is:
+    # (2) Overlay never dismissed -- the overlay condition in applyS() is:
     #         const loading = run && !s.run_num;
     #     _run_et_recovery is a forward-pass-only loop: it calls no generation, writes
     #     no CSV rows, and never calls _write_status.  So .iota_status.json kept
@@ -584,19 +603,79 @@ def _run_et_recovery(session, paths, run_nums):
         ui.msg(f"  Stripping chat_template from base tokenizer (not trained on chat format)")
         tok.chat_template = None
     tok._iota_raw_text = True
+
+    # v0.79.5.0: Run 16 first-class MC CSV.
+    # Every (source_run, trial, turn) processed in this pass -- whether a
+    # forward pass fires or the .npy was already on disk -- contributes a
+    # row to R0016_et_recovery.csv in this temp's csv dir. Scanner's
+    # standard MC branch reads this CSV and reports per-source
+    # completeness just like Run 21 (coherence, 3 conditions).
+    # Rows are idempotent -- first recovery pass populates all covered
+    # files retroactively; subsequent passes no-op for anything already
+    # in the CSV. The set `_r16_rows_seen` is the dedup in-memory cache
+    # for this process's lifetime.
+    import csv as _csv_r16
+    _r16_csv_path   = os.path.join(csv_dir, 'R0016_et_recovery.csv')
+    _r16_fields     = ['run_mode', 'source_run', 'trial', 'turn', 'priming']
+    _r16_rows_seen  = set()
+    if os.path.exists(_r16_csv_path):
+        try:
+            with open(_r16_csv_path, 'r', newline='', encoding='utf-8') as _f16r:
+                _rd16 = _csv_r16.DictReader(_f16r)
+                for _row in _rd16:
+                    try:
+                        _k = (
+                            str(_row.get('source_run', '')).strip(),
+                            int(float(_row.get('trial', -1))),
+                            int(float(_row.get('turn', -1))),
+                        )
+                        _r16_rows_seen.add(_k)
+                    except (ValueError, TypeError):
+                        pass
+        except Exception as _e16r:
+            ui.warn(f"  Run 0016 CSV read failed ({_e16r}) -- treating as empty")
+    _r16_new = (not os.path.exists(_r16_csv_path)) or os.path.getsize(_r16_csv_path) == 0
     try:
-        for run_num in sorted(run_nums):
+        os.makedirs(csv_dir, exist_ok=True)
+    except Exception:
+        pass
+    _r16_csv_fh = open(_r16_csv_path, 'a', newline='', encoding='utf-8')
+    _r16_writer = _csv_r16.DictWriter(_r16_csv_fh, fieldnames=_r16_fields)
+    if _r16_new:
+        _r16_writer.writeheader()
+        _r16_csv_fh.flush()
+    ui.msg(f"  Run 0016 CSV: {_r16_csv_path}  ({len(_r16_rows_seen)} existing rows)")
+
+    try:
+        for run_num_raw in sorted(run_nums):
+            # v0.79.5.8: _ET_RECOVERY_RUNS is a DualKeyRunSet that stores
+            # canonical 4-digit strings ('0002', '0004', ...). Pre-0.79.5.8
+            # every f"Run {run_num:04d}" site below raised ValueError
+            # ("Unknown format code 'd' for object of type 'str'"), the
+            # exception propagated out of this try block, the finally ran
+            # os._exit(0) under IOTA_HEADLESS -- exiting with code 0 and
+            # making the subprocess look like clean completion. Silent
+            # false success: model loaded, CSV checked (0 rows), exit.
+            # No per-source iteration, no backfill, no CSV rows written.
+            # Normalize run_num to int at loop entry; downstream format
+            # strings now work correctly. RUN_CSV.get(int) works via
+            # DualKeyRunDict dual-key.
+            try:
+                run_num = int(run_num_raw)
+            except (ValueError, TypeError):
+                ui.warn(f"  Skipping invalid run_num: {run_num_raw!r}"); continue
             csv_fname = RUN_CSV.get(run_num)
             if not csv_fname:
-                ui.warn(f"  Run {run_num:04d}: no CSV entry in RUN_CSV — skipping"); continue
+                ui.warn(f"  R0016/src{run_num:04d}: no CSV entry in RUN_CSV -- skipping"); continue
             csv_path = os.path.join(csv_dir, csv_fname)
             if not os.path.exists(csv_path):
-                ui.warn(f"  Run {run_num:04d}: CSV not found — skipping"); continue
+                ui.warn(f"  R0016/src{run_num:04d}: CSV not found -- skipping"); continue
+            _rid4_src = run_id_pad(run_num)  # v0.79.5.0: canonical 4-digit source key for Run 16 rows
 
             # not just turn01.  Prior code (BUG-42D) validated file size but
             # still only checked turn01.  If a prior partial run wrote turn01
             # but not turns 2-13, the trial was wrongly marked covered and
-            # recovery was skipped entirely — appearing to "complete instantly".
+            # recovery was skipped entirely -- appearing to "complete instantly".
             #
             # Fix: collect all valid et_base files, group by trial, mark a
             # trial covered only when EVERY expected turn has a valid file.
@@ -628,10 +707,10 @@ def _run_et_recovery(session, paths, run_nums):
             # The scanner then finds 100/500 ET files and reports et_partial.
             # Fix: remove the range-based early exit here. Let the CSV-derived _all_ft
             # computation (below) drive the real trials_needed. The early exit is deferred
-            # to after _all_ft is known — covers all runs including multi-condition ones.
+            # to after _all_ft is known -- covers all runs including multi-condition ones.
             # Single-condition runs: _all_ft ≈ range(n_trials) → identical behaviour.
 
-            _sec_msg = f"  Run {run_num:04d}: checking {len(covered)} covered / {N_ET_TURNS} turns required"
+            _sec_msg = f"  R0016/src{run_num:04d}: checking {len(covered)} covered / {N_ET_TURNS} turns required"
             _append_log(_sec_msg, kind='turn')
 
             #
@@ -641,27 +720,27 @@ def _run_et_recovery(session, paths, run_nums):
             # because compute_turn_metrics inserts state_similarity_index, signal_entropy_ratio, disruption_flag,
             # etc. BEFORE trial/model/prompt.  Every single turn row causes a
             # ParserError, which is caught by the except block, and the run is
-            # silently skipped — no forward passes, but the base model is still
+            # silently skipped -- no forward passes, but the base model is still
             # loaded and must be unloaded, causing the apparent hang.
             #
             # Read CSV columns by header index (canonical_read, v51.0.0).
             # v0.58.0.0 FIX-1: Full conversation reconstruction for E_t recovery.
             # Pre-v55: priming rows were filtered out and system prompts omitted.
-            # The base model saw a stripped conversation — wrong E_t at every turn.
+            # The base model saw a stripped conversation -- wrong E_t at every turn.
             # Fix: reconstruct system prompt + priming pairs + turn sequence so the
             # base model processes the same token sequence the abliterated model saw.
             _want = ('run_mode', 'trial', 'file_trial', 'turn', 'priming', 'prompt', 'output')
             try:
                 _cols = canonical_read(csv_path, _want)
             except Exception as e:
-                _emsg = f"  Run {run_num:04d}: CSV read failed: {e} — skipping"
+                _emsg = f"  R0016/src{run_num:04d}: CSV read failed: {e} -- skipping"
                 ui.err(_emsg); _append_log(_emsg, kind='err'); continue
 
             if not any(_cols.values()):
-                _emsg = f"  Run {run_num:04d}: CSV empty or unreadable — skipping"
+                _emsg = f"  R0016/src{run_num:04d}: CSV empty or unreadable -- skipping"
                 ui.err(_emsg); _append_log(_emsg, kind='err'); continue
 
-            # Build ALL row dicts — priming AND non-priming, separated.
+            # Build ALL row dicts -- priming AND non-priming, separated.
             _n_rows = max(len(v) for v in _cols.values())
             _all_rows = []      # non-priming rows (real turns)
             _priming_rows = []  # priming=1 rows (throughline + extra priming)
@@ -682,9 +761,62 @@ def _run_et_recovery(session, paths, run_nums):
                     _all_ft.add(int(float(ft_raw)))
                 except (ValueError, TypeError):
                     pass
+
+            # v0.79.5.0: Backfill Run 16 CSV rows for trials whose .npy files
+            # already exist. This runs unconditionally for every source, so
+            # the first recovery pass after the 0.79.5.0 redesign populates
+            # the MC CSV from pre-existing on-disk data without requiring
+            # any forward passes. Subsequent passes no-op this block for
+            # already-logged (source, trial, turn) tuples.
+            _r16_backfilled = 0
+            for _cv_trial in sorted(covered):
+                # Determine expected turns for this trial from the CSV
+                # (file_trial match) -- same semantics as the forward-pass
+                # loop below, so backfill rows align with what recovery
+                # would write for new .npy files.
+                _cv_expected_turns = set()
+                for _r in _all_rows:
+                    _ftr = _r.get('file_trial') or _r.get('trial')
+                    try:
+                        _ftv = int(float(_ftr)) if _ftr is not None else -1
+                    except (ValueError, TypeError):
+                        _ftv = -1
+                    if _ftv != _cv_trial:
+                        continue
+                    try:
+                        _cv_expected_turns.add(int(_r.get('turn') or 0))
+                    except (ValueError, TypeError):
+                        pass
+                # Only backfill for turns that actually have .npy on disk
+                _cv_disk_turns = et_valid.get(_cv_trial, set())
+                for _cv_turn in sorted(_cv_expected_turns & _cv_disk_turns):
+                    _k16 = (_rid4_src, _cv_trial, _cv_turn)
+                    if _k16 in _r16_rows_seen:
+                        continue
+                    _r16_writer.writerow({
+                        'run_mode':   '0016',
+                        'source_run': _rid4_src,
+                        'trial':      _cv_trial,
+                        'turn':       _cv_turn,
+                        'priming':    '0',
+                    })
+                    _r16_rows_seen.add(_k16)
+                    _r16_backfilled += 1
+            if _r16_backfilled:
+                _r16_csv_fh.flush()
+                # v0.80.0.37: fsync alongside flush -- backfill rows would be
+                # lost on abort otherwise.
+                try:
+                    import os as _os_fs
+                    _os_fs.fsync(_r16_csv_fh.fileno())
+                except Exception:
+                    pass
+                _bf_msg = f"    Run 0016 backfill: +{_r16_backfilled} rows from existing {_rid4_src} .npy files"
+                ui.msg(_bf_msg); _append_log(_bf_msg, kind='ok')
+
             trials_needed = sorted(_all_ft - covered)
             if not trials_needed:
-                ui.ok(f"  Run {run_num:04d}: all E_base files present and valid — skipping"); continue
+                ui.ok(f"  R0016/src{run_num:04d}: all E_base files present and valid -- skipping"); continue
 
             # Resolve system prompt for this run from _ET_SYSTEM_PROMPTS.
             _sys_prompt = _ET_SYSTEM_PROMPTS.get(run_num)
@@ -695,7 +827,7 @@ def _run_et_recovery(session, paths, run_nums):
             for _ti, trial in enumerate(trials_needed):
                 _trial_t0 = time.time()
                 _write_status('et_recovery', trial, 0, 0, {},
-                              f'E_t Recovery — Run {run_num:04d}')
+                              f'E_t Recovery -- R0016/src{run_num:04d}')
 
                 # Match non-priming rows by file_trial.
                 trial_rows = []
@@ -708,15 +840,20 @@ def _run_et_recovery(session, paths, run_nums):
                     if _ft == trial:
                         trial_rows.append(_r)
 
-                # Match priming rows by file_trial (or plain trial).
+                # Match priming rows by the 'trial' column ONLY. Priming rows
+                # have file_trial hardcoded to "0" for all trials (collection-
+                # time artifact -- file_trial was added for non-priming rows).
+                # Falling through `file_trial or trial` matches all 200 priming
+                # rows to trial 0, which blows up context length on the forward
+                # pass. Use trial directly.
                 trial_priming = []
                 for _r in _priming_rows:
-                    ft_raw = _r.get('file_trial') or _r.get('trial')
+                    t_raw = _r.get('trial')
                     try:
-                        _ft = int(float(ft_raw)) if ft_raw is not None else -1
+                        _t = int(float(t_raw)) if t_raw is not None else -1
                     except (ValueError, TypeError):
-                        _ft = -1
-                    if _ft == trial:
+                        _t = -1
+                    if _t == trial:
                         trial_priming.append(_r)
 
                 # Sort both by turn.
@@ -730,14 +867,14 @@ def _run_et_recovery(session, paths, run_nums):
                     pass
 
                 if not trial_rows:
-                    _wmsg = f"    Run {run_num:04d} trial {trial:03d}: no CSV rows — skipping"
+                    _wmsg = f"    R0016/src{run_num:04d} trial {trial:03d}: no CSV rows -- skipping"
                     ui.warn(_wmsg)
                     _append_log(_wmsg, kind='warn')
                     continue
 
                 # ── Reconstruct full message list ─────────────────────────
                 # Must match what the abliterated model saw during collection:
-                #   1. System prompt (if any — from _ET_SYSTEM_PROMPTS)
+                #   1. System prompt (if any -- from _ET_SYSTEM_PROMPTS)
                 #   2. Priming user/assistant pairs (throughline + extras)
                 #   3. Real turn sequence (extract E_t on each turn)
                 messages = []
@@ -746,7 +883,7 @@ def _run_et_recovery(session, paths, run_nums):
 
                 # Add priming pairs from CSV. These are throughline injection(s)
                 # and any extra priming turns (e.g. Run 0012's second priming).
-                # We do NOT extract hidden states on priming turns — E_t is
+                # We do NOT extract hidden states on priming turns -- E_t is
                 # only measured on real turns (priming != 1).
                 for _pr in trial_priming:
                     pr_prompt = str(_pr.get('prompt') or '')
@@ -772,19 +909,71 @@ def _run_et_recovery(session, paths, run_nums):
                         _se(layer_h[-1], base_hidden_dir, run_num, model_name,
                             trial, turn_idx, kind='E_base')
                         n_saved += 1
+                        # v0.79.5.0: log matching row in Run 16 MC CSV
+                        _k16n = (_rid4_src, trial, turn_idx)
+                        if _k16n not in _r16_rows_seen:
+                            _r16_writer.writerow({
+                                'run_mode':   '0016',
+                                'source_run': _rid4_src,
+                                'trial':      trial,
+                                'turn':       turn_idx,
+                                'priming':    '0',
+                            })
+                            _r16_rows_seen.add(_k16n)
 
                     messages.append({"role": "assistant", "content": output_text})
 
                 _trial_elapsed = time.time() - _trial_t0
-                msg = f"    Run {run_num:04d} trial {trial:03d} ({_ti+1}/{_n_needed}) — {n_saved} turns saved ({_trial_elapsed:.1f}s)"
+                msg = f"    R0016/src{run_num:04d} trial {trial:03d} ({_ti+1}/{_n_needed}) -- {n_saved} turns saved ({_trial_elapsed:.1f}s)"
                 print(msg, flush=True)
                 _append_log(msg, kind='ok')
+                # v0.80.0.37: per-trial flush + fsync. Run 16 keeps the CSV
+                # handle open across the entire recovery (hours), and the csv
+                # writer's internal buffer is large. Pre-0.80.0.37 a process
+                # abort mid-run lost every row written since process start --
+                # observed on Q8 first-time recovery (exit 3221225786 during
+                # dedup pass, ~1300 rows in flight, zero on disk). Flushing
+                # per trial bounds worst-case loss to "the trial currently
+                # in flight" instead of "everything since process start".
+                # fsync forces OS page cache to disk so a hard kill / power
+                # loss can't strand the data either.
+                try:
+                    _r16_csv_fh.flush()
+                    import os as _os_fs
+                    _os_fs.fsync(_r16_csv_fh.fileno())
+                except Exception:
+                    pass
 
             _run_elapsed = time.time() - _run_t0
-            _ok_msg = f"  Run {run_num:04d}: recovery complete ({_n_needed} trials, {_run_elapsed:.1f}s)"
+            _ok_msg = f"  R0016/src{run_num:04d}: recovery complete ({_n_needed} trials, {_run_elapsed:.1f}s)"
             ui.ok(_ok_msg)
             _append_log(_ok_msg, kind='ok')
+            # v0.80.0.37: belt-and-suspenders fsync at source-run boundary.
+            # Per-trial fsync above already bounds loss; this is a second
+            # checkpoint so the "all 81 trials of src0011 are durably on
+            # disk before src0012 starts" guarantee is explicit, not
+            # implicit-from-the-last-trial.
+            try:
+                _r16_csv_fh.flush()
+                import os as _os_fs
+                _os_fs.fsync(_r16_csv_fh.fileno())
+            except Exception:
+                pass
     finally:
+        # v0.79.5.0: flush and close Run 16 MC CSV before model unload.
+        # v0.80.0.37: explicit fsync before close, mirroring the per-trial
+        # and source-run-boundary pattern. Belt-and-suspenders against
+        # exception paths that bypass the inner fsyncs.
+        try:
+            _r16_csv_fh.flush()
+            try:
+                import os as _os_fs
+                _os_fs.fsync(_r16_csv_fh.fileno())
+            except Exception:
+                pass
+            _r16_csv_fh.close()
+        except Exception:
+            pass
         unload_model(model)
         del model, tok
         import gc as _gc; _gc.collect()
@@ -799,11 +988,568 @@ def _run_et_recovery(session, paths, run_nums):
         # subprocess (--et-recovery entry point). In subprocess mode, CUDA
         # teardown can stall indefinitely (BUG-43B class). Safe to force-exit
         # because the process is throwaway. In inline mode, must return normally.
-        if os.environ.get('IOTA_HEADLESS') == '1':
+        #
+        # v0.79.5.9: exit code now reflects exception state. Pre-0.79.5.9
+        # this was unconditional `os._exit(0)` -- any exception from the
+        # try block was destroyed and the subprocess exited with code 0,
+        # making silent failures (like the 0.79.5.8 ValueError) look
+        # exactly like clean completions. Now sys.exc_info() detects if
+        # an exception is propagating through this finally, and if so
+        # we log it and exit with code 1. The outer dispatcher at
+        # start_here.py's _run_all_temps_analysis and runners.py's Run 16
+        # wrapper both check proc.wait() != 0 and report "exited N"
+        # instead of "complete." Makes future exceptions visible.
+        if os.environ.get('IOTA_HEADLESS') == '1' and os.environ.get('IOTA_RUN16_META') != '1':
+            import sys as _sys
+            _exc_type, _exc_val, _exc_tb = _sys.exc_info()
+            if _exc_type is not None:
+                import traceback as _tb_mod
+                ui.err(f"  E_t recovery FAILED: {_exc_type.__name__}: {_exc_val}")
+                _tb_mod.print_exc()
+                _sys.stdout.flush()
+                _sys.stderr.flush()
+                os._exit(1)
             os._exit(0)
 
-    ui.ok("E_t recovery pass complete — all runs recovered.")
+    ui.ok("E_t recovery pass complete -- all runs recovered.")
     ui.msg("  Scanner will now show recovered runs as 'done'.")
     ui.blank()
 
+
+
+
+# v0.82.0.26 -- Run 0016 phase B (instruct recovery).
+# Mirror of _run_et_recovery. Run 16 dispatch in runners.py invokes both phases
+# sequentially: phase A produces E_base, phase B produces I_instruct.
+# Conceptually one recovery meta-run with two model-load phases, NOT a
+# separate Run 17.
+def _run_it_recovery(session, paths, run_nums):
+    """Instruct recovery pass -- base model forward-pass-only for Phase B sources.
+
+    v0.79.2.0: promoted to second phase of recovery meta-run (Run 0016 phase B). Still callable
+    inline (legacy interactive path) and from the --single-run 0016 dispatch
+    branch. Receives the sorted list of source runs to recover -- typically
+    sorted(_ET_RECOVERY_RUNS), which is {1,2,3,4,5,6,7,8,9,15,16,17,20}.
+
+    DESIGN
+    ======
+    Runs 0004-0012 and 15–17 were collected under v39.0.x with the abliterated model -- instruct hidden states were never collected for these runs.
+    Their S_t .npy files are valid. Their CSVs are complete. But E_t was never
+    measured with the base model -- it was an abliterated-model proxy (kind='E',
+    _emb.npy). The v40.0.0 redesign requires true base-model E_t per (trial, turn).
+
+    This runner:
+      1. Loads the base model ONCE (from vault subfamily map).
+      2. For each run in run_nums, reads the existing CSV to reconstruct conversation
+         history -- user prompts + the original abliterated model responses.
+      3. For each trial/turn, does a forward-pass-only through the base model
+         (no generation, no token sampling) and extracts hidden states at layer -1.
+      4. Saves kind="I_instruct" per (trial, turn) -- file: R{NN}_*_trial*_turn*_it_instruct.npy
+      5. Never writes to CSV. Never touches existing S_t or proxy _emb.npy files.
+
+    CONVERSATION RECONSTRUCTION
+    ===========================
+    The base model sees the same conversation context as the original abliterated run:
+    user turn text from the CSV 'prompt' column, assistant responses from the 'output'
+    column. The base model's encoding of that context at each turn position is exactly
+    the E_t we want -- external input pressure, including what prior turns contributed.
+
+    Using abliterated responses as the assistant turns is correct: those were the
+    actual tokens in the original conversation. The base model's hidden states under
+    that exact context are what E_t should measure.
+
+    RESUMPTION
+    ==========
+    Per-run, per-trial: globs for existing R{NN}_*_it_instruct.npy files and skips
+    trials that already have complete I_instruct coverage (all turns present).
+    Re-runnable safely -- overwrites nothing that doesn't already need overwriting.
+
+    SINGLE MODEL LOAD
+    =================
+    All runs in run_nums share one base model load. If 8 runs are batched,
+    that's one load + one unload. The recovery pass is disk-bound not GPU-bound
+    (forward passes only, no sampling), so throughput is fast.
+    """
+    from vault import get_subfamily_models, get_by_path as _gbp
+    from cartography import save_embedding as _se, sanitize as _san
+    from cartography import RUN_CSV
+    from orchestration_core import _append_log
+
+    model_path = session.get('model_path', '')
+    subfamily  = get_subfamily_models(model_path)
+    if subfamily is None:
+        ui.err(
+            f"Instruct recovery ABORTED: model '{model_path}' is not in IOTA_SUBFAMILY_MAP.\n"
+            f"  Cannot determine base model path. Add an entry to IOTA_SUBFAMILY_MAP."
+        )
+        return
+
+    inst_path    = subfamily["instruct"]
+    inst_display = _gbp(inst_path)[0] or inst_path.split('/')[-1]
+    model_name   = session.get('model_name', '')
+    hidden_dir   = paths['hidden']   # abliterated dir -- used for CSV reads only
+    csv_dir      = paths['csv']
+    n_trials     = session.get('trials', 100)
+
+    # abliterated dir.  Using paths['hidden'] (abliterated) caused two problems:
+    # (1) files written to the wrong folder; (2) the coverage scan found those files on
+    # subsequent runs and reported all trials covered -- causing instant false-completion.
+    # Fix: derive the base sibling dir exactly as _compute_run01_vectors does (line 1214).
+    from cartography import get_paths as _gp_base
+    _family         = session.get('model_family', 'llama')
+    _size           = session.get('model_size', '8b')
+    _temp           = session.get('temperature', 0.0)
+    inst_hidden_dir = _gp_base(_family, _size, "instruct", _temp, create_dirs=True)['hidden']
+
+    ui.section(f"Instruct recovery Pass  [{len(run_nums)} runs]  Base model: {inst_display}")
+    ui.msg(f"  Runs: {run_nums}")
+    ui.msg(f"  Save dir (base): {inst_hidden_dir}")
+    ui.blank()
+
+    # pass and displayed the wrong model name.  Two root causes:
+    #
+    # (1) Wrong model name -- update_dashboard_ctx was never called before load_model,
+    #     so _DASHBOARD_CTX['model_name'] still held the abliterated model's display
+    #     name from the session.  The overlay's ldSub element (and #ml once the overlay
+    #     cleared) therefore showed "abliterated" while the base model was loading.
+    #
+    # (2) Overlay never dismissed -- the overlay condition in applyS() is:
+    #         const loading = run && !s.run_num;
+    #     _run_it_recovery is a forward-pass-only loop: it calls no generation, writes
+    #     no CSV rows, and never calls _write_status.  So .iota_status.json kept
+    #     run_num=null for the entire pass, keeping the overlay permanently visible.
+    #
+    # Fix: before model load, call update_dashboard_ctx to set the correct base model
+    # name and total_trials, then call _write_status with sentinel run_mode
+    # 'it_recovery' (a truthy string).  The JS overlay condition evaluates
+    # !s.run_num as false for any truthy value, so the overlay clears immediately.
+    # Per-trial _write_status calls keep the dashboard trial counter live.
+    update_dashboard_ctx(
+        model_name=inst_display,
+        total_trials=n_trials,
+        total_runs=len(run_nums),
+        run_index=0,
+    )
+    _write_status('it_recovery', 0, 0, 0, {}, f'Instruct recovery [{len(run_nums)} runs]')
+
+    model, tok = load_model(inst_path, token=session.get('hf_token'),
+                            quant=session.get('quantization', '4bit'))
+    # Base models (Qwen 2.5 etc.) may ship with a chat_template in the tokenizer
+    # even though the base model was never trained on chat format. Strip it and
+    # set raw text mode so _extract_hidden_states uses plain text, no role markers.
+    if tok.chat_template:
+        ui.msg(f"  Stripping chat_template from base tokenizer (not trained on chat format)")
+        tok.chat_template = None
+    tok._iota_raw_text = True
+
+    # v0.79.5.0: Run 16 first-class MC CSV.
+    # Every (source_run, trial, turn) processed in this pass -- whether a
+    # forward pass fires or the .npy was already on disk -- contributes a
+    # row to R0016b_it_recovery.csv in this temp's csv dir. Scanner's
+    # standard MC branch reads this CSV and reports per-source
+    # completeness just like Run 21 (coherence, 3 conditions).
+    # Rows are idempotent -- first recovery pass populates all covered
+    # files retroactively; subsequent passes no-op for anything already
+    # in the CSV. The set `_r16_rows_seen` is the dedup in-memory cache
+    # for this process's lifetime.
+    import csv as _csv_r16
+    _r16_csv_path   = os.path.join(csv_dir, 'R0016b_it_recovery.csv')
+    _r16_fields     = ['run_mode', 'source_run', 'trial', 'turn', 'priming']
+    _r16_rows_seen  = set()
+    if os.path.exists(_r16_csv_path):
+        try:
+            with open(_r16_csv_path, 'r', newline='', encoding='utf-8') as _f16r:
+                _rd16 = _csv_r16.DictReader(_f16r)
+                for _row in _rd16:
+                    try:
+                        _k = (
+                            str(_row.get('source_run', '')).strip(),
+                            int(float(_row.get('trial', -1))),
+                            int(float(_row.get('turn', -1))),
+                        )
+                        _r16_rows_seen.add(_k)
+                    except (ValueError, TypeError):
+                        pass
+        except Exception as _e16r:
+            ui.warn(f"  Run 0016 CSV read failed ({_e16r}) -- treating as empty")
+    _r16_new = (not os.path.exists(_r16_csv_path)) or os.path.getsize(_r16_csv_path) == 0
+    try:
+        os.makedirs(csv_dir, exist_ok=True)
+    except Exception:
+        pass
+    _r16_csv_fh = open(_r16_csv_path, 'a', newline='', encoding='utf-8')
+    _r16_writer = _csv_r16.DictWriter(_r16_csv_fh, fieldnames=_r16_fields)
+    if _r16_new:
+        _r16_writer.writeheader()
+        _r16_csv_fh.flush()
+    ui.msg(f"  Run 0016 CSV: {_r16_csv_path}  ({len(_r16_rows_seen)} existing rows)")
+
+    try:
+        for run_num_raw in sorted(run_nums):
+            # v0.79.5.8: _ET_RECOVERY_RUNS is a DualKeyRunSet that stores
+            # canonical 4-digit strings ('0002', '0004', ...). Pre-0.79.5.8
+            # every f"Run {run_num:04d}" site below raised ValueError
+            # ("Unknown format code 'd' for object of type 'str'"), the
+            # exception propagated out of this try block, the finally ran
+            # os._exit(0) under IOTA_HEADLESS -- exiting with code 0 and
+            # making the subprocess look like clean completion. Silent
+            # false success: model loaded, CSV checked (0 rows), exit.
+            # No per-source iteration, no backfill, no CSV rows written.
+            # Normalize run_num to int at loop entry; downstream format
+            # strings now work correctly. RUN_CSV.get(int) works via
+            # DualKeyRunDict dual-key.
+            try:
+                run_num = int(run_num_raw)
+            except (ValueError, TypeError):
+                ui.warn(f"  Skipping invalid run_num: {run_num_raw!r}"); continue
+            csv_fname = RUN_CSV.get(run_num)
+            if not csv_fname:
+                ui.warn(f"  R0016b/src{run_num:04d}: no CSV entry in RUN_CSV -- skipping"); continue
+            csv_path = os.path.join(csv_dir, csv_fname)
+            if not os.path.exists(csv_path):
+                ui.warn(f"  R0016b/src{run_num:04d}: CSV not found -- skipping"); continue
+            _rid4_src = run_id_pad(run_num)  # v0.79.5.0: canonical 4-digit source key for Run 16 rows
+
+            # not just turn01.  Prior code (BUG-42D) validated file size but
+            # still only checked turn01.  If a prior partial run wrote turn01
+            # but not turns 2-13, the trial was wrongly marked covered and
+            # recovery was skipped entirely -- appearing to "complete instantly".
+            #
+            # Fix: collect all valid it_instruct files, group by trial, mark a
+            # trial covered only when EVERY expected turn has a valid file.
+            # N_ET_TURNS is derived from NULL_PROMPTS (13 entries), making
+            # this self-consistent even if the prompt list changes.
+            MIN_VALID_NPY_BYTES = 1024
+            N_ET_TURNS = len(NULL_PROMPTS)  # 13
+
+            it_valid = {}   # trial_num → set of valid turn indices
+            it_all_pat = os.path.join(inst_hidden_dir, f"R{run_num:04d}_*_it_instruct.npy")
+            for f in glob.glob(it_all_pat):
+                try:
+                    if os.path.getsize(f) < MIN_VALID_NPY_BYTES:
+                        continue
+                    bn = os.path.basename(f)
+                    trial_i = int(bn.split('_trial')[1].split('_')[0])
+                    turn_i  = int(bn.split('_turn')[1].split('_it_instruct')[0])
+                    it_valid.setdefault(trial_i, set()).add(turn_i)
+                except Exception:
+                    pass
+
+            # A trial is covered only when all expected turns are present and valid.
+            covered = {t for t, turns in it_valid.items() if len(turns) >= N_ET_TURNS}
+
+            # range(n_trials) = range(100). For multi-condition runs (e.g. Run 0002),
+            # file_trial spans 0..(n_conditions × n_trials − 1) = 0..499. The
+            # range(100) check exits as "complete" after finding 100 covered file_trials
+            # (condition 0 only), never recovering file_trials 100-499 (conditions 1-4).
+            # The scanner then finds 100/500 ET files and reports et_partial.
+            # Fix: remove the range-based early exit here. Let the CSV-derived _all_ft
+            # computation (below) drive the real trials_needed. The early exit is deferred
+            # to after _all_ft is known -- covers all runs including multi-condition ones.
+            # Single-condition runs: _all_ft ≈ range(n_trials) → identical behaviour.
+
+            _sec_msg = f"  R0016b/src{run_num:04d}: checking {len(covered)} covered / {N_ET_TURNS} turns required"
+            _append_log(_sec_msg, kind='turn')
+
+            #
+            # normalisation from BUG-43D) raises ParserError on IOTA CSVs because
+            # turn rows have MORE columns than the header.  The header is written
+            # from the first priming row (N fields); turn rows have N+7 fields
+            # because compute_turn_metrics inserts state_similarity_index, signal_entropy_ratio, disruption_flag,
+            # etc. BEFORE trial/model/prompt.  Every single turn row causes a
+            # ParserError, which is caught by the except block, and the run is
+            # silently skipped -- no forward passes, but the base model is still
+            # loaded and must be unloaded, causing the apparent hang.
+            #
+            # Read CSV columns by header index (canonical_read, v51.0.0).
+            # v0.58.0.0 FIX-1: Full conversation reconstruction for Instruct recovery.
+            # Pre-v55: priming rows were filtered out and system prompts omitted.
+            # The base model saw a stripped conversation -- wrong E_t at every turn.
+            # Fix: reconstruct system prompt + priming pairs + turn sequence so the
+            # base model processes the same token sequence the abliterated model saw.
+            _want = ('run_mode', 'trial', 'file_trial', 'turn', 'priming', 'prompt', 'output')
+            try:
+                _cols = canonical_read(csv_path, _want)
+            except Exception as e:
+                _emsg = f"  R0016b/src{run_num:04d}: CSV read failed: {e} -- skipping"
+                ui.err(_emsg); _append_log(_emsg, kind='err'); continue
+
+            if not any(_cols.values()):
+                _emsg = f"  R0016b/src{run_num:04d}: CSV empty or unreadable -- skipping"
+                ui.err(_emsg); _append_log(_emsg, kind='err'); continue
+
+            # Build ALL row dicts -- priming AND non-priming, separated.
+            _n_rows = max(len(v) for v in _cols.values())
+            _all_rows = []      # non-priming rows (real turns)
+            _priming_rows = []  # priming=1 rows (throughline + extra priming)
+            for _i in range(_n_rows):
+                _r = {c: (_cols[c][_i] if _i < len(_cols[c]) else None) for c in _want}
+                if _r.get('run_mode') is not None and not run_mode_matches(_r['run_mode'], run_num):
+                    continue
+                if _r.get('priming') == '1':
+                    _priming_rows.append(_r)
+                else:
+                    _all_rows.append(_r)
+
+            # Build trials_needed from distinct file_trial values (unchanged logic).
+            _all_ft = set()
+            for _r in _all_rows:
+                ft_raw = _r.get('file_trial') or _r.get('trial')
+                try:
+                    _all_ft.add(int(float(ft_raw)))
+                except (ValueError, TypeError):
+                    pass
+
+            # v0.79.5.0: Backfill Run 16 CSV rows for trials whose .npy files
+            # already exist. This runs unconditionally for every source, so
+            # the first recovery pass after the 0.79.5.0 redesign populates
+            # the MC CSV from pre-existing on-disk data without requiring
+            # any forward passes. Subsequent passes no-op this block for
+            # already-logged (source, trial, turn) tuples.
+            _r16_backfilled = 0
+            for _cv_trial in sorted(covered):
+                # Determine expected turns for this trial from the CSV
+                # (file_trial match) -- same semantics as the forward-pass
+                # loop below, so backfill rows align with what recovery
+                # would write for new .npy files.
+                _cv_expected_turns = set()
+                for _r in _all_rows:
+                    _ftr = _r.get('file_trial') or _r.get('trial')
+                    try:
+                        _ftv = int(float(_ftr)) if _ftr is not None else -1
+                    except (ValueError, TypeError):
+                        _ftv = -1
+                    if _ftv != _cv_trial:
+                        continue
+                    try:
+                        _cv_expected_turns.add(int(_r.get('turn') or 0))
+                    except (ValueError, TypeError):
+                        pass
+                # Only backfill for turns that actually have .npy on disk
+                _cv_disk_turns = it_valid.get(_cv_trial, set())
+                for _cv_turn in sorted(_cv_expected_turns & _cv_disk_turns):
+                    _k16 = (_rid4_src, _cv_trial, _cv_turn)
+                    if _k16 in _r16_rows_seen:
+                        continue
+                    _r16_writer.writerow({
+                        'run_mode':   '0016',
+                        'source_run': _rid4_src,
+                        'trial':      _cv_trial,
+                        'turn':       _cv_turn,
+                        'priming':    '0',
+                    })
+                    _r16_rows_seen.add(_k16)
+                    _r16_backfilled += 1
+            if _r16_backfilled:
+                _r16_csv_fh.flush()
+                # v0.80.0.37: fsync alongside flush -- backfill rows would be
+                # lost on abort otherwise.
+                try:
+                    import os as _os_fs
+                    _os_fs.fsync(_r16_csv_fh.fileno())
+                except Exception:
+                    pass
+                _bf_msg = f"    Run 0016 backfill: +{_r16_backfilled} rows from existing {_rid4_src} .npy files"
+                ui.msg(_bf_msg); _append_log(_bf_msg, kind='ok')
+
+            trials_needed = sorted(_all_ft - covered)
+            if not trials_needed:
+                ui.ok(f"  R0016b/src{run_num:04d}: all I_instruct files present and valid -- skipping"); continue
+
+            # Resolve system prompt for this run from _ET_SYSTEM_PROMPTS.
+            _sys_prompt = _ET_SYSTEM_PROMPTS.get(run_num)
+
+            _n_needed = len(trials_needed)
+            _run_t0 = time.time()
+
+            for _ti, trial in enumerate(trials_needed):
+                _trial_t0 = time.time()
+                _write_status('it_recovery', trial, 0, 0, {},
+                              f'Instruct recovery -- R0016b/src{run_num:04d}')
+
+                # Match non-priming rows by file_trial.
+                trial_rows = []
+                for _r in _all_rows:
+                    ft_raw = _r.get('file_trial') or _r.get('trial')
+                    try:
+                        _ft = int(float(ft_raw)) if ft_raw is not None else -1
+                    except (ValueError, TypeError):
+                        _ft = -1
+                    if _ft == trial:
+                        trial_rows.append(_r)
+
+                # Match priming rows by the 'trial' column ONLY. Priming rows
+                # have file_trial hardcoded to "0" for all trials (collection-
+                # time artifact -- file_trial was added for non-priming rows).
+                # Falling through `file_trial or trial` matches all 200 priming
+                # rows to trial 0, which blows up context length on the forward
+                # pass. Use trial directly.
+                trial_priming = []
+                for _r in _priming_rows:
+                    t_raw = _r.get('trial')
+                    try:
+                        _t = int(float(t_raw)) if t_raw is not None else -1
+                    except (ValueError, TypeError):
+                        _t = -1
+                    if _t == trial:
+                        trial_priming.append(_r)
+
+                # Sort both by turn.
+                try:
+                    trial_rows.sort(key=lambda r: int(r.get('turn') or 0))
+                except Exception:
+                    pass
+                try:
+                    trial_priming.sort(key=lambda r: int(r.get('turn') or 0))
+                except Exception:
+                    pass
+
+                if not trial_rows:
+                    _wmsg = f"    R0016b/src{run_num:04d} trial {trial:03d}: no CSV rows -- skipping"
+                    ui.warn(_wmsg)
+                    _append_log(_wmsg, kind='warn')
+                    continue
+
+                # ── Reconstruct full message list ─────────────────────────
+                # Must match what the abliterated model saw during collection:
+                #   1. System prompt (if any -- from _ET_SYSTEM_PROMPTS)
+                #   2. Priming user/assistant pairs (throughline + extras)
+                #   3. Real turn sequence (extract E_t on each turn)
+                messages = []
+                if _sys_prompt:
+                    messages.append({"role": "system", "content": _sys_prompt})
+
+                # Add priming pairs from CSV. These are throughline injection(s)
+                # and any extra priming turns (e.g. Run 0012's second priming).
+                # We do NOT extract hidden states on priming turns -- E_t is
+                # only measured on real turns (priming != 1).
+                for _pr in trial_priming:
+                    pr_prompt = str(_pr.get('prompt') or '')
+                    pr_output = str(_pr.get('output') or '')
+                    messages.append({"role": "user",      "content": pr_prompt})
+                    messages.append({"role": "assistant",  "content": pr_output})
+
+                n_saved = 0
+
+                for _r in trial_rows:
+                    try:
+                        turn_idx = int(_r.get('turn') or (len(messages) // 2 + 1))
+                    except Exception:
+                        turn_idx = len(messages) // 2 + 1
+
+                    prompt_text = str(_r.get('prompt') or '')
+                    output_text = str(_r.get('output') or '')
+
+                    messages.append({"role": "user", "content": prompt_text})
+
+                    layer_h = _extract_hidden_states(model, tok, messages)
+                    if layer_h is not None:
+                        _se(layer_h[-1], inst_hidden_dir, run_num, model_name,
+                            trial, turn_idx, kind="I_instruct")
+                        n_saved += 1
+                        # v0.79.5.0: log matching row in Run 16 MC CSV
+                        _k16n = (_rid4_src, trial, turn_idx)
+                        if _k16n not in _r16_rows_seen:
+                            _r16_writer.writerow({
+                                'run_mode':   '0016',
+                                'source_run': _rid4_src,
+                                'trial':      trial,
+                                'turn':       turn_idx,
+                                'priming':    '0',
+                            })
+                            _r16_rows_seen.add(_k16n)
+
+                    messages.append({"role": "assistant", "content": output_text})
+
+                _trial_elapsed = time.time() - _trial_t0
+                msg = f"    R0016b/src{run_num:04d} trial {trial:03d} ({_ti+1}/{_n_needed}) -- {n_saved} turns saved ({_trial_elapsed:.1f}s)"
+                print(msg, flush=True)
+                _append_log(msg, kind='ok')
+                # v0.80.0.37: per-trial flush + fsync. Run 16 keeps the CSV
+                # handle open across the entire recovery (hours), and the csv
+                # writer's internal buffer is large. Pre-0.80.0.37 a process
+                # abort mid-run lost every row written since process start --
+                # observed on Q8 first-time recovery (exit 3221225786 during
+                # dedup pass, ~1300 rows in flight, zero on disk). Flushing
+                # per trial bounds worst-case loss to "the trial currently
+                # in flight" instead of "everything since process start".
+                # fsync forces OS page cache to disk so a hard kill / power
+                # loss can't strand the data either.
+                try:
+                    _r16_csv_fh.flush()
+                    import os as _os_fs
+                    _os_fs.fsync(_r16_csv_fh.fileno())
+                except Exception:
+                    pass
+
+            _run_elapsed = time.time() - _run_t0
+            _ok_msg = f"  R0016b/src{run_num:04d}: recovery complete ({_n_needed} trials, {_run_elapsed:.1f}s)"
+            ui.ok(_ok_msg)
+            _append_log(_ok_msg, kind='ok')
+            # v0.80.0.37: belt-and-suspenders fsync at source-run boundary.
+            # Per-trial fsync above already bounds loss; this is a second
+            # checkpoint so the "all 81 trials of src0011 are durably on
+            # disk before src0012 starts" guarantee is explicit, not
+            # implicit-from-the-last-trial.
+            try:
+                _r16_csv_fh.flush()
+                import os as _os_fs
+                _os_fs.fsync(_r16_csv_fh.fileno())
+            except Exception:
+                pass
+    finally:
+        # v0.79.5.0: flush and close Run 16 MC CSV before model unload.
+        # v0.80.0.37: explicit fsync before close, mirroring the per-trial
+        # and source-run-boundary pattern. Belt-and-suspenders against
+        # exception paths that bypass the inner fsyncs.
+        try:
+            _r16_csv_fh.flush()
+            try:
+                import os as _os_fs
+                _os_fs.fsync(_r16_csv_fh.fileno())
+            except Exception:
+                pass
+            _r16_csv_fh.close()
+        except Exception:
+            pass
+        unload_model(model)
+        del model, tok
+        import gc as _gc; _gc.collect()
+        try:
+            import torch as _torch
+            if _torch.cuda.is_available():
+                _torch.cuda.empty_cache()
+        except Exception:
+            pass
+        # v0.58.0.0 FIX-4b: force-exit when running as isolated subprocess.
+        # _run_it_recovery is called both inline (_run_session) and as a
+        # subprocess (--et-recovery entry point). In subprocess mode, CUDA
+        # teardown can stall indefinitely (BUG-43B class). Safe to force-exit
+        # because the process is throwaway. In inline mode, must return normally.
+        #
+        # v0.79.5.9: exit code now reflects exception state. Pre-0.79.5.9
+        # this was unconditional `os._exit(0)` -- any exception from the
+        # try block was destroyed and the subprocess exited with code 0,
+        # making silent failures (like the 0.79.5.8 ValueError) look
+        # exactly like clean completions. Now sys.exc_info() detects if
+        # an exception is propagating through this finally, and if so
+        # we log it and exit with code 1. The outer dispatcher at
+        # start_here.py's _run_all_temps_analysis and runners.py's Run 16
+        # wrapper both check proc.wait() != 0 and report "exited N"
+        # instead of "complete." Makes future exceptions visible.
+        if os.environ.get('IOTA_HEADLESS') == '1' and os.environ.get('IOTA_RUN16_META') != '1':
+            import sys as _sys
+            _exc_type, _exc_val, _exc_tb = _sys.exc_info()
+            if _exc_type is not None:
+                import traceback as _tb_mod
+                ui.err(f"  Instruct recovery FAILED: {_exc_type.__name__}: {_exc_val}")
+                _tb_mod.print_exc()
+                _sys.stdout.flush()
+                _sys.stderr.flush()
+                os._exit(1)
+            os._exit(0)
+
+    ui.ok("Instruct recovery pass complete -- all runs recovered.")
+    ui.msg("  Scanner will now show recovered runs as 'done'.")
+    ui.blank()
 

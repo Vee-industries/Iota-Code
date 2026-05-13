@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — REPORT GENERATOR
+IOTA FRAMEWORK -- REPORT GENERATOR
 ====================================
 Reads JSON outputs from Runs 0043, 0051, 0044, 0050 and CSVs across all
 temperature directories. Generates matplotlib figures and a plain-English
@@ -84,7 +84,7 @@ _style()
 
 def _load_json(path):
     """Read a JSON file, return None if absent or unreadable.
-    Used to tolerate partial analysis state — the report pipeline
+    Used to tolerate partial analysis state -- the report pipeline
     degrades gracefully when any single run's output is missing."""
     if not os.path.exists(path):
         return None
@@ -93,7 +93,7 @@ def _load_json(path):
 
 
 def _read_csv_rows(csv_path, run_mode=None):
-    """Lightweight CSV reader — no pandas dependency."""
+    """Lightweight CSV reader -- no pandas dependency."""
     import csv
     rows = []
     if not os.path.exists(csv_path):
@@ -135,7 +135,7 @@ def generate(session=None):
     is it causal, does it survive temperature, can it decompose, is
     it a confound, layer profile, dimension, per-condition, etc.).
 
-    Legacy — removed from Run 0055's dispatch in v0.74.0.0. Paper
+    Legacy -- removed from Run 0055's dispatch in v0.74.0.0. Paper
     figures (FIG01-FIG13 in export_stats.generate_paper_figures)
     supersede these for publication. report.generate() retained for
     manual dashboard Stats-tab diagnostic use and standalone invocation.
@@ -270,7 +270,7 @@ def generate(session=None):
         _p("*Run 0051 temperature curve not available yet.*")
 
     # ══════════════════════════════════════════════════════════════
-    # Figure 3: Patching heatmap — layer × temperature (NEW v0.71.0.0)
+    # Figure 3: Patching heatmap -- layer × temperature (NEW v0.71.0.0)
     # ══════════════════════════════════════════════════════════════
     _h("3. Where in the network does R live?")
 
@@ -330,7 +330,7 @@ def generate(session=None):
         _p("*Run 0018 layer isolation data not available at multiple temperatures yet.*")
 
     # ══════════════════════════════════════════════════════════════
-    # Figure 4: Per-condition R fractions (Run 0044) — renumbered from fig2
+    # Figure 4: Per-condition R fractions (Run 0044) -- renumbered from fig2
     # ══════════════════════════════════════════════════════════════
     _h("4. Which conditions produce the highest R?")
 
@@ -398,7 +398,7 @@ def generate(session=None):
             ax.plot(temps_p, resist, 'D-', color=RED, linewidth=2, markersize=8, label='Resistant')
             ax.set_xlabel('Temperature')
             ax.set_ylabel('Mean Similarity')
-            ax.set_title('Priming Vulnerability — Similarity by Prime Type Across Temperature')
+            ax.set_title('Priming Vulnerability -- Similarity by Prime Type Across Temperature')
             ax.legend()
             fig.tight_layout()
             fig.savefig(os.path.join(fig_dir, 'fig5_priming.png'), dpi=150)
@@ -451,7 +451,7 @@ def generate(session=None):
         _p("*Run 0050 contradiction data not available yet.*")
 
     # ══════════════════════════════════════════════════════════════
-    # Figure 7: Context saturation — persistence modes
+    # Figure 7: Context saturation -- persistence modes
     # ══════════════════════════════════════════════════════════════
     _h("7. Is R decay caused by KV cache growth?")
 
@@ -473,7 +473,7 @@ def generate(session=None):
                         linewidth=2, markersize=8, label=mode)
         ax.set_xlabel('Temperature')
         ax.set_ylabel('Similarity Decay (early - late)')
-        ax.set_title('Similarity Decay by Persistence Mode — KV Cache Test')
+        ax.set_title('Similarity Decay by Persistence Mode -- KV Cache Test')
         ax.legend()
         fig.tight_layout()
         fig.savefig(os.path.join(fig_dir, 'fig7_persistence.png'), dpi=150)
@@ -481,7 +481,7 @@ def generate(session=None):
         _fig('fig7_persistence')
 
         _p("If 'last exchange only' shows the same decay as 'full history', "
-           "the decay is NOT caused by growing KV cache — trajectory consistency is losing "
+           "the decay is NOT caused by growing KV cache -- trajectory consistency is losing "
            "energy regardless of context length. If 'last' shows less decay, "
            "context growth is a confound.")
     else:
@@ -515,7 +515,7 @@ def generate(session=None):
                         linewidth=2, markersize=6, label=cname[:30])
         ax.set_xlabel('Temperature')
         ax.set_ylabel('Similarity Delta (post-switch - pre-switch)')
-        ax.set_title('Condition Transfer — Similarity Change at Task Switch')
+        ax.set_title('Condition Transfer -- Similarity Change at Task Switch')
         ax.axhline(y=0, color=GRID_CLR, linestyle='--', alpha=0.5)
         ax.legend(fontsize=8)
         fig.tight_layout()
@@ -544,10 +544,10 @@ def generate(session=None):
     traj_paths = get_paths(family, size, variant, _traj_temp, create_dirs=False)
     traj_csv_dir = traj_paths.get('csv', '')
     _TRAJ_GROUPS = {
-        'Introspection': [3, 4, 5],
-        'Arithmetic': [6, 7, 8, 9],
-        'Null': [1, 2, 19],
-        'Priming': [15, 16, 17],
+        'Introspection': [6, 7, 8],
+        'Arithmetic': [9, 10, 11, 12],
+        'Null': [4, 5, 1],
+        'Priming': [13, 14, 15],
     }
     _TRAJ_COLORS = {'Introspection': GREEN, 'Arithmetic': YELLOW, 'Null': ACCENT, 'Priming': RED}
     traj_data = {}  # {group: {turn: [similarity_values]}}

@@ -87,11 +87,10 @@ def run_id_to_int(run_id) -> int:
 
 
 def run_mode_matches(cell_value, run_num) -> bool:
-    """Test whether a single CSV run_mode cell value matches a run identifier,
-    accepting BOTH the 4-digit canonical form ("0003") and legacy integer-
-    string form ("3"). Used by CSV-read filter sites during the 0.79.4.0
-    transition until all data is migrated.
-    
+    """Test whether a single CSV run_mode cell value matches a run identifier.
+    Canonical 4-digit form only ("0003"). Legacy integer-string acceptance
+    dropped in v0.79.6.4 after migration completion verified.
+
     v0.79.5.0."""
     if cell_value is None:
         return False
@@ -102,46 +101,37 @@ def run_mode_matches(cell_value, run_num) -> bool:
         rid = run_id_pad(run_num)
     except ValueError:
         return False
-    legacy = str(run_id_to_int(run_num))
-    return s == rid or s == legacy
+    return s == rid
 
 
 def run_mode_mask(run_mode_series, run_num):
-    """Pandas-friendly: return a boolean Series matching either canonical
-    4-digit or legacy integer-string run_mode values. Equivalent to
-    `series.astype(str).isin([rid, legacy])` but a one-call helper for
-    the dozens of filter sites across analysis/export_stats/runners.
-    
+    """Pandas-friendly: return a boolean Series matching the canonical
+    4-digit run_mode. One-call helper for the dozens of filter sites
+    across analysis/export_stats/runners.
+
     v0.79.5.0."""
     try:
         rid = run_id_pad(run_num)
     except ValueError:
         return run_mode_series.astype(str) == ''  # no matches
-    legacy = str(run_id_to_int(run_num))
-    return run_mode_series.astype(str).isin([rid, legacy])
+    return run_mode_series.astype(str) == rid
 
 
 def run_mode_mask_any(run_mode_series, run_nums):
     """Multi-run variant of run_mode_mask — returns boolean Series matching
-    ANY of the given run identifiers (iterable), accepting both canonical
-    4-digit and legacy integer-string forms for each.
-    
+    ANY of the given run identifiers (iterable) in canonical 4-digit form.
+
     Replaces `df['run_mode'].isin([3,4,5])` patterns that broke on migrated
-    data. After 0.79.4.0 the run_mode column holds strings ("0003" / "3"
-    depending on migration status); matching against an int list always
-    returned False under pandas-native string-vs-int comparison. This
-    helper expands each int to its {rid, legacy} pair and unions.
-    
+    data (run_mode is a string column; int comparisons always returned
+    False under pandas-native string-vs-int).
+
     v0.79.5.0."""
     values = []
     for rn in run_nums:
         try:
-            rid = run_id_pad(rn)
+            values.append(run_id_pad(rn))
         except ValueError:
             continue
-        legacy = str(run_id_to_int(rn))
-        values.append(rid)
-        values.append(legacy)
     if not values:
         return run_mode_series.astype(str) == ''
     return run_mode_series.astype(str).isin(values)
@@ -240,7 +230,7 @@ RUN_CSV = DualKeyRunDict({
     "0013": "R0013_framing.csv",                # was R15
     "0014": "R0014_framing.csv",                # was R16
     "0015": "R0015_framing.csv",                # was R17
-    "0016": None,                               # was R48 — E_t recovery meta-run
+    "0016": "R0016_et_recovery.csv",            # v0.79.5.0: Run 16 promoted to first-class MC run with 13 source_run conditions
     "0017": "R0017_patching.csv",               # was R21
     "0018": "R0018_layer_isolation.csv",        # was Q42
     "0019": "R0019_random_patching.csv",        # was R53
@@ -280,7 +270,10 @@ RUN_CSV = DualKeyRunDict({
     "0053": None,                               # was Q51 — condition concordance (no GPU)
     "0054": None,                               # was Q52 — cross-model paper summary (no GPU)
     "0055": None,                               # was R54 — stats export (no GPU)
-    "0056": None,                               # was R55 — paper assembly (no GPU)
+    "0056": None,                               # v0.80.0.38 (was R55→paper assembly): now CALIBRATION ONLY (V5b synthetic, channel marginal, methodology_calibration_block)
+    "0057": None,                               # v0.80.0.38 (new): function-class sensitivity (Ridge vs MLP vs RF on §5.4 cross-cell pattern; no GPU)
+    "0058": None,                               # v0.80.0.51 (new): lagrangian apparatus — kraskov anchor, solver, V5d threshold, aggregator (no GPU)
+    "0059": None,                               # v0.80.0.51 (was 0058): stats export + paper assembly (results.json + figures)
 })
 
 ANALYSIS_JSON = DualKeyRunDict({
@@ -299,7 +292,10 @@ ANALYSIS_JSON = DualKeyRunDict({
     "0053": "Q0053_condition_concordance.json",      # was Q51
     "0054": "Q0054_cross_model_summary.json",        # was Q52 proper
     "0055": "Q0055_stats_report.json",               # was R54
-    "0056": "Q0056_paper_assembly.json",             # was R55
+    "0056": "Q0056_calibration_manifest.json",       # v0.80.0.38: Run 0056 is calibration-only; manifest summarizes which calibration scripts ran fresh
+    "0057": "Q0057_function_class_sensitivity.json", # v0.80.0.38: function-class sensitivity (RF beyond Ridge/MLP)
+    "0058": "Q0058_apparatus_manifest.json",         # v0.80.0.51 (new): lagrangian apparatus manifest (kraskov anchor, solver, threshold, aggregator)
+    "0059": "results.json",                          # v0.80.0.51 (was 0058): paper assembly
 })
 
 
@@ -397,42 +393,6 @@ def get_queue_path(family: str, size: str) -> str:
     return os.path.join(get_family_size_dir(family, size), "queue.json")
 
 
-def load_queue(family: str, size: str) -> dict:
-    """
-    Load run queue state for a model.
-
-    Returns:
-      {
-        "complete":  [run_nums finished],
-        "partial":   {str(run_num): trial_count},
-        "queued":    [run_nums scheduled],
-        "failed":    [run_nums that crashed]
-      }
-
-    Ground-truth for 'complete' comes from scan_run_completion(), not this file.
-    This file is only written by the scheduler; reads should always be combined
-    with a CSV scan to verify completion status.
-    """
-    path    = get_queue_path(family, size)
-    default = {"complete": [], "partial": {}, "queued": [], "failed": []}
-    if not os.path.exists(path):
-        return default
-    try:
-        data = json.load(open(path, encoding='utf-8'))
-        for key in default:
-            if key not in data:
-                data[key] = default[key]
-        return data
-    except Exception:
-        return default
-
-
-def save_queue(family: str, size: str, queue: dict):
-    """Write queue state to queue.json."""
-    path = get_queue_path(family, size)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w") as f:
-        json.dump(queue, f, indent=2)
 
 
 def scan_run_completion(family: str, size: str, variant: str,
@@ -520,18 +480,27 @@ def condition_name(temperature: float) -> str:
 def get_paper_paths(create_dirs: bool = True) -> dict:
     """Return paths for the global paper directory at base/paper/.
     Cross-model figures and summary JSONs live here — not per-model.
+
+    v0.80.0.32: visuals/ and json/ subdirectories no longer auto-created.
+    The new pipeline writes figures + results.json directly to base/paper/
+    (the root); subdirs were vestigial holdovers from the pre-0.80
+    paper-assembly path that copied per-model JSONs into json/ and
+    rendered legacy figures into visuals/. Callers that explicitly
+    expect those paths still receive them in the return dict (so existing
+    code doesn't crash on KeyError); they just no longer get pre-created.
+    Calibration subdirectory under base/paper/calibration/ is unaffected
+    — it's created on demand by the calibration scripts themselves.
     """
     base = os.path.join(DATA, 'paper')
     paths = {
         "root":    ROOT,
         "data":    DATA,
         "base":    base,
-        "visuals": os.path.join(base, "visuals"),
-        "json":    os.path.join(base, "json"),
+        "visuals": os.path.join(base, "visuals"),  # legacy key — not created
+        "json":    os.path.join(base, "json"),     # legacy key — not created
     }
     if create_dirs:
-        for d in [paths["visuals"], paths["json"]]:
-            os.makedirs(d, exist_ok=True)
+        os.makedirs(base, exist_ok=True)
     return paths
 
 
@@ -570,7 +539,7 @@ def get_paths(family: str, size: str, variant: str, temperature: float,
     label.
 
     v0.76.1.0: temp_indep_* point at deterministic/ regardless of
-    session temperature. Runs in TEMP_INDEP_RUNS (19, 20, 26) always
+    session temperature. Runs in TEMP_INDEP_RUNS (1, 2, 3) always
     read/write those paths — saves ~5x disk on those three runs which
     would otherwise duplicate identical data across all 6 temp dirs.
 
@@ -581,10 +550,10 @@ def get_paths(family: str, size: str, variant: str, temperature: float,
     cond  = condition_name(temperature)
     sd    = _size_dir(size)
     base  = os.path.join(DATA, family, sd, variant, cond)
-    # v0.76.1.0: temperature-independent runs (R19, R20, R26) always read/write
+    # v0.76.1.0: temperature-independent runs (R0001, R0002, R0003) always read/write
     # the deterministic directory. Adds temp_indep_csv and temp_indep_hidden
     # keys that point at deterministic/ regardless of session temperature.
-    # Saves ~5× disk space on R19/R20/R26 files.
+    # Saves ~5× disk space on R0001/R0002/R0003 files.
     det_base = os.path.join(DATA, family, sd, variant, 'deterministic')
     paths = {
         "root":             ROOT,
@@ -613,24 +582,7 @@ def get_paths(family: str, size: str, variant: str, temperature: float,
 TEMP_INDEP_RUNS = DualKeyRunSet({1, 2, 3})  # was {19, 20, 26}
 
 
-def temp_indep_hidden_dir_for_variant(family: str, size: str, variant: str) -> str:
-    """Return the hidden_states dir under deterministic/ for a given variant.
-    Used by Run 0001 (base, instruct, abliterated) to write hidden states
-    to the correct variant's deterministic folder regardless of session temp."""
-    sd = _size_dir(size)
-    return os.path.join(DATA, family, sd, variant, 'deterministic', 'hidden_states')
 
-
-def csv_path(paths: dict, filename: str) -> str:
-    """Join paths['csv'] + filename. Trivial but universal — every
-    runner calls this to build its CSV write path."""
-    return os.path.join(paths["csv"], filename)
-
-
-def hidden_path(paths: dict, filename: str) -> str:
-    """Join paths['hidden'] + filename. Companion to csv_path for
-    hidden-state .npy writes."""
-    return os.path.join(paths["hidden"], filename)
 
 
 def sanitize(name: str) -> str:
@@ -645,19 +597,6 @@ def describe(family, size, variant, temperature) -> str:
     UI headers, log messages, error text. Not a path — for display."""
     return f"{family}/{size}/{variant}/{condition_name(temperature)}"
 
-
-def get_gpu_name() -> str:
-    """Return the active GPU's device name, sanitized for filename use.
-    Returns 'unknown' if CUDA unavailable. Used by calibration to tag
-    per-GPU calibration files so power readings don't cross-contaminate
-    between different hardware."""
-    try:
-        import torch
-        if torch.cuda.is_available():
-            return re.sub(r'[^a-zA-Z0-9._-]', '_', torch.cuda.get_device_name(0))
-    except Exception:
-        pass
-    return 'unknown'
 
 
 def run_prefix(run_num) -> str:

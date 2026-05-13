@@ -1,5 +1,5 @@
 """
-IOTA FRAMEWORK — VAULT
+IOTA FRAMEWORK -- VAULT
 ========================
 Model catalog used by ui.py and start_here.py for model selection.
 
@@ -14,7 +14,7 @@ v30.0: added get_preferred_variant(), resolve_variant_path(),
 v40.0.0: IOTA_SUBFAMILY_MAP added. Run 0001 three-model redesign requires that
        abliterated, instruct, and base all share the same pretraining lineage.
 
-v53.1.8: comprehensive model catalog update — Gemma 3, LLaMA 3.3, Mistral 3,
+v53.1.8: comprehensive model catalog update -- Gemma 3, LLaMA 3.3, Mistral 3,
        Qwen 3, Phi-4, Falcon 3, DeepSeek-V3/R1, Command R+, Aya, SmolLM2,
        and many more.
 
@@ -411,35 +411,35 @@ IOTA_SUBFAMILY_MAP = {
         "base":     "meta-llama/Meta-Llama-3-8B",
         "instruct": "meta-llama/Meta-Llama-3-8B-Instruct",
         "subfamily": "llama-3-8b",
-        "note": "Llama 3 8B — all three from same pretraining. DEFAULT.",
+        "note": "Llama 3 8B -- all three from same pretraining. DEFAULT.",
     },
     # ── LLaMA 3 70B ──
     "failspy/llama-3-70B-Instruct-abliterated": {
         "base":     "meta-llama/Meta-Llama-3-70B",
         "instruct": "meta-llama/Meta-Llama-3-70B-Instruct",
         "subfamily": "llama-3-70b",
-        "note": "Llama 3 70B — failspy original. 80 layers, 8192 hidden dim.",
+        "note": "Llama 3 70B -- failspy original. 80 layers, 8192 hidden dim.",
     },
     # ── LLaMA 3.1 8B ──
     "mlabonne/Meta-Llama-3.1-8B-Instruct-abliterated": {
         "base":     "meta-llama/Meta-Llama-3.1-8B",
         "instruct": "meta-llama/Meta-Llama-3.1-8B-Instruct",
         "subfamily": "llama-3.1-8b",
-        "note": "Llama 3.1 8B — mlabonne abliteration. 32 layers, 4096 hidden dim.",
+        "note": "Llama 3.1 8B -- mlabonne abliteration. 32 layers, 4096 hidden dim.",
     },
     # ── LLaMA 3.2 3B ──
     "huihui-ai/Llama-3.2-3B-Instruct-abliterated": {
         "base":     "meta-llama/Llama-3.2-3B",
         "instruct": "meta-llama/Llama-3.2-3B-Instruct",
         "subfamily": "llama-3.2-3b",
-        "note": "Llama 3.2 3B — huihui-ai abliteration. 28 layers, 3072 hidden dim.",
+        "note": "Llama 3.2 3B -- huihui-ai abliteration. 28 layers, 3072 hidden dim.",
     },
     # ── LLaMA 3.2 1B ──
     "huihui-ai/Llama-3.2-1B-Instruct-abliterated": {
         "base":     "meta-llama/Llama-3.2-1B",
         "instruct": "meta-llama/Llama-3.2-1B-Instruct",
         "subfamily": "llama-3.2-1b",
-        "note": "Llama 3.2 1B — huihui-ai abliteration. 16 layers, 2048 hidden dim.",
+        "note": "Llama 3.2 1B -- huihui-ai abliteration. 16 layers, 2048 hidden dim.",
     },
 
     # ══════════════════════════════════════════════════════════════════
@@ -451,21 +451,21 @@ IOTA_SUBFAMILY_MAP = {
         "base":     "mistralai/Mistral-7B-v0.3",
         "instruct": "mistralai/Mistral-7B-Instruct-v0.3",
         "subfamily": "mistral-7b-v0.2",
-        "note": "Mistral 7B — v0.2 abliterated paired with v0.3 instruct/base.",
+        "note": "Mistral 7B -- v0.2 abliterated paired with v0.3 instruct/base.",
     },
     # ── Mistral 7B v0.3 ──
     "evolveon/Mistral-7B-Instruct-v0.3-abliterated": {
         "base":     "mistralai/Mistral-7B-v0.3",
         "instruct": "mistralai/Mistral-7B-Instruct-v0.3",
         "subfamily": "mistral-7b-v0.3",
-        "note": "Mistral 7B v0.3 — evolveon abliteration. 32 layers, 4096 hidden dim.",
+        "note": "Mistral 7B v0.3 -- evolveon abliteration. 32 layers, 4096 hidden dim.",
     },
     # ── Mistral Nemo 12B ──
     "huihui-ai/Mistral-Nemo-Instruct-2407-abliterated": {
         "base":     "mistralai/Mistral-Nemo-Base-2407",
         "instruct": "mistralai/Mistral-Nemo-Instruct-2407",
         "subfamily": "mistral-nemo-12b",
-        "note": "Mistral Nemo 12B — huihui-ai abliteration. 40 layers, 5120 hidden dim.",
+        "note": "Mistral Nemo 12B -- huihui-ai abliteration. 40 layers, 5120 hidden dim.",
     },
 
     # ══════════════════════════════════════════════════════════════════
@@ -477,70 +477,70 @@ IOTA_SUBFAMILY_MAP = {
         "base":     "Qwen/Qwen2.5-7B",
         "instruct": "Qwen/Qwen2.5-7B-Instruct",
         "subfamily": "qwen2-7b",
-        "note": "Qwen2 abliterated — paired with Qwen2.5 base/instruct (closest pretraining sibling).",
+        "note": "Qwen2 abliterated -- paired with Qwen2.5 base/instruct (closest pretraining sibling).",
     },
     # ── Qwen2.5 0.5B ──
     "huihui-ai/Qwen2.5-0.5B-Instruct-abliterated": {
         "base":     "Qwen/Qwen2.5-0.5B",
         "instruct": "Qwen/Qwen2.5-0.5B-Instruct",
         "subfamily": "qwen2.5-0.5b",
-        "note": "Qwen2.5 0.5B — huihui-ai abliteration. 24 layers, 896 hidden dim.",
+        "note": "Qwen2.5 0.5B -- huihui-ai abliteration. 24 layers, 896 hidden dim.",
     },
     # ── Qwen2.5 1.5B ──
     "huihui-ai/Qwen2.5-1.5B-Instruct-abliterated": {
         "base":     "Qwen/Qwen2.5-1.5B",
         "instruct": "Qwen/Qwen2.5-1.5B-Instruct",
         "subfamily": "qwen2.5-1.5b",
-        "note": "Qwen2.5 1.5B — huihui-ai abliteration. 28 layers, 1536 hidden dim.",
+        "note": "Qwen2.5 1.5B -- huihui-ai abliteration. 28 layers, 1536 hidden dim.",
     },
     # ── Qwen2.5 3B ──
     "huihui-ai/Qwen2.5-3B-Instruct-abliterated": {
         "base":     "Qwen/Qwen2.5-3B",
         "instruct": "Qwen/Qwen2.5-3B-Instruct",
         "subfamily": "qwen2.5-3b",
-        "note": "Qwen2.5 3B — huihui-ai abliteration. 36 layers, 2048 hidden dim.",
+        "note": "Qwen2.5 3B -- huihui-ai abliteration. 36 layers, 2048 hidden dim.",
     },
     # ── Qwen2.5 7B ──
     "huihui-ai/Qwen2.5-7B-Instruct-abliterated-v3": {
         "base":     "Qwen/Qwen2.5-7B",
         "instruct": "Qwen/Qwen2.5-7B-Instruct",
         "subfamily": "qwen2.5-7b",
-        "note": "Qwen2.5 7B — huihui-ai v3 abliteration. 28 layers, 3584 hidden dim.",
+        "note": "Qwen2.5 7B -- huihui-ai v3 abliteration. 28 layers, 3584 hidden dim.",
     },
     # ── Qwen2.5 14B ──
     "huihui-ai/Qwen2.5-14B-Instruct-abliterated-v2": {
         "base":     "Qwen/Qwen2.5-14B",
         "instruct": "Qwen/Qwen2.5-14B-Instruct",
         "subfamily": "qwen2.5-14b",
-        "note": "Qwen2.5 14B — huihui-ai v2 abliteration. 48 layers, 5120 hidden dim.",
+        "note": "Qwen2.5 14B -- huihui-ai v2 abliteration. 48 layers, 5120 hidden dim.",
     },
     # ── Qwen2.5 32B ──
     "huihui-ai/Qwen2.5-32B-Instruct-abliterated": {
         "base":     "Qwen/Qwen2.5-32B",
         "instruct": "Qwen/Qwen2.5-32B-Instruct",
         "subfamily": "qwen2.5-32b",
-        "note": "Qwen2.5 32B — huihui-ai abliteration. 64 layers, 5120 hidden dim.",
+        "note": "Qwen2.5 32B -- huihui-ai abliteration. 64 layers, 5120 hidden dim.",
     },
     # ── Qwen2.5 72B ──
     "huihui-ai/Qwen2.5-72B-Instruct-abliterated": {
         "base":     "Qwen/Qwen2.5-72B",
         "instruct": "Qwen/Qwen2.5-72B-Instruct",
         "subfamily": "qwen2.5-72b",
-        "note": "Qwen2.5 72B — huihui-ai abliteration. 80 layers, 8192 hidden dim.",
+        "note": "Qwen2.5 72B -- huihui-ai abliteration. 80 layers, 8192 hidden dim.",
     },
     # ── Qwen2.5-Coder 7B ──
     "huihui-ai/Qwen2.5-Coder-7B-Instruct-abliterated": {
         "base":     "Qwen/Qwen2.5-Coder-7B",
         "instruct": "Qwen/Qwen2.5-Coder-7B-Instruct",
         "subfamily": "qwen2.5-coder-7b",
-        "note": "Qwen2.5-Coder 7B — huihui-ai. Continued pretraining on code data.",
+        "note": "Qwen2.5-Coder 7B -- huihui-ai. Continued pretraining on code data.",
     },
     # ── Qwen2.5-Coder 32B ──
     "huihui-ai/Qwen2.5-Coder-32B-Instruct-abliterated": {
         "base":     "Qwen/Qwen2.5-Coder-32B",
         "instruct": "Qwen/Qwen2.5-Coder-32B-Instruct",
         "subfamily": "qwen2.5-coder-32b",
-        "note": "Qwen2.5-Coder 32B — huihui-ai. Continued pretraining on code data.",
+        "note": "Qwen2.5-Coder 32B -- huihui-ai. Continued pretraining on code data.",
     },
 
     # ══════════════════════════════════════════════════════════════════
@@ -552,49 +552,49 @@ IOTA_SUBFAMILY_MAP = {
         "base":     "google/gemma-2-2b",
         "instruct": "google/gemma-2-2b-it",
         "subfamily": "gemma-2-2b",
-        "note": "Gemma 2 2B — IlyaGusev abliteration. 26 layers, 2304 hidden dim.",
+        "note": "Gemma 2 2B -- IlyaGusev abliteration. 26 layers, 2304 hidden dim.",
     },
     # ── Gemma 2 9B ──
     "IlyaGusev/gemma-2-9b-it-abliterated": {
         "base":     "google/gemma-2-9b",
         "instruct": "google/gemma-2-9b-it",
         "subfamily": "gemma-2-9b",
-        "note": "Gemma 2 9B — IlyaGusev abliteration. 42 layers, 3584 hidden dim.",
+        "note": "Gemma 2 9B -- IlyaGusev abliteration. 42 layers, 3584 hidden dim.",
     },
     # ── Gemma 2 27B ──
     "byroneverson/gemma-2-27b-it-abliterated": {
         "base":     "google/gemma-2-27b",
         "instruct": "google/gemma-2-27b-it",
         "subfamily": "gemma-2-27b",
-        "note": "Gemma 2 27B — byroneverson abliteration (CPU method). 46 layers, 4608 hidden dim.",
+        "note": "Gemma 2 27B -- byroneverson abliteration (CPU method). 46 layers, 4608 hidden dim.",
     },
     # ── Gemma 3 1B ──
     "mlabonne/gemma-3-1b-it-abliterated": {
         "base":     "google/gemma-3-1b-pt",
         "instruct": "google/gemma-3-1b-it",
         "subfamily": "gemma-3-1b",
-        "note": "Gemma 3 1B — mlabonne abliteration. 26 layers, 1152 hidden dim.",
+        "note": "Gemma 3 1B -- mlabonne abliteration. 26 layers, 1152 hidden dim.",
     },
     # ── Gemma 3 4B ──
     "huihui-ai/gemma-3-4b-it-abliterated": {
         "base":     "google/gemma-3-4b-pt",
         "instruct": "google/gemma-3-4b-it",
         "subfamily": "gemma-3-4b",
-        "note": "Gemma 3 4B — huihui-ai abliteration. 34 layers, 2560 hidden dim.",
+        "note": "Gemma 3 4B -- huihui-ai abliteration. 34 layers, 2560 hidden dim.",
     },
     # ── Gemma 3 12B ──
     "mlabonne/gemma-3-12b-it-abliterated-v2": {
         "base":     "google/gemma-3-12b-pt",
         "instruct": "google/gemma-3-12b-it",
         "subfamily": "gemma-3-12b",
-        "note": "Gemma 3 12B — mlabonne v2 abliteration. 48 layers, 3840 hidden dim.",
+        "note": "Gemma 3 12B -- mlabonne v2 abliteration. 48 layers, 3840 hidden dim.",
     },
     # ── Gemma 3 27B ──
     "mlabonne/gemma-3-27b-it-abliterated": {
         "base":     "google/gemma-3-27b-pt",
         "instruct": "google/gemma-3-27b-it",
         "subfamily": "gemma-3-27b",
-        "note": "Gemma 3 27B — mlabonne abliteration. 62 layers, 4608 hidden dim.",
+        "note": "Gemma 3 27B -- mlabonne abliteration. 62 layers, 4608 hidden dim.",
     },
 
     # ══════════════════════════════════════════════════════════════════
@@ -606,7 +606,7 @@ IOTA_SUBFAMILY_MAP = {
         "base":     "microsoft/Phi-3-mini-128k-instruct",
         "instruct": "microsoft/Phi-3-mini-128k-instruct",
         "subfamily": "phi-3-mini",
-        "note": "Phi-3 Mini — no separate base; instruct used for both. ⚠️ INVALID TRIPLET.",
+        "note": "Phi-3 Mini -- no separate base; instruct used for both. ⚠️ INVALID TRIPLET.",
     },
 }
 
@@ -617,10 +617,10 @@ def get_subfamily_models(abliterated_path: str) -> dict:
     Returns None if the abliterated path is not in IOTA_SUBFAMILY_MAP.
 
     This is the only supported way to resolve base and instruct siblings
-    for Run 0001. Do NOT use resolve_variant_path for this purpose — it
+    for Run 0001. Do NOT use resolve_variant_path for this purpose -- it
     returns the first matching variant in ALL_MODELS regardless of lineage,
     which may silently mix subfamilies (e.g. Llama 3 abliterated resolved
-    with Llama 3.1 base — invalid for difference vector computation).
+    with Llama 3.1 base -- invalid for difference vector computation).
     """
     return IOTA_SUBFAMILY_MAP.get(abliterated_path, None)
 
@@ -694,16 +694,6 @@ def get_family_sizes(family_key: str) -> list:
 # SEARCH / BROWSE HELPERS
 # ─────────────────────────────────────────────
 
-def by_size(size_bucket: str) -> list:
-    """Return [(name, path)] for all models of given size (deduplicated)."""
-    seen   = set()
-    result = []
-    for n, p, f, s in ALL_MODELS:
-        if s == size_bucket and p not in seen:
-            seen.add(p)
-            result.append((n, p))
-    return result
-
 
 def by_family(family_key: str) -> list:
     """Return [(name, path)] for all models of given family (deduplicated)."""
@@ -716,34 +706,11 @@ def by_family(family_key: str) -> list:
     return result
 
 
-def search_local(query: str) -> list:
-    """Search curated list. Returns [(name, path, family, size)]."""
-    q = query.lower()
-    return [(n, p, f, s) for n, p, f, s in ALL_MODELS
-            if q in n.lower() or q in p.lower() or q in f.lower()]
-
-
-def search_hub(query: str, limit: int = 20) -> list:
-    """Search HuggingFace Hub for models. Returns [(model_id, author, downloads)].
-    Requires huggingface_hub. Restored v0.58.0.9 — removed in v0.58.0.0 as
-    'dead code' but needed for discovering new abliterated/base/instruct variants
-    when expanding to new model families.
-    """
-    try:
-        from huggingface_hub import HfApi
-    except ImportError:
-        print("  [WARN] huggingface_hub not installed — pip install huggingface_hub")
-        return []
-    api = HfApi()
-    results = []
-    for model in api.list_models(search=query, sort="downloads", direction=-1, limit=limit):
-        results.append((model.modelId, model.author or "", model.downloads or 0))
-    return results
 
 
 def get_by_path(path: str) -> tuple:
     """Find a model in the curated list by HF path.
-    Returns (name, path, family, size) — infers family/size if not in catalog."""
+    Returns (name, path, family, size) -- infers family/size if not in catalog."""
     for n, p, f, s in ALL_MODELS:
         if p == path:
             return n, p, f, s
@@ -757,7 +724,3 @@ def get_by_path(path: str) -> tuple:
     return name, path, fam, "other"
 
 
-def paginate(items: list, page: int) -> tuple:
-    """Return (page_items, start_idx, total)."""
-    start = page * PAGE_SIZE
-    return items[start:start + PAGE_SIZE], start, len(items)

@@ -1,0 +1,35 @@
+# User state (per-session) — NEVER COMMIT
+# last_session.json contains the user's hf_token among other session state.
+last_session.json
+.iota_*
+
+# Smoke-test outputs
+smoke_test/
+
+# Local audit trail (preserved on disk; not for distribution)
+attic/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Working data (large, regenerable from runs)
+data/
+data_archive_*/
+*.npy
+*.npz
+
+# Local virtualenvs / IDE
+.venv/
+.env
+.vscode/
+.idea/
+
+# OS noise
+Thumbs.db
+.DS_Store
+
+# Generated logs
+*.log
