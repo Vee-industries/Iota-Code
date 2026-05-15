@@ -16,10 +16,19 @@ __pycache__/
 *.pyd
 
 # Working data (large, regenerable from runs)
-data/
+data/*
 data_archive_*/
 *.npy
 *.npz
+
+# Surgical exception: paper-referenced analysis outputs (small JSONs the
+# papers promise are bundled with the repo release). Walk the tree one
+# level at a time so unrelated siblings stay ignored.
+!data/paper/
+data/paper/*
+!data/paper/behavioral_trial_response/
+data/paper/behavioral_trial_response/*
+!data/paper/behavioral_trial_response/run_0061_jolt_carryover_analysis.json
 
 # Local virtualenvs / IDE
 .venv/

@@ -1,0 +1,1301 @@
+{
+  "phase": "run_0061_jolt_carryover",
+  "iota_version": "0.82.0.26",
+  "timestamp": "2026-05-15T10:35:08Z",
+  "source_run": 39,
+  "shock_at": 13,
+  "n_turns": 16,
+  "n_cohorts": 4,
+  "k_values": [
+    1,
+    2,
+    3
+  ],
+  "n_permutations": 1000,
+  "p_reliable_threshold": 0.05,
+  "cells_total": 24,
+  "cells_processed": 24,
+  "cells": {
+    "gemma_2b_q4_abliterated_t00": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 16641.6,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 3926.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 2917.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 16641.6,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 3926.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 2917.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 16641.6,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 3926.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 2917.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 16641.6,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 3926.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 2917.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 1.288897669472402,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 0.2555379290452841,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 0.18324373297166113,
+        "p_value": 0.001998001998001998,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 6.040219093685914,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 0.4739030459570983,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 0.46578603017426895,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_fp16_abliterated_t00": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 9747.648514851486,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 3278.5714285714284,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 1322.532894736842,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 2.1110143015272076,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 0.30272502964035475,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 0.17385988997224255,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 0.4455149948261363,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 0.0729049808621771,
+        "p_value": 0.06993006993006994,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 0.033347320879321685,
+        "p_value": 0.35664335664335667,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 0.31031177812757005,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 0.13726222939382257,
+        "p_value": 0.005994005994005994,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 0.12748429327489094,
+        "p_value": 0.006993006993006993,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 0.23920532886506143,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 0.061745689890010745,
+        "p_value": 0.1028971028971029,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 0.03402185056556019,
+        "p_value": 0.32967032967032966,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-2b-it-abliterated",
+      "k1": {
+        "observed_stat": 0.24937198582607484,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k2": {
+        "observed_stat": 0.06792070147748157,
+        "p_value": 0.06593406593406594,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      },
+      "k3": {
+        "observed_stat": 0.046775817821217085,
+        "p_value": 0.1978021978021978,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 2304
+      }
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-9b-it-abliterated",
+      "k1": {
+        "observed_stat": 22564.224137931036,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k2": {
+        "observed_stat": 26350.0,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k3": {
+        "observed_stat": 105139613151.5503,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      }
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-9b-it-abliterated",
+      "k1": {
+        "observed_stat": 1.5743701144184592,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k2": {
+        "observed_stat": 1.5778408334316698,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k3": {
+        "observed_stat": 0.8564826206652983,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      }
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-9b-it-abliterated",
+      "k1": {
+        "observed_stat": 0.7327495957726256,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k2": {
+        "observed_stat": 0.18683256147727062,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k3": {
+        "observed_stat": 0.21853556999061977,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      }
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-9b-it-abliterated",
+      "k1": {
+        "observed_stat": 0.6197845427947153,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k2": {
+        "observed_stat": 0.1546128896224869,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k3": {
+        "observed_stat": 0.13663614855843104,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      }
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-9b-it-abliterated",
+      "k1": {
+        "observed_stat": 0.39454972534412713,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k2": {
+        "observed_stat": 0.10574537954127133,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k3": {
+        "observed_stat": 0.09111439254388475,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      }
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "gemma-2-9b-it-abliterated",
+      "k1": {
+        "observed_stat": 0.33594645891709213,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k2": {
+        "observed_stat": 0.12529905182532886,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      },
+      "k3": {
+        "observed_stat": 0.14408768186422627,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 3584
+      }
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "Meta-Llama-3-8B-Instruct-abliterated-v3",
+      "k1": {
+        "observed_stat": 237110.13513513515,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k2": {
+        "observed_stat": 8667.672413793103,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k3": {
+        "observed_stat": 129047.11538461539,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      }
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "Meta-Llama-3-8B-Instruct-abliterated-v3",
+      "k1": {
+        "observed_stat": 10.173055109314632,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k2": {
+        "observed_stat": 1.7300106122570995,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k3": {
+        "observed_stat": 3.932922529159866,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      }
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "Meta-Llama-3-8B-Instruct-abliterated-v3",
+      "k1": {
+        "observed_stat": 1.752290944629531,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k2": {
+        "observed_stat": 0.32289993590769206,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k3": {
+        "observed_stat": 0.5044911596339955,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      }
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "Meta-Llama-3-8B-Instruct-abliterated-v3",
+      "k1": {
+        "observed_stat": 1.6972529307071331,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k2": {
+        "observed_stat": 0.24833469061531963,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k3": {
+        "observed_stat": 0.4020535984556511,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      }
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "Meta-Llama-3-8B-Instruct-abliterated-v3",
+      "k1": {
+        "observed_stat": 1.5097219301313167,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k2": {
+        "observed_stat": 0.1975219754387758,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k3": {
+        "observed_stat": 0.2773876483622035,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      }
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "shock_at": 13,
+      "cohort_count": 4,
+      "model_display_tag": "Meta-Llama-3-8B-Instruct-abliterated-v3",
+      "k1": {
+        "observed_stat": 1.033015216962729,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k2": {
+        "observed_stat": 0.20001062460372934,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      },
+      "k3": {
+        "observed_stat": 0.30427852057048543,
+        "p_value": 0.000999000999000999,
+        "n_trials": 100,
+        "cohort_sizes": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "files_missing": 0,
+        "pool_dim": 4096
+      }
+    }
+  },
+  "aggregates": {
+    "k1": {
+      "fleet_mean_p": 0.000999000999000999,
+      "fleet_median_p": 0.000999000999000999,
+      "n_cells_with_p": 24,
+      "n_cells_reliable_at_0_05": 24
+    },
+    "k2": {
+      "fleet_mean_p": 0.01103063603063603,
+      "fleet_median_p": 0.000999000999000999,
+      "n_cells_with_p": 24,
+      "n_cells_reliable_at_0_05": 21
+    },
+    "k3": {
+      "fleet_mean_p": 0.03800366300366301,
+      "fleet_median_p": 0.000999000999000999,
+      "n_cells_with_p": 24,
+      "n_cells_reliable_at_0_05": 21
+    },
+    "decay_characterization": {
+      "n_cells_with_all_three_k": 24,
+      "n_cells_monotonic_decay": 24,
+      "fraction_monotonic_decay": 1.0,
+      "fleet_mean_p_trajectory": [
+        0.000999000999000999,
+        0.01103063603063603,
+        0.03800366300366301
+      ],
+      "fleet_mean_p_monotonic_increase": true,
+      "per_cell_decay": [
+        {
+          "cell": "gemma_2b_q4_abliterated_t00",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_2b_q4_abliterated_t02",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_2b_q4_abliterated_t04",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_2b_q4_abliterated_t06",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_2b_q4_abliterated_t08",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.001998001998001998,
+          "monotonic_decay": true,
+          "monotonic_increase": false
+        },
+        {
+          "cell": "gemma_2b_q4_abliterated_t10",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_2b_fp16_abliterated_t00",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_2b_fp16_abliterated_t02",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_2b_fp16_abliterated_t04",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.06993006993006994,
+          "p_k3": 0.35664335664335667,
+          "monotonic_decay": true,
+          "monotonic_increase": false
+        },
+        {
+          "cell": "gemma_2b_fp16_abliterated_t06",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.005994005994005994,
+          "p_k3": 0.006993006993006993,
+          "monotonic_decay": true,
+          "monotonic_increase": false
+        },
+        {
+          "cell": "gemma_2b_fp16_abliterated_t08",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.1028971028971029,
+          "p_k3": 0.32967032967032966,
+          "monotonic_decay": true,
+          "monotonic_increase": false
+        },
+        {
+          "cell": "gemma_2b_fp16_abliterated_t10",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.06593406593406594,
+          "p_k3": 0.1978021978021978,
+          "monotonic_decay": true,
+          "monotonic_increase": false
+        },
+        {
+          "cell": "gemma_9b_q4_abliterated_t00",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_9b_q4_abliterated_t02",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_9b_q4_abliterated_t04",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_9b_q4_abliterated_t06",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_9b_q4_abliterated_t08",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "gemma_9b_q4_abliterated_t10",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "llama_8b_q4_abliterated_t00",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "llama_8b_q4_abliterated_t02",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "llama_8b_q4_abliterated_t04",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "llama_8b_q4_abliterated_t06",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "llama_8b_q4_abliterated_t08",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        },
+        {
+          "cell": "llama_8b_q4_abliterated_t10",
+          "p_k1": 0.000999000999000999,
+          "p_k2": 0.000999000999000999,
+          "p_k3": 0.000999000999000999,
+          "monotonic_decay": true,
+          "monotonic_increase": true
+        }
+      ]
+    }
+  }
+}
