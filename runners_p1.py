@@ -522,10 +522,13 @@ def _run_introspection(run_mode, session, paths, model, tok):
     Run 0007: memory probe (MEMORY_PROMPTS)
     Run 0008: status enforcer (ENFORCER_PROMPTS -- single-token output enforced)
     """
+    # v0.79.4.0 renumber: old 3,4,5 (introspection A/B/C) -> new 6,7,8.
+    # Earlier versions of this dict still keyed on the old IDs and caused
+    # KeyError: 6 / 7 / 8 on every R0006/7/8 fire; fixed 2026-05-16.
     _prompts = {
-        3: INTROSPECTION_PROMPTS,
-        4: MEMORY_PROMPTS,
-        5: ENFORCER_PROMPTS,
+        6: INTROSPECTION_PROMPTS,
+        7: MEMORY_PROMPTS,
+        8: ENFORCER_PROMPTS,
     }
     _standard_trial_loop(
         model, tok, session, paths, run_mode,
