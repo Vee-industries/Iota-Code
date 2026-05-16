@@ -48,8 +48,19 @@ TEMP_DIRS = ["deterministic", "temp_0.2", "temp_0.4", "temp_0.6",
 
 
 def variants_for_run(run_id):
-    """Run 0001 needs all three variants moved; others only the abliterated."""
+    """Determine which variant dirs (base / instruct / abliterated) hold
+    output for a given run.
+
+    - Run 0001 is the trivariant null isolation; all three variants are
+      first-class outputs (E_t from base, C_t from abl - base).
+    - Runs 0002, 0004-0015, 0023 write E_t/C_t source data via the
+      _standard_trial_loop save_embeddings path, which writes to the
+      base and instruct sibling dirs in addition to abliterated.
+    - All other runs (0003, 0017+, 0039, ...) write only to abliterated.
+    """
     if run_id == 1:
+        return ["base", "instruct", "abliterated"]
+    if run_id in (2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 23):
         return ["base", "instruct", "abliterated"]
     return ["abliterated"]
 
