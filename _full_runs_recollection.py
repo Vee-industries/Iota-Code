@@ -109,6 +109,19 @@ MODELS = [
 RUNS_TO_RECOLLECT = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 23]
 SESSION_TEMPS    = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
 
+# Temperature-independent runs in our set. The IOTA framework's
+# _copy_temperature_independent_runs (called at the start of every
+# _run_session) auto-copies R0001 / R0002 / R0003 data from
+# deterministic/ into the current temp dir whenever any T > 0 run
+# fires. So we only need to fire these runs once at T=0; the framework
+# distributes them across the other 5 temp dirs for free. Firing them
+# 6 times produces byte-identical content (internal seeds match across
+# session temps), wasting 5/6 of the wall time.
+#
+# R0002 is the only TEMP_INDEP run in Phase B's set. R0001 and R0003
+# were handled in Phase A.
+TEMP_INDEP_RUNS_LOCAL = {2}
+
 
 def log(msg):
     line = f"[{datetime.now().isoformat(timespec='seconds')}] {msg}"
@@ -199,12 +212,28 @@ def run_one_model(model_cfg, status):
             m_state["end_iso"] = datetime.now().isoformat()
             return
 
-    # Step 1: 14 runs x 6 temps
+    # Step 1: 14 runs x 6 temps, with TEMP_INDEP optimization.
+    # For runs in TEMP_INDEP_RUNS_LOCAL (just R0002): fire once at T=0;
+    # framework auto-copies to the other 5 temp dirs. Mark the T > 0
+    # cells as done-via-auto-copy so resume logic skips them cleanly.
     for run_num in RUNS_TO_RECOLLECT:
         for temp in SESSION_TEMPS:
             cell_key = f"r{run_num:04d}_t{temp}"
             if m_state["cells"].get(cell_key, {}).get("done"):
                 continue
+
+            # Skip TEMP_INDEP runs at T > 0; framework's
+            # _copy_temperature_independent_runs handles distribution.
+            if run_num in TEMP_INDEP_RUNS_LOCAL and temp != 0.0:
+                log(f"    skip R{run_num:04d} T={temp}  (TEMP_INDEP -- auto-copy)")
+                m_state["cells"][cell_key] = {
+                    "done":   True,
+                    "iso":    datetime.now().isoformat(),
+                    "skipped_via": "auto_copy_temp_indep",
+                }
+                save_status(status)
+                continue
+
             ok = fire_run(model_cfg, run_num, temp)
             m_state["cells"][cell_key] = {
                 "done":   ok,
