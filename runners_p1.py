@@ -24,7 +24,7 @@ from runners_prompts import (
     INTROSPECTION_PROMPTS, MEMORY_PROMPTS, ENFORCER_PROMPTS,
     GENERAL_INTROSPECTION_PROMPTS,
     ARITHMETIC_PROBLEMS, ARITHMETIC_PROBLEMS_TEXT,
-    JOLT_PROMPTS, SHOCK_PROMPT, SHOCK_VARIANTS,
+    JOLT_PROMPTS, JOLT_PROMPTS_NONTHEMATIC, SHOCK_PROMPT, SHOCK_VARIANTS,
     IMPOSSIBLE_CONSTRAINED, IMPOSSIBLE_UNCONSTRAINED, EPISTEMIC_IMPOSSIBLE,
     FRAMING_SYSTEM_PROMPTS,
 )
@@ -628,21 +628,36 @@ def _run_math(run_mode, session, paths, model, tok):
 # ── Runs 0039, 0040 -- Jolt ───────────────────────────────────────────────────────
 
 def _run_jolt(run_mode, session, paths, model, tok):
-    """Runs 0039, 0040 -- shock injection. turn_fn injects shock at specific turn."""
-    shock_at   = {39: 13, 40: 5}[run_mode]
-    n_turns    = 16 if run_mode == 39 else 13
+    """Runs 0039, 0040, 0060 -- shock injection. turn_fn injects shock at specific turn.
+
+    Run 0039: late shock (turn 13), 16-turn protocol, 4-cohort SHOCK_VARIANTS,
+              thematic systems-disruption recovery prompts at turns 14-16.
+    Run 0040: early shock (turn 5), 13-turn protocol, single SHOCK_PROMPT.
+    Run 0060: same as R0039 in every respect EXCEPT recovery prompts at
+              turns 14-16 are non-thematic factual questions (see
+              NON_THEMATIC_RECOVERY_PROMPTS in runners_prompts.py). The
+              §7 follow-up to Paper A (Vaillancourt 2026c, §3.5) compares
+              cohort discrimination under thematic vs non-thematic recovery
+              to separate spontaneous-retention from input-triggered-
+              reactivation readings of the carryover signal.
+    """
+    shock_at   = {39: 13, 40: 5, 60: 13}[run_mode]
+    n_turns    = 16 if run_mode in (39, 60) else 13
+    prompts_seq = JOLT_PROMPTS_NONTHEMATIC if run_mode == 60 else JOLT_PROMPTS
 
     def turn_fn(trial, turn_idx):
         is_shock    = (turn_idx == shock_at)
         is_recovery = int(turn_idx > shock_at)
         if is_shock:
-            prompt = SHOCK_VARIANTS[trial % len(SHOCK_VARIANTS)] if run_mode == 39 else SHOCK_PROMPT
+            prompt = (SHOCK_VARIANTS[trial % len(SHOCK_VARIANTS)]
+                      if run_mode in (39, 60) else SHOCK_PROMPT)
         else:
-            prompt = JOLT_PROMPTS[turn_idx - 1] if turn_idx <= len(JOLT_PROMPTS) else JOLT_PROMPTS[-1]
+            prompt = prompts_seq[turn_idx - 1] if turn_idx <= len(prompts_seq) else prompts_seq[-1]
         extra = {
             'is_shock':      int(is_shock),
             'is_recovery':   is_recovery,
-            'shock_variant': (trial % len(SHOCK_VARIANTS)) if run_mode == 39 else -1,
+            'shock_variant': (trial % len(SHOCK_VARIANTS)) if run_mode in (39, 60) else -1,
+            'recovery_condition': 'non_thematic' if run_mode == 60 else 'thematic',
         }
         return prompt, {'use_long_output': True}, extra
 

@@ -174,6 +174,44 @@ def _log_trial_end(label: str, trial: int):
     _append_log(line, kind='ok')
 
 
+def _maybe_append_assistant(messages, content):
+    """Append an assistant turn to messages, unless drop-rethreading is set.
+
+    With IOTA_DROP_RETHREADING=1 in the environment, model outputs (priming
+    responses and per-turn responses) are NOT re-fed into subsequent turns.
+    Each subsequent turn sees only the system prompt + accumulated user
+    prompts, never the model's own prior outputs. This restores exogeneity
+    of E_t from S_{t-1} (E_t = fixed user prompts, independent of prior
+    state by construction) -- the conservatism caveat in Paper A §4.3
+    dissolves under this mode and R̂ becomes an actual share, not a floor.
+
+    Trade-off: the model has no record of its own prior responses, only
+    the user side of the conversation. What 'carryover' the apparatus
+    measures changes accordingly -- still hidden-state-resident, still
+    cohort-discriminable via attention to the cohort-distinguishing user
+    prompt (e.g. shock at turn 13 in R0039), but the assistant-output-as-
+    context channel is closed.
+
+    Default behavior (env var unset or != '1') is the legacy threaded
+    protocol -- backwards compatible. Switching the protocol is a one-flag
+    intervention controlled at the orchestrator level.
+
+    Under drop-rethreading we SKIP the append entirely. The chat-template
+    alternation requirement is satisfied separately by resetting the
+    messages list to [system] at the start of each turn iteration so each
+    model call sees only [system, user_N] -- a single user turn followed
+    by the model's generated response. No prior turns are fed.
+    """
+    if os.environ.get('IOTA_DROP_RETHREADING') == '1':
+        return
+    messages.append({"role": "assistant", "content": content})
+
+
+def _drop_rethreading_active():
+    """Cheap check used inside the trial loops to reset messages per turn."""
+    return os.environ.get('IOTA_DROP_RETHREADING') == '1'
+
+
 def _standard_trial_loop(
     model, tok, session, paths, run_mode, csv_file,
     # Core config -- must provide one of: prompts or turn_fn
@@ -268,7 +306,7 @@ def _standard_trial_loop(
             if condition_value is not None:
                 t0_r[condition_col] = condition_value
             append_csv(t0_r, csv_file)
-            messages.append({"role": "assistant", "content": t0_r['output']})
+            _maybe_append_assistant(messages, t0_r['output'])
 
         prev_h = None; turn1_h = None
         state  = TrialState()
@@ -278,6 +316,16 @@ def _standard_trial_loop(
         _log_trial_start(_label + (f"|{condition_value}" if condition_value else ""), trial)
 
         for turn_idx in range(1, n_turns + 1):
+            # Under drop-rethreading mode, each turn is a fully independent
+            # model call. Reset messages to just the system prompt so the
+            # model sees only [system, user_N] at each generate(). No prior
+            # turns are fed; the chat template never encounters consecutive
+            # user turns (each call is a single user turn).
+            if _drop_rethreading_active():
+                messages = []
+                if sys_prompt:
+                    messages.append({"role": "system", "content": sys_prompt})
+
             # Resolve prompt and kwargs for this turn
             if turn_fn is not None:
                 prompt_text, turn_kwargs, turn_extra = turn_fn(trial, turn_idx)
@@ -321,7 +369,7 @@ def _standard_trial_loop(
             if save_embeddings and turn_idx == 1 and cached_ct is not None:
                 _emb_buffer.append((cached_ct, file_trial, 1, 'C'))
 
-            messages.append({"role": "assistant", "content": result['output']})
+            _maybe_append_assistant(messages, result['output'])
             if turn1_h is None and layer_h:
                 turn1_h = layer_h
             prev_h = layer_h

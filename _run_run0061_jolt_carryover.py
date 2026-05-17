@@ -47,18 +47,39 @@ from cartography import get_paths, run_prefix
 
 
 # ===== Configuration =====
-RUN_NUM       = 39       # source data: Run 0039 _run_jolt
+# Default source is Run 0039 (thematic recovery, Paper A §3 headline test).
+# Override via --run <NN> on the command line to point at a sibling run
+# with the same protocol structure (currently: Run 0060, non-thematic
+# recovery, the §7 follow-up). The output filename incorporates the run
+# number so the two analyses don't collide.
+import argparse as _ap
+_p = _ap.ArgumentParser(add_help=False)
+_p.add_argument('--run', type=int, default=39,
+                help='source run number (39 = thematic R0039, '
+                     '60 = non-thematic R0060)')
+_args, _unknown = _p.parse_known_args()
+
+RUN_NUM       = _args.run
 RUN_PFX       = run_prefix(RUN_NUM)  # 'Q' for runs > 21, 'R' for proof runs
+# _run_jolt writes its CSV with a hardcoded 'R' prefix regardless of
+# run_prefix(), so the CSV path uses 'R' rather than RUN_PFX. Hidden-state
+# .npy files use RUN_PFX naturally via save_npy.
+CSV_PFX       = 'R'
 SHOCK_AT      = 13       # turn at which shock is injected
-N_TURNS       = 16       # total turns in Run 0039 protocol
+N_TURNS       = 16       # total turns under both R0039 and R0060
 N_COHORTS     = 4        # SHOCK_VARIANTS length (asserted at runners_prompts.py:143)
 K_VALUES      = [1, 2, 3]
 N_PERMUTATIONS = 1000
 PERM_SEED     = 42
 P_RELIABLE    = 0.05
 
+# Output filename varies by source run so R0039 and R0060 outputs don't
+# overwrite each other. The Phase D analyzer reads both for the side-by-side
+# spontaneous-retention vs input-triggered-reactivation comparison.
+_OUT_BASENAME = (f'run_0061_jolt_carryover_analysis.json' if RUN_NUM == 39
+                 else f'run_0061_jolt_carryover_analysis_r{RUN_NUM:04d}.json')
 OUT_REL_PATH  = os.path.join('data', 'paper', 'behavioral_trial_response',
-                              'run_0061_jolt_carryover_analysis.json')
+                              _OUT_BASENAME)
 
 
 # ===== Display-name discovery (reuse the hardened logic from Item 12) =====
@@ -106,7 +127,7 @@ def discover_cells():
     data_root = os.path.join(ROOT, 'data')
     cells = []
     pat = os.path.join(data_root, '*', '*', '*', '*', 'csv',
-                        f'{RUN_PFX}{RUN_NUM:04d}_jolt.csv')
+                        f'{CSV_PFX}{RUN_NUM:04d}_jolt.csv')
     for csv_path in sorted(glob.glob(pat)):
         # csv_path like: data/llama/8b_4bit/abliterated/temp_0.2/csv/R0039_jolt.csv
         parts = os.path.normpath(csv_path).split(os.sep)
@@ -217,7 +238,7 @@ def process_cell(cell_key, family, size, variant, temp, progress):
     or {'skipped': '<reason>'} on failure.
     """
     paths = get_paths(family, size, variant, temp, create_dirs=False)
-    csv_path = os.path.join(paths['csv'], f'{RUN_PFX}{RUN_NUM:04d}_jolt.csv')
+    csv_path = os.path.join(paths['csv'], f'{CSV_PFX}{RUN_NUM:04d}_jolt.csv')
     hidden_dir = paths['hidden']
 
     if not os.path.isfile(csv_path):

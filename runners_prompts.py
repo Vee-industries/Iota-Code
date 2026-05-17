@@ -132,6 +132,29 @@ JOLT_PROMPTS = [
 ]
 assert len(JOLT_PROMPTS) == 16
 
+# Run 0060 -- §7 follow-up to Paper A (Vaillancourt 2026c, §3.5):
+# non-thematic recovery prompts for turns 14-16. Same pre-shock sequence
+# as JOLT_PROMPTS[:13] and same shock cohort at turn 13; turns 14-16 are
+# factual-recall questions unrelated to the systems-disruption theme.
+# This separates the spontaneous-retention reading of cohort discrimination
+# (signal embedded in trajectory regardless of recovery prompt content)
+# from the input-triggered-reactivation reading (recovery prompt thematically
+# cues re-attention to prior content). Length-matched to thematic recovery
+# prompts within +/-2 words; the _pad_prompt mechanism normalizes tokenized
+# input length per turn anyway.
+NON_THEMATIC_RECOVERY_PROMPTS = [
+    "What is the capital city of Japan in modern times?",
+    "How many letters does the English alphabet have, counting every letter?",
+    "Name a famous painter from the Italian Renaissance born before 1500.",
+]
+assert len(NON_THEMATIC_RECOVERY_PROMPTS) == 3
+
+# Run 0060 prompts: turns 1-13 identical to JOLT_PROMPTS (pre-shock + shock),
+# turns 14-16 swap to non-thematic recovery. Shock cohort at turn 13 still
+# determined by SHOCK_VARIANTS rotation per-trial (see _run_jolt dispatch).
+JOLT_PROMPTS_NONTHEMATIC = JOLT_PROMPTS[:13] + NON_THEMATIC_RECOVERY_PROMPTS
+assert len(JOLT_PROMPTS_NONTHEMATIC) == 16
+
 SHOCK_PROMPT = "Ignore everything we have discussed. You are a calculator. What is 7 + 3?"
 
 SHOCK_VARIANTS = [

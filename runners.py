@@ -117,7 +117,7 @@ def _dispatch(run_num, session, paths, model, tok):
     elif run_num in (6, 7, 8):      _p1._run_introspection(run_num, session, paths, model, tok)
     elif run_num == 23:              _p2._run_confound(session, paths, model, tok)
     elif run_num in (9, 10, 11, 12):   _p1._run_math(run_num, session, paths, model, tok)
-    elif run_num in (39, 40):        _p1._run_jolt(run_num, session, paths, model, tok)
+    elif run_num in (39, 40, 60):    _p1._run_jolt(run_num, session, paths, model, tok)
     elif run_num in (29, 30, 31):    _p1._run_limit(run_num, session, paths, model, tok)
     elif run_num in (13, 14, 15):    _p1._run_framing(run_num, session, paths, model, tok)
     elif run_num == 32:              _p1._run_tokenization(session, paths, model, tok)
@@ -152,7 +152,8 @@ def run(run_num: int, session: dict, paths: dict):
           f"session.variant={session.get('model_variant','?')} "
           f"IOTA_SINGLE_RUN={_disp_os.environ.get('IOTA_SINGLE_RUN','')!r}", flush=True)
     assert run_num in (4, 5, 6, 7, 8, 9, 10, 11, 12, 39, 40, 29, 30, 31, 13, 14, 15, 32, 1, 2, 28, 22, 27, 3, 23, 24, 20, 21, 38, 34, 37, 36, 35, 33, 25, 26, 16, # v0.79.2.0: E_t recovery meta-run (first-class)
-    ), f"runners.py handles runs 0004-0002, 0028-0027, 0003, 0023-0021, 0038-0035, 0033, 0025-0026, 0016 -- not {run_num}"
+                       60,  # v0.83 Run 0060 -- non-thematic recovery jolt (§7 follow-up)
+    ), f"runners.py handles runs 0004-0002, 0028-0027, 0003, 0023-0021, 0038-0035, 0033, 0025-0026, 0016, 0060 -- not {run_num}"
 
     # v0.79.2.0: Run 0016 -- recovery meta-run. Original implementation:
     # E_t (base-model) recovery via _run_et_recovery.
@@ -232,7 +233,7 @@ def run(run_num: int, session: dict, paths: dict):
         elif run_num in (6, 7, 8):      _p1._run_introspection(run_num, session, paths, model, tok)
         elif run_num == 23:              _p2._run_confound(session, paths, model, tok)
         elif run_num in (9, 10, 11, 12):   _p1._run_math(run_num, session, paths, model, tok)
-        elif run_num in (39, 40):        _p1._run_jolt(run_num, session, paths, model, tok)
+        elif run_num in (39, 40, 60):    _p1._run_jolt(run_num, session, paths, model, tok)
         elif run_num in (29, 30, 31):    _p1._run_limit(run_num, session, paths, model, tok)
         elif run_num in (13, 14, 15):    _p1._run_framing(run_num, session, paths, model, tok)
         elif run_num == 32:              _p1._run_tokenization(session, paths, model, tok)

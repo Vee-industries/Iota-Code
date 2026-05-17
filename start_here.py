@@ -355,6 +355,12 @@ RUN_MAP = DualKeyRunDict({
     "0057": ("export_stats",   "Function-class sensitivity -- Ridge vs MLP vs RF on §5.4 cross-cell pattern -- no GPU"),  # v0.80.0.44
     "0058": ("run_bayesian_apparatus",  "Bayesian apparatus -- kraskov anchor + I-projection solver + threshold + aggregator -- no GPU"),  # v0.80.0.51: new; v0.82.0.23: renamed lagrangian → bayesian (apparatus is Bayesian I-projection MAP, not constrained-Lagrangian)
     "0059": ("export_stats",   "Stats export + paper assembly -- results.json + figures -- no GPU"),  # v0.80.0.51: was 0058
+    # v0.83 Run 0060 -- non-thematic recovery jolt (Paper A §7 follow-up).
+    # Same protocol as R0039 (cache-cleared, transcript-threaded, 16 turns,
+    # shock at turn 13, 4-cohort SHOCK_VARIANTS) but with turns 14-16 swapped
+    # to NON_THEMATIC_RECOVERY_PROMPTS. Separates spontaneous-retention from
+    # input-triggered-reactivation readings of cohort discrimination.
+    "0060": ("runners",        "Perturbation A non-thematic recovery (§7 follow-up)"),
 })
 
 # ── Collection-time prerequisites ─────────────────────────────────────────────
