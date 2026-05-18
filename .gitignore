@@ -29,6 +29,7 @@ data/paper/*
 !data/paper/behavioral_trial_response/
 data/paper/behavioral_trial_response/*
 !data/paper/behavioral_trial_response/run_0061_jolt_carryover_analysis.json
+!data/paper/behavioral_trial_response/run_0061_jolt_carryover_analysis_r0060.json
 
 # Local virtualenvs / IDE
 .venv/
