@@ -1,0 +1,185 @@
+{
+  "phase": "phase9_stacking_baseline_p2",
+  "iota_version": "0.82.0.23",
+  "timestamp": "2026-05-17T18:29:16.698360Z",
+  "stacking_baseline_weights": {
+    "w_R": 0.25,
+    "w_M": 0.25,
+    "w_K": 0.25,
+    "w_F": 0.25
+  },
+  "weights_source": "uniform_pending_v5_qp_fit",
+  "cells": {
+    "gemma_2b_q4_abliterated_t00": {
+      "stacking_baseline_shares": {
+        "E": 0.30320837538523593,
+        "C": 0.14714492533067575,
+        "R": 0.5496466992840883
+      }
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "stacking_baseline_shares": {
+        "E": 0.3180836393196515,
+        "C": 0.15867925019518642,
+        "R": 0.523237110485162
+      }
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "stacking_baseline_shares": {
+        "E": 0.32944437071121857,
+        "C": 0.16833878481274778,
+        "R": 0.5022168444760337
+      }
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "stacking_baseline_shares": {
+        "E": 0.31861450904627464,
+        "C": 0.23385883115660638,
+        "R": 0.4475266597971189
+      }
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "stacking_baseline_shares": {
+        "E": 0.29856560937186916,
+        "C": 0.21155841449585328,
+        "R": 0.4898759761322775
+      }
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "stacking_baseline_shares": {
+        "E": 0.29869262374541367,
+        "C": 0.20750546680667345,
+        "R": 0.49380190944791297
+      }
+    },
+    "gemma_2b_fp16_abliterated_t00": {
+      "stacking_baseline_shares": {
+        "E": 0.3720642587181391,
+        "C": 0.19379264856863615,
+        "R": 0.4341430927132247
+      }
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "stacking_baseline_shares": {
+        "E": 0.39806562261108197,
+        "C": 0.17250271179797158,
+        "R": 0.4294316655909465
+      }
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "stacking_baseline_shares": {
+        "E": 0.3488945617963134,
+        "C": 0.16408821543817317,
+        "R": 0.4870172227655134
+      }
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "stacking_baseline_shares": {
+        "E": 0.3747533438909144,
+        "C": 0.19701453608915526,
+        "R": 0.4282321200199303
+      }
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "stacking_baseline_shares": {
+        "E": 0.36473337691049057,
+        "C": 0.15554559017936948,
+        "R": 0.47972103291014
+      }
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "stacking_baseline_shares": {
+        "E": 0.29864454507805993,
+        "C": 0.1947821961143792,
+        "R": 0.5065732588075609
+      }
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "stacking_baseline_shares": {
+        "E": 0.3644153902104732,
+        "C": 0.1430513825131855,
+        "R": 0.49253322727634136
+      }
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "stacking_baseline_shares": {
+        "E": 0.4273814211972829,
+        "C": 0.1420113524079674,
+        "R": 0.43060722639474963
+      }
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "stacking_baseline_shares": {
+        "E": 0.3714565353420959,
+        "C": 0.1629549627427178,
+        "R": 0.4655885019151863
+      }
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "stacking_baseline_shares": {
+        "E": 0.35831733380717673,
+        "C": 0.16125855644633152,
+        "R": 0.4804241097464918
+      }
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "stacking_baseline_shares": {
+        "E": 0.3604819478719511,
+        "C": 0.16273123430573838,
+        "R": 0.4767868178223106
+      }
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "stacking_baseline_shares": {
+        "E": 0.3507636898910568,
+        "C": 0.16192840888415555,
+        "R": 0.48730790122478773
+      }
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "stacking_baseline_shares": {
+        "E": 0.4679869544472742,
+        "C": 0.1932994681358703,
+        "R": 0.33871357741685554
+      }
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "stacking_baseline_shares": {
+        "E": 0.41837127328992096,
+        "C": 0.16388380661916307,
+        "R": 0.4177449200909159
+      }
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "stacking_baseline_shares": {
+        "E": 0.43934554185294705,
+        "C": 0.14270174479231235,
+        "R": 0.4179527133547406
+      }
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "stacking_baseline_shares": {
+        "E": 0.438981778437853,
+        "C": 0.14142642262982807,
+        "R": 0.4195917989323189
+      }
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "stacking_baseline_shares": {
+        "E": 0.4378159429919881,
+        "C": 0.1387271537611161,
+        "R": 0.4234569032468958
+      }
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "stacking_baseline_shares": {
+        "E": 0.4411443663216017,
+        "C": 0.13918798062781654,
+        "R": 0.41966765305058173
+      }
+    }
+  },
+  "summary": {
+    "n_cells": 24
+  }
+}

@@ -1,0 +1,283 @@
+{
+  "iota_version": "0.82.0.29",
+  "paper_version": "v26_response_pull_3",
+  "description": "Percentile-95 bootstrap CIs on q* per PHASE10_SUBSET cell, from the per-resample shares stored in bootstrap_variance_p2.",
+  "n_bootstrap_per_cell": 12,
+  "ci_method": "percentile_95",
+  "source_field": "bootstrap_variance_p2/per_cell.json::cells.<>.per_resample_shares.anchored",
+  "per_cell_cis": {
+    "gemma_2b_q4_abliterated_t00": {
+      "q_star_point_estimate": {
+        "E": 0.3390073509255367,
+        "C": 0.1568504034265706,
+        "R": 0.5041422456478927
+      },
+      "q_star_ci_95": {
+        "E": [
+          0.3221176408362824,
+          0.3541386476121788
+        ],
+        "C": [
+          0.14993041880023833,
+          0.16568917892327995
+        ],
+        "R": [
+          0.49211125990710103,
+          0.5132916035208956
+        ]
+      },
+      "q_star_ci_half_widths": {
+        "E": 0.016010503387948183,
+        "C": 0.007879380061520808,
+        "R": 0.010590171806897308
+      },
+      "n_resamples_used": 12
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "q_star_point_estimate": {
+        "E": 0.3514102774638384,
+        "C": 0.21761623647440956,
+        "R": 0.43097348606175195
+      },
+      "q_star_ci_95": {
+        "E": [
+          0.3418998654242712,
+          0.3662180458053241
+        ],
+        "C": [
+          0.20608293714753756,
+          0.22645753222656698
+        ],
+        "R": [
+          0.4205245049780708,
+          0.4383864531886674
+        ]
+      },
+      "q_star_ci_half_widths": {
+        "E": 0.01215909019052644,
+        "C": 0.010187297539514709,
+        "R": 0.008930974105298306
+      },
+      "n_resamples_used": 12
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_2b_fp16_abliterated_t00": {
+      "q_star_point_estimate": {
+        "E": 0.373254045624456,
+        "C": 0.17171814739842536,
+        "R": 0.4550278069771187
+      },
+      "q_star_ci_95": {
+        "E": [
+          0.3487693309025647,
+          0.3847626993516879
+        ],
+        "C": [
+          0.1566581766018336,
+          0.18248631607414637
+        ],
+        "R": [
+          0.44011953693700706,
+          0.4767514977668066
+        ]
+      },
+      "q_star_ci_half_widths": {
+        "E": 0.017996684224561604,
+        "C": 0.012914069736156386,
+        "R": 0.018315980414899763
+      },
+      "n_resamples_used": 12
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "q_star_point_estimate": {
+        "E": 0.3429224472126909,
+        "C": 0.2199361737690504,
+        "R": 0.4371413790182588
+      },
+      "q_star_ci_95": {
+        "E": [
+          0.33553019101615206,
+          0.35605721831192677
+        ],
+        "C": [
+          0.20677074321487274,
+          0.2328826238087985
+        ],
+        "R": [
+          0.4241357833652499,
+          0.44429379361305366
+        ]
+      },
+      "q_star_ci_half_widths": {
+        "E": 0.010263513647887357,
+        "C": 0.013055940296962887,
+        "R": 0.01007900512390189
+      },
+      "n_resamples_used": 12
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "q_star_point_estimate": {
+        "E": 0.38797251018804363,
+        "C": 0.1306526316100082,
+        "R": 0.4813748582019482
+      },
+      "q_star_ci_95": {
+        "E": [
+          0.3732833068150125,
+          0.3963230589459031
+        ],
+        "C": [
+          0.11869141802701606,
+          0.13783402438436762
+        ],
+        "R": [
+          0.4726213149473469,
+          0.493096979772887
+        ]
+      },
+      "q_star_ci_half_widths": {
+        "E": 0.0115198760654453,
+        "C": 0.009571303178675779,
+        "R": 0.01023783241277007
+      },
+      "n_resamples_used": 12
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "q_star_point_estimate": {
+        "E": 0.4304032107677316,
+        "C": 0.20076419442412707,
+        "R": 0.3688325948081414
+      },
+      "q_star_ci_95": {
+        "E": [
+          0.42461419597794603,
+          0.4375417326642535
+        ],
+        "C": [
+          0.19142913622308905,
+          0.21333961499040505
+        ],
+        "R": [
+          0.35599601990637036,
+          0.37985666856715444
+        ]
+      },
+      "q_star_ci_half_widths": {
+        "E": 0.006463768343153736,
+        "C": 0.010955239383658,
+        "R": 0.01193032433039204
+      },
+      "n_resamples_used": 12
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "q_star_point_estimate": null,
+      "q_star_ci_95": null,
+      "n_resamples_used": 0,
+      "note": "fewer than 3 resamples; CI not computed"
+    }
+  },
+  "subset_summary": "R-coordinate CI half-width fleet-mean 0.0117, range 0.0089-0.0183 across 6 cells with n_bootstrap >= 3",
+  "caveat": "n_bootstrap=12 is underpowered for narrow CIs; reported widths are honest at this sample size.",
+  "timestamp_utc": "2026-05-09T23:42:07.549034Z"
+}

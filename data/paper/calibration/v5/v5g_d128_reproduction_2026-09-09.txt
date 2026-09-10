@@ -1,0 +1,121 @@
+# V5g d=128 reproduction, 2026-09-09. Scratch driver imported generate_v5g and v5_synthetic_calibration.estimate_R_3channel unchanged;
+# seed 42, n_steps 8000 (as recorded in v5g_bridge_calibration.json), n_permutations 8 (R^2 does not depend on permutations). Paper B §5.9/§10.3 quote MLP held-out R^2 = -0.037 (E-dominant).
+v5g_d128_E-dominant          mlp    heldout_R2=-0.0366  (4s)
+v5g_d128_E-dominant          ridge  heldout_R2=+0.4009  (0s)
+v5g_d128_E-dominant          rf     heldout_R2=+0.0297  (169s)
+v5g_d128_E-dominant          rkhs   heldout_R2=+0.3437  (251s)
+v5g_d128_balanced            mlp    heldout_R2=-0.0363  (6s)
+v5g_d128_balanced            ridge  heldout_R2=+0.4442  (0s)
+v5g_d128_balanced            rf     heldout_R2=+0.0327  (178s)
+v5g_d128_balanced            rkhs   heldout_R2=+0.2563  (242s)
+v5g_d128_S-dominant          mlp    heldout_R2=+0.6509  (17s)
+v5g_d128_S-dominant          ridge  heldout_R2=+0.7438  (0s)
+v5g_d128_S-dominant          rf     heldout_R2=+0.1364  (117s)
+v5g_d128_S-dominant          rkhs   heldout_R2=+0.5450  (240s)
+{
+ "v5g_d128_E-dominant": {
+  "truth_R": 0.25033417933999147,
+  "mlp": {
+   "heldout_R2": -0.0365580395051924,
+   "shares_nperm8": {
+    "E": 1.0,
+    "C": 0.0,
+    "S": 0.0
+   }
+  },
+  "ridge": {
+   "heldout_R2": 0.40085736906157654,
+   "shares_nperm8": {
+    "E": 0.8113629862928214,
+    "C": 0.00019099088208974772,
+    "S": 0.1884460228250888
+   }
+  },
+  "rf": {
+   "heldout_R2": 0.029718820324199403,
+   "shares_nperm8": {
+    "E": 0.9642153336288881,
+    "C": 0.0,
+    "S": 0.035784666371111946
+   }
+  },
+  "rkhs": {
+   "heldout_R2": 0.3437274416221962,
+   "shares_nperm8": {
+    "E": 0.9353571450380959,
+    "C": 0.0011124037476077009,
+    "S": 0.06353045121429657
+   }
+  }
+ },
+ "v5g_d128_balanced": {
+  "truth_R": 0.7165031600240745,
+  "mlp": {
+   "heldout_R2": -0.036348370644947725,
+   "shares_nperm8": {
+    "E": 0.3333333333333333,
+    "C": 0.3333333333333333,
+    "S": 0.3333333333333333
+   }
+  },
+  "ridge": {
+   "heldout_R2": 0.44422341066683,
+   "shares_nperm8": {
+    "E": 0.30922311345189823,
+    "C": 0.0002127132355499353,
+    "S": 0.6905641733125518
+   }
+  },
+  "rf": {
+   "heldout_R2": 0.03271774328123845,
+   "shares_nperm8": {
+    "E": 0.060510656963699776,
+    "C": 0.0006617470350985243,
+    "S": 0.9388275960012018
+   }
+  },
+  "rkhs": {
+   "heldout_R2": 0.25627007056101886,
+   "shares_nperm8": {
+    "E": 0.5900505196966578,
+    "C": 0.002145186404224486,
+    "S": 0.4078042938991178
+   }
+  }
+ },
+ "v5g_d128_S-dominant": {
+  "truth_R": 0.9673386086886213,
+  "mlp": {
+   "heldout_R2": 0.650903393952553,
+   "shares_nperm8": {
+    "E": 0.012912648129528225,
+    "C": 0.0,
+    "S": 0.9870873518704718
+   }
+  },
+  "ridge": {
+   "heldout_R2": 0.743771807986221,
+   "shares_nperm8": {
+    "E": 0.022215696979334263,
+    "C": 7.555322138225816e-05,
+    "S": 0.9777087497992836
+   }
+  },
+  "rf": {
+   "heldout_R2": 0.1363887341338691,
+   "shares_nperm8": {
+    "E": 0.0,
+    "C": 0.0002763122994803503,
+    "S": 0.9997236877005197
+   }
+  },
+  "rkhs": {
+   "heldout_R2": 0.5449892650750436,
+   "shares_nperm8": {
+    "E": 0.044328214964914084,
+    "C": 0.0011871414928137122,
+    "S": 0.9544846435422721
+   }
+  }
+ }
+}

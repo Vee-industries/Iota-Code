@@ -1,0 +1,303 @@
+{
+  "phase": "phase7_knn_anchor_p2",
+  "iota_version": "0.82.0.23",
+  "timestamp": "2026-05-17T18:29:16.689358Z",
+  "operating_point": {
+    "split_a_frac": 0.8,
+    "pca_dim": 48
+  },
+  "anchor_source_note": "Phase 7 currently wraps Phase 4's full-data 2-channel anchor as a transitional input for the paper-2 four-class apparatus consumer. The partition-A 3-channel chain-rule estimator lands in a subsequent ship; consumers' loader contract is stable across the swap (key: anchors[cell]['p_a']'s shape stays (3,)).",
+  "cells": {
+    "gemma_2b_q4_abliterated_t00": {
+      "p_anchor": [
+        0.4100710390780562,
+        0.1795215549564322,
+        0.4104074059655118
+      ],
+      "mi_E_raw": 4261.268100278205,
+      "mi_S_raw": 4264.763469009259,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 130.46284770965576
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "p_anchor": [
+        0.4001282365059057,
+        0.2002433635944718,
+        0.39962839989962257
+      ],
+      "mi_E_raw": 4286.55936413012,
+      "mi_S_raw": 4281.204632597281,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 129.63514041900635
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "p_anchor": [
+        0.39610101560477773,
+        0.20838600078225314,
+        0.3955129836129691
+      ],
+      "mi_E_raw": 4274.681234797426,
+      "mi_S_raw": 4268.335254297965,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 130.29911398887634
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "p_anchor": [
+        0.3730976434961093,
+        0.25425211437623463,
+        0.372650242127656
+      ],
+      "mi_E_raw": 4228.139097857951,
+      "mi_S_raw": 4223.068909794938,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 127.78120827674866
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "p_anchor": [
+        0.3647206350817274,
+        0.2715505920279862,
+        0.3637287728902865
+      ],
+      "mi_E_raw": 4132.808005941983,
+      "mi_S_raw": 4121.568784435748,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 130.41605234146118
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "p_anchor": [
+        0.368031628860191,
+        0.26399054547218964,
+        0.3679778256676194
+      ],
+      "mi_E_raw": 4056.494847472468,
+      "mi_S_raw": 4055.9018213401214,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 129.28049278259277
+    },
+    "gemma_2b_fp16_abliterated_t00": {
+      "p_anchor": [
+        0.39660102984061546,
+        0.2073930109004861,
+        0.3960059592588984
+      ],
+      "mi_E_raw": 4256.089530631158,
+      "mi_S_raw": 4249.703582329787,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 128.0070140361786
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "p_anchor": [
+        0.4034512086893863,
+        0.1938694866655135,
+        0.4026793046451002
+      ],
+      "mi_E_raw": 4256.678035706754,
+      "mi_S_raw": 4248.533935701057,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 127.74381041526794
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "p_anchor": [
+        0.401121680551924,
+        0.1993933078415449,
+        0.3994850116065311
+      ],
+      "mi_E_raw": 4222.621746669871,
+      "mi_S_raw": 4205.3924763112955,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 128.84805297851562
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "p_anchor": [
+        0.3756018864001218,
+        0.25134644213226626,
+        0.37305167146761203
+      ],
+      "mi_E_raw": 4109.523956857471,
+      "mi_S_raw": 4081.621622658008,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 129.43853449821472
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "p_anchor": [
+        0.4011700239820488,
+        0.199617965627927,
+        0.39921201039002413
+      ],
+      "mi_E_raw": 4072.2574743423784,
+      "mi_S_raw": 4052.3817732472658,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 129.19820594787598
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "p_anchor": [
+        0.3798465227805441,
+        0.24079909272692682,
+        0.37935438449252906
+      ],
+      "mi_E_raw": 3984.064231138703,
+      "mi_S_raw": 3978.9023817272573,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 130.51710391044617
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "p_anchor": [
+        0.43150124560846015,
+        0.14210189984656404,
+        0.42639685454497583
+      ],
+      "mi_E_raw": 4313.0974892173945,
+      "mi_S_raw": 4262.076231448246,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 130.98377108573914
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "p_anchor": [
+        0.41312949153414424,
+        0.17909883324431514,
+        0.4077716752215407
+      ],
+      "mi_E_raw": 4350.603345879384,
+      "mi_S_raw": 4294.181003602002,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 129.75251722335815
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "p_anchor": [
+        0.3782058197118529,
+        0.24768450466225136,
+        0.3741096756258958
+      ],
+      "mi_E_raw": 4365.745793937735,
+      "mi_S_raw": 4318.46274623568,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 128.56852674484253
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "p_anchor": [
+        0.3750941568706469,
+        0.251613688223298,
+        0.3732921549060552
+      ],
+      "mi_E_raw": 4222.38441848919,
+      "mi_S_raw": 4202.099525008423,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 132.5768175125122
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "p_anchor": [
+        0.3744187335541123,
+        0.2497490565007541,
+        0.37583220994513356
+      ],
+      "mi_E_raw": 4010.059973823947,
+      "mi_S_raw": 4025.1984393750035,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 129.5584774017334
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "p_anchor": [
+        0.3699402102877596,
+        0.25728062406190866,
+        0.37277916565033176
+      ],
+      "mi_E_raw": 3774.6193465898086,
+      "mi_S_raw": 3803.5861242951414,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 129.24021816253662
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "p_anchor": [
+        0.39753337176811887,
+        0.2212571607267743,
+        0.38120946750510687
+      ],
+      "mi_E_raw": 5090.294950964086,
+      "mi_S_raw": 4881.272279281318,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 123.23122501373291
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "p_anchor": [
+        0.39371345848537875,
+        0.23062838122804605,
+        0.37565816028657517
+      ],
+      "mi_E_raw": 4664.107704045022,
+      "mi_S_raw": 4450.216475251793,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 122.290766954422
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "p_anchor": [
+        0.40164553843188,
+        0.2079234446576157,
+        0.39043101691050425
+      ],
+      "mi_E_raw": 4743.511743339661,
+      "mi_S_raw": 4611.066068129942,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 121.65483045578003
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "p_anchor": [
+        0.4020957100464494,
+        0.20290483327898373,
+        0.3949994566745668
+      ],
+      "mi_E_raw": 4350.787446077264,
+      "mi_S_raw": 4274.004010409662,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 123.73350119590759
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "p_anchor": [
+        0.39935618988745913,
+        0.20566728831360664,
+        0.3949765217989343
+      ],
+      "mi_E_raw": 4087.128999524632,
+      "mi_S_raw": 4042.3061849391192,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 125.01838612556458
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "p_anchor": [
+        0.39706199955831467,
+        0.20993721836064527,
+        0.3930007820810401
+      ],
+      "mi_E_raw": 3886.918350206308,
+      "mi_S_raw": 3847.1622900591346,
+      "kraskov_n_neighbors": 5,
+      "pca_dim": 32,
+      "wall_clock_s": 126.74595737457275
+    }
+  },
+  "summary": {
+    "n_cells": 24
+  }
+}

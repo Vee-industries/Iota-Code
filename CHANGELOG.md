@@ -1,3 +1,35 @@
+## CURRENT STATE -- 1.0.1 (2026-09-10)  [entry: claude-fable-5.1, with Kevin]
+
+### Reproducibility release: one-command pipeline, Run 0023 collected, four new measurements, paper data tracked.
+
+- `reproduce.py`: runs the whole pipeline end to end, unattended and resumable
+  (env -> collect -> analysis -> calibration -> behavioral -> results -> probes -> verify).
+  Waits for the GPU to drain between subprocesses; sets IOTA_VRAM_FRACTION=0.93 for the 9B.
+- Run 0023 (C_t confound isolation) collected on all 24 fleet cells (`_recollect_run0023.py`).
+  The May Phase-B re-collection had skipped it: the April `Q0023_introspection.csv` was left in
+  place, so the gap-aware resume treated all 300 trials as done and every firing exited in ~20 s.
+- `orchestration_core.load_model`: IOTA_VRAM_FRACTION env override (default unchanged at 0.85);
+  the 9B OOMs at load under 0.85 on a 10 GB card with the same "reserved but unallocated" signature.
+- New measurements (scripts + outputs under data/paper/calibration/):
+  `_derive_h4_threshold.py` (tau_H4 = 0.72 re-derived from V5e plug-in MI: 0.587 / 0.852 / interpolation);
+  `_gauss_ii_fleet.py` (Gaussian log-det interaction information on de-duplicated rows; the kNN-R^2
+  and KSG estimators fail a V5b sign test, this one passes; fleet redundancy-positive on 24/24 at d=8);
+  `_multistep_R.py` (R_k, k=1..3; Gemma 9B keeps 0.80 of R_1 at k=3, 2B variants 0.73);
+  `_kv_interpolation_test.py` (turn-14 state moves linearly along the segment between two cohorts'
+  interpolated caches; cache-on equals re-prefill to 1e-6);
+  `_drop_history_probe.py` (history absent from the turn-14 input -> cohorts byte-identical).
+- `data/paper/` (12 MB) is now tracked: results8th.json, every calibration JSON, Q0057/Q0058,
+  reviewer/verification JSONs, probe outputs, figures. Backups and checkpoints stay ignored.
+- H4 gate entry in `appendix_source_data 4pm.json` carries threshold_value and its derivation.
+- `v5g_d128_reproduction_2026-09-09.txt`: the MLP held-out R^2 = -0.037 quoted in paper B reproduced.
+- CITATION.cff: version 1.0.1; companion-paper titles corrected.
+- Phase 10 bootstrap: code default stays n_bootstrap=10 (unit tests pin it); the released
+  bootstrap_variance_p2/per_cell.json carries 12, so `_run_bootstrap_variance_p2` now honours
+  IOTA_N_BOOTSTRAP and reproduce.py sets it to 12 for Run 0058.
+- data/paper/paper_folder_README.md rewritten to describe the folder as released.
+- Known: Run 0023 rows carry the proxy E embedding (23 is not in scanner._ET_RECOVERY_RUNS);
+  the Q0057 + Run 0058 re-run on de-duplicated rows is named in paper B §10.2 as follow-up.
+
 ## CURRENT STATE -- 1.0.0 (2026-05-13)  [entry: claude-opus-4.7]
 
 ### Per-(trial, temperature) seed differentiation + publication-readiness pass.

@@ -1,0 +1,18 @@
+{
+  "run": "0056",
+  "role": "calibration_only",
+  "cal_ok": true,
+  "cal_status": {
+    "v5": "fresh",
+    "ridge_bias": "fresh",
+    "toy_nonlinearity": "fresh",
+    "channel_marginal": "fresh",
+    "split_pca_selection": "fresh",
+    "knn_mi_reliability": "fresh",
+    "_all_fresh": true,
+    "_any_missing": false,
+    "_any_stale": false,
+    "_any_no_manifest": false
+  },
+  "timestamp": "2026-04-30T11:09:47.797641"
+}

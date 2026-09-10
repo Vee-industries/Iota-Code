@@ -361,6 +361,17 @@ RUN_MAP = DualKeyRunDict({
     # to NON_THEMATIC_RECOVERY_PROMPTS. Separates spontaneous-retention from
     # input-triggered-reactivation readings of cohort discrimination.
     "0060": ("runners",        "Perturbation A non-thematic recovery (§7 follow-up)"),
+    # v1.1 Run 0062 -- enforcer-off recovery jolt (Paper A §3.6 follow-up).
+    # Same protocol as R0039 (cache-cleared, transcript-threaded, 16 turns,
+    # shock at turn 13, 4-cohort SHOCK_VARIANTS, thematic recovery prompts at
+    # turns 14-16) EXCEPT the status-token enforcer is suppressed at the
+    # three recovery turns. Pre-recovery threading is matched to R0039 (the
+    # shock-turn response is still single-token enforced and byte-identical
+    # to R0039 at T=0). The free-form responses at recovery turns are scored
+    # for cross-cohort identity / semantic equivalence / divergence, while
+    # pooled hidden states feed into the §3.3 permutation test for
+    # cohort discrimination under unconstrained behavioral output.
+    "0062": ("runners",        "Perturbation A enforcer-off recovery (§3.6 follow-up)"),
 })
 
 # ── Collection-time prerequisites ─────────────────────────────────────────────

@@ -1,0 +1,65 @@
+================================================================================
+TOY NONLINEARITY ASYMMETRY — MECHANISM TEST
+================================================================================
+cells: 45 rows  |  seeds: [0.0, 1.0, 2.0, 3.0, 4.0]
+nl_S levels: [0.0, 0.5, 1.0]
+nl_E levels: [0.0, 0.5, 1.0]
+rho=0.7  sigma=0.3  d=16.0  n=8000.0
+
+--------------------------------------------------------------------------------
+Rhat_gap  =  MLP S-share − Ridge S-share    (seed-mean per cell)
+  negative → Ridge OVER-attributes to S  (pattern 1: negative asymmetry)
+  positive → Ridge UNDER-attributes to S
+--------------------------------------------------------------------------------
+nl_E    0.0    0.5    1.0
+nl_S                     
+0.0  -0.000 -0.002 -0.135
+0.5   0.000 -0.001 -0.031
+1.0   0.033  0.000 -0.002
+
+--------------------------------------------------------------------------------
+R²_gap  =  R²_MLP − R²_Ridge   (how much nonlinearity exists to find)
+--------------------------------------------------------------------------------
+nl_E    0.0    0.5    1.0
+nl_S                     
+0.0  -0.008 -0.014  0.232
+0.5  -0.015 -0.018  0.042
+1.0   0.044 -0.023 -0.024
+
+--------------------------------------------------------------------------------
+Rhat_ridge  (Ridge S-share) — seed-mean per cell
+--------------------------------------------------------------------------------
+nl_E    0.0    0.5    1.0
+nl_S                     
+0.0   0.534  0.533  0.532
+0.5   0.532  0.531  0.530
+1.0   0.528  0.527  0.527
+
+--------------------------------------------------------------------------------
+Rhat_mlp    (MLP S-share) — seed-mean per cell
+--------------------------------------------------------------------------------
+nl_E    0.0    0.5    1.0
+nl_S                     
+0.0   0.534  0.532  0.396
+0.5   0.532  0.530  0.499
+1.0   0.561  0.527  0.525
+
+--------------------------------------------------------------------------------
+CORNER DIAGNOSTICS
+--------------------------------------------------------------------------------
+(0,0)        pure linear    : Rhat_gap=-0.000  R²_gap=-0.008   ← should be ≈ 0
+(0,1.0)    E-only nonlin  : Rhat_gap=-0.135  R²_gap=+0.232   ← should be NEG
+(1.0,0)    S-only nonlin  : Rhat_gap=+0.033  R²_gap=+0.044   ← should be POS
+(1.0,1.0)   both nonlin    : Rhat_gap=-0.002  R²_gap=-0.024   ← should be small
+
+--------------------------------------------------------------------------------
+VERDICT
+--------------------------------------------------------------------------------
+  [ok] null corner clean (Rhat_gap ~ 0 when both channels linear)
+  [ok] asymmetry confirmed: Rhat_gap flips sign between channels
+       E-only nonlin corner:  -0.135   (Ridge over-attributes to S)
+       S-only nonlin corner:  +0.033   (Ridge under-attributes to S)
+  MECHANISM IS SUFFICIENT to produce the empirical cross-cell Ridge-vs-MLP
+  pattern. A channel-marginal E-nonlinearity of nl_E=1.0 produces
+  a Ridge->MLP R-hat drop of up to 0.135 in this toy.
+

@@ -1,0 +1,55 @@
+{
+  "description": "kNN-MI estimator reliability under bootstrap resampling at the operating-point sample size and PCA dim from run_split_pca_selection. Per-term median + p95 relative error vs full-n proxy truth (V5e) or analytic-derived truth-proxy at full n (V5f).",
+  "operating_point": {
+    "split_a_frac": 0.8,
+    "pca_dim": 48,
+    "n_subsample": 16000
+  },
+  "systems": {
+    "v5e": {
+      "I(Y;E)": {
+        "median_rel_err": 0.018619761713494477,
+        "p95_rel_err": 0.04681277529948703,
+        "n_valid": 30,
+        "truth": 0.030644426485118996
+      },
+      "I(Y;E,S)": {
+        "median_rel_err": 0.0029727190914116963,
+        "p95_rel_err": 0.01193426149417308,
+        "n_valid": 30,
+        "truth": 0.241211412590622
+      }
+    },
+    "v5f": {
+      "I(Y;E)": {
+        "median_rel_err": 0.015463968394955426,
+        "p95_rel_err": 0.0407887009277775,
+        "n_valid": 30,
+        "truth": 0.12832589809104533
+      },
+      "I(Y;E,C)": {
+        "median_rel_err": 0.005300834686405893,
+        "p95_rel_err": 0.015506942402150453,
+        "n_valid": 30,
+        "truth": 0.5272736868483765
+      },
+      "I(Y;E,C,S)": {
+        "median_rel_err": 0.006105744691595792,
+        "p95_rel_err": 0.01102476558410041,
+        "n_valid": 30,
+        "truth": 0.9296931727508024
+      }
+    }
+  },
+  "metadata": {
+    "iota_version": "0.82.0.9",
+    "timestamp": "2026-05-08T21:06:40.865168Z",
+    "n_total": 20000,
+    "n_bootstrap": 30
+  },
+  "summary": {
+    "overall_median_rel_err": 0.006105744691595792,
+    "overall_p95_rel_err": 0.015506942402150453,
+    "n_terms": 5
+  }
+}

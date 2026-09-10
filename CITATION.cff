@@ -18,8 +18,8 @@ keywords:
   - hidden-state-analysis
   - AI-alignment
   - measurement-apparatus
-version: "1.0.0"
-date-released: "2026-05-13"
+version: "1.0.1"
+date-released: "2026-09-10"
 preferred-citation:
   type: generic
   title: "IOTA: a calibrated apparatus for chain-rule decomposition of predictive information in transformer hidden states"
@@ -31,14 +31,14 @@ preferred-citation:
   notes: "Submitted to TMLR; arXiv preprint"
 references:
   - type: generic
-    title: "Technical note on R: formal properties of the prior-state predictive share in transformer-like systems"
+    title: "Formal Properties of the Structural Remainder R: An Information-Theoretic Measurement Target"
     authors:
       - given-names: Kevin
         family-names: Vaillancourt
     year: 2026
     notes: "Submitted to Information and Inference; arXiv preprint"
   - type: generic
-    title: "One iota: hidden-state carryover in transformer language models is measurable"
+    title: "One iota: transcript-mediated hidden-state carryover in transformer language models is measurable"
     authors:
       - given-names: Kevin
         family-names: Vaillancourt

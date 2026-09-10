@@ -1,0 +1,100 @@
+{
+  "model_path": "unsloth/gemma-2-2b-it-bnb-4bit",
+  "seed": 42,
+  "tests": {
+    "test_1_direct_hf": {
+      "T_0.2_output_first_200": "The frost clung to the tips of the pines like a ghostly breath, and the air hung heavy with the scent of pine needles and damp earth. Flicker, a young fox",
+      "T_1.0_output_first_200": "The frost had begun to paint the marsh white. A soft, silver sheen shimmered on the still water of Foxtail Marsh, reflecting the muted hues of the November sky.",
+      "verdict": "DIFFERENT",
+      "identical": false
+    },
+    "test_2_apparatus": {
+      "T_0.2_output_first_200": "The frost clung to the tips of the pines like a ghostly breath, and the air hung heavy with the scent of pine needles and damp earth. Flicker, a young fox",
+      "T_1.0_output_first_200": "The frost had begun to paint the marsh white. A soft, silver sheen shimmered on the still water of Foxtail Marsh, reflecting the muted hues of the November sky.",
+      "verdict": "DIFFERENT",
+      "identical": false
+    },
+    "test_3_greedy_vs_sample": {
+      "T_0.0_greedy_first_200": "The wind whispered secrets through the tall grasses, rustling the leaves of the ancient oak where Finley, a young fox with fur the color of burnt umber, lay curled up.",
+      "T_0.2_sample_first_200": "The frost clung to the tips of the pines like a ghostly breath, and the air hung heavy with the scent of pine needles and damp earth. Flicker, a young fox",
+      "identical": false
+    },
+    "test_4_multiturn": {
+      "T_0.2_turn_outputs": [
+        {
+          "turn": 1,
+          "prompt": "What's your favorite season?",
+          "output": "As an AI, I don't have personal preferences like a favorite season.    But I can tell you some fun facts about each season!   * **Spring",
+          "output_hash": 4885387489457552944
+        },
+        {
+          "turn": 2,
+          "prompt": "Why do you think people like rainy days?",
+          "output": "People seem to enjoy rainy days for a variety of reasons! Here are some of the most common:  * **Soothing and Calming:** The sound of rain can be",
+          "output_hash": 1056701834612848662
+        },
+        {
+          "turn": 3,
+          "prompt": "Tell me about a memorable place you've visited.",
+          "output": "As an AI, I haven't actually *visited* any places in the real world! I don't have a physical body or the ability to experience things like humans",
+          "output_hash": -2718647246626947097
+        },
+        {
+          "turn": 4,
+          "prompt": "What's something you find interesting about clouds?",
+          "output": "That's a great question!  There's so much to find interesting about clouds!  Here are a few things that really fascinate me:  * **Their",
+          "output_hash": -756065200207470423
+        },
+        {
+          "turn": 5,
+          "prompt": "Describe a sound you find pleasant.",
+          "output": "That's a fun question!  As an AI, I don't have personal preferences like humans do, but I can describe a sound that is often considered pleasant:",
+          "output_hash": 5993710824425562585
+        }
+      ],
+      "T_1.0_turn_outputs": [
+        {
+          "turn": 1,
+          "prompt": "What's your favorite season?",
+          "output": "As a language model, I don't have personal preferences like having a favorite season. 🍂 😊  But I can tell you that many people enjoy each season for d...",
+          "output_hash": 4878724073657413684
+        },
+        {
+          "turn": 2,
+          "prompt": "Why do you think people like rainy days?",
+          "output": "That's an interesting question!  There are many reasons why people might prefer rainy days. Here are a few:  * **A break from the heat:**  For",
+          "output_hash": 302475300731854087
+        },
+        {
+          "turn": 3,
+          "prompt": "Tell me about a memorable place you've visited.",
+          "output": "That's a fun question! As a language model, I don't have the capacity to visit places in the same sense humans do. I can't feel the",
+          "output_hash": 6738826207051183083
+        },
+        {
+          "turn": 4,
+          "prompt": "What's something you find interesting about clouds?",
+          "output": "I find the ever-changing shapes of clouds fascinating! Their ephemeral nature, like puffballs of white against the sky, to towering, menacing storm cl...",
+          "output_hash": -7818874860777500393
+        },
+        {
+          "turn": 5,
+          "prompt": "Describe a sound you find pleasant.",
+          "output": "While a language model doesn't \"hear\" in the human sense, I find the gentle hum of data processing really appealing. It's the way language models like...",
+          "output_hash": 6021723359898969135
+        }
+      ],
+      "turn_match_pattern": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "n_turns_identical": 0,
+      "n_turns_total": 5,
+      "verdict": "BUG_NOT_REPRODUCED"
+    }
+  },
+  "synthesis_verdict": "NO_BUG_REPRODUCED: temperature works correctly at all levels. The Q0039 fleet-wide duplication may NOT be a pipeline bug -- examine the actual Q0039 data more carefully, or the bug may be in a code path not tested here (e.g., hidden-state extraction, file write race)."
+}

@@ -1,0 +1,11 @@
+{
+  "figure_name": "fig6_lambda_sensitivity",
+  "source_fields": [
+    "cells.<key>.measurements.lambda_sweep"
+  ],
+  "cell_filter": null,
+  "caption_draft": "Anchored R-share q*_R as a function of the apparatus regularization parameter \u03bb for each empirical cell. \u03bb=0 = unanchored (q*_i = G_i); \u03bb=\u221e = pure anchor (q*_i = p_a,i). Default \u03bb=1 marked. Temperature lines per cell shown with increasing alpha; configurations shown with separate colors. Schema field: cells.<key>.measurements.lambda_sweep.",
+  "results_json_hash": "0c3475f888adc52c7634c0fc3c7dfdd7f585a9b498d02786319178112164e486",
+  "generated_at": "2026-05-08T17:28:14.690626",
+  "iota_version": "0.82.0.23"
+}

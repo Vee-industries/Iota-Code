@@ -1,0 +1,128 @@
+{
+  "experiment": "H4_threshold_derivation",
+  "generated_at": "2026-09-09T22:20:50",
+  "convention": "synergy-positive: -II / I(S_next; S, E), II = I(S_next;S) + I(S_next;E) - I(S_next;S,E)",
+  "construction": "V5e synergy mixture, v5_synthetic_calibration.run_v5e (n_steps 20000, 3 repeats, seeds 42/1042/2042, p_persist 0.5)",
+  "alpha_crit": 0.5,
+  "closed_form": {
+    "0.4": {
+      "I_S": 0.06593194462450902,
+      "I_E": 0.06593194462450902,
+      "I_joint": 0.3166169017709737,
+      "II_redundancy_positive": -0.18475301252195564,
+      "synergy_ratio": 0.5835222677265587
+    },
+    "0.5": {
+      "I_S": 0.04556599707503495,
+      "I_E": 0.04556599707503495,
+      "I_joint": 0.34436093777042076,
+      "II_redundancy_positive": -0.25322894362035087,
+      "synergy_ratio": 0.735359083582163
+    },
+    "0.6": {
+      "I_S": 0.02904940554533142,
+      "I_E": 0.02904940554533142,
+      "I_joint": 0.3962983039426389,
+      "II_redundancy_positive": -0.33819949285197604,
+      "synergy_ratio": 0.8533962661140427
+    }
+  },
+  "plug_in": {
+    "0.4": {
+      "per_seed": [
+        {
+          "seed": 42,
+          "I_S": 0.06468484769212797,
+          "I_E": 0.06470947211375402,
+          "I_joint": 0.3188783654831365,
+          "II_redundancy_positive": -0.18948404567725452,
+          "synergy_ratio": 0.594220449512669
+        },
+        {
+          "seed": 1042,
+          "I_S": 0.07185636824113342,
+          "I_E": 0.0658165333327185,
+          "I_joint": 0.3211281223545609,
+          "II_redundancy_positive": -0.18345522078070897,
+          "synergy_ratio": 0.5712835719138736
+        },
+        {
+          "seed": 2042,
+          "I_S": 0.0655751348767367,
+          "I_E": 0.06319520018605014,
+          "I_joint": 0.31899387063496676,
+          "II_redundancy_positive": -0.1902235355721799,
+          "synergy_ratio": 0.5963234816817462
+        }
+      ],
+      "synergy_ratio_mean": 0.5872758343694297
+    },
+    "0.5": {
+      "per_seed": [
+        {
+          "seed": 42,
+          "I_S": 0.04465329114151198,
+          "I_E": 0.04421056212096758,
+          "I_joint": 0.34799450875031207,
+          "II_redundancy_positive": -0.25913065548783254,
+          "synergy_ratio": 0.7446400703804213
+        },
+        {
+          "seed": 1042,
+          "I_S": 0.04596516085081906,
+          "I_E": 0.04735065275750776,
+          "I_joint": 0.3484371264305416,
+          "II_redundancy_positive": -0.2551213128222148,
+          "synergy_ratio": 0.7321875123805769
+        },
+        {
+          "seed": 2042,
+          "I_S": 0.04707124761178526,
+          "I_E": 0.04703734067050831,
+          "I_joint": 0.34286560104604247,
+          "II_redundancy_positive": -0.2487570127637489,
+          "synergy_ratio": 0.7255233887704705
+        }
+      ],
+      "synergy_ratio_mean": 0.7341169905104895
+    },
+    "0.6": {
+      "per_seed": [
+        {
+          "seed": 42,
+          "I_S": 0.033287008265428034,
+          "I_E": 0.026286002601218987,
+          "I_joint": 0.3923578885706885,
+          "II_redundancy_positive": -0.33278487770404147,
+          "synergy_ratio": 0.8481666544703251
+        },
+        {
+          "seed": 1042,
+          "I_S": 0.03274788221804975,
+          "I_E": 0.026093084457216136,
+          "I_joint": 0.4052995494500546,
+          "II_redundancy_positive": -0.3464585827747887,
+          "synergy_ratio": 0.8548210409927511
+        },
+        {
+          "seed": 2042,
+          "I_S": 0.03068578836714142,
+          "I_E": 0.028781598927896418,
+          "I_joint": 0.4010829477298092,
+          "II_redundancy_positive": -0.34161556043477137,
+          "synergy_ratio": 0.8517329454377647
+        }
+      ],
+      "synergy_ratio_mean": 0.851573546966947
+    }
+  },
+  "tau_H4": {
+    "ratio_alpha_0.4_plug_in": 0.587,
+    "ratio_alpha_0.6_plug_in": 0.852,
+    "linear_interpolation_at_alpha_0.5": 0.7194246906681883,
+    "threshold_value": 0.72,
+    "direct_plug_in_at_alpha_0.5": 0.7341169905104895,
+    "closed_form_at_alpha_0.5": 0.735359083582163,
+    "note": "Paper B \u00a75.7 / App E state the interpolated value 0.72. The direct alpha=0.5 ratio is 0.73; the paper uses the interpolation. Fleet comparison: results8th.json redundancy_fraction_knn is redundancy-positive; negate before comparing with tau_H4."
+  }
+}

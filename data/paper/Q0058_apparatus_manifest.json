@@ -1,0 +1,51 @@
+{
+  "iota_version": "0.82.0.23",
+  "timestamp": "2026-05-17T18:29:26.653125Z",
+  "apparatus_phase_status": {
+    "phase1_kraskov_spike": "done",
+    "phase2_solver_module": "done",
+    "phase3_v5d_threshold": "done",
+    "phase4_anchor_producer": "done",
+    "phase5_aggregator": "done",
+    "phase6_function_class_p2": "done",
+    "phase7_knn_anchor_p2": "done",
+    "phase8_apparatus_p2": "done",
+    "phase9_stacking_baseline_p2": "done",
+    "phase10_bootstrap_variance_p2": "done",
+    "phase11_geometric_diagnostics_p2": "done"
+  },
+  "phase1_summary": {
+    "bucket": "strong",
+    "beta_overall": 0.038577300935666234,
+    "spike_result_path": "data/paper/calibration/kraskov_spike/spike_result.json"
+  },
+  "phase5_summary": {
+    "n_cells_evaluated": 24,
+    "n_v5d_flagged": 15,
+    "per_cell_path": "data/paper/calibration/apparatus_aggregator/per_cell.json"
+  },
+  "phase6_summary": {
+    "n_cells": null,
+    "output_path": "data/paper/calibration/function_class_p2/per_cell.json"
+  },
+  "phase7_summary": {
+    "n_cells": 24,
+    "output_path": "data/paper/calibration/kraskov_anchor_p2/anchors.json"
+  },
+  "phase8_summary": {
+    "n_cells": null,
+    "output_path": "data/paper/calibration/apparatus_p2/per_cell.json"
+  },
+  "phase9_summary": {
+    "n_cells": 24,
+    "output_path": "data/paper/calibration/stacking_baseline_p2/per_cell.json"
+  },
+  "phase10_summary": {
+    "n_cells": null,
+    "output_path": "data/paper/calibration/bootstrap_variance_p2/per_cell.json"
+  },
+  "phase11_summary": {
+    "n_cells": 24,
+    "output_path": "data/paper/calibration/geometric_diagnostics_p2/per_cell.json"
+  }
+}

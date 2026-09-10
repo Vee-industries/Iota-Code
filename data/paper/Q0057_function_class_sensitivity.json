@@ -1,0 +1,3943 @@
+{
+  "function_classes": [
+    "ridge",
+    "mlp",
+    "rf",
+    "rkhs_median"
+  ],
+  "cells": {
+    "gemma_2b_q4_abliterated_t00": {
+      "pool_dim": 1024,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.9996083378791809,
+          "S": 0.99970543384552
+        },
+        "mlp": {
+          "E": 0.9995019435882568,
+          "S": 0.999433159828186
+        },
+        "rf": {
+          "E": 0.9931335491338489,
+          "S": 0.9926112819921483
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9944670020625941,
+        "rkhs_median": 0.9989146590232849
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.319791,
+          "C": 0.236391,
+          "R": 0.443818
+        },
+        "mlp": {
+          "E": 0.183135,
+          "C": 0.221358,
+          "R": 0.595507
+        },
+        "rf": {
+          "E": 0.3704483605207416,
+          "C": 0.09651435409180467,
+          "R": 0.5330372853874538
+        },
+        "rkhs_median": {
+          "E": 0.24489243229045007,
+          "C": 0.18751434566007333,
+          "R": 0.5675932220494765
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.0')",
+      "target_dimensionality": {
+        "native_pool_dim": 1024,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 1024,
+        "mlp_target_dim": 1024,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.994979202747345,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9952722191810608
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 66.27479553222656,
+        "range_per_channel": {
+          "E": {
+            "min": 0.230771493214194,
+            "max": 0.28234642153714323
+          },
+          "C": {
+            "min": 0.18315785390130504,
+            "max": 0.20270523339774216
+          },
+          "R": {
+            "min": 0.5149483450651146,
+            "max": 0.5807087222024048
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 66.27479553222656,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9990369679905717,
+            "partition": {
+              "E": 0.28234642153714323,
+              "C": 0.20270523339774216,
+              "R": 0.5149483450651146
+            },
+            "partition_raw_drops": {
+              "E": 0.5381788978487427,
+              "C": 0.38637528502842317,
+              "R": 0.9815400927959692
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 66.27479553222656,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9998071193695068,
+            "r2_test": 0.9989146590232849,
+            "partition": {
+              "E": 0.24620552853696145,
+              "C": 0.18315785390130504,
+              "R": 0.5706366175617336
+            },
+            "partition_raw_drops": {
+              "E": 0.5179441332817077,
+              "C": 0.38531033992767333,
+              "R": 1.200451874732971
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 132.54959106445312,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9995296001434326,
+            "r2_test": 0.998835563659668,
+            "partition": {
+              "E": 0.230771493214194,
+              "C": 0.18851978458340132,
+              "R": 0.5807087222024048
+            },
+            "partition_raw_drops": {
+              "E": 0.5808479815721512,
+              "C": 0.47450113892555235,
+              "R": 1.4616341233253478
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": -0.00010639429092407227,
+          "gap_S": -0.0002722740173339844,
+          "asymmetry": 0.0001658797264099121
+        },
+        "rf_vs_ridge": {
+          "gap_E": -0.006474788745332027,
+          "gap_S": -0.0070941518533717,
+          "asymmetry": 0.0006193631080396722
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.15168900000000002,
+        "rf_vs_ridge": 0.08921928538745377
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "pool_dim": 1024,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.9985405802726746,
+          "S": 0.9969863891601562
+        },
+        "mlp": {
+          "E": 0.9988299608230591,
+          "S": 0.9960345029830933
+        },
+        "rf": {
+          "E": 0.9944768312739322,
+          "S": 0.9849947807533366
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9946610444119035,
+        "rkhs_median": 0.9977242946624756
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.319259,
+          "C": 0.23943,
+          "R": 0.441311
+        },
+        "mlp": {
+          "E": 0.196351,
+          "C": 0.238523,
+          "R": 0.565126
+        },
+        "rf": {
+          "E": 0.38996547201518267,
+          "C": 0.14994914664162412,
+          "R": 0.4600853813431931
+        },
+        "rkhs_median": {
+          "E": 0.2832216358652157,
+          "C": 0.17645860873395097,
+          "R": 0.5403197554008334
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.2')",
+      "target_dimensionality": {
+        "native_pool_dim": 1024,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 1024,
+        "mlp_target_dim": 1024,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9933152794837952,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9935753345489502
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 66.82691192626953,
+        "range_per_channel": {
+          "E": {
+            "min": 0.2810108492448751,
+            "max": 0.2990830909680272
+          },
+          "C": {
+            "min": 0.15288089945878058,
+            "max": 0.20504083439330853
+          },
+          "R": {
+            "min": 0.49587607463866434,
+            "max": 0.5630239134717657
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 66.82691192626953,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9974237082479613,
+            "partition": {
+              "E": 0.2990830909680272,
+              "C": 0.20504083439330853,
+              "R": 0.49587607463866434
+            },
+            "partition_raw_drops": {
+              "E": 0.5700950474647433,
+              "C": 0.3908370875709585,
+              "R": 0.9452105546748577
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 66.82691192626953,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9998511672019958,
+            "r2_test": 0.9977242946624756,
+            "partition": {
+              "E": 0.2810108492448751,
+              "C": 0.17700286669534157,
+              "R": 0.5419862840597832
+            },
+            "partition_raw_drops": {
+              "E": 0.5878033310174942,
+              "C": 0.37024504542350767,
+              "R": 1.1336976632475853
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 133.65382385253906,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9995971918106079,
+            "r2_test": 0.9977380633354187,
+            "partition": {
+              "E": 0.28409518706945375,
+              "C": 0.15288089945878058,
+              "R": 0.5630239134717657
+            },
+            "partition_raw_drops": {
+              "E": 0.7009173482656479,
+              "C": 0.377186518907547,
+              "R": 1.3890880465507507
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.0002893805503845215,
+          "gap_S": -0.0009518861770629883,
+          "asymmetry": 0.0012412667274475098
+        },
+        "rf_vs_ridge": {
+          "gap_E": -0.0040637489987424,
+          "gap_S": -0.011991608406819676,
+          "asymmetry": 0.007927859408077276
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.12381500000000001,
+        "rf_vs_ridge": 0.01877438134319309
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "pool_dim": 1024,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.9691392183303833,
+          "S": 0.994177520275116
+        },
+        "mlp": {
+          "E": 0.9960015416145325,
+          "S": 0.9933874011039734
+        },
+        "rf": {
+          "E": 0.991472774021997,
+          "S": 0.9778138657601942
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9928130749767863,
+        "rkhs_median": 0.9954911470413208
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.382168,
+          "C": 0.206461,
+          "R": 0.411372
+        },
+        "mlp": {
+          "E": 0.180419,
+          "C": 0.241368,
+          "R": 0.578213
+        },
+        "rf": {
+          "E": 0.3640553343648387,
+          "C": 0.1952385754047775,
+          "R": 0.4407060902303838
+        },
+        "rkhs_median": {
+          "E": 0.2688411901344249,
+          "C": 0.179827350547177,
+          "R": 0.5513314593183981
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.4')",
+      "target_dimensionality": {
+        "native_pool_dim": 1024,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 1024,
+        "mlp_target_dim": 1024,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9924131035804749,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9927380084991455
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 67.30590057373047,
+        "range_per_channel": {
+          "E": {
+            "min": 0.25900181873174094,
+            "max": 0.29439672906317677
+          },
+          "C": {
+            "min": 0.15931084233216983,
+            "max": 0.2034759320288889
+          },
+          "R": {
+            "min": 0.5021273389079344,
+            "max": 0.5816873389360893
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 67.30590057373047,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9950870591646149,
+            "partition": {
+              "E": 0.29439672906317677,
+              "C": 0.2034759320288889,
+              "R": 0.5021273389079344
+            },
+            "partition_raw_drops": {
+              "E": 0.5495948731872208,
+              "C": 0.37985927838237116,
+              "R": 0.9373970017571803
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 67.30590057373047,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9998324513435364,
+            "r2_test": 0.9956260323524475,
+            "partition": {
+              "E": 0.2688411901344249,
+              "C": 0.179827350547177,
+              "R": 0.5513314593183981
+            },
+            "partition_raw_drops": {
+              "E": 0.5476481199264527,
+              "C": 0.3663207650184631,
+              "R": 1.123100358992815
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 134.61180114746094,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9994896650314331,
+            "r2_test": 0.9954911470413208,
+            "partition": {
+              "E": 0.25900181873174094,
+              "C": 0.15931084233216983,
+              "R": 0.5816873389360893
+            },
+            "partition_raw_drops": {
+              "E": 0.6025483071804046,
+              "C": 0.3706247270107269,
+              "R": 1.3532519698143006
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.02686232328414917,
+          "gap_S": -0.0007901191711425781,
+          "asymmetry": 0.027652442455291748
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.02233355569161366,
+          "gap_S": -0.01636365451492172,
+          "asymmetry": 0.03869721020653538
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.16684099999999996,
+        "rf_vs_ridge": 0.029334090230383802
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.9167881011962891,
+          "S": 0.9701637029647827
+        },
+        "mlp": {
+          "E": 0.9910414218902588,
+          "S": 0.9908137917518616
+        },
+        "rf": {
+          "E": 0.9808730223890131,
+          "S": 0.9608314748764895
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9838527453814179,
+        "rkhs_median": 0.9834237622894507
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.306934,
+          "C": 0.270723,
+          "R": 0.422343
+        },
+        "mlp": {
+          "E": 0.200227,
+          "C": 0.265739,
+          "R": 0.534034
+        },
+        "rf": {
+          "E": 0.39257368175295443,
+          "C": 0.2734752196616501,
+          "R": 0.3339510985853954
+        },
+        "rkhs_median": {
+          "E": 0.2695961759262046,
+          "C": 0.19686884824440531,
+          "R": 0.5335349758293899
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.6')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9980231523513794,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9981666803359985
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 24.300472259521484,
+        "range_per_channel": {
+          "E": {
+            "min": 0.25949387322207096,
+            "max": 0.2867639854136141
+          },
+          "C": {
+            "min": 0.19582315934890668,
+            "max": 0.21236888565867704
+          },
+          "R": {
+            "min": 0.5008671289277089,
+            "max": 0.5433809523182738
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 24.300472259521484,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9834237622894507,
+            "partition": {
+              "E": 0.2867639854136141,
+              "C": 0.21236888565867704,
+              "R": 0.5008671289277089
+            },
+            "partition_raw_drops": {
+              "E": 0.5658411327642112,
+              "C": 0.4190451274822956,
+              "R": 0.9883082883927521
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 24.300472259521484,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9996652603149414,
+            "r2_test": 0.9840964078903198,
+            "partition": {
+              "E": 0.26994719422106056,
+              "C": 0.19582315934890668,
+              "R": 0.5342296464300327
+            },
+            "partition_raw_drops": {
+              "E": 0.6772779166698456,
+              "C": 0.4913060933351517,
+              "R": 1.3403434067964555
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 48.60094451904297,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9988353252410889,
+            "r2_test": 0.9829797148704529,
+            "partition": {
+              "E": 0.25949387322207096,
+              "C": 0.1971251744596552,
+              "R": 0.5433809523182738
+            },
+            "partition_raw_drops": {
+              "E": 0.8384226620197296,
+              "C": 0.6369098871946335,
+              "R": 1.755659580230713
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.07425332069396973,
+          "gap_S": 0.020650088787078857,
+          "asymmetry": 0.05360323190689087
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.06408492119272402,
+          "gap_S": -0.00933222808829326,
+          "asymmetry": 0.07341714928101728
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.11169099999999998,
+        "rf_vs_ridge": -0.08839190141460462
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.8700711727142334,
+          "S": 0.9550756216049194
+        },
+        "mlp": {
+          "E": 0.9816413521766663,
+          "S": 0.9860995411872864
+        },
+        "rf": {
+          "E": 0.9504539714250145,
+          "S": 0.9316021234939941
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9537894673938356,
+        "rkhs_median": 0.9578831791877747
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.232255,
+          "C": 0.319488,
+          "R": 0.448257
+        },
+        "mlp": {
+          "E": 0.194,
+          "C": 0.292372,
+          "R": 0.513628
+        },
+        "rf": {
+          "E": 0.32810159761573626,
+          "C": 0.2850127209392762,
+          "R": 0.38688568144498753
+        },
+        "rkhs_median": {
+          "E": 0.26344514547318887,
+          "C": 0.19360021794399387,
+          "R": 0.5429546365828173
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.8')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9975820779800415,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9978084564208984
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 24.09947395324707,
+        "range_per_channel": {
+          "E": {
+            "min": 0.25512078529854887,
+            "max": 0.28311115287587957
+          },
+          "C": {
+            "min": 0.18993356860975824,
+            "max": 0.20763946935956512
+          },
+          "R": {
+            "min": 0.5092493777645553,
+            "max": 0.5503987086844343
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 24.09947395324707,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9557232303375934,
+            "partition": {
+              "E": 0.28311115287587957,
+              "C": 0.20763946935956512,
+              "R": 0.5092493777645553
+            },
+            "partition_raw_drops": {
+              "E": 0.5409373220050808,
+              "C": 0.3967344181144359,
+              "R": 0.9730171059756291
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 24.09947395324707,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9996617436408997,
+            "r2_test": 0.9594671130180359,
+            "partition": {
+              "E": 0.2646430140599016,
+              "C": 0.18993356860975824,
+              "R": 0.5454234173303402
+            },
+            "partition_raw_drops": {
+              "E": 0.6395831227302551,
+              "C": 0.4590270608663559,
+              "R": 1.3181667149066925
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 48.19894790649414,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9986564517021179,
+            "r2_test": 0.9578831791877747,
+            "partition": {
+              "E": 0.25512078529854887,
+              "C": 0.19448050601701686,
+              "R": 0.5503987086844343
+            },
+            "partition_raw_drops": {
+              "E": 0.7999217465519906,
+              "C": 0.6097864031791687,
+              "R": 1.7257547080516815
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.11157017946243286,
+          "gap_S": 0.031023919582366943,
+          "asymmetry": 0.08054625988006592
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.08038279871078113,
+          "gap_S": -0.02347349811092536,
+          "asymmetry": 0.1038562968217065
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.06537099999999996,
+        "rf_vs_ridge": -0.06137131855501249
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.8499699831008911,
+          "S": 0.9432644844055176
+        },
+        "mlp": {
+          "E": 0.9826331734657288,
+          "S": 0.9811633825302124
+        },
+        "rf": {
+          "E": 0.9535772703723148,
+          "S": 0.921452949182696
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9562956705835138,
+        "rkhs_median": 0.9360470175743103
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.241238,
+          "C": 0.304211,
+          "R": 0.454551
+        },
+        "mlp": {
+          "E": 0.211314,
+          "C": 0.280319,
+          "R": 0.508367
+        },
+        "rf": {
+          "E": 0.3270773033357915,
+          "C": 0.28970463573899613,
+          "R": 0.38321806092521227
+        },
+        "rkhs_median": {
+          "E": 0.29022832758229267,
+          "C": 0.18762105357013467,
+          "R": 0.5221506188475725
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T1.0')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9972519874572754,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9975860118865967
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 23.984901428222656,
+        "range_per_channel": {
+          "E": {
+            "min": 0.26001186585561925,
+            "max": 0.295334494210368
+          },
+          "C": {
+            "min": 0.17756626562208722,
+            "max": 0.19974027937819722
+          },
+          "R": {
+            "min": 0.5049252264114348,
+            "max": 0.5500449008617764
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 23.984901428222656,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9324366535983567,
+            "partition": {
+              "E": 0.295334494210368,
+              "C": 0.19974027937819722,
+              "R": 0.5049252264114348
+            },
+            "partition_raw_drops": {
+              "E": 0.5766875313588222,
+              "C": 0.3900246360842812,
+              "R": 0.9859467419088306
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 23.984901428222656,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9990887641906738,
+            "r2_test": 0.9379459023475647,
+            "partition": {
+              "E": 0.2938204742069447,
+              "C": 0.17756626562208722,
+              "R": 0.528613260170968
+            },
+            "partition_raw_drops": {
+              "E": 0.7845499731600285,
+              "C": 0.47413172721862795,
+              "R": 1.4114861130714416
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 47.96980285644531,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.997116208076477,
+            "r2_test": 0.9360470175743103,
+            "partition": {
+              "E": 0.26001186585561925,
+              "C": 0.1899432332826044,
+              "R": 0.5500449008617764
+            },
+            "partition_raw_drops": {
+              "E": 0.8213896885514259,
+              "C": 0.6000395894050599,
+              "R": 1.7376176595687867
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.13266319036483765,
+          "gap_S": 0.037898898124694824,
+          "asymmetry": 0.09476429224014282
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.10360728727142365,
+          "gap_S": -0.021811535222821532,
+          "asymmetry": 0.12541882249424519
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.05381600000000003,
+        "rf_vs_ridge": -0.07133293907478772
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "gemma_2b_fp16_abliterated_t00": {
+      "pool_dim": 256,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.9979254603385925,
+          "S": 0.9963788390159607
+        },
+        "mlp": {
+          "E": 0.9965398907661438,
+          "S": 0.9973935484886169
+        },
+        "rf": {
+          "E": 0.9944284154782029,
+          "S": 0.9921286226034586
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9945524305260921,
+        "rkhs_median": 0.9944315552711487
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.525522,
+          "C": 0.222742,
+          "R": 0.251736
+        },
+        "mlp": {
+          "E": 0.255909,
+          "C": 0.254562,
+          "R": 0.48953
+        },
+        "rf": {
+          "E": 0.38829158987357915,
+          "C": 0.17067912154418888,
+          "R": 0.4410292885822319
+        },
+        "rkhs_median": {
+          "E": 0.32586626565512505,
+          "C": 0.16874934220921192,
+          "R": 0.505384392135663
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.0')",
+      "target_dimensionality": {
+        "native_pool_dim": 256,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 256,
+        "mlp_target_dim": 256,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9946626424789429,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9949554204940796
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 36.45991516113281,
+        "range_per_channel": {
+          "E": {
+            "min": 0.26427973370314034,
+            "max": 0.3343224456873766
+          },
+          "C": {
+            "min": 0.16277084811076997,
+            "max": 0.18229208779737371
+          },
+          "R": {
+            "min": 0.5029067062018534,
+            "max": 0.5534281784994858
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 36.45991516113281,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9948051338190611,
+            "partition": {
+              "E": 0.3343224456873766,
+              "C": 0.16277084811076997,
+              "R": 0.5029067062018534
+            },
+            "partition_raw_drops": {
+              "E": 0.8475681121661587,
+              "C": 0.4126536588510573,
+              "R": 1.274959827165742
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 36.45991516113281,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9978861212730408,
+            "r2_test": 0.9944315552711487,
+            "partition": {
+              "E": 0.32586626565512505,
+              "C": 0.16874934220921192,
+              "R": 0.505384392135663
+            },
+            "partition_raw_drops": {
+              "E": 1.0054617245099506,
+              "C": 0.520676800608635,
+              "R": 1.5593656539916991
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 72.91983032226562,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9954841732978821,
+            "r2_test": 0.9938130974769592,
+            "partition": {
+              "E": 0.26427973370314034,
+              "C": 0.18229208779737371,
+              "R": 0.5534281784994858
+            },
+            "partition_raw_drops": {
+              "E": 0.8116982445120812,
+              "C": 0.5598846554756165,
+              "R": 1.6997772574424743
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": -0.0013855695724487305,
+          "gap_S": 0.00101470947265625,
+          "asymmetry": -0.0024002790451049805
+        },
+        "rf_vs_ridge": {
+          "gap_E": -0.0034970448603895976,
+          "gap_S": -0.004250216412502117,
+          "asymmetry": 0.0007531715521125193
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.237794,
+        "rf_vs_ridge": 0.18929328858223188
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": true,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "pool_dim": 64,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.8369858860969543,
+          "S": 0.904712975025177
+        },
+        "mlp": {
+          "E": 0.9956087470054626,
+          "S": 0.9955690503120422
+        },
+        "rf": {
+          "E": 0.9966599877476572,
+          "S": 0.9930022544373268
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9948937437728285,
+        "rkhs_median": 0.9971810579299927
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.410775,
+          "C": 0.300453,
+          "R": 0.288772
+        },
+        "mlp": {
+          "E": 0.296636,
+          "C": 0.282335,
+          "R": 0.421029
+        },
+        "rf": {
+          "E": 0.4951581163708327,
+          "C": 0.08572226733220656,
+          "R": 0.41911961629696076
+        },
+        "rkhs_median": {
+          "E": 0.3090442376095193,
+          "C": 0.16518830228816941,
+          "R": 0.5257674601023113
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.2')",
+      "target_dimensionality": {
+        "native_pool_dim": 64,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 64,
+        "mlp_target_dim": 64,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": false,
+        "rf_target_pca_explained_variance_ratio": null,
+        "rkhs_target_pca_applied": false,
+        "rkhs_target_pca_explained_variance_ratio": null
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 18.61858558654785,
+        "range_per_channel": {
+          "E": {
+            "min": 0.2795314399549807,
+            "max": 0.3164791558090059
+          },
+          "C": {
+            "min": 0.16414284099144763,
+            "max": 0.17466895073836025
+          },
+          "R": {
+            "min": 0.5088518934526338,
+            "max": 0.5563257190535718
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 18.61858558654785,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9974578335435579,
+            "partition": {
+              "E": 0.3164791558090059,
+              "C": 0.17466895073836025,
+              "R": 0.5088518934526338
+            },
+            "partition_raw_drops": {
+              "E": 0.5382236609938121,
+              "C": 0.29705261911493275,
+              "R": 0.8653844146468627
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 18.61858558654785,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.99904865026474,
+            "r2_test": 0.9971810579299927,
+            "partition": {
+              "E": 0.30904423760951927,
+              "C": 0.1651883022881694,
+              "R": 0.5257674601023112
+            },
+            "partition_raw_drops": {
+              "E": 0.6238143295049667,
+              "C": 0.3334371507167816,
+              "R": 1.0612761400640012
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 37.2371711730957,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9978683590888977,
+            "r2_test": 0.9963258504867554,
+            "partition": {
+              "E": 0.2795314399549807,
+              "C": 0.16414284099144763,
+              "R": 0.5563257190535718
+            },
+            "partition_raw_drops": {
+              "E": 0.5934423476457595,
+              "C": 0.34847354888916016,
+              "R": 1.1810737311840058
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.1586228609085083,
+          "gap_S": 0.09085607528686523,
+          "asymmetry": 0.06776678562164307
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.15967410165070284,
+          "gap_S": 0.08828927941214981,
+          "asymmetry": 0.07138482223855303
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.132257,
+        "rf_vs_ridge": 0.1303476162969608
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "pool_dim": 512,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.9395347237586975,
+          "S": 0.9914572834968567
+        },
+        "mlp": {
+          "E": 0.9924169182777405,
+          "S": 0.9917340278625488
+        },
+        "rf": {
+          "E": 0.9715640133167084,
+          "S": 0.9618719173634106
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9747516695618592,
+        "rkhs_median": 0.9761351346969604
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.4367,
+          "C": 0.205364,
+          "R": 0.357936
+        },
+        "mlp": {
+          "E": 0.206007,
+          "C": 0.229781,
+          "R": 0.564212
+        },
+        "rf": {
+          "E": 0.3483392897935257,
+          "C": 0.1795834346770473,
+          "R": 0.47207727552942713
+        },
+        "rkhs_median": {
+          "E": 0.31703788521533877,
+          "C": 0.17270923414685793,
+          "R": 0.5102528806378033
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.4')",
+      "target_dimensionality": {
+        "native_pool_dim": 512,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 512,
+        "mlp_target_dim": 512,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9906044602394104,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9914255142211914
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 51.3792724609375,
+        "range_per_channel": {
+          "E": {
+            "min": 0.23846177191647372,
+            "max": 0.31972928015382807
+          },
+          "C": {
+            "min": 0.1713571653197597,
+            "max": 0.17644275355421685
+          },
+          "R": {
+            "min": 0.503827966291955,
+            "max": 0.5885467294883263
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 51.3792724609375,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9719960978446083,
+            "partition": {
+              "E": 0.31972928015382807,
+              "C": 0.17644275355421685,
+              "R": 0.503827966291955
+            },
+            "partition_raw_drops": {
+              "E": 0.7146677755309034,
+              "C": 0.39438974788443315,
+              "R": 1.126170276763185
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 51.3792724609375,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9980273246765137,
+            "r2_test": 0.9761351346969604,
+            "partition": {
+              "E": 0.3175560307807214,
+              "C": 0.1713571653197597,
+              "R": 0.5110868038995189
+            },
+            "partition_raw_drops": {
+              "E": 0.8791554659605026,
+              "C": 0.47440317273139954,
+              "R": 1.4149463832378388
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 102.758544921875,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9959864020347595,
+            "r2_test": 0.9775874018669128,
+            "partition": {
+              "E": 0.23846177191647372,
+              "C": 0.17299149859519994,
+              "R": 0.5885467294883263
+            },
+            "partition_raw_drops": {
+              "E": 0.6281717240810394,
+              "C": 0.4557056128978729,
+              "R": 1.5503886044025421
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.05288219451904297,
+          "gap_S": 0.00027674436569213867,
+          "asymmetry": 0.05260545015335083
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.032029289558010876,
+          "gap_S": -0.02958536613344609,
+          "asymmetry": 0.061614655691456965
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.20627600000000007,
+        "rf_vs_ridge": 0.11414127552942716
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.8479292988777161,
+          "S": 0.9531040191650391
+        },
+        "mlp": {
+          "E": 0.981640636920929,
+          "S": 0.9876512289047241
+        },
+        "rf": {
+          "E": 0.9666862119818914,
+          "S": 0.9528094559232267
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9679721562565409,
+        "rkhs_median": 0.9562627776250283
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.299243,
+          "C": 0.318962,
+          "R": 0.381795
+        },
+        "mlp": {
+          "E": 0.266822,
+          "C": 0.248665,
+          "R": 0.484512
+        },
+        "rf": {
+          "E": 0.37751477571341857,
+          "C": 0.2776635324678715,
+          "R": 0.3448216918187099
+        },
+        "rkhs_median": {
+          "E": 0.36937951968486055,
+          "C": 0.17158735209683412,
+          "R": 0.45903312821830544
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.6')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9969727993011475,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.997128963470459
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 25.938968658447266,
+        "range_per_channel": {
+          "E": {
+            "min": 0.2836390256846303,
+            "max": 0.3816713421423189
+          },
+          "C": {
+            "min": 0.1586908196977064,
+            "max": 0.20608621659167972
+          },
+          "R": {
+            "min": 0.4583204823865113,
+            "max": 0.51027475772369
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 25.938968658447266,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9562627776250283,
+            "partition": {
+              "E": 0.3816713421423189,
+              "C": 0.1586908196977064,
+              "R": 0.45963783815997467
+            },
+            "partition_raw_drops": {
+              "E": 1.120340928062347,
+              "C": 0.4658139099917249,
+              "R": 1.349200281284677
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 25.938968658447266,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9959704875946045,
+            "r2_test": 0.957548201084137,
+            "partition": {
+              "E": 0.36986612392771645,
+              "C": 0.17181339368577214,
+              "R": 0.4583204823865113
+            },
+            "partition_raw_drops": {
+              "E": 1.516660463809967,
+              "C": 0.7045321658253669,
+              "R": 1.8793734014034271
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 51.87793731689453,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9899158477783203,
+            "r2_test": 0.9552268385887146,
+            "partition": {
+              "E": 0.2836390256846303,
+              "C": 0.20608621659167972,
+              "R": 0.51027475772369
+            },
+            "partition_raw_drops": {
+              "E": 1.112251204252243,
+              "C": 0.8081385910511016,
+              "R": 2.0009718775749206
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.1337113380432129,
+          "gap_S": 0.03454720973968506,
+          "asymmetry": 0.09916412830352783
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.11875691310417535,
+          "gap_S": -0.00029456324181231786,
+          "asymmetry": 0.11905147634598767
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.102717,
+        "rf_vs_ridge": -0.03697330818129008
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "pool_dim": 64,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.7545300126075745,
+          "S": 0.8640561103820801
+        },
+        "mlp": {
+          "E": 0.9755558371543884,
+          "S": 0.9835960268974304
+        },
+        "rf": {
+          "E": 0.983404106818499,
+          "S": 0.9807901817175851
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9878869948892628,
+        "rkhs_median": 0.9872468671094735
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.319561,
+          "C": 0.290647,
+          "R": 0.389792
+        },
+        "mlp": {
+          "E": 0.285091,
+          "C": 0.302918,
+          "R": 0.411991
+        },
+        "rf": {
+          "E": 0.4494046839052384,
+          "C": 0.09483130470969238,
+          "R": 0.4557640113850691
+        },
+        "rkhs_median": {
+          "E": 0.3438722513248058,
+          "C": 0.17038307642691808,
+          "R": 0.48574467224827605
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.8')",
+      "target_dimensionality": {
+        "native_pool_dim": 64,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 64,
+        "mlp_target_dim": 64,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": false,
+        "rf_target_pca_explained_variance_ratio": null,
+        "rkhs_target_pca_applied": false,
+        "rkhs_target_pca_explained_variance_ratio": null
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 18.594776153564453,
+        "range_per_channel": {
+          "E": {
+            "min": 0.25373807257769315,
+            "max": 0.365025328829398
+          },
+          "C": {
+            "min": 0.16100294525719078,
+            "max": 0.1895292277046963
+          },
+          "R": {
+            "min": 0.47397172591341125,
+            "max": 0.5567326997176106
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 18.594776153564453,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9872468671094735,
+            "partition": {
+              "E": 0.365025328829398,
+              "C": 0.16100294525719078,
+              "R": 0.47397172591341125
+            },
+            "partition_raw_drops": {
+              "E": 0.6589118978375176,
+              "C": 0.2906284792813031,
+              "R": 0.85557243505393
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 18.594776153564453,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9979416131973267,
+            "r2_test": 0.9879980683326721,
+            "partition": {
+              "E": 0.3438722513248058,
+              "C": 0.17038307642691808,
+              "R": 0.48574467224827605
+            },
+            "partition_raw_drops": {
+              "E": 0.7380387634038925,
+              "C": 0.3656861364841461,
+              "R": 1.0425336614251137
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 37.189552307128906,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9946330189704895,
+            "r2_test": 0.9849971532821655,
+            "partition": {
+              "E": 0.25373807257769315,
+              "C": 0.1895292277046963,
+              "R": 0.5567326997176106
+            },
+            "partition_raw_drops": {
+              "E": 0.5068466156721115,
+              "C": 0.3785882294178009,
+              "R": 1.1120841339230538
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.22102582454681396,
+          "gap_S": 0.11953991651535034,
+          "asymmetry": 0.10148590803146362
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.22887409421092453,
+          "gap_S": 0.11673407133550506,
+          "asymmetry": 0.11214002287541947
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.02219899999999997,
+        "rf_vs_ridge": 0.06597201138506908
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "pool_dim": 256,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.8968948721885681,
+          "S": 0.97086101770401
+        },
+        "mlp": {
+          "E": 0.9807756543159485,
+          "S": 0.97999107837677
+        },
+        "rf": {
+          "E": 0.9691884150154266,
+          "S": 0.9516311918972429
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9747048979715193,
+        "rkhs_median": 0.9656781554222107
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.263314,
+          "C": 0.288231,
+          "R": 0.448455
+        },
+        "mlp": {
+          "E": 0.252717,
+          "C": 0.221462,
+          "R": 0.525822
+        },
+        "rf": {
+          "E": 0.2568579013175824,
+          "C": 0.2813874926836501,
+          "R": 0.46175460599876755
+        },
+        "rkhs_median": {
+          "E": 0.3282495744601703,
+          "C": 0.18227018180176738,
+          "R": 0.4894802437380622
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T1.0')",
+      "target_dimensionality": {
+        "native_pool_dim": 256,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 256,
+        "mlp_target_dim": 256,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9888612031936646,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9892480969429016
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 37.13083267211914,
+        "range_per_channel": {
+          "E": {
+            "min": 0.24161667990989324,
+            "max": 0.3413368940927361
+          },
+          "C": {
+            "min": 0.1716991558135246,
+            "max": 0.18574051824880516
+          },
+          "R": {
+            "min": 0.48696395009373916,
+            "max": 0.5768866686660239
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 37.13083267211914,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9660665583468265,
+            "partition": {
+              "E": 0.3413368940927361,
+              "C": 0.1716991558135246,
+              "R": 0.48696395009373916
+            },
+            "partition_raw_drops": {
+              "E": 0.8971481874562428,
+              "C": 0.45128314311086565,
+              "R": 1.2799050812961255
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 37.13083267211914,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9948318600654602,
+            "r2_test": 0.9656781554222107,
+            "partition": {
+              "E": 0.3268565269808896,
+              "C": 0.18574051824880516,
+              "R": 0.4874029547703053
+            },
+            "partition_raw_drops": {
+              "E": 1.0673008672893047,
+              "C": 0.6065077483654022,
+              "R": 1.5915410995483399
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 74.26166534423828,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9881433844566345,
+            "r2_test": 0.9618948101997375,
+            "partition": {
+              "E": 0.24161667990989324,
+              "C": 0.18149665142408278,
+              "R": 0.5768866686660239
+            },
+            "partition_raw_drops": {
+              "E": 0.6905686825513839,
+              "C": 0.5187386214733124,
+              "R": 1.6488094568252563
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.08388078212738037,
+          "gap_S": 0.00913006067276001,
+          "asymmetry": 0.07475072145462036
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.07229354282685851,
+          "gap_S": -0.01922982580676713,
+          "asymmetry": 0.09152336863362565
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.07736700000000002,
+        "rf_vs_ridge": 0.01329960599876756
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "pool_dim": 512,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.998386025428772,
+          "S": 0.9952558279037476
+        },
+        "mlp": {
+          "E": 0.9937006831169128,
+          "S": 0.9956181645393372
+        },
+        "rf": {
+          "E": 0.993948934887002,
+          "S": 0.9890506694561544
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9941956757461805,
+        "rkhs_median": 0.9897286891937256
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.424486,
+          "C": 0.291804,
+          "R": 0.28371
+        },
+        "mlp": {
+          "E": 0.292223,
+          "C": 0.189473,
+          "R": 0.518304
+        },
+        "rf": {
+          "E": 0.30941078562353264,
+          "C": 0.04056711528313945,
+          "R": 0.6500220990933279
+        },
+        "rkhs_median": {
+          "E": 0.31289373605658866,
+          "C": 0.1434035147390999,
+          "R": 0.5437027492043115
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.0')",
+      "target_dimensionality": {
+        "native_pool_dim": 512,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 512,
+        "mlp_target_dim": 512,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9919663667678833,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9925943613052368
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 50.65180587768555,
+        "range_per_channel": {
+          "E": {
+            "min": 0.27168387900830465,
+            "max": 0.3379649810398096
+          },
+          "C": {
+            "min": 0.14285493143849137,
+            "max": 0.15472646887376912
+          },
+          "R": {
+            "min": 0.519180087521699,
+            "max": 0.5735896521179262
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 50.65180587768555,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9905490214913826,
+            "partition": {
+              "E": 0.3379649810398096,
+              "C": 0.14285493143849137,
+              "R": 0.519180087521699
+            },
+            "partition_raw_drops": {
+              "E": 0.8767252387653134,
+              "C": 0.37058432352629167,
+              "R": 1.346820859351228
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 50.65180587768555,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9945526123046875,
+            "r2_test": 0.9897286891937256,
+            "partition": {
+              "E": 0.31289373605658866,
+              "C": 0.1434035147390999,
+              "R": 0.5437027492043115
+            },
+            "partition_raw_drops": {
+              "E": 0.8540679544210434,
+              "C": 0.39143112301826477,
+              "R": 1.4840792298316956
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 101.3036117553711,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9915591478347778,
+            "r2_test": 0.9881689548492432,
+            "partition": {
+              "E": 0.27168387900830465,
+              "C": 0.15472646887376912,
+              "R": 0.5735896521179262
+            },
+            "partition_raw_drops": {
+              "E": 0.7057641714811325,
+              "C": 0.4019391894340515,
+              "R": 1.4900369763374328
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": -0.004685342311859131,
+          "gap_S": 0.0003623366355895996,
+          "asymmetry": -0.0050476789474487305
+        },
+        "rf_vs_ridge": {
+          "gap_E": -0.004437090541769995,
+          "gap_S": -0.006205158447593173,
+          "asymmetry": 0.0017680679058231785
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.23459399999999997,
+        "rf_vs_ridge": 0.36631209909332785
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": true,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "pool_dim": 64,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.7489956021308899,
+          "S": 0.8594083189964294
+        },
+        "mlp": {
+          "E": 0.9790192246437073,
+          "S": 0.992571234703064
+        },
+        "rf": {
+          "E": 0.9917994431464296,
+          "S": 0.9916565272888422
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.994652528920024,
+        "rkhs_median": 0.992448091506958
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.311354,
+          "C": 0.438977,
+          "R": 0.249669
+        },
+        "mlp": {
+          "E": 0.234784,
+          "C": 0.312404,
+          "R": 0.452812
+        },
+        "rf": {
+          "E": 0.6052581130719223,
+          "C": 0.026239352848750556,
+          "R": 0.36850253407932715
+        },
+        "rkhs_median": {
+          "E": 0.31238901032277827,
+          "C": 0.17424349687571888,
+          "R": 0.513367492801503
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.2')",
+      "target_dimensionality": {
+        "native_pool_dim": 64,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 64,
+        "mlp_target_dim": 64,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": false,
+        "rf_target_pca_explained_variance_ratio": null,
+        "rkhs_target_pca_applied": false,
+        "rkhs_target_pca_explained_variance_ratio": null
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 18.58099937438965,
+        "range_per_channel": {
+          "E": {
+            "min": 0.30233858359893684,
+            "max": 0.3255648070436903
+          },
+          "C": {
+            "min": 0.14640822253714217,
+            "max": 0.17887370848656267
+          },
+          "R": {
+            "min": 0.4983520057060534,
+            "max": 0.5379045146043653
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 18.58099937438965,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9933678956380717,
+            "partition": {
+              "E": 0.3156872628584926,
+              "C": 0.14640822253714217,
+              "R": 0.5379045146043653
+            },
+            "partition_raw_drops": {
+              "E": 0.5976027801272885,
+              "C": 0.27715391501528597,
+              "R": 1.0182648183518268
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 18.58099937438965,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9975262880325317,
+            "r2_test": 0.992448091506958,
+            "partition": {
+              "E": 0.3255648070436903,
+              "C": 0.17608318725025626,
+              "R": 0.4983520057060534
+            },
+            "partition_raw_drops": {
+              "E": 0.7316988274455071,
+              "C": 0.39574259519577026,
+              "R": 1.1200337700545788
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 37.1619987487793,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9945780038833618,
+            "r2_test": 0.9903663992881775,
+            "partition": {
+              "E": 0.30233858359893684,
+              "C": 0.17887370848656267,
+              "R": 0.5187877079145005
+            },
+            "partition_raw_drops": {
+              "E": 0.7170830816030502,
+              "C": 0.42425054907798765,
+              "R": 1.230454558134079
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.23002362251281738,
+          "gap_S": 0.13316291570663452,
+          "asymmetry": 0.09686070680618286
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.24280384101553976,
+          "gap_S": 0.1322482082924128,
+          "asymmetry": 0.11055563272312696
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.203143,
+        "rf_vs_ridge": 0.11883353407932715
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.8454424142837524,
+          "S": 0.9521625638008118
+        },
+        "mlp": {
+          "E": 0.9784613847732544,
+          "S": 0.987734854221344
+        },
+        "rf": {
+          "E": 0.9783038945157106,
+          "S": 0.954334175593669
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9786459776748874,
+        "rkhs_median": 0.9656561613082886
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.275105,
+          "C": 0.388052,
+          "R": 0.336843
+        },
+        "mlp": {
+          "E": 0.283548,
+          "C": 0.242226,
+          "R": 0.474226
+        },
+        "rf": {
+          "E": 0.3809211383880954,
+          "C": 0.21312485296110587,
+          "R": 0.4059540086507987
+        },
+        "rkhs_median": {
+          "E": 0.3537162598668898,
+          "C": 0.17438247780363453,
+          "R": 0.4719012623294757
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.4')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9945827722549438,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9949761033058167
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 25.439302444458008,
+        "range_per_channel": {
+          "E": {
+            "min": 0.3123109175787281,
+            "max": 0.37330420747516496
+          },
+          "C": {
+            "min": 0.1546607668397363,
+            "max": 0.19026695376327515
+          },
+          "R": {
+            "min": 0.4717515694490151,
+            "max": 0.4974221286579969
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 25.439302444458008,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.968805466159262,
+            "partition": {
+              "E": 0.37330420747516496,
+              "C": 0.1546607668397363,
+              "R": 0.47203502568509875
+            },
+            "partition_raw_drops": {
+              "E": 1.2008526627487188,
+              "C": 0.49751593998471594,
+              "R": 1.5184519921124155
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 25.439302444458008,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9871416091918945,
+            "r2_test": 0.9656561613082886,
+            "partition": {
+              "E": 0.35381652294655325,
+              "C": 0.17443190760443167,
+              "R": 0.4717515694490151
+            },
+            "partition_raw_drops": {
+              "E": 1.5232184648513794,
+              "C": 0.7509482607245446,
+              "R": 2.0309416174888613
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 50.878604888916016,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9780710935592651,
+            "r2_test": 0.9604342579841614,
+            "partition": {
+              "E": 0.3123109175787281,
+              "C": 0.19026695376327515,
+              "R": 0.4974221286579969
+            },
+            "partition_raw_drops": {
+              "E": 1.2530207455158233,
+              "C": 0.76336889564991,
+              "R": 1.9957043170928954
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.13301897048950195,
+          "gap_S": 0.03557229042053223,
+          "asymmetry": 0.09744668006896973
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.1328614802319582,
+          "gap_S": 0.0021716117928571865,
+          "asymmetry": 0.13068986843910102
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.13738299999999998,
+        "rf_vs_ridge": 0.06911100865079872
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.8124169707298279,
+          "S": 0.9388188123703003
+        },
+        "mlp": {
+          "E": 0.9773476123809814,
+          "S": 0.9823750853538513
+        },
+        "rf": {
+          "E": 0.9702045097885733,
+          "S": 0.9415981443854845
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9715750883169852,
+        "rkhs_median": 0.9544011950492859
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.254026,
+          "C": 0.385185,
+          "R": 0.360788
+        },
+        "mlp": {
+          "E": 0.279971,
+          "C": 0.254157,
+          "R": 0.465872
+        },
+        "rf": {
+          "E": 0.37004533729878114,
+          "C": 0.22644459620426913,
+          "R": 0.40351006649694976
+        },
+        "rkhs_median": {
+          "E": 0.33808886308528796,
+          "C": 0.16813053957113966,
+          "R": 0.49378059734357244
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.6')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9937573671340942,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9941174983978271
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 25.608694076538086,
+        "range_per_channel": {
+          "E": {
+            "min": 0.30436225795826866,
+            "max": 0.362905527330085
+          },
+          "C": {
+            "min": 0.15430003322421865,
+            "max": 0.1827760424271919
+          },
+          "R": {
+            "min": 0.4827944394456963,
+            "max": 0.5128616996145394
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 25.608694076538086,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9565604750132578,
+            "partition": {
+              "E": 0.362905527330085,
+              "C": 0.15430003322421865,
+              "R": 0.4827944394456963
+            },
+            "partition_raw_drops": {
+              "E": 1.1051861491151005,
+              "C": 0.4699026239198017,
+              "R": 1.4702937463387014
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 25.608694076538086,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9870736002922058,
+            "r2_test": 0.9544011950492859,
+            "partition": {
+              "E": 0.33808886308528796,
+              "C": 0.16813053957113966,
+              "R": 0.49378059734357244
+            },
+            "partition_raw_drops": {
+              "E": 1.3362404376268386,
+              "C": 0.6645082116127015,
+              "R": 1.9515863239765168
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 51.21738815307617,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9757291078567505,
+            "r2_test": 0.9477013349533081,
+            "partition": {
+              "E": 0.30436225795826866,
+              "C": 0.1827760424271919,
+              "R": 0.5128616996145394
+            },
+            "partition_raw_drops": {
+              "E": 1.1320825591683388,
+              "C": 0.6798397779464722,
+              "R": 1.9076011240482331
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.16493064165115356,
+          "gap_S": 0.043556272983551025,
+          "asymmetry": 0.12137436866760254
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.15778753905874543,
+          "gap_S": 0.0027793320151842105,
+          "asymmetry": 0.15500820704356122
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.10508400000000001,
+        "rf_vs_ridge": 0.04272206649694976
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": false
+      }
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.7849293947219849,
+          "S": 0.9234785437583923
+        },
+        "mlp": {
+          "E": 0.9665625691413879,
+          "S": 0.9747511744499207
+        },
+        "rf": {
+          "E": 0.9583214041880878,
+          "S": 0.926403285820344
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9609534190954633,
+        "rkhs_median": 0.9375372529029846
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.247085,
+          "C": 0.357418,
+          "R": 0.395497
+        },
+        "mlp": {
+          "E": 0.274737,
+          "C": 0.249801,
+          "R": 0.475462
+        },
+        "rf": {
+          "E": 0.3706186818619342,
+          "C": 0.23665602868636307,
+          "R": 0.39272528945170265
+        },
+        "rkhs_median": {
+          "E": 0.332850767548665,
+          "C": 0.17372373122738557,
+          "R": 0.4934255012239494
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.8')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9928792715072632,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9934578537940979
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 25.628982543945312,
+        "range_per_channel": {
+          "E": {
+            "min": 0.30361768278676593,
+            "max": 0.3625695731837314
+          },
+          "C": {
+            "min": 0.15498575904552647,
+            "max": 0.18038655643280896
+          },
+          "R": {
+            "min": 0.4824446677707421,
+            "max": 0.5159957607804251
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 25.628982543945312,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9408080854495127,
+            "partition": {
+              "E": 0.3625695731837314,
+              "C": 0.15498575904552647,
+              "R": 0.4824446677707421
+            },
+            "partition_raw_drops": {
+              "E": 1.1120247453135377,
+              "C": 0.47535152416799714,
+              "R": 1.4796895506004535
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 25.628982543945312,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9863585829734802,
+            "r2_test": 0.9375372529029846,
+            "partition": {
+              "E": 0.332850767548665,
+              "C": 0.17372373122738557,
+              "R": 0.4934255012239494
+            },
+            "partition_raw_drops": {
+              "E": 1.3328920274972915,
+              "C": 0.6956720516085625,
+              "R": 1.9759092688560487
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 51.257965087890625,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9726619124412537,
+            "r2_test": 0.9293171167373657,
+            "partition": {
+              "E": 0.30361768278676593,
+              "C": 0.18038655643280896,
+              "R": 0.5159957607804251
+            },
+            "partition_raw_drops": {
+              "E": 1.1127769991755485,
+              "C": 0.6611275374889374,
+              "R": 1.891155380010605
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.18163317441940308,
+          "gap_S": 0.05127263069152832,
+          "asymmetry": 0.13036054372787476
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.1733920094661029,
+          "gap_S": 0.0029247420619517017,
+          "asymmetry": 0.1704672674041512
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.07996500000000001,
+        "rf_vs_ridge": -0.0027717105482973348
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.7693251371383667,
+          "S": 0.9128999710083008
+        },
+        "mlp": {
+          "E": 0.965250551700592,
+          "S": 0.968036413192749
+        },
+        "rf": {
+          "E": 0.9477696181275858,
+          "S": 0.9115218773540863
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.952064904688621,
+        "rkhs_median": 0.9253020882606506
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.240079,
+          "C": 0.344847,
+          "R": 0.415075
+        },
+        "mlp": {
+          "E": 0.284239,
+          "C": 0.281264,
+          "R": 0.434496
+        },
+        "rf": {
+          "E": 0.3654077122854896,
+          "C": 0.23964703909555762,
+          "R": 0.39494524861895275
+        },
+        "rkhs_median": {
+          "E": 0.3361125174909984,
+          "C": 0.17939066147332666,
+          "R": 0.48449682103567493
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T1.0')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9922724366188049,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9928772449493408
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 25.71815299987793,
+        "range_per_channel": {
+          "E": {
+            "min": 0.30435767007636594,
+            "max": 0.36122257464423263
+          },
+          "C": {
+            "min": 0.156399761772447,
+            "max": 0.19278579143966748
+          },
+          "R": {
+            "min": 0.48237766358332024,
+            "max": 0.5028565384839665
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 25.71815299987793,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9288366473195883,
+            "partition": {
+              "E": 0.36122257464423263,
+              "C": 0.156399761772447,
+              "R": 0.48237766358332024
+            },
+            "partition_raw_drops": {
+              "E": 1.0850062666820761,
+              "C": 0.4697788387058056,
+              "R": 1.448920484581672
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 25.71815299987793,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9860376715660095,
+            "r2_test": 0.9253020882606506,
+            "partition": {
+              "E": 0.3361125174909984,
+              "C": 0.17939066147332666,
+              "R": 0.48449682103567493
+            },
+            "partition_raw_drops": {
+              "E": 1.3117607712745667,
+              "C": 0.7001156464219094,
+              "R": 1.89086657166481
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 51.43630599975586,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.970328688621521,
+            "r2_test": 0.916291356086731,
+            "partition": {
+              "E": 0.30435767007636594,
+              "C": 0.19278579143966748,
+              "R": 0.5028565384839665
+            },
+            "partition_raw_drops": {
+              "E": 1.083782136440277,
+              "C": 0.6864877000451088,
+              "R": 1.7906134366989135
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.19592541456222534,
+          "gap_S": 0.05513644218444824,
+          "asymmetry": 0.1407889723777771
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.17844448098921906,
+          "gap_S": -0.001378093654214485,
+          "asymmetry": 0.17982257464343354
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.019420999999999966,
+        "rf_vs_ridge": -0.02012975138104728
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": false,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "pool_dim": 1024,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.9916310906410217,
+          "S": 0.9366863369941711
+        },
+        "mlp": {
+          "E": 0.9748652577400208,
+          "S": 0.9336979389190674
+        },
+        "rf": {
+          "E": 0.9894456020791597,
+          "S": 0.9406007415265741
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9898001635535573,
+        "rkhs_median": 0.9655342102050781
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.457139,
+          "C": 0.317593,
+          "R": 0.225268
+        },
+        "mlp": {
+          "E": 0.407258,
+          "C": 0.256184,
+          "R": 0.336559
+        },
+        "rf": {
+          "E": 0.5960009811930638,
+          "C": 0.1548257767062171,
+          "R": 0.24917324210071912
+        },
+        "rkhs_median": {
+          "E": 0.41126481933456416,
+          "C": 0.17255246935525956,
+          "R": 0.41618271131017626
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.0')",
+      "target_dimensionality": {
+        "native_pool_dim": 1024,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 1024,
+        "mlp_target_dim": 1024,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9851402640342712,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.985704243183136
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 76.27404022216797,
+        "range_per_channel": {
+          "E": {
+            "min": 0.39116065425754676,
+            "max": 0.4227141525407209
+          },
+          "C": {
+            "min": 0.13827746165632457,
+            "max": 0.18511693788926983
+          },
+          "R": {
+            "min": 0.4073535201570033,
+            "max": 0.4705618840861287
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 76.27404022216797,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9719377656396402,
+            "partition": {
+              "E": 0.4050199232048383,
+              "C": 0.18511693788926983,
+              "R": 0.4098631389058919
+            },
+            "partition_raw_drops": {
+              "E": 1.1807381196676034,
+              "C": 0.5396638847602002,
+              "R": 1.1948573495434
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 76.27404022216797,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9790154099464417,
+            "r2_test": 0.9655342102050781,
+            "partition": {
+              "E": 0.4227141525407209,
+              "C": 0.16993232730227573,
+              "R": 0.4073535201570033
+            },
+            "partition_raw_drops": {
+              "E": 1.7334723949432373,
+              "C": 0.6968609794974328,
+              "R": 1.6704812884330749
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 152.54808044433594,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9600825309753418,
+            "r2_test": 0.9506210088729858,
+            "partition": {
+              "E": 0.39116065425754676,
+              "C": 0.13827746165632457,
+              "R": 0.4705618840861287
+            },
+            "partition_raw_drops": {
+              "E": 1.3321074426174164,
+              "C": 0.47090737223625184,
+              "R": 1.6025103271007537
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": -0.016765832901000977,
+          "gap_S": -0.0029883980751037598,
+          "asymmetry": -0.013777434825897217
+        },
+        "rf_vs_ridge": {
+          "gap_E": -0.00218548856186207,
+          "gap_S": 0.003914404532402993,
+          "asymmetry": -0.006099893094265063
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": 0.111291,
+        "rf_vs_ridge": 0.02390524210071912
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": true,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "pool_dim": 128,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.6745917201042175,
+          "S": 0.8124529719352722
+        },
+        "mlp": {
+          "E": 0.9229380488395691,
+          "S": 0.9131618142127991
+        },
+        "rf": {
+          "E": 0.8746161555282707,
+          "S": 0.8146795906091876
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.888297574317436,
+        "rkhs_median": 0.8588609099388123
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.265656,
+          "C": 0.281464,
+          "R": 0.45288
+        },
+        "mlp": {
+          "E": 0.417695,
+          "C": 0.297594,
+          "R": 0.284711
+        },
+        "rf": {
+          "E": 0.4711966712714342,
+          "C": 0.20730415063993274,
+          "R": 0.32149917808863304
+        },
+        "rkhs_median": {
+          "E": 0.395475990393573,
+          "C": 0.14732052974419474,
+          "R": 0.45720347986223225
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.2')",
+      "target_dimensionality": {
+        "native_pool_dim": 128,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 128,
+        "mlp_target_dim": 128,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": true,
+        "rf_target_pca_explained_variance_ratio": 0.9878771305084229,
+        "rkhs_target_pca_applied": true,
+        "rkhs_target_pca_explained_variance_ratio": 0.9882386326789856
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 27.282535552978516,
+        "range_per_channel": {
+          "E": {
+            "min": 0.365591929077101,
+            "max": 0.41114584450605934
+          },
+          "C": {
+            "min": 0.14654597694915333,
+            "max": 0.15701931535452746
+          },
+          "R": {
+            "min": 0.4423081785447874,
+            "max": 0.4773887555683716
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 27.282535552978516,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.8798587288264015,
+            "partition": {
+              "E": 0.41114584450605934,
+              "C": 0.14654597694915333,
+              "R": 0.4423081785447874
+            },
+            "partition_raw_drops": {
+              "E": 1.3158271978172555,
+              "C": 0.4690043321052092,
+              "R": 1.4155588313082528
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 27.282535552978516,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9714630842208862,
+            "r2_test": 0.8588609099388123,
+            "partition": {
+              "E": 0.39547599039357295,
+              "C": 0.1473205297441947,
+              "R": 0.4572034798622322
+            },
+            "partition_raw_drops": {
+              "E": 1.7841749668121338,
+              "C": 0.6646309956908226,
+              "R": 2.0626561999320985
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 54.56507110595703,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9359726309776306,
+            "r2_test": 0.8261662721633911,
+            "partition": {
+              "E": 0.365591929077101,
+              "C": 0.15701931535452746,
+              "R": 0.4773887555683716
+            },
+            "partition_raw_drops": {
+              "E": 1.3218816995620728,
+              "C": 0.5677394464612007,
+              "R": 1.7261088371276856
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.24834632873535156,
+          "gap_S": 0.10070884227752686,
+          "asymmetry": 0.1476374864578247
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.20002443542405313,
+          "gap_S": 0.0022266186739153815,
+          "asymmetry": 0.19779781675013774
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": -0.168169,
+        "rf_vs_ridge": -0.13138082191136696
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": true,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "pool_dim": 64,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.5950495004653931,
+          "S": 0.7259151935577393
+        },
+        "mlp": {
+          "E": 0.9255480766296387,
+          "S": 0.9071023464202881
+        },
+        "rf": {
+          "E": 0.9774109893614558,
+          "S": 0.9151908183370124
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.97899235702215,
+        "rkhs_median": 0.9573225378990173
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.372789,
+          "C": 0.225093,
+          "R": 0.402118
+        },
+        "mlp": {
+          "E": 0.466609,
+          "C": 0.312819,
+          "R": 0.220572
+        },
+        "rf": {
+          "E": 0.4356050344292325,
+          "C": 0.18206778546231195,
+          "R": 0.3823271801084556
+        },
+        "rkhs_median": {
+          "E": 0.4405745543882155,
+          "C": 0.1330706982508422,
+          "R": 0.4263547473609423
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.4')",
+      "target_dimensionality": {
+        "native_pool_dim": 64,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 64,
+        "mlp_target_dim": 64,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": false,
+        "rf_target_pca_explained_variance_ratio": null,
+        "rkhs_target_pca_applied": false,
+        "rkhs_target_pca_explained_variance_ratio": null
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 17.931299209594727,
+        "range_per_channel": {
+          "E": {
+            "min": 0.3784249638235634,
+            "max": 0.46885678689026744
+          },
+          "C": {
+            "min": 0.09432035382377901,
+            "max": 0.14682736984976688
+          },
+          "R": {
+            "min": 0.41227027252620263,
+            "max": 0.47474766632666976
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 17.931299209594727,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9637696477321362,
+            "partition": {
+              "E": 0.46885678689026744,
+              "C": 0.09432035382377901,
+              "R": 0.43682285928595355
+            },
+            "partition_raw_drops": {
+              "E": 3.147205200509444,
+              "C": 0.6331261834491961,
+              "R": 2.9321771869069977
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 17.931299209594727,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9766833782196045,
+            "r2_test": 0.9573225378990173,
+            "partition": {
+              "E": 0.4513917993589708,
+              "C": 0.13633792811482665,
+              "R": 0.41227027252620263
+            },
+            "partition_raw_drops": {
+              "E": 2.3699599623680117,
+              "C": 0.7158203393220901,
+              "R": 2.1645586848258973
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 35.86259841918945,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9485816955566406,
+            "r2_test": 0.9345266819000244,
+            "partition": {
+              "E": 0.3784249638235634,
+              "C": 0.14682736984976688,
+              "R": 0.47474766632666976
+            },
+            "partition_raw_drops": {
+              "E": 1.1642248213291169,
+              "C": 0.4517145663499832,
+              "R": 1.4605617225170135
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.3304985761642456,
+          "gap_S": 0.18118715286254883,
+          "asymmetry": 0.14931142330169678
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.3823614888960627,
+          "gap_S": 0.18927562477927318,
+          "asymmetry": 0.19308586411678952
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": -0.18154599999999999,
+        "rf_vs_ridge": -0.019790819891544353
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": true,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "pool_dim": 64,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.5875653624534607,
+          "S": 0.7204514145851135
+        },
+        "mlp": {
+          "E": 0.9215549230575562,
+          "S": 0.8972668647766113
+        },
+        "rf": {
+          "E": 0.9711570589857907,
+          "S": 0.9020454637810559
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9731004820139763,
+        "rkhs_median": 0.9512250423431396
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.356642,
+          "C": 0.230054,
+          "R": 0.413305
+        },
+        "mlp": {
+          "E": 0.479198,
+          "C": 0.304471,
+          "R": 0.216332
+        },
+        "rf": {
+          "E": 0.43796740233128534,
+          "C": 0.1752583826640547,
+          "R": 0.3867742150046599
+        },
+        "rkhs_median": {
+          "E": 0.4446706639693229,
+          "C": 0.12436541059203247,
+          "R": 0.43096392543864465
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.6')",
+      "target_dimensionality": {
+        "native_pool_dim": 64,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 64,
+        "mlp_target_dim": 64,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": false,
+        "rf_target_pca_explained_variance_ratio": null,
+        "rkhs_target_pca_applied": false,
+        "rkhs_target_pca_explained_variance_ratio": null
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 17.99053192138672,
+        "range_per_channel": {
+          "E": {
+            "min": 0.3809123714197908,
+            "max": 0.46797438773740097
+          },
+          "C": {
+            "min": 0.08865230104602093,
+            "max": 0.15739740115000964
+          },
+          "R": {
+            "min": 0.41457882275608127,
+            "max": 0.4616902274301996
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 17.99053192138672,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9594076959042788,
+            "partition": {
+              "E": 0.46797438773740097,
+              "C": 0.08865230104602093,
+              "R": 0.44337331121657814
+            },
+            "partition_raw_drops": {
+              "E": 2.964751154329551,
+              "C": 0.5616375997219037,
+              "R": 2.8088963214069715
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 17.99053192138672,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.97598797082901,
+            "r2_test": 0.9512250423431396,
+            "partition": {
+              "E": 0.4574747282717091,
+              "C": 0.12794644897220972,
+              "R": 0.41457882275608127
+            },
+            "partition_raw_drops": {
+              "E": 2.301273596286774,
+              "C": 0.6436197817325592,
+              "R": 2.085490715503693
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 35.98106384277344,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9453290104866028,
+            "r2_test": 0.9285834431648254,
+            "partition": {
+              "E": 0.3809123714197908,
+              "C": 0.15739740115000964,
+              "R": 0.4616902274301996
+            },
+            "partition_raw_drops": {
+              "E": 1.1685654416680336,
+              "C": 0.48286476731300354,
+              "R": 1.4163762718439101
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.33398956060409546,
+          "gap_S": 0.1768154501914978,
+          "asymmetry": 0.15717411041259766
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.38359169653233005,
+          "gap_S": 0.18159404919594235,
+          "asymmetry": 0.2019976473363877
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": -0.19697299999999998,
+        "rf_vs_ridge": -0.026530784995340062
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": true,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "pool_dim": 64,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.5818953514099121,
+          "S": 0.7144586443901062
+        },
+        "mlp": {
+          "E": 0.9080272316932678,
+          "S": 0.8873459696769714
+        },
+        "rf": {
+          "E": 0.9662797015149533,
+          "S": 0.8936948850323343
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9679881533810433,
+        "rkhs_median": 0.9454290866851807
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.357564,
+          "C": 0.234536,
+          "R": 0.4079
+        },
+        "mlp": {
+          "E": 0.488141,
+          "C": 0.303007,
+          "R": 0.208853
+        },
+        "rf": {
+          "E": 0.4419040676586645,
+          "C": 0.18006395460276767,
+          "R": 0.3780319777385679
+        },
+        "rkhs_median": {
+          "E": 0.4400918263497199,
+          "C": 0.1254936383837572,
+          "R": 0.43441453526652285
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.8')",
+      "target_dimensionality": {
+        "native_pool_dim": 64,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 64,
+        "mlp_target_dim": 64,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": false,
+        "rf_target_pca_explained_variance_ratio": null,
+        "rkhs_target_pca_applied": false,
+        "rkhs_target_pca_explained_variance_ratio": null
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 17.960983276367188,
+        "range_per_channel": {
+          "E": {
+            "min": 0.3747621094368758,
+            "max": 0.4666743574167173
+          },
+          "C": {
+            "min": 0.08940483264682204,
+            "max": 0.1540393684162462
+          },
+          "R": {
+            "min": 0.4220378527649068,
+            "max": 0.471198522146878
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 17.960983276367188,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9544323556596062,
+            "partition": {
+              "E": 0.4666743574167173,
+              "C": 0.08940483264682204,
+              "R": 0.4439208099364607
+            },
+            "partition_raw_drops": {
+              "E": 2.9189164558315004,
+              "C": 0.5592020069160155,
+              "R": 2.776599435165721
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 17.960983276367188,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9756919741630554,
+            "r2_test": 0.9454290866851807,
+            "partition": {
+              "E": 0.44972233693728175,
+              "C": 0.12823981029781145,
+              "R": 0.4220378527649068
+            },
+            "partition_raw_drops": {
+              "E": 2.1396051168441774,
+              "C": 0.6101154685020447,
+              "R": 2.0078930377960207
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 35.921966552734375,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9437780976295471,
+            "r2_test": 0.9220834374427795,
+            "partition": {
+              "E": 0.3747621094368758,
+              "C": 0.1540393684162462,
+              "R": 0.471198522146878
+            },
+            "partition_raw_drops": {
+              "E": 1.1068896666169166,
+              "C": 0.45496751368045807,
+              "R": 1.391722273826599
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.3261318802833557,
+          "gap_S": 0.17288732528686523,
+          "asymmetry": 0.15324455499649048
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.38438435010504124,
+          "gap_S": 0.1792362406422281,
+          "asymmetry": 0.20514810946281314
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": -0.19904699999999997,
+        "rf_vs_ridge": -0.029868022261432092
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": true,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "pool_dim": 64,
+      "n_rows": 21600,
+      "univariate_R2": {
+        "ridge": {
+          "E": 0.5766118168830872,
+          "S": 0.7089820504188538
+        },
+        "mlp": {
+          "E": 0.9046496748924255,
+          "S": 0.879263699054718
+        },
+        "rf": {
+          "E": 0.9635496858906555,
+          "S": 0.886972025655383
+        },
+        "rkhs_median": {
+          "E": null,
+          "S": null
+        }
+      },
+      "joint_R2_held_out": {
+        "ridge": null,
+        "mlp": null,
+        "rf": 0.9666246561896775,
+        "rkhs_median": 0.9410098195075989
+      },
+      "permutation_shares": {
+        "ridge": {
+          "E": 0.363953,
+          "C": 0.236134,
+          "R": 0.399912
+        },
+        "mlp": {
+          "E": 0.463089,
+          "C": 0.314763,
+          "R": 0.222148
+        },
+        "rf": {
+          "E": 0.45132624507283586,
+          "C": 0.17850659587551193,
+          "R": 0.3701671590516521
+        },
+        "rkhs_median": {
+          "E": 0.43271298166853633,
+          "C": 0.13319364880563084,
+          "R": 0.4340933695258328
+        }
+      },
+      "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T1.0')",
+      "target_dimensionality": {
+        "native_pool_dim": 64,
+        "rf_target_dim": 64,
+        "ridge_target_dim": 64,
+        "mlp_target_dim": 64,
+        "rkhs_target_dim": 64,
+        "rf_target_pca_applied": false,
+        "rf_target_pca_explained_variance_ratio": null,
+        "rkhs_target_pca_applied": false,
+        "rkhs_target_pca_explained_variance_ratio": null
+      },
+      "rkhs_kernel_grid": {
+        "n_train_subsampled": 2500,
+        "median_pairwise_distance": 17.981136322021484,
+        "range_per_channel": {
+          "E": {
+            "min": 0.38519984671467633,
+            "max": 0.463428623686948
+          },
+          "C": {
+            "min": 0.08833188741800616,
+            "max": 0.1529198859512596
+          },
+          "R": {
+            "min": 0.4156517546371714,
+            "max": 0.461880267334064
+          }
+        },
+        "per_kernel": [
+          {
+            "kernel_id": "matern_nu1.5",
+            "kernel_kind": "matern",
+            "length_scale": 17.981136322021484,
+            "length_scale_mult": 1.0,
+            "nu": 1.5,
+            "r2_train": null,
+            "r2_test": 0.9484232699098987,
+            "partition": {
+              "E": 0.463428623686948,
+              "C": 0.08833188741800616,
+              "R": 0.4482394888950459
+            },
+            "partition_raw_drops": {
+              "E": 2.8454182017832954,
+              "C": 0.5423513943904591,
+              "R": 2.752158013704336
+            }
+          },
+          {
+            "kernel_id": "rbf_ls1.0",
+            "kernel_kind": "rbf",
+            "length_scale": 17.981136322021484,
+            "length_scale_mult": 1.0,
+            "nu": null,
+            "r2_train": 0.9748532176017761,
+            "r2_test": 0.9410098195075989,
+            "partition": {
+              "E": 0.4468141173250831,
+              "C": 0.1375341280377454,
+              "R": 0.4156517546371714
+            },
+            "partition_raw_drops": {
+              "E": 2.205433189868927,
+              "C": 0.6788557454943657,
+              "R": 2.0516186475753786
+            }
+          },
+          {
+            "kernel_id": "rbf_ls2.0",
+            "kernel_kind": "rbf",
+            "length_scale": 35.96227264404297,
+            "length_scale_mult": 2.0,
+            "nu": null,
+            "r2_train": 0.9412641525268555,
+            "r2_test": 0.9185419082641602,
+            "partition": {
+              "E": 0.38519984671467633,
+              "C": 0.1529198859512596,
+              "R": 0.461880267334064
+            },
+            "partition_raw_drops": {
+              "E": 1.1544667303562164,
+              "C": 0.4583099454641342,
+              "R": 1.3842824876308442
+            }
+          }
+        ]
+      },
+      "asymmetry": {
+        "mlp_vs_ridge": {
+          "gap_E": 0.3280378580093384,
+          "gap_S": 0.17028164863586426,
+          "asymmetry": 0.15775620937347412
+        },
+        "rf_vs_ridge": {
+          "gap_E": 0.3869378690075683,
+          "gap_S": 0.17798997523652926,
+          "asymmetry": 0.20894789377103906
+        }
+      },
+      "R_hat_gap": {
+        "mlp_vs_ridge": -0.17776399999999998,
+        "rf_vs_ridge": -0.029744840948347895
+      },
+      "sign_check": {
+        "mlp_vs_ridge_signs_opposite": true,
+        "rf_vs_ridge_signs_opposite": true
+      }
+    }
+  },
+  "cross_cell_aggregates": {
+    "n_cells_evaluated": 24,
+    "rf_reproduces_mlp_sign_on_R_hat_gap": "12/24",
+    "rf_reproduces_mlp_sign_on_asymmetry": "12/24",
+    "both_classes_show_predicted_opposite_signs": "6/24",
+    "cells_where_only_mlp_shows_pattern": [
+      "gemma_2b_fp16_abliterated_t00",
+      "gemma_9b_q4_abliterated_t00"
+    ],
+    "cells_where_only_rf_shows_pattern": [
+      "gemma_2b_fp16_abliterated_t06",
+      "gemma_2b_q4_abliterated_t06",
+      "gemma_2b_q4_abliterated_t08",
+      "gemma_2b_q4_abliterated_t10",
+      "gemma_9b_q4_abliterated_t08",
+      "gemma_9b_q4_abliterated_t10"
+    ],
+    "cells_where_neither_shows_pattern": [
+      "gemma_2b_fp16_abliterated_t02",
+      "gemma_2b_fp16_abliterated_t04",
+      "gemma_2b_fp16_abliterated_t08",
+      "gemma_2b_fp16_abliterated_t10",
+      "gemma_2b_q4_abliterated_t00",
+      "gemma_2b_q4_abliterated_t02",
+      "gemma_2b_q4_abliterated_t04",
+      "gemma_9b_q4_abliterated_t02",
+      "gemma_9b_q4_abliterated_t04",
+      "gemma_9b_q4_abliterated_t06"
+    ],
+    "cells_where_both_show_pattern": [
+      "llama_8b_q4_abliterated_t00",
+      "llama_8b_q4_abliterated_t02",
+      "llama_8b_q4_abliterated_t04",
+      "llama_8b_q4_abliterated_t06",
+      "llama_8b_q4_abliterated_t08",
+      "llama_8b_q4_abliterated_t10"
+    ],
+    "cells_with_target_dim_reduction": [
+      "gemma_2b_fp16_abliterated_t00",
+      "gemma_2b_fp16_abliterated_t04",
+      "gemma_2b_fp16_abliterated_t06",
+      "gemma_2b_fp16_abliterated_t10",
+      "gemma_2b_q4_abliterated_t00",
+      "gemma_2b_q4_abliterated_t02",
+      "gemma_2b_q4_abliterated_t04",
+      "gemma_2b_q4_abliterated_t06",
+      "gemma_2b_q4_abliterated_t08",
+      "gemma_2b_q4_abliterated_t10",
+      "gemma_9b_q4_abliterated_t00",
+      "gemma_9b_q4_abliterated_t04",
+      "gemma_9b_q4_abliterated_t06",
+      "gemma_9b_q4_abliterated_t08",
+      "gemma_9b_q4_abliterated_t10",
+      "llama_8b_q4_abliterated_t00",
+      "llama_8b_q4_abliterated_t02"
+    ],
+    "target_pca_explained_variance_minimum": 0.9851402640342712
+  },
+  "metadata": {
+    "n_permutations": 200,
+    "random_state": 42,
+    "test_size": 0.2,
+    "rf_hyperparameters": {
+      "n_estimators": 100,
+      "max_depth": null,
+      "min_samples_leaf": 5,
+      "random_state": 42,
+      "n_jobs": 4
+    },
+    "mlp_hyperparameters": {
+      "hidden_layer_sizes": [
+        256
+      ],
+      "activation": "tanh",
+      "early_stopping": true,
+      "validation_fraction": 0.1,
+      "max_iter": 500,
+      "random_state": 42,
+      "tol": 1e-05
+    },
+    "ridge_alpha": 0.01,
+    "rkhs_alpha": 0.001,
+    "rkhs_kernels": [
+      {
+        "kind": "matern",
+        "nu": 1.5,
+        "length_scale_mult": 1.0
+      },
+      {
+        "kind": "rbf",
+        "length_scale_mult": 1.0
+      },
+      {
+        "kind": "rbf",
+        "length_scale_mult": 2.0
+      }
+    ],
+    "rkhs_n_subsample": 2500,
+    "rkhs_n_permutations_per_kernel": 50,
+    "activation_protocol_note": "MLP activation: tanh (canon protocol). Writerbot's original function-class sensitivity handoff erroneously specified ReLU (sklearn default). Canon wins; the v0_12 paper's \u00a74.2 stated 'ReLU' which is being corrected to 'tanh' in v0_13 independently of this run's outcome. The MLP values pulled from channel_marginal_nonlinearity.csv are canon-tanh values.",
+    "held_out_definition": "joint_R2_held_out is the test-set R\u00b2 from the canon 80/20 split with random_state=42. NOT the H28-style cross-source held-out validation (which is a separate analysis covered in \u00a75.3.3).",
+    "partition_source_note": "Ridge and MLP partition fractions (E/C/R) are pulled from results.json's per-cell measurements: rhat_ridge_insample and rhat_mlp_pooled_mean (canonical paper \u00a75/\u00a76 fields, matching paper 1 v0_13 \u00a74.2). Pre-0.81.1.3 this run incorrectly pulled rhat_ridge_heldout (the H1 cross-source quantity) and rhat_mlp_reference (single 256-arch fit), producing sign-flipped R\u0302_MLP\u2212R\u0302_Ridge gaps on Gemma 9B Q4 and Gemma 2B FP16 vs the paper's published numbers. Each cell's partition_source field documents pulled-vs-computed status. RF and RKHS_median partitions are computed in this run.",
+    "rf_joint_R2_train_available_in": "cells.<key>.permutation_shares.rf",
+    "canon_joint_R2_followup": "joint_R2_held_out for ridge and mlp is null in this run because results.json does not currently expose a joint-R\u00b2 field per estimator class \u2014 only the partition fractions. Follow-up: extract joint test R\u00b2 from Q0043/Q0046 manifests if needed for axis-position update; cheap to add in a subsequent ship.",
+    "git_commit": "unknown",
+    "timestamp": "2026-04-30T02:14:22.856400Z",
+    "iota_version": "0.82.0.7",
+    "protocol_decisions_during_run": [
+      {
+        "issue": "RF multi-output cost on cells with pool_dim > 64",
+        "diagnosed_in_version": "0.80.0.45",
+        "decision": "PCA target to 64 dims for RF only on cells where pool_dim > 64; Ridge and MLP retain canon native target dim (pulled from channel_marginal_nonlinearity.csv, not re-fit).",
+        "rationale": "Preserves within-cell apples-to-apples for the comparison-relevant axis (sign of asymmetry, sign of R-hat gap). Ridge/MLP target shapes documented in target_dimensionality block per cell. Honestly disclosable: RF on 2B cells operates on PCA-reduced target (64 dims) while Ridge/MLP retain native (1024 dims). The \u00a75.4 mechanism prediction is robust to this difference if the PCA reduction preserves the dominant variance modes \u2014 testable per-cell via the recorded explained_variance_ratio.",
+        "symptom_before_fix": "Run 0057 hung 8+ minutes on first cell (gemma_2b_q4_abliterated_t00, pool_dim=1024) during univariate-E RF fit; LLaMA 8B and Gemma 9B cells (pool_dim=64) would have completed normally but were never reached."
+      }
+    ]
+  }
+}

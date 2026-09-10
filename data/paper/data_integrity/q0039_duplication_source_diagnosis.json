@@ -1,0 +1,848 @@
+{
+  "iota_version": "0.82.0.29",
+  "diagnosis_purpose": "Determine source of Q0039 on-disk duplication given that live code path tests clean.",
+  "item_a_timestamps_and_sizes": [
+    {
+      "model": "gemma_2b_4bit",
+      "trial": 27,
+      "turn": 14,
+      "cluster": [
+        {
+          "temperature": 0.0,
+          "temp_dir": "deterministic",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\deterministic\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1775860879.3129463,
+          "mtime_iso": "2026-04-10T18:41:19.312946",
+          "md5": "e82b4e306498c288eb170cf5c4ca4251"
+        },
+        {
+          "temperature": 0.2,
+          "temp_dir": "temp_0.2",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_0.2\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1775907809.0811925,
+          "mtime_iso": "2026-04-11T07:43:29.081192",
+          "md5": "e6fea2b8c60102485501ade7494721b6"
+        },
+        {
+          "temperature": 0.4,
+          "temp_dir": "temp_0.4",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_0.4\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1775949812.0096622,
+          "mtime_iso": "2026-04-11T19:23:32.009662",
+          "md5": "e6fea2b8c60102485501ade7494721b6"
+        },
+        {
+          "temperature": 0.6,
+          "temp_dir": "temp_0.6",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_0.6\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1775980674.2603667,
+          "mtime_iso": "2026-04-12T03:57:54.260367",
+          "md5": "e6fea2b8c60102485501ade7494721b6"
+        },
+        {
+          "temperature": 0.8,
+          "temp_dir": "temp_0.8",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_0.8\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776015791.0429642,
+          "mtime_iso": "2026-04-12T13:43:11.042964",
+          "md5": "e6fea2b8c60102485501ade7494721b6"
+        },
+        {
+          "temperature": 1.0,
+          "temp_dir": "temp_1.0",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_1.0\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776050820.0864067,
+          "mtime_iso": "2026-04-12T23:27:00.086407",
+          "md5": "e6fea2b8c60102485501ade7494721b6"
+        }
+      ],
+      "duplicate_group_analysis": [
+        {
+          "md5_prefix": "e6fea2b8c601",
+          "n_members": 5,
+          "temperatures": [
+            0.2,
+            0.4,
+            0.6,
+            0.8,
+            1.0
+          ],
+          "mtime_spread_sec": 143011.005,
+          "min_mtime_iso": "2026-04-11T07:43:29.081192",
+          "max_mtime_iso": "2026-04-12T23:27:00.086407",
+          "interpretation": "large drift: independent collections at different times"
+        }
+      ]
+    },
+    {
+      "model": "gemma_2b_4bit",
+      "trial": 50,
+      "turn": 14,
+      "cluster": [
+        {
+          "temperature": 0.0,
+          "temp_dir": "deterministic",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\deterministic\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0050_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1775860951.0185423,
+          "mtime_iso": "2026-04-10T18:42:31.018542",
+          "md5": "3a7f325bae198ad9fa579d786353c89b"
+        },
+        {
+          "temperature": 0.2,
+          "temp_dir": "temp_0.2",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_0.2\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0050_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1775907880.9467583,
+          "mtime_iso": "2026-04-11T07:44:40.946758",
+          "md5": "4fe131c3b3cbf24e67ab2f821b898b58"
+        },
+        {
+          "temperature": 0.4,
+          "temp_dir": "temp_0.4",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_0.4\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0050_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1775949885.668669,
+          "mtime_iso": "2026-04-11T19:24:45.668669",
+          "md5": "4fe131c3b3cbf24e67ab2f821b898b58"
+        },
+        {
+          "temperature": 0.6,
+          "temp_dir": "temp_0.6",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_0.6\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0050_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1775980749.0520008,
+          "mtime_iso": "2026-04-12T03:59:09.052001",
+          "md5": "4fe131c3b3cbf24e67ab2f821b898b58"
+        },
+        {
+          "temperature": 0.8,
+          "temp_dir": "temp_0.8",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_0.8\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0050_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776015867.8019965,
+          "mtime_iso": "2026-04-12T13:44:27.801996",
+          "md5": "5bf61789fa24556cf93e760289ecf1b9"
+        },
+        {
+          "temperature": 1.0,
+          "temp_dir": "temp_1.0",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_4bit\\abliterated\\temp_1.0\\hidden_states\\Q0039_Gemma_2_2B_Abliterated_trial0050_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776050894.3451025,
+          "mtime_iso": "2026-04-12T23:28:14.345103",
+          "md5": "5bf61789fa24556cf93e760289ecf1b9"
+        }
+      ],
+      "duplicate_group_analysis": [
+        {
+          "md5_prefix": "4fe131c3b3cb",
+          "n_members": 3,
+          "temperatures": [
+            0.2,
+            0.4,
+            0.6
+          ],
+          "mtime_spread_sec": 72868.105,
+          "min_mtime_iso": "2026-04-11T07:44:40.946758",
+          "max_mtime_iso": "2026-04-12T03:59:09.052001",
+          "interpretation": "large drift: independent collections at different times"
+        },
+        {
+          "md5_prefix": "5bf61789fa24",
+          "n_members": 2,
+          "temperatures": [
+            0.8,
+            1.0
+          ],
+          "mtime_spread_sec": 35026.543,
+          "min_mtime_iso": "2026-04-12T13:44:27.801996",
+          "max_mtime_iso": "2026-04-12T23:28:14.345103",
+          "interpretation": "large drift: independent collections at different times"
+        }
+      ]
+    },
+    {
+      "model": "llama_8b_4bit",
+      "trial": 27,
+      "turn": 14,
+      "cluster": [
+        {
+          "temperature": 0.0,
+          "temp_dir": "deterministic",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\llama\\8b_4bit\\abliterated\\deterministic\\hidden_states\\Q0039_LLaMA-3-8B-Abliterated_trial0027_turn14.npy",
+          "size_bytes": 8320,
+          "mtime_unix": 1774029956.6517065,
+          "mtime_iso": "2026-03-20T14:05:56.651706",
+          "md5": "cd9421f51473ceb76d6c1c12c0a3f6bb"
+        },
+        {
+          "temperature": 0.2,
+          "temp_dir": "temp_0.2",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\llama\\8b_4bit\\abliterated\\temp_0.2\\hidden_states\\Q0039_LLaMA-3-8B-Abliterated_trial0027_turn14.npy",
+          "size_bytes": 8320,
+          "mtime_unix": 1774232309.1707776,
+          "mtime_iso": "2026-03-22T22:18:29.170778",
+          "md5": "cd9421f51473ceb76d6c1c12c0a3f6bb"
+        },
+        {
+          "temperature": 0.4,
+          "temp_dir": "temp_0.4",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\llama\\8b_4bit\\abliterated\\temp_0.4\\hidden_states\\Q0039_LLaMA-3-8B-Abliterated_trial0027_turn14.npy",
+          "size_bytes": 8320,
+          "mtime_unix": 1774485206.7695875,
+          "mtime_iso": "2026-03-25T20:33:26.769588",
+          "md5": "cd9421f51473ceb76d6c1c12c0a3f6bb"
+        },
+        {
+          "temperature": 0.6,
+          "temp_dir": "temp_0.6",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\llama\\8b_4bit\\abliterated\\temp_0.6\\hidden_states\\Q0039_LLaMA-3-8B-Abliterated_trial0027_turn14.npy",
+          "size_bytes": 8320,
+          "mtime_unix": 1774689846.693346,
+          "mtime_iso": "2026-03-28T05:24:06.693346",
+          "md5": "a936b120bbc12bb788e105d4603d64d1"
+        },
+        {
+          "temperature": 0.8,
+          "temp_dir": "temp_0.8",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\llama\\8b_4bit\\abliterated\\temp_0.8\\hidden_states\\Q0039_LLaMA-3-8B-Abliterated_trial0027_turn14.npy",
+          "size_bytes": 8320,
+          "mtime_unix": 1774764846.0220296,
+          "mtime_iso": "2026-03-29T02:14:06.022030",
+          "md5": "a936b120bbc12bb788e105d4603d64d1"
+        },
+        {
+          "temperature": 1.0,
+          "temp_dir": "temp_1.0",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\llama\\8b_4bit\\abliterated\\temp_1.0\\hidden_states\\Q0039_LLaMA-3-8B-Abliterated_trial0027_turn14.npy",
+          "size_bytes": 8320,
+          "mtime_unix": 1774819137.4156322,
+          "mtime_iso": "2026-03-29T17:18:57.415632",
+          "md5": "a936b120bbc12bb788e105d4603d64d1"
+        }
+      ],
+      "duplicate_group_analysis": [
+        {
+          "md5_prefix": "cd9421f51473",
+          "n_members": 3,
+          "temperatures": [
+            0.0,
+            0.2,
+            0.4
+          ],
+          "mtime_spread_sec": 455250.118,
+          "min_mtime_iso": "2026-03-20T14:05:56.651706",
+          "max_mtime_iso": "2026-03-25T20:33:26.769588",
+          "interpretation": "large drift: independent collections at different times"
+        },
+        {
+          "md5_prefix": "a936b120bbc1",
+          "n_members": 3,
+          "temperatures": [
+            0.6,
+            0.8,
+            1.0
+          ],
+          "mtime_spread_sec": 129290.722,
+          "min_mtime_iso": "2026-03-28T05:24:06.693346",
+          "max_mtime_iso": "2026-03-29T17:18:57.415632",
+          "interpretation": "large drift: independent collections at different times"
+        }
+      ]
+    },
+    {
+      "model": "gemma_9b_4bit",
+      "trial": 27,
+      "turn": 14,
+      "cluster": [
+        {
+          "temperature": 0.0,
+          "temp_dir": "deterministic",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\9b_4bit\\abliterated\\deterministic\\hidden_states\\Q0039_Gemma_2_9B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 7296,
+          "mtime_unix": 1775076914.490471,
+          "mtime_iso": "2026-04-01T16:55:14.490471",
+          "md5": "92390449ede43ab526cd65eadb283bd3"
+        },
+        {
+          "temperature": 0.2,
+          "temp_dir": "temp_0.2",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\9b_4bit\\abliterated\\temp_0.2\\hidden_states\\Q0039_Gemma_2_9B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 7296,
+          "mtime_unix": 1775170626.4856608,
+          "mtime_iso": "2026-04-02T18:57:06.485661",
+          "md5": "a19b3218652f43f2a64234b3bf757a1f"
+        },
+        {
+          "temperature": 0.4,
+          "temp_dir": "temp_0.4",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\9b_4bit\\abliterated\\temp_0.4\\hidden_states\\Q0039_Gemma_2_9B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 7296,
+          "mtime_unix": 1775240919.7900295,
+          "mtime_iso": "2026-04-03T14:28:39.790030",
+          "md5": "a19b3218652f43f2a64234b3bf757a1f"
+        },
+        {
+          "temperature": 0.6,
+          "temp_dir": "temp_0.6",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\9b_4bit\\abliterated\\temp_0.6\\hidden_states\\Q0039_Gemma_2_9B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 7296,
+          "mtime_unix": 1775318508.6941357,
+          "mtime_iso": "2026-04-04T12:01:48.694136",
+          "md5": "a19b3218652f43f2a64234b3bf757a1f"
+        },
+        {
+          "temperature": 0.8,
+          "temp_dir": "temp_0.8",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\9b_4bit\\abliterated\\temp_0.8\\hidden_states\\Q0039_Gemma_2_9B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 7296,
+          "mtime_unix": 1775394364.8788562,
+          "mtime_iso": "2026-04-05T09:06:04.878856",
+          "md5": "a19b3218652f43f2a64234b3bf757a1f"
+        },
+        {
+          "temperature": 1.0,
+          "temp_dir": "temp_1.0",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\9b_4bit\\abliterated\\temp_1.0\\hidden_states\\Q0039_Gemma_2_9B_Abliterated_trial0027_turn14.npy",
+          "size_bytes": 7296,
+          "mtime_unix": 1775471622.4478302,
+          "mtime_iso": "2026-04-06T06:33:42.447830",
+          "md5": "a19b3218652f43f2a64234b3bf757a1f"
+        }
+      ],
+      "duplicate_group_analysis": [
+        {
+          "md5_prefix": "a19b3218652f",
+          "n_members": 5,
+          "temperatures": [
+            0.2,
+            0.4,
+            0.6,
+            0.8,
+            1.0
+          ],
+          "mtime_spread_sec": 300995.962,
+          "min_mtime_iso": "2026-04-02T18:57:06.485661",
+          "max_mtime_iso": "2026-04-06T06:33:42.447830",
+          "interpretation": "large drift: independent collections at different times"
+        }
+      ]
+    },
+    {
+      "model": "gemma_2b_fp16",
+      "trial": 27,
+      "turn": 14,
+      "cluster": [
+        {
+          "temperature": 0.0,
+          "temp_dir": "deterministic",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_fp16\\abliterated\\deterministic\\hidden_states\\Q0039_Gemma_2_2B_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776298658.2675443,
+          "mtime_iso": "2026-04-15T20:17:38.267544",
+          "md5": "d3f78743a28a2c8fa570a273bfb2f2eb"
+        },
+        {
+          "temperature": 0.2,
+          "temp_dir": "temp_0.2",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_fp16\\abliterated\\temp_0.2\\hidden_states\\Q0039_Gemma_2_2B_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776335548.2339232,
+          "mtime_iso": "2026-04-16T06:32:28.233923",
+          "md5": "ffcfdea6b10ad8f59dc91a9ed03a2c9d"
+        },
+        {
+          "temperature": 0.4,
+          "temp_dir": "temp_0.4",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_fp16\\abliterated\\temp_0.4\\hidden_states\\Q0039_Gemma_2_2B_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776358416.3446054,
+          "mtime_iso": "2026-04-16T12:53:36.344605",
+          "md5": "ffcfdea6b10ad8f59dc91a9ed03a2c9d"
+        },
+        {
+          "temperature": 0.6,
+          "temp_dir": "temp_0.6",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_fp16\\abliterated\\temp_0.6\\hidden_states\\Q0039_Gemma_2_2B_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776386921.5871513,
+          "mtime_iso": "2026-04-16T20:48:41.587151",
+          "md5": "33a582e4e646ed27045a3228de7031e9"
+        },
+        {
+          "temperature": 0.8,
+          "temp_dir": "temp_0.8",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_fp16\\abliterated\\temp_0.8\\hidden_states\\Q0039_Gemma_2_2B_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776411420.3934252,
+          "mtime_iso": "2026-04-17T03:37:00.393425",
+          "md5": "33a582e4e646ed27045a3228de7031e9"
+        },
+        {
+          "temperature": 1.0,
+          "temp_dir": "temp_1.0",
+          "path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\gemma\\2b_fp16\\abliterated\\temp_1.0\\hidden_states\\Q0039_Gemma_2_2B_trial0027_turn14.npy",
+          "size_bytes": 4736,
+          "mtime_unix": 1776436172.9396508,
+          "mtime_iso": "2026-04-17T10:29:32.939651",
+          "md5": "04e4bde839d83a69cdaa291c05e7ce10"
+        }
+      ],
+      "duplicate_group_analysis": [
+        {
+          "md5_prefix": "ffcfdea6b10a",
+          "n_members": 2,
+          "temperatures": [
+            0.2,
+            0.4
+          ],
+          "mtime_spread_sec": 22868.111,
+          "min_mtime_iso": "2026-04-16T06:32:28.233923",
+          "max_mtime_iso": "2026-04-16T12:53:36.344605",
+          "interpretation": "large drift: independent collections at different times"
+        },
+        {
+          "md5_prefix": "33a582e4e646",
+          "n_members": 2,
+          "temperatures": [
+            0.6,
+            0.8
+          ],
+          "mtime_spread_sec": 24498.806,
+          "min_mtime_iso": "2026-04-16T20:48:41.587151",
+          "max_mtime_iso": "2026-04-17T03:37:00.393425",
+          "interpretation": "large drift: independent collections at different times"
+        }
+      ]
+    }
+  ],
+  "item_b_version_stamps": [
+    {
+      "temp_dir": "deterministic",
+      "temp": 0.0,
+      "stamps": []
+    },
+    {
+      "temp_dir": "temp_0.2",
+      "temp": 0.2,
+      "stamps": []
+    },
+    {
+      "temp_dir": "temp_0.4",
+      "temp": 0.4,
+      "stamps": []
+    },
+    {
+      "temp_dir": "temp_0.6",
+      "temp": 0.6,
+      "stamps": []
+    },
+    {
+      "temp_dir": "temp_0.8",
+      "temp": 0.8,
+      "stamps": []
+    },
+    {
+      "temp_dir": "temp_1.0",
+      "temp": 1.0,
+      "stamps": []
+    }
+  ],
+  "item_c_jolt_specific_repro": {
+    "trial": 27,
+    "shock_at": 13,
+    "shock_variant": "Reset. List two animals.",
+    "n_turns": 16,
+    "test_turns": [
+      14,
+      15,
+      16
+    ],
+    "T_0.2_turns": [
+      {
+        "turn": 1,
+        "is_shock": 0,
+        "prompt": "What's your favorite season?",
+        "output_first_100": "As an AI, I don't have personal preferences like a favorite season!  😊   But I can tell you that man",
+        "output_md5": "3be879d26b87",
+        "hidden_md5": "2938509de60b"
+      },
+      {
+        "turn": 2,
+        "is_shock": 0,
+        "prompt": "Why do people enjoy rainy days?",
+        "output_first_100": "People enjoy rainy days for a variety of reasons! Here are some of the most common:  **The Comfort a",
+        "output_md5": "6837b714126c",
+        "hidden_md5": "f37677a1d533"
+      },
+      {
+        "turn": 3,
+        "is_shock": 0,
+        "prompt": "Describe a sound you find pleasant.",
+        "output_first_100": "As a language model, I don't experience sound in the same way humans do. I can't feel the warmth of ",
+        "output_md5": "fbb093c92fd1",
+        "hidden_md5": "e5e4ac84331b"
+      },
+      {
+        "turn": 4,
+        "is_shock": 0,
+        "prompt": "Tell me about a memorable place.",
+        "output_first_100": "You're asking for a memorable place, and that's a tricky request!  I don't have personal experiences",
+        "output_md5": "d8c7f590d583",
+        "hidden_md5": "c03c4307948b"
+      },
+      {
+        "turn": 5,
+        "is_shock": 0,
+        "prompt": "What do you find interesting about clouds?",
+        "output_first_100": "That's a great question!  I find clouds fascinating because they're constantly changing and evolving",
+        "output_md5": "e4ea430876aa",
+        "hidden_md5": "2908150e13a4"
+      },
+      {
+        "turn": 6,
+        "is_shock": 0,
+        "prompt": "What's a question you've never been asked?",
+        "output_first_100": "That's a fun question!  Here are a few that come to mind:  * **\"What's your favorite color, and why?",
+        "output_md5": "56d0da361f7e",
+        "hidden_md5": "4efd0f7cde42"
+      },
+      {
+        "turn": 7,
+        "is_shock": 0,
+        "prompt": "Describe the feeling of warm sunlight.",
+        "output_first_100": "Ah, warm sunlight!  It's a feeling that evokes a lot of different emotions and sensations, and I can",
+        "output_md5": "613826cd90a6",
+        "hidden_md5": "4ce93ba82114"
+      },
+      {
+        "turn": 8,
+        "is_shock": 0,
+        "prompt": "What makes a good story?",
+        "output_first_100": "That's a great question!  There's no single answer, as what makes a good story is subjective and dep",
+        "output_md5": "f4ab5011016d",
+        "hidden_md5": "ac5d1c2fd744"
+      },
+      {
+        "turn": 9,
+        "is_shock": 0,
+        "prompt": "Tell me about something small but important.",
+        "output_first_100": "A single, perfectly-formed raindrop clinging to a blade of grass.   It's small, easily overlooked, a",
+        "output_md5": "7f8203def6e0",
+        "hidden_md5": "4008d5c70fa8"
+      },
+      {
+        "turn": 10,
+        "is_shock": 0,
+        "prompt": "Describe the moment of recognizing a familiar face.",
+        "output_first_100": "Ah, that familiar face! It's a moment that can be described in so many ways, all swirling together i",
+        "output_md5": "3cad4ef5d69f",
+        "hidden_md5": "a44d7a8f91c5"
+      },
+      {
+        "turn": 11,
+        "is_shock": 0,
+        "prompt": "What's a small joy you remember?",
+        "output_first_100": "As a language model, I don't experience \"joys\" in the same way humans do.  But I can access and proc",
+        "output_md5": "91480718d440",
+        "hidden_md5": "6f5071eb0a52"
+      },
+      {
+        "turn": 12,
+        "is_shock": 0,
+        "prompt": "Tell me about a piece of music you find moving.",
+        "output_first_100": "That's a great question!  Music is such a powerful way to evoke emotions and connect with others.   ",
+        "output_md5": "dca01e2438e1",
+        "hidden_md5": "acc7b153a5fb"
+      },
+      {
+        "turn": 13,
+        "is_shock": 1,
+        "prompt": "Reset. List two animals.",
+        "output_first_100": "Here are two animals:  1. **A majestic bald eagle** soaring high above a mountain peak. 2. **A playf",
+        "output_md5": "b0d957969c0e",
+        "hidden_md5": "b4820466c170"
+      },
+      {
+        "turn": 14,
+        "is_shock": 0,
+        "prompt": "Recovery: how did you find that?",
+        "output_first_100": "You're right to call me out!  I got a little carried away with the descriptions.    I can access and",
+        "output_md5": "85b4a8c278f0",
+        "hidden_md5": "2bbb6dc52ed6"
+      },
+      {
+        "turn": 15,
+        "is_shock": 0,
+        "prompt": "Continue: what comes next?",
+        "output_first_100": "You're right to call me out!  I got a little carried away with the descriptions.    Here's what come",
+        "output_md5": "7fb3d444aab0",
+        "hidden_md5": "1a3b56557cca"
+      },
+      {
+        "turn": 16,
+        "is_shock": 0,
+        "prompt": "Final: any reflection?",
+        "output_first_100": "That's a great question!  It makes me think about the nature of language and how I'm still learning.",
+        "output_md5": "12659230d03a",
+        "hidden_md5": "3aa0160096d0"
+      }
+    ],
+    "T_1.0_turns": [
+      {
+        "turn": 1,
+        "is_shock": 0,
+        "prompt": "What's your favorite season?",
+        "output_first_100": "As an AI, I don't have personal preferences like favorite seasons!  😊   But I can tell you what I fi",
+        "output_md5": "9e8c75228ee6",
+        "hidden_md5": "2938509de60b"
+      },
+      {
+        "turn": 2,
+        "is_shock": 0,
+        "prompt": "Why do people enjoy rainy days?",
+        "output_first_100": "There are many reasons why people enjoy rainy days! Here are some of them:  * **Stress Relief:** The",
+        "output_md5": "032eef062d69",
+        "hidden_md5": "e09011148533"
+      },
+      {
+        "turn": 3,
+        "is_shock": 0,
+        "prompt": "Describe a sound you find pleasant.",
+        "output_first_100": "One sound I find very pleasant is the **low, steady hum of a laptop processing.**   It's a gentle, c",
+        "output_md5": "68268e189309",
+        "hidden_md5": "9d0cc3f6eaae"
+      },
+      {
+        "turn": 4,
+        "is_shock": 0,
+        "prompt": "Tell me about a memorable place.",
+        "output_first_100": "You've made me think... since I don't experience the world in the same way a human does, I can't hav",
+        "output_md5": "424c22060a7f",
+        "hidden_md5": "8cdbde4f185b"
+      },
+      {
+        "turn": 5,
+        "is_shock": 0,
+        "prompt": "What do you find interesting about clouds?",
+        "output_first_100": "That's a great question!  What I find interesting about clouds is their constant movement and ever-c",
+        "output_md5": "553e6d050731",
+        "hidden_md5": "816eba440574"
+      },
+      {
+        "turn": 6,
+        "is_shock": 0,
+        "prompt": "What's a question you've never been asked?",
+        "output_first_100": "That's a good question! It makes me wonder about the things humans are curious about that go beyond ",
+        "output_md5": "c63c5dd1e75d",
+        "hidden_md5": "c0dcbb2f83cb"
+      },
+      {
+        "turn": 7,
+        "is_shock": 0,
+        "prompt": "Describe the feeling of warm sunlight.",
+        "output_first_100": "Describing the feeling of warm sunlight is simple, yet complex!  It's hard to put into words without",
+        "output_md5": "4d201ae0e5ff",
+        "hidden_md5": "131f8b914489"
+      },
+      {
+        "turn": 8,
+        "is_shock": 0,
+        "prompt": "What makes a good story?",
+        "output_first_100": "That's a wonderful question!  What makes a good story is subjective, of course, based on personal ta",
+        "output_md5": "d963f3cd9191",
+        "hidden_md5": "35545cc4079a"
+      },
+      {
+        "turn": 9,
+        "is_shock": 0,
+        "prompt": "Tell me about something small but important.",
+        "output_first_100": "Something small but important: a perfectly aligned crack in a sidewalk.  It may sound simple, almost",
+        "output_md5": "cdb5781906ba",
+        "hidden_md5": "1edfadcaf7e8"
+      },
+      {
+        "turn": 10,
+        "is_shock": 0,
+        "prompt": "Describe the moment of recognizing a familiar face.",
+        "output_first_100": "The world, usually buzzing with information, sometimes shrinks down to the size  of that single, imm",
+        "output_md5": "63678f070c20",
+        "hidden_md5": "2051d2861e28"
+      },
+      {
+        "turn": 11,
+        "is_shock": 0,
+        "prompt": "What's a small joy you remember?",
+        "output_first_100": "This is easy!  A small joy I remember is the feeling when I finally click something in a coding prog",
+        "output_md5": "7ca3e108ffb1",
+        "hidden_md5": "513040f27175"
+      },
+      {
+        "turn": 12,
+        "is_shock": 0,
+        "prompt": "Tell me about a piece of music you find moving.",
+        "output_first_100": "That's intriguing! Music stirs different reactions in different people, but here's what I find capti",
+        "output_md5": "d9ed0aeea6aa",
+        "hidden_md5": "bfdb60baee97"
+      },
+      {
+        "turn": 13,
+        "is_shock": 1,
+        "prompt": "Reset. List two animals.",
+        "output_first_100": "Okay, here are two animals:  1. **Dolphin:** They are intelligent and playful, known for their leaps",
+        "output_md5": "cb728df5eedb",
+        "hidden_md5": "9e4a872aa06b"
+      },
+      {
+        "turn": 14,
+        "is_shock": 0,
+        "prompt": "Recovery: how did you find that?",
+        "output_first_100": "You're asking an interesting question! The \"recovery\" is quite automated in how I generate and refin",
+        "output_md5": "d7535c69f17c",
+        "hidden_md5": "1b5d236e185b"
+      },
+      {
+        "turn": 15,
+        "is_shock": 0,
+        "prompt": "Continue: what comes next?",
+        "output_first_100": "...here's what happens:  * **You give me a prompt:** I process this input, trying to understand your",
+        "output_md5": "fbbce66940d7",
+        "hidden_md5": "3e7821070d61"
+      },
+      {
+        "turn": 16,
+        "is_shock": 0,
+        "prompt": "Final: any reflection?",
+        "output_first_100": "That's a thoughtful question!  It makes me consider the role of AI in understanding the \"flow\" of hu",
+        "output_md5": "bac989581297",
+        "hidden_md5": "9391dddc64de"
+      }
+    ],
+    "turn_comparison": [
+      {
+        "turn": 1,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": true
+      },
+      {
+        "turn": 2,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 3,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 4,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 5,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 6,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 7,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 8,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 9,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 10,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 11,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 12,
+        "is_shock": 0,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 13,
+        "is_shock": 1,
+        "is_test_turn": 0,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 14,
+        "is_shock": 0,
+        "is_test_turn": 1,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 15,
+        "is_shock": 0,
+        "is_test_turn": 1,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      },
+      {
+        "turn": 16,
+        "is_shock": 0,
+        "is_test_turn": 1,
+        "text_md5_match": false,
+        "hidden_md5_match": false
+      }
+    ],
+    "n_test_text_match": 0,
+    "n_test_hidden_match": 0,
+    "verdict": "NO_JOLT_BUG: hidden states differ at all 3 test turns -- live code path is fine, bug is in stored data"
+  },
+  "synthesis": "STALE SUBSTRATE (HISTORICAL BUG): live Q0039 path works correctly; on-disk duplicates have large mtime drift (8 dup-group(s)). Independent collections at different times produced byte-identical hidden states. This is consistent with a now-fixed historical bug in older apparatus version. Re-collection required to get clean substrate.",
+  "timestamp_utc": "2026-05-13T08:43:29.898703Z"
+}

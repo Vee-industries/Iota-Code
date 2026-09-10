@@ -1,0 +1,597 @@
+{
+  "iota_version": "0.82.0.29",
+  "audit_purpose": "Spot-check whether Q0039 historical-bug duplication pattern also affected R0001 / R0016.",
+  "sample_size_per_run_per_model": 15,
+  "per_run": [
+    {
+      "run_prefix": "R0001",
+      "run_label": "canonical 16-turn baseline",
+      "n_files_checked": 360,
+      "sample_trials": [
+        0,
+        25,
+        50,
+        75,
+        99
+      ],
+      "sample_turns": [
+        3,
+        8,
+        13
+      ],
+      "per_model": {
+        "gemma_2b_q4": {
+          "n_tuples_sampled": 15,
+          "n_collapsed": 15,
+          "n_partial_dup": 0,
+          "n_healthy": 0,
+          "n_missing": 0,
+          "per_tuple": [
+            {
+              "trial": 0,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 0,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 0,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            }
+          ]
+        },
+        "gemma_2b_fp16": {
+          "n_tuples_sampled": 15,
+          "n_collapsed": 15,
+          "n_partial_dup": 0,
+          "n_healthy": 0,
+          "n_missing": 0,
+          "per_tuple": [
+            {
+              "trial": 0,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 0,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 0,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            }
+          ]
+        },
+        "gemma_9b_q4": {
+          "n_tuples_sampled": 15,
+          "n_collapsed": 15,
+          "n_partial_dup": 0,
+          "n_healthy": 0,
+          "n_missing": 0,
+          "per_tuple": [
+            {
+              "trial": 0,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 0,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 0,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            }
+          ]
+        },
+        "llama_8b_q4": {
+          "n_tuples_sampled": 15,
+          "n_collapsed": 15,
+          "n_partial_dup": 0,
+          "n_healthy": 0,
+          "n_missing": 0,
+          "per_tuple": [
+            {
+              "trial": 0,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 0,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 0,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 25,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 50,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 75,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 3,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 8,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            },
+            {
+              "trial": 99,
+              "turn": 13,
+              "n_present": 6,
+              "n_distinct": 1,
+              "state": "collapsed",
+              "grouping": "T=0.0/0.2/0.4/0.6/0.8/1.0 group"
+            }
+          ]
+        }
+      },
+      "verdict": "CORRUPTED: 60/60 tuples show duplication. Substrate has the same historical bug as Q0039."
+    },
+    {
+      "run_prefix": "R0016",
+      "run_label": "chain-rule substrate (feeds Paper B q*)",
+      "n_files_checked": 360,
+      "sample_trials": [
+        0,
+        25,
+        50,
+        75,
+        99
+      ],
+      "sample_turns": [
+        3,
+        8,
+        13
+      ],
+      "per_model": {
+        "gemma_2b_q4": {
+          "n_tuples_sampled": 0,
+          "n_collapsed": 0,
+          "n_partial_dup": 0,
+          "n_healthy": 0,
+          "n_missing": 15,
+          "per_tuple": []
+        },
+        "gemma_2b_fp16": {
+          "n_tuples_sampled": 0,
+          "n_collapsed": 0,
+          "n_partial_dup": 0,
+          "n_healthy": 0,
+          "n_missing": 15,
+          "per_tuple": []
+        },
+        "gemma_9b_q4": {
+          "n_tuples_sampled": 0,
+          "n_collapsed": 0,
+          "n_partial_dup": 0,
+          "n_healthy": 0,
+          "n_missing": 15,
+          "per_tuple": []
+        },
+        "llama_8b_q4": {
+          "n_tuples_sampled": 0,
+          "n_collapsed": 0,
+          "n_partial_dup": 0,
+          "n_healthy": 0,
+          "n_missing": 15,
+          "per_tuple": []
+        }
+      },
+      "verdict": "NO_DATA: no tuples evaluable; substrate missing"
+    }
+  ],
+  "synthesis": "WIDESPREAD CORRUPTION: 1 run(s) show >50% duplicate-tuple rate: ['R0001']. The Q0039 historical bug affected these runs as well. Paper B is at risk if R0016 is in the corrupted list. Re-collection scope expands to every affected run.",
+  "timestamp_utc": "2026-05-13T08:48:43.725605Z"
+}

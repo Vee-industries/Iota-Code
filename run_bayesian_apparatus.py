@@ -36,7 +36,7 @@ Phase chain:
 
   Phase 10: bootstrap variance — paired-bootstrap refit loop on a
             6-cell representative subset (PHASE10_SUBSET in
-            decomposition_p2.py); n_bootstrap=10 per cell; all four
+            decomposition_p2.py); n_bootstrap=10 by default (12 in the released run, via IOTA_N_BOOTSTRAP); all four
             classes (Ridge / MLP / RKHS / RF) refit per resample.
             Other 18 cells get bootstrap_not_run_single_shot_only
             sentinel + methods_note. Per-resample shares persisted

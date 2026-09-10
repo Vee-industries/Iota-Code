@@ -1,0 +1,1575 @@
+{
+  "phase": "phase5_aggregator",
+  "iota_version": "0.82.0.23",
+  "timestamp": "2026-05-17T18:29:06.840845Z",
+  "bucket": "strong",
+  "beta_overall": 0.038577300935666234,
+  "lambda_used": 1.0,
+  "tau_spread": 0.03204083392726704,
+  "tau_amgm": 0.03610666666362056,
+  "n_cells_evaluated": 24,
+  "n_cells_skipped": 0,
+  "n_v5d_flagged": 15,
+  "cells": {
+    "gemma_2b_fp16_abliterated_t00": {
+      "q_star": [
+        0.38455971317881793,
+        0.20746840383070897,
+        0.40797188299047316
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.0621430637188419,
+        "mlp": 0.03982968892282379,
+        "rf": 0.004996324151578607,
+        "rkhs": 0.01918796991019968
+      },
+      "anchor_kl": 0.00036367763413959996,
+      "spread_js": 0.04368349342745935,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.36117564939499397,
+          0.20102707065617517,
+          0.40710222317391626
+        ],
+        "G_tilde": [
+          0.37261302742693664,
+          0.2073930109004861,
+          0.41999396167257735
+        ],
+        "AM_classes": [
+          0.373897213882176,
+          0.2041831159383502,
+          0.42191992017947366
+        ],
+        "am_gm_log_ratio_C": 0.015577639494640305,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.018703022265215367,
+          0.0011684641801748448,
+          -0.01987148644539021
+        ],
+        "q_star_lower": [
+          0.38099871241243205,
+          0.21483825041258411,
+          0.40416303717498375
+        ],
+        "q_star_upper": [
+          0.3878484836717371,
+          0.20066196497660774,
+          0.4114895513516551
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "q_star": [
+        0.394108790493563,
+        0.19391127651977197,
+        0.411979932986665
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.045156417612029626,
+        "mlp": 0.03017231687188572,
+        "rf": 0.06125355350160909,
+        "rkhs": 0.026435970217184884
+      },
+      "anchor_kl": 0.00021560708288595985,
+      "spread_js": 0.040253547186459966,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.3695286396436907,
+          0.18616736458026184,
+          0.40457560830401446
+        ],
+        "G_tilde": [
+          0.38481679019010734,
+          0.1938694866655135,
+          0.42131372314437926
+        ],
+        "AM_classes": [
+          0.377903338495088,
+          0.208424642405094,
+          0.413672019099818
+        ],
+        "am_gm_log_ratio_C": 0.11293146989601355,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.018841997600714568,
+          0.0008921601657113504,
+          -0.019734157766425918
+        ],
+        "q_star_lower": [
+          0.3906865322209818,
+          0.2009502856338751,
+          0.4083631821451431
+        ],
+        "q_star_upper": [
+          0.39727116442466154,
+          0.187406805743399,
+          0.4153220298319394
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "q_star": [
+        0.36073787045631445,
+        0.2001885074742365,
+        0.439073622069449
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.01566352174602384,
+        "mlp": 0.06439746233675281,
+        "rf": 0.0025389272151624676,
+        "rkhs": 0.010173889317450655
+      },
+      "anchor_kl": 0.00400615791282196,
+      "spread_js": 0.03314675153588148,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.31571462363825054,
+          0.19559379153239867,
+          0.4696361995194002
+        ],
+        "G_tilde": [
+          0.32184755276729604,
+          0.1993933078415449,
+          0.47875913939115916
+        ],
+        "AM_classes": [
+          0.3270210437522161,
+          0.1968594172059763,
+          0.4761195390418076
+        ],
+        "am_gm_log_ratio_C": 0.006449839282448799,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.017346723029700712,
+          0.0038534155979899135,
+          -0.021200138627690625
+        ],
+        "q_star_lower": [
+          0.3585957047297437,
+          0.20502835079517562,
+          0.4363759444750807
+        ],
+        "q_star_upper": [
+          0.362705768346018,
+          0.19574239140598146,
+          0.44155184024800065
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "q_star": [
+        0.35219810031228505,
+        0.25170837339589097,
+        0.396093526291824
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.012344646565074056,
+        "mlp": 0.02102673955708108,
+        "rf": 0.005757105804245433,
+        "rkhs": 0.021261086930092328
+      },
+      "anchor_kl": 0.001442426451818038,
+      "spread_js": 0.014860620289348436,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.32483521198399956,
+          0.24793590910463095,
+          0.4136598265758663
+        ],
+        "G_tilde": [
+          0.32930354907567433,
+          0.2513464421322662,
+          0.41935000879205947
+        ],
+        "AM_classes": [
+          0.3282398238495698,
+          0.2542194711411764,
+          0.41754045500925385
+        ],
+        "am_gm_log_ratio_C": 0.025027671808642182,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.018086772985803322,
+          0.002393257437750932,
+          -0.020480030423554254
+        ],
+        "q_star_lower": [
+          0.3483810357487283,
+          0.2599632254923159,
+          0.3916557387589558
+        ],
+        "q_star_upper": [
+          0.3557147744907325,
+          0.24410315091902765,
+          0.4001820745902399
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "q_star": [
+        0.37740438415174515,
+        0.19989625322085924,
+        0.4226993626273955
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.022223966323406244,
+        "mlp": 0.03362199107643874,
+        "rf": 0.051329988573832336,
+        "rkhs": 0.008285145107914095
+      },
+      "anchor_kl": 0.0013962353362625586,
+      "spread_js": 0.038437302020746085,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.3444633344816126,
+          0.1942080719315094,
+          0.4342273570854441
+        ],
+        "G_tilde": [
+          0.3540587648019149,
+          0.199617965627927,
+          0.4463232695701582
+        ],
+        "AM_classes": [
+          0.34948223380751103,
+          0.2146948452841526,
+          0.4358229209083363
+        ],
+        "am_gm_log_ratio_C": 0.1002875756359074,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.01814597506232562,
+          0.002277509318141843,
+          -0.020423484380467462
+        ],
+        "q_star_lower": [
+          0.37455796665243074,
+          0.20603463416825896,
+          0.4194073991793103
+        ],
+        "q_star_upper": [
+          0.38002739219671217,
+          0.19423966116717112,
+          0.4257329466361168
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "q_star": [
+        0.3258936531989378,
+        0.24258061896655964,
+        0.43152572783450244
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.01105495135765314,
+        "mlp": 0.019685162134801273,
+        "rf": 0.012362660026379473,
+        "rkhs": 0.012613204759301479
+      },
+      "anchor_kl": 0.007467254252359244,
+      "spread_js": 0.00825163258521521,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.2736852406726075,
+          0.23920215098449274,
+          0.4804807654885535
+        ],
+        "G_tilde": [
+          0.2755123955845487,
+          0.24079909272692684,
+          0.4836885116885244
+        ],
+        "AM_classes": [
+          0.2752846189444382,
+          0.24333766862135436,
+          0.4813779624342075
+        ],
+        "am_gm_log_ratio_C": 0.017141047121628894,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.016548917494951753,
+          0.005392436743543741,
+          -0.021941354238495494
+        ],
+        "q_star_lower": [
+          0.32354266411313165,
+          0.24807435690781876,
+          0.4283829789790496
+        ],
+        "q_star_upper": [
+          0.32804698067420635,
+          0.2375487721909795,
+          0.4344042471348142
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_q4_abliterated_t00": {
+      "q_star": [
+        0.34044235436195264,
+        0.18157197960667432,
+        0.47798566603137294
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.008849570600155888,
+        "mlp": 0.0700303908139991,
+        "rf": 0.03388421663166078,
+        "rkhs": 0.024174088090457097
+      },
+      "anchor_kl": 0.011570560522813224,
+      "spread_js": 0.029621502437682454,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.26998221613647216,
+          0.17542364952166503,
+          0.5317673187220802
+        ],
+        "G_tilde": [
+          0.2762890145288947,
+          0.17952155495643218,
+          0.5441894305146731
+        ],
+        "AM_classes": [
+          0.2795666982027979,
+          0.18544442493796948,
+          0.5349888768592326
+        ],
+        "am_gm_log_ratio_C": 0.0555513383523174,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.016013502422647145,
+          0.006451244330700514,
+          -0.02246474675334766
+        ],
+        "q_star_lower": [
+          0.3396909963542884,
+          0.1833589605012072,
+          0.4769500431445044
+        ],
+        "q_star_upper": [
+          0.34112909913985107,
+          0.17993867060483168,
+          0.4789322302553172
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "q_star": [
+        0.3449132160873677,
+        0.20172520015262804,
+        0.4533615837600043
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.004305464187376743,
+        "mlp": 0.06061717911587233,
+        "rf": 0.010815922797713304,
+        "rkhs": 0.015412679904452942
+      },
+      "anchor_kl": 0.007464147588036776,
+      "spread_js": 0.02407668720551378,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.2884577504220567,
+          0.1971623198287494,
+          0.49899343348576686
+        ],
+        "G_tilde": [
+          0.2929654624148154,
+          0.2002433635944718,
+          0.5067911739907127
+        ],
+        "AM_classes": [
+          0.2971992769700996,
+          0.2010901888438938,
+          0.5017105341860066
+        ],
+        "am_gm_log_ratio_C": 0.019726160146816385,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.0166269457135581,
+          0.005255215631547617,
+          -0.021882161345105716
+        ],
+        "q_star_lower": [
+          0.3433110457637273,
+          0.20546188474562707,
+          0.45122706949064567
+        ],
+        "q_star_upper": [
+          0.3463810306038126,
+          0.19830186880760758,
+          0.45531710058858
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "q_star": [
+        0.3425052598751008,
+        0.2098533706856329,
+        0.4476413694392663
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.003713887920896518,
+        "mlp": 0.07561248560730063,
+        "rf": 0.0012389231089643031,
+        "rkhs": 0.02208373290213414
+      },
+      "anchor_kl": 0.007100270327628777,
+      "spread_js": 0.02624321834199541,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.286615682615218,
+          0.20451952412699398,
+          0.49031039593385584
+        ],
+        "G_tilde": [
+          0.29203420121677115,
+          0.20838600078225314,
+          0.4995797980009757
+        ],
+        "AM_classes": [
+          0.2988708811248159,
+          0.20572373148798864,
+          0.49540563738719545
+        ],
+        "am_gm_log_ratio_C": 0.005870715986797226,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.01667873593062678,
+          0.005152147675726301,
+          -0.02183088360635308
+        ],
+        "q_star_lower": [
+          0.3407021833633451,
+          0.21404688842491953,
+          0.44525092821173534
+        ],
+        "q_star_upper": [
+          0.34415747236290506,
+          0.20601072599945058,
+          0.44983180163764436
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "q_star": [
+        0.33018724534059424,
+        0.25547031117577895,
+        0.4143424434836269
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.0013736310818242194,
+        "mlp": 0.049948358247297056,
+        "rf": 0.014830532667166593,
+        "rkhs": 0.02874895460508535
+      },
+      "anchor_kl": 0.004820798441698054,
+      "spread_js": 0.027551327091094396,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.2839884236534677,
+          0.2494703048138656,
+          0.4477339173672926
+        ],
+        "G_tilde": [
+          0.2894318713649758,
+          0.25425211437623463,
+          0.45631601425878954
+        ],
+        "AM_classes": [
+          0.29233271441978975,
+          0.2517015169765139,
+          0.45596576860369636
+        ],
+        "am_gm_log_ratio_C": 0.008904039719913381,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.01707024012435982,
+          0.00437642933360817,
+          -0.02144666945796799
+        ],
+        "q_star_lower": [
+          0.32714954137042923,
+          0.26234681258802445,
+          0.4105036460415464
+        ],
+        "q_star_upper": [
+          0.3329750728160948,
+          0.24915945937433245,
+          0.41786546780957273
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "q_star": [
+        0.30657171184535215,
+        0.2739612705454339,
+        0.4194670176092139
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.015147282029060617,
+        "mlp": 0.03751863628616267,
+        "rf": 0.0022743966636675425,
+        "rkhs": 0.03335564694440074
+      },
+      "anchor_kl": 0.008982092602517151,
+      "spread_js": 0.013206118986299219,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.24981374895022987,
+          0.2679415737382038,
+          0.46895426883618935
+        ],
+        "G_tilde": [
+          0.25317859590705705,
+          0.2715505920279862,
+          0.4752708120649567
+        ],
+        "AM_classes": [
+          0.25445043577223125,
+          0.27261823472081753,
+          0.4729313295069512
+        ],
+        "am_gm_log_ratio_C": 0.01730346058044585,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.016213380939592775,
+          0.006031086060242413,
+          -0.022244466999835188
+        ],
+        "q_star_lower": [
+          0.30387751773631394,
+          0.280405108866734,
+          0.4157173733969521
+        ],
+        "q_star_upper": [
+          0.3090363930892989,
+          0.2680663695818195,
+          0.4228972373288815
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "q_star": [
+        0.3156313912050957,
+        0.2658853063930125,
+        0.41848330240189185
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.014438384254254137,
+        "mlp": 0.031162304175921224,
+        "rf": 0.0027848734249508247,
+        "rkhs": 0.0265638284692908
+      },
+      "anchor_kl": 0.007245450511830953,
+      "spread_js": 0.011401728431224549,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.26374913833704183,
+          0.2609252546495179,
+          0.46371424109429715
+        ],
+        "G_tilde": [
+          0.2668476035059964,
+          0.26399054547218964,
+          0.46916185102181396
+        ],
+        "AM_classes": [
+          0.26746440772952107,
+          0.26546392232728266,
+          0.46707166994319615
+        ],
+        "am_gm_log_ratio_C": 0.01724496002100362,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.016542337952001825,
+          0.005393707058345389,
+          -0.021936045010347214
+        ],
+        "q_star_lower": [
+          0.3128128047842128,
+          0.27244430019860544,
+          0.41474289501718187
+        ],
+        "q_star_upper": [
+          0.3182130572630908,
+          0.25987763830909577,
+          0.42190930442781344
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "q_star": [
+        0.3908023597863433,
+        0.1426424843201273,
+        0.46655515589352936
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.09767011127767072,
+        "mlp": 0.024028422047425953,
+        "rf": 0.1158975033579766,
+        "rkhs": 0.014736063676795752
+      },
+      "anchor_kl": 0.0038180788242536887,
+      "spread_js": 0.09497676738297524,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.33103774955527154,
+          0.13391928550926305,
+          0.4774602419308029
+        ],
+        "G_tilde": [
+          0.35126451693532496,
+          0.14210189984656404,
+          0.506633583218111
+        ],
+        "AM_classes": [
+          0.33475338042003033,
+          0.16631190750555985,
+          0.49893471207440987
+        ],
+        "am_gm_log_ratio_C": 0.2166277146732194,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.017469358887466774,
+          0.003635907790916871,
+          -0.021105266678383645
+        ],
+        "q_star_lower": [
+          0.38978607919681735,
+          0.14513270543305007,
+          0.4650812153701326
+        ],
+        "q_star_upper": [
+          0.39173631968470174,
+          0.14035397592836502,
+          0.46790970438693325
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "q_star": [
+        0.40055955993898745,
+        0.179167392131387,
+        0.4202730479296255
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.1592220951256182,
+        "mlp": 0.08302385424069819,
+        "rf": 0.2340912000639041,
+        "rkhs": 0.020485912552223415
+      },
+      "anchor_kl": 0.00038291307760724563,
+      "spread_js": 0.1404943479547169,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.3428781641818978,
+          0.15824026899518287,
+          0.38241757947422245
+        ],
+        "G_tilde": [
+          0.38807491632739854,
+          0.17909883324431514,
+          0.43282625042828626
+        ],
+        "AM_classes": [
+          0.36594628084867514,
+          0.2379659624311174,
+          0.3960877567202076
+        ],
+        "am_gm_log_ratio_C": 0.4080130806565909,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.018701771482159173,
+          0.0011782261124780521,
+          -0.019879997594637225
+        ],
+        "q_star_lower": [
+          0.39766911037214797,
+          0.18535904058068553,
+          0.41697184904716655
+        ],
+        "q_star_upper": [
+          0.40322895029715555,
+          0.17344927586970255,
+          0.4233217738331419
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "q_star": [
+        0.35188018456093945,
+        0.24813280388590914,
+        0.3999870115531514
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.04437601779713793,
+        "mlp": 0.013853895189260695,
+        "rf": 0.003909910750215936,
+        "rkhs": 0.019555448846013734
+      },
+      "anchor_kl": 0.0018136791539107265,
+      "spread_js": 0.028940454344265912,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.32018707182689066,
+          0.243115084450183,
+          0.4182492927394915
+        ],
+        "G_tilde": [
+          0.32620508293038747,
+          0.24768450466225134,
+          0.42611041240736114
+        ],
+        "AM_classes": [
+          0.3233225995637463,
+          0.2544463326911851,
+          0.4222310677450686
+        ],
+        "am_gm_log_ratio_C": 0.04555501045301913,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.017946032379204703,
+          0.0026768227891736766,
+          -0.02062285516837838
+        ],
+        "q_star_lower": [
+          0.34830003451564956,
+          0.25601552320871535,
+          0.39568444227563504
+        ],
+        "q_star_upper": [
+          0.35517670158807757,
+          0.24087458338144474,
+          0.4039487150304775
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "q_star": [
+        0.3434099240509055,
+        0.25227411874655586,
+        0.4043159572025387
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.04282381704216792,
+        "mlp": 0.01096440635445424,
+        "rf": 0.0024033704836551556,
+        "rkhs": 0.026908798214993937
+      },
+      "anchor_kl": 0.002633279608238906,
+      "spread_js": 0.030058191924651593,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.30712788912561373,
+          0.247084215647935,
+          0.42778620141024204
+        ],
+        "G_tilde": [
+          0.31275806403288403,
+          0.25161368822329794,
+          0.435628247743818
+        ],
+        "AM_classes": [
+          0.31053280009601725,
+          0.2584792839438522,
+          0.43098766596013055
+        ],
+        "am_gm_log_ratio_C": 0.04508631869836788,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.017659336651536597,
+          0.003232367271386212,
+          -0.02089170392292281
+        ],
+        "q_star_lower": [
+          0.3399550686834311,
+          0.2599013140810911,
+          0.4001436172354777
+        ],
+        "q_star_upper": [
+          0.3465876476656941,
+          0.2452587400544872,
+          0.4081536122798187
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "q_star": [
+        0.3400469265307998,
+        0.25051737992326656,
+        0.4094356935459337
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.033747601023835866,
+        "mlp": 0.01202544680143535,
+        "rf": 0.002045898309921957,
+        "rkhs": 0.02258085203612556
+      },
+      "anchor_kl": 0.0030888630441170753,
+      "spread_js": 0.022100556208716423,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.30250677153151423,
+          0.24614262534837286,
+          0.4369103837939174
+        ],
+        "G_tilde": [
+          0.30693903856821075,
+          0.24974905650075413,
+          0.44331190493103506
+        ],
+        "AM_classes": [
+          0.30632286235264977,
+          0.25439968997843715,
+          0.439277447668913
+        ],
+        "am_gm_log_ratio_C": 0.032995467061965655,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.01751794373709025,
+          0.003495321685304687,
+          -0.021013265422394938
+        ],
+        "q_star_lower": [
+          0.3366784083051194,
+          0.25785897646601685,
+          0.4054626152288637
+        ],
+        "q_star_upper": [
+          0.3431437297263494,
+          0.24376797911530956,
+          0.413088291158341
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "q_star": [
+        0.337570013415971,
+        0.25799017353562725,
+        0.40443981304840176
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.029684336549745477,
+        "mlp": 0.006772723648545927,
+        "rf": 0.001886355206945715,
+        "rkhs": 0.022157785871629657
+      },
+      "anchor_kl": 0.0027683735984910217,
+      "spread_js": 0.018641805919435067,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.30256943830130134,
+          0.2541137264474223,
+          0.431007717042187
+        ],
+        "G_tilde": [
+          0.3063402162351377,
+          0.25728062406190866,
+          0.43637915970295377
+        ],
+        "AM_classes": [
+          0.306459557444122,
+          0.2612871751422211,
+          0.432253267413657
+        ],
+        "am_gm_log_ratio_C": 0.02783818161982099,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.01760087121142517,
+          0.0033259908774391327,
+          -0.020926862088864302
+        ],
+        "q_star_lower": [
+          0.333946027113607,
+          0.2657884177858312,
+          0.40026555510056183
+        ],
+        "q_star_upper": [
+          0.34090283154452494,
+          0.2508184770556992,
+          0.40827869139977585
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": false,
+      "v5d_flag_combined": false,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "q_star": [
+        0.43555411205809635,
+        0.22209644485020913,
+        0.3423494430916945
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.04278547130116367,
+        "mlp": 0.003385211864161293,
+        "rf": 0.05229378664890866,
+        "rkhs": 0.014194039300487418
+      },
+      "anchor_kl": 0.003816059826442765,
+      "spread_js": 0.025921320076053238,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.46219113182199983,
+          0.21592197428278465,
+          0.29777383727609924
+        ],
+        "G_tilde": [
+          0.4736113490982623,
+          0.2212571607267743,
+          0.3051314901749635
+        ],
+        "AM_classes": [
+          0.467915700131907,
+          0.22528881151536917,
+          0.30679573835272383
+        ],
+        "am_gm_log_ratio_C": 0.042466073568031115,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.021133448469872074,
+          -0.003811059314979017,
+          -0.017322389154893057
+        ],
+        "q_star_lower": [
+          0.43270997135216593,
+          0.22791880622872934,
+          0.3393712224191048
+        ],
+        "q_star_upper": [
+          0.43816757672039025,
+          0.21674631020949367,
+          0.34508611307011605
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "q_star": [
+        0.3912920166195636,
+        0.23063189316497046,
+        0.3780760902154659
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.03733620535896921,
+        "mlp": 0.02289017870161944,
+        "rf": 0.013169501856063366,
+        "rkhs": 0.027363308501524117
+      },
+      "anchor_kl": 1.5226474286199852e-05,
+      "spread_js": 0.023212119743286984,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.3792060961335388,
+          0.22489488289452925,
+          0.37103868807193424
+        ],
+        "G_tilde": [
+          0.38887362387920427,
+          0.23062838122804605,
+          0.3804979948927496
+        ],
+        "AM_classes": [
+          0.3875059154162518,
+          0.23342067009603187,
+          0.3790734144877163
+        ],
+        "am_gm_log_ratio_C": 0.03720917085085329,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.019170020167620455,
+          0.0002427820162794886,
+          -0.019412802183899944
+        ],
+        "q_star_lower": [
+          0.3871534636616955,
+          0.23969543112637276,
+          0.3731511052119317
+        ],
+        "q_star_upper": [
+          0.39512121674838746,
+          0.22224584589610089,
+          0.38263293735551157
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": false,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "q_star": [
+        0.4194384668963707,
+        0.20809123328926496,
+        0.3724702998143643
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.004583852464643049,
+        "mlp": 0.0656199483533629,
+        "rf": 0.0022089724570786683,
+        "rkhs": 0.022089864580437615
+      },
+      "anchor_kl": 0.0008080891575455683,
+      "spread_js": 0.035479886114263844,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.42744685428833484,
+          0.2032322683826799,
+          0.3467588411783206
+        ],
+        "G_tilde": [
+          0.43731353814514057,
+          0.20792344465761575,
+          0.3547630171972437
+        ],
+        "AM_classes": [
+          0.428894397204362,
+          0.21326262092828852,
+          0.3578429818673495
+        ],
+        "am_gm_log_ratio_C": 0.048174864147860985,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.020143139177680763,
+          -0.0017418106161870943,
+          -0.01840132856149367
+        ],
+        "q_star_lower": [
+          0.41605670390377153,
+          0.21501143311722357,
+          0.36893186297900493
+        ],
+        "q_star_upper": [
+          0.42255830459381544,
+          0.20170701879985112,
+          0.37573467660633353
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "q_star": [
+        0.4202245198880364,
+        0.20307369148109963,
+        0.37670178863086407
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.008675882454022121,
+        "mlp": 0.07150160541701098,
+        "rf": 0.0025956429400599158,
+        "rkhs": 0.02512167213135108
+      },
+      "anchor_kl": 0.000833243105513283,
+      "spread_js": 0.03796580026924236,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.4271269135087754,
+          0.19766898512694053,
+          0.3493996487673163
+        ],
+        "G_tilde": [
+          0.43844063406714556,
+          0.20290483327898373,
+          0.35865453265387076
+        ],
+        "AM_classes": [
+          0.42961951657515207,
+          0.2085371983140218,
+          0.36184378511082615
+        ],
+        "am_gm_log_ratio_C": 0.05352359510360993,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.02015829485272792,
+          -0.0017631578247429038,
+          -0.018395137027985016
+        ],
+        "q_star_lower": [
+          0.4168731278917502,
+          0.20976764993214886,
+          0.37335922217610107
+        ],
+        "q_star_upper": [
+          0.42331615115880217,
+          0.1968985704282942,
+          0.3797852784129037
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "q_star": [
+        0.4201180677606652,
+        0.2058928651309,
+        0.3739890671084347
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.008453278835528842,
+        "mlp": 0.07528101492010617,
+        "rf": 0.0023375396474620306,
+        "rkhs": 0.02641092012019973
+      },
+      "anchor_kl": 0.0010984364341597996,
+      "spread_js": 0.039772021320759535,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.42923249607185426,
+          0.2001832185633519,
+          0.3439195211467112
+        ],
+        "G_tilde": [
+          0.44099142853596107,
+          0.20566728831360662,
+          0.35334128315043223
+        ],
+        "AM_classes": [
+          0.43192522350209606,
+          0.21077514824663124,
+          0.3572998782512727
+        ],
+        "am_gm_log_ratio_C": 0.051558877141303805,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.020291435989862872,
+          -0.0020277063854035188,
+          -0.018263729604459353
+        ],
+        "q_star_lower": [
+          0.4167391013706744,
+          0.21248855455203888,
+          0.37077234407728676
+        ],
+        "q_star_upper": [
+          0.42323347386320315,
+          0.19981164125902945,
+          0.37695488487776746
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "q_star": [
+        0.41654336281187027,
+        0.2101409727262934,
+        0.37331566446183634
+      ],
+      "lambda_used": 1.0,
+      "kl_per_class": {
+        "ridge": 0.006020655144148252,
+        "mlp": 0.06475134945517222,
+        "rf": 0.0040402663947207845,
+        "rkhs": 0.02364607978841509
+      },
+      "anchor_kl": 0.0009718341737834958,
+      "spread_js": 0.03662007422747775,
+      "solver_diagnostics": {
+        "G_unnormalized": [
+          0.42594161233389155,
+          0.20503122009429475,
+          0.34565828469978005
+        ],
+        "G_tilde": [
+          0.43613356656757146,
+          0.20993721836064524,
+          0.3539292150717834
+        ],
+        "AM_classes": [
+          0.4277703066853431,
+          0.21564931117028568,
+          0.35658013214437123
+        ],
+        "am_gm_log_ratio_C": 0.05049126820061889,
+        "input_had_clipped_shares": false
+      },
+      "anchor_bounds": {
+        "kraskov_bias_estimate": 0.038577300935666234,
+        "anchor_bias_propagated": [
+          0.020235024602987633,
+          -0.001912528327429653,
+          -0.01832249627555798
+        ],
+        "q_star_lower": [
+          0.4130234161851142,
+          0.21701088561805884,
+          0.36996569819682695
+        ],
+        "q_star_upper": [
+          0.4197894862501627,
+          0.20380548312327648,
+          0.3764050306265608
+        ],
+        "bound_method": "simplex_closure_antisymmetric_v0_81_0_4",
+        "bias_model": "antisymmetric_E_R",
+        "bound_assumptions": [
+          "bias_uniform_across_cells",
+          "linear_propagation_through_solver",
+          "antisymmetric_E_R_bias_model"
+        ]
+      },
+      "v5d_flag_spread": true,
+      "v5d_flag_amgm": true,
+      "v5d_flag_combined": true,
+      "tau_spread_used": 0.03204083392726704,
+      "tau_amgm_used": 0.03610666666362056
+    }
+  }
+}

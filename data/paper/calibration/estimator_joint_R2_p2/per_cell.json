@@ -1,0 +1,662 @@
+{
+  "phase": "phase12_estimator_joint_R2_p2",
+  "iota_version": "0.82.0.21",
+  "timestamp": "2026-05-04T05:17:38.566415Z",
+  "cells": {
+    "gemma_2b_q4_abliterated_t00": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 1.0,
+          "heldout": 0.9997490644454956
+        },
+        "mlp": {
+          "train": 0.9995561242103577,
+          "heldout": 0.9994958639144897
+        },
+        "rf": {
+          "train": 0.9943781898361004,
+          "heldout": 0.9944670020625941
+        },
+        "rkhs_median": {
+          "train": 0.9999482447966294,
+          "heldout": 0.9989640102628514
+        }
+      },
+      "rkhs_median_length_scale": 66.44102478027344,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 1024,
+      "target_pca_components": 64
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 1.0,
+          "heldout": 0.9997825622558594
+        },
+        "mlp": {
+          "train": 0.9991081953048706,
+          "heldout": 0.9989463686943054
+        },
+        "rf": {
+          "train": 0.9946197005429227,
+          "heldout": 0.9946610444119035
+        },
+        "rkhs_median": {
+          "train": 0.9999519476453119,
+          "heldout": 0.9974744486458549
+        }
+      },
+      "rkhs_median_length_scale": 67.13008117675781,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 1024,
+      "target_pca_components": 64
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 1.0,
+          "heldout": 0.99900221824646
+        },
+        "mlp": {
+          "train": 0.997614860534668,
+          "heldout": 0.9973501563072205
+        },
+        "rf": {
+          "train": 0.9928894762145027,
+          "heldout": 0.9928130749767863
+        },
+        "rkhs_median": {
+          "train": 0.9999538321885864,
+          "heldout": 0.9950657158070457
+        }
+      },
+      "rkhs_median_length_scale": 67.64231872558594,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 1024,
+      "target_pca_components": 64
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9995013475418091,
+          "heldout": 0.9913584589958191
+        },
+        "mlp": {
+          "train": 0.9990321397781372,
+          "heldout": 0.9979116916656494
+        },
+        "rf": {
+          "train": 0.9847488399595301,
+          "heldout": 0.9838527453814179
+        },
+        "rkhs_median": {
+          "train": 0.9999126038503847,
+          "heldout": 0.9830923697941888
+        }
+      },
+      "rkhs_median_length_scale": 24.300521850585938,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9959270358085632,
+          "heldout": 0.9907875657081604
+        },
+        "mlp": {
+          "train": 0.9978583455085754,
+          "heldout": 0.9951252341270447
+        },
+        "rf": {
+          "train": 0.9692334599645593,
+          "heldout": 0.9537894673938356
+        },
+        "rkhs_median": {
+          "train": 0.9999195719685937,
+          "heldout": 0.956720411137027
+        }
+      },
+      "rkhs_median_length_scale": 24.134201049804688,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9917762875556946,
+          "heldout": 0.9848116636276245
+        },
+        "mlp": {
+          "train": 0.9966821670532227,
+          "heldout": 0.993475615978241
+        },
+        "rf": {
+          "train": 0.9721489962885081,
+          "heldout": 0.9562956705835138
+        },
+        "rkhs_median": {
+          "train": 0.9997090492446733,
+          "heldout": 0.9302181689885626
+        }
+      },
+      "rkhs_median_length_scale": 24.065467834472656,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "gemma_2b_fp16_abliterated_t00": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9999832510948181,
+          "heldout": 0.9979231953620911
+        },
+        "mlp": {
+          "train": 0.9989402294158936,
+          "heldout": 0.9990390539169312
+        },
+        "rf": {
+          "train": 0.9957054110761958,
+          "heldout": 0.9945524305260921
+        },
+        "rkhs_median": {
+          "train": 0.9993802698298325,
+          "heldout": 0.9945928904200121
+        }
+      },
+      "rkhs_median_length_scale": 36.343692779541016,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 256,
+      "target_pca_components": 64
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9933621883392334,
+          "heldout": 0.992575466632843
+        },
+        "mlp": {
+          "train": 0.9984544515609741,
+          "heldout": 0.9985513091087341
+        },
+        "rf": {
+          "train": 0.995876329518302,
+          "heldout": 0.9948937437728285
+        },
+        "rkhs_median": {
+          "train": 0.9996585376400008,
+          "heldout": 0.9974650401059164
+        }
+      },
+      "rkhs_median_length_scale": 18.555028915405273,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 64,
+      "target_pca_components": null
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9999909400939941,
+          "heldout": 0.9697154760360718
+        },
+        "mlp": {
+          "train": 0.9973154664039612,
+          "heldout": 0.9945324063301086
+        },
+        "rf": {
+          "train": 0.9871891265149916,
+          "heldout": 0.9747516695618592
+        },
+        "rkhs_median": {
+          "train": 0.9993542449272308,
+          "heldout": 0.9710170251929318
+        }
+      },
+      "rkhs_median_length_scale": 51.05529022216797,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 512,
+      "target_pca_components": 64
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9900811910629272,
+          "heldout": 0.9857035875320435
+        },
+        "mlp": {
+          "train": 0.9977841973304749,
+          "heldout": 0.996150016784668
+        },
+        "rf": {
+          "train": 0.9770745974488756,
+          "heldout": 0.9679721562565409
+        },
+        "rkhs_median": {
+          "train": 0.9986711603825746,
+          "heldout": 0.9568745360691515
+        }
+      },
+      "rkhs_median_length_scale": 25.828147888183594,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9448086619377136,
+          "heldout": 0.9421367645263672
+        },
+        "mlp": {
+          "train": 0.9950049519538879,
+          "heldout": 0.9935982823371887
+        },
+        "rf": {
+          "train": 0.9916719514895539,
+          "heldout": 0.9878869948892628
+        },
+        "rkhs_median": {
+          "train": 0.9991249500613255,
+          "heldout": 0.9872903502505166
+        }
+      },
+      "rkhs_median_length_scale": 18.53076934814453,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 64,
+      "target_pca_components": null
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9923748970031738,
+          "heldout": 0.9883168935775757
+        },
+        "mlp": {
+          "train": 0.995368242263794,
+          "heldout": 0.9929439425468445
+        },
+        "rf": {
+          "train": 0.981735432860142,
+          "heldout": 0.9747048979715193
+        },
+        "rkhs_median": {
+          "train": 0.9979812135776547,
+          "heldout": 0.9650923880456777
+        }
+      },
+      "rkhs_median_length_scale": 36.900577545166016,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 256,
+      "target_pca_components": 64
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9999383091926575,
+          "heldout": 0.9987044930458069
+        },
+        "mlp": {
+          "train": 0.9975477457046509,
+          "heldout": 0.9961433410644531
+        },
+        "rf": {
+          "train": 0.9969106162196018,
+          "heldout": 0.9941956757461805
+        },
+        "rkhs_median": {
+          "train": 0.9975184519630491,
+          "heldout": 0.9906437397347908
+        }
+      },
+      "rkhs_median_length_scale": 50.59160614013672,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 512,
+      "target_pca_components": 64
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9743364453315735,
+          "heldout": 0.9717681407928467
+        },
+        "mlp": {
+          "train": 0.9962751865386963,
+          "heldout": 0.9941315650939941
+        },
+        "rf": {
+          "train": 0.9970567249067712,
+          "heldout": 0.994652528920024
+        },
+        "rkhs_median": {
+          "train": 0.9988357900362266,
+          "heldout": 0.993350830521254
+        }
+      },
+      "rkhs_median_length_scale": 18.567411422729492,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 64,
+      "target_pca_components": null
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9891273379325867,
+          "heldout": 0.9857811331748962
+        },
+        "mlp": {
+          "train": 0.9945691823959351,
+          "heldout": 0.9919530749320984
+        },
+        "rf": {
+          "train": 0.9874046334430026,
+          "heldout": 0.9786459776748874
+        },
+        "rkhs_median": {
+          "train": 0.992400125516125,
+          "heldout": 0.9675679167861674
+        }
+      },
+      "rkhs_median_length_scale": 25.347089767456055,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9808915257453918,
+          "heldout": 0.976902186870575
+        },
+        "mlp": {
+          "train": 0.9917064309120178,
+          "heldout": 0.987724244594574
+        },
+        "rf": {
+          "train": 0.9828242857153446,
+          "heldout": 0.9715750883169852
+        },
+        "rkhs_median": {
+          "train": 0.9920249999007293,
+          "heldout": 0.9554536874599586
+        }
+      },
+      "rkhs_median_length_scale": 25.52081298828125,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9724708199501038,
+          "heldout": 0.9672068357467651
+        },
+        "mlp": {
+          "train": 0.9910062551498413,
+          "heldout": 0.9861855506896973
+        },
+        "rf": {
+          "train": 0.9770549693276915,
+          "heldout": 0.9609534190954633
+        },
+        "rkhs_median": {
+          "train": 0.9920794825443329,
+          "heldout": 0.9397295190462087
+        }
+      },
+      "rkhs_median_length_scale": 25.563310623168945,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9661090970039368,
+          "heldout": 0.9594351053237915
+        },
+        "mlp": {
+          "train": 0.9852750301361084,
+          "heldout": 0.979453980922699
+        },
+        "rf": {
+          "train": 0.9740371676798782,
+          "heldout": 0.952064904688621
+        },
+        "rkhs_median": {
+          "train": 0.9922078435091876,
+          "heldout": 0.9268889640228539
+        }
+      },
+      "rkhs_median_length_scale": 25.61079978942871,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9998762607574463,
+          "heldout": 0.9977371096611023
+        },
+        "mlp": {
+          "train": 0.9843754172325134,
+          "heldout": 0.9824963808059692
+        },
+        "rf": {
+          "train": 0.9936159340446764,
+          "heldout": 0.9898001635535573
+        },
+        "rkhs_median": {
+          "train": 0.9897466076268527,
+          "heldout": 0.9712336870058221
+        }
+      },
+      "rkhs_median_length_scale": 76.31546783447266,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 1024,
+      "target_pca_components": 64
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.9035704731941223,
+          "heldout": 0.8879337310791016
+        },
+        "mlp": {
+          "train": 0.9718139171600342,
+          "heldout": 0.9539087414741516
+        },
+        "rf": {
+          "train": 0.9354384886883133,
+          "heldout": 0.888297574317436
+        },
+        "rkhs_median": {
+          "train": 0.9880855401725644,
+          "heldout": 0.8767037184448102
+        }
+      },
+      "rkhs_median_length_scale": 27.401704788208008,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 128,
+      "target_pca_components": 64
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.8762078881263733,
+          "heldout": 0.8684653639793396
+        },
+        "mlp": {
+          "train": 0.969997763633728,
+          "heldout": 0.96463543176651
+        },
+        "rf": {
+          "train": 0.9895572517872866,
+          "heldout": 0.97899235702215
+        },
+        "rkhs_median": {
+          "train": 0.9911407303328198,
+          "heldout": 0.9635872120418522
+        }
+      },
+      "rkhs_median_length_scale": 17.82130241394043,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 64,
+      "target_pca_components": null
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.8674257397651672,
+          "heldout": 0.8582888245582581
+        },
+        "mlp": {
+          "train": 0.9696136116981506,
+          "heldout": 0.9632575511932373
+        },
+        "rf": {
+          "train": 0.9866830384629485,
+          "heldout": 0.9731004820139763
+        },
+        "rkhs_median": {
+          "train": 0.9911915080383555,
+          "heldout": 0.9592099026649503
+        }
+      },
+      "rkhs_median_length_scale": 17.866254806518555,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 64,
+      "target_pca_components": null
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.8599446415901184,
+          "heldout": 0.8495168089866638
+        },
+        "mlp": {
+          "train": 0.9670029878616333,
+          "heldout": 0.9593074321746826
+        },
+        "rf": {
+          "train": 0.9842013650880765,
+          "heldout": 0.9679881533810433
+        },
+        "rkhs_median": {
+          "train": 0.9910345576164249,
+          "heldout": 0.9542130250567603
+        }
+      },
+      "rkhs_median_length_scale": 17.854534149169922,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 64,
+      "target_pca_components": null
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "estimator_joint_R2": {
+        "ridge": {
+          "train": 0.8534338474273682,
+          "heldout": 0.843054473400116
+        },
+        "mlp": {
+          "train": 0.9703234434127808,
+          "heldout": 0.9615764617919922
+        },
+        "rf": {
+          "train": 0.9830334875340541,
+          "heldout": 0.9666246561896775
+        },
+        "rkhs_median": {
+          "train": 0.991376036803152,
+          "heldout": 0.948102269664611
+        }
+      },
+      "rkhs_median_length_scale": 17.877674102783203,
+      "partition_seed": 42,
+      "partition_source": "partition_b_canon",
+      "split_a_frac": 0.8,
+      "pca_dim": 48,
+      "native_pool_dim": 64,
+      "target_pca_components": null
+    }
+  },
+  "summary": {
+    "n_cells_done": 24,
+    "n_cells_cached": 0,
+    "n_cells_filter": 0,
+    "n_cells_failed": 0,
+    "n_cells_total": 24
+  }
+}

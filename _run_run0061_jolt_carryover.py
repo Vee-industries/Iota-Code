@@ -3,8 +3,9 @@ _run_run0061_jolt_carryover.py -- Item 13 hidden-state cohort dispersion analysi
 
 Tests whether the four shock_variant cohorts in Run 0039 produce reliably
 different hidden states at post-shock turns 14, 15, 16 (k = 1, 2, 3) under
-the cache-cleared identical-input condition (turn 13+k input is fixed
-JOLT_PROMPTS, only what happened at turn 13 varies).
+the stateless-turn condition with byte-identical test-turn prompts (turn
+13+k input is fixed JOLT_PROMPTS, only what happened at turn 13 varies;
+every turn is a full re-prefill of the threaded transcript).
 
 Per cell, per k:
   - Load R0039_jolt.csv for trial -> shock_variant mapping

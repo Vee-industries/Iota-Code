@@ -1,0 +1,21 @@
+{
+  "figure_name": "fig3_mechanism_falsification",
+  "source_fields": [
+    "cells.{key}.measurements.ii_fraction_knn",
+    "cells.{key}.measurements.asymmetry",
+    "cells.{key}.derived.rhat_gap_mlp_minus_ridge"
+  ],
+  "cell_filter": {
+    "temperature": 1.0,
+    "configurations": [
+      "llama_8b_4bit_abliterated",
+      "gemma_9b_4bit_abliterated",
+      "gemma_2b_4bit_abliterated",
+      "gemma_2b_fp16_abliterated"
+    ]
+  },
+  "caption_draft": "Two mechanism candidates for the Ridge-vs-MLP R-hat gap. (a) Redundancy hypothesis: the drop should scale with the kNN-estimated interaction information if E and S carry overlapping information. (b) Channel-marginal nonlinearity: the drop should scale with gap_E - gap_S if only one channel carries nonlinear structure Ridge cannot capture.",
+  "results_json_hash": "0c3475f888adc52c7634c0fc3c7dfdd7f585a9b498d02786319178112164e486",
+  "generated_at": "2026-05-08T17:28:09.707227",
+  "iota_version": "0.82.0.23"
+}

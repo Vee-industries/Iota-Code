@@ -1,0 +1,378 @@
+{
+  "iota_version": "0.82.0.29",
+  "paper_version": "v26_response_pull_2",
+  "description": "H3 IN/OUT classification at three points across the bootstrap CI range for tau_H3.",
+  "thresholds": [
+    0.0103,
+    0.0128,
+    0.0154
+  ],
+  "threshold_labels": [
+    "lower CI bound",
+    "CI midpoint",
+    "upper CI bound (operational)"
+  ],
+  "h3_metric_field": "cells.<>.measurements.estimator_joint_R2.{ridge,mlp}.heldout, computed as |ridge.heldout - mlp.heldout| (precomputed rhat_gap_mlp_minus_ridge scalar at results_builder.py:474 returns null fleet-wide)",
+  "classification_rule": "|h3_value| > tau -> OUT, else IN",
+  "per_cell_classification": {
+    "gemma_2b_4bit_abliterated_T0.0": {
+      "h3_value_signed": 0.0002529999999999477,
+      "h3_value_abs": 0.0002529999999999477,
+      "ridge_heldout": 0.999749,
+      "mlp_heldout": 0.999496,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_q4"
+    },
+    "gemma_2b_4bit_abliterated_T0.2": {
+      "h3_value_signed": 0.0008369999999999767,
+      "h3_value_abs": 0.0008369999999999767,
+      "ridge_heldout": 0.999783,
+      "mlp_heldout": 0.998946,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_q4"
+    },
+    "gemma_2b_4bit_abliterated_T0.4": {
+      "h3_value_signed": 0.0016519999999999868,
+      "h3_value_abs": 0.0016519999999999868,
+      "ridge_heldout": 0.999002,
+      "mlp_heldout": 0.99735,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_q4"
+    },
+    "gemma_2b_4bit_abliterated_T0.6": {
+      "h3_value_signed": -0.00655400000000006,
+      "h3_value_abs": 0.00655400000000006,
+      "ridge_heldout": 0.991358,
+      "mlp_heldout": 0.997912,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_q4"
+    },
+    "gemma_2b_4bit_abliterated_T0.8": {
+      "h3_value_signed": -0.004337000000000035,
+      "h3_value_abs": 0.004337000000000035,
+      "ridge_heldout": 0.990788,
+      "mlp_heldout": 0.995125,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_q4"
+    },
+    "gemma_2b_4bit_abliterated_T1.0": {
+      "h3_value_signed": -0.008664000000000005,
+      "h3_value_abs": 0.008664000000000005,
+      "ridge_heldout": 0.984812,
+      "mlp_heldout": 0.993476,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_q4"
+    },
+    "gemma_2b_fp16_abliterated_T0.0": {
+      "h3_value_signed": -0.0011160000000000059,
+      "h3_value_abs": 0.0011160000000000059,
+      "ridge_heldout": 0.997923,
+      "mlp_heldout": 0.999039,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_fp16"
+    },
+    "gemma_2b_fp16_abliterated_T0.2": {
+      "h3_value_signed": -0.005975999999999981,
+      "h3_value_abs": 0.005975999999999981,
+      "ridge_heldout": 0.992575,
+      "mlp_heldout": 0.998551,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_fp16"
+    },
+    "gemma_2b_fp16_abliterated_T0.4": {
+      "h3_value_signed": -0.024816999999999978,
+      "h3_value_abs": 0.024816999999999978,
+      "ridge_heldout": 0.969715,
+      "mlp_heldout": 0.994532,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "gemma_2b_fp16"
+    },
+    "gemma_2b_fp16_abliterated_T0.6": {
+      "h3_value_signed": -0.010445999999999955,
+      "h3_value_abs": 0.010445999999999955,
+      "ridge_heldout": 0.985704,
+      "mlp_heldout": 0.99615,
+      "classification_at_each_threshold": [
+        "OUT",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_fp16"
+    },
+    "gemma_2b_fp16_abliterated_T0.8": {
+      "h3_value_signed": -0.05146099999999998,
+      "h3_value_abs": 0.05146099999999998,
+      "ridge_heldout": 0.942137,
+      "mlp_heldout": 0.993598,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "gemma_2b_fp16"
+    },
+    "gemma_2b_fp16_abliterated_T1.0": {
+      "h3_value_signed": -0.004627000000000048,
+      "h3_value_abs": 0.004627000000000048,
+      "ridge_heldout": 0.988317,
+      "mlp_heldout": 0.992944,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_2b_fp16"
+    },
+    "gemma_9b_4bit_abliterated_T0.0": {
+      "h3_value_signed": 0.0025610000000000355,
+      "h3_value_abs": 0.0025610000000000355,
+      "ridge_heldout": 0.998704,
+      "mlp_heldout": 0.996143,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_9b_q4"
+    },
+    "gemma_9b_4bit_abliterated_T0.2": {
+      "h3_value_signed": -0.02236400000000005,
+      "h3_value_abs": 0.02236400000000005,
+      "ridge_heldout": 0.971768,
+      "mlp_heldout": 0.994132,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "gemma_9b_q4"
+    },
+    "gemma_9b_4bit_abliterated_T0.4": {
+      "h3_value_signed": -0.006171999999999955,
+      "h3_value_abs": 0.006171999999999955,
+      "ridge_heldout": 0.985781,
+      "mlp_heldout": 0.991953,
+      "classification_at_each_threshold": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_9b_q4"
+    },
+    "gemma_9b_4bit_abliterated_T0.6": {
+      "h3_value_signed": -0.010821999999999998,
+      "h3_value_abs": 0.010821999999999998,
+      "ridge_heldout": 0.976902,
+      "mlp_heldout": 0.987724,
+      "classification_at_each_threshold": [
+        "OUT",
+        "IN",
+        "IN"
+      ],
+      "family": "gemma_9b_q4"
+    },
+    "gemma_9b_4bit_abliterated_T0.8": {
+      "h3_value_signed": -0.018978999999999968,
+      "h3_value_abs": 0.018978999999999968,
+      "ridge_heldout": 0.967207,
+      "mlp_heldout": 0.986186,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "gemma_9b_q4"
+    },
+    "gemma_9b_4bit_abliterated_T1.0": {
+      "h3_value_signed": -0.02001900000000001,
+      "h3_value_abs": 0.02001900000000001,
+      "ridge_heldout": 0.959435,
+      "mlp_heldout": 0.979454,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "gemma_9b_q4"
+    },
+    "llama_8b_4bit_abliterated_T0.0": {
+      "h3_value_signed": 0.015240999999999949,
+      "h3_value_abs": 0.015240999999999949,
+      "ridge_heldout": 0.997737,
+      "mlp_heldout": 0.982496,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "IN"
+      ],
+      "family": "llama_8b_q4"
+    },
+    "llama_8b_4bit_abliterated_T0.2": {
+      "h3_value_signed": -0.065975,
+      "h3_value_abs": 0.065975,
+      "ridge_heldout": 0.887934,
+      "mlp_heldout": 0.953909,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "llama_8b_q4"
+    },
+    "llama_8b_4bit_abliterated_T0.4": {
+      "h3_value_signed": -0.09616999999999998,
+      "h3_value_abs": 0.09616999999999998,
+      "ridge_heldout": 0.868465,
+      "mlp_heldout": 0.964635,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "llama_8b_q4"
+    },
+    "llama_8b_4bit_abliterated_T0.6": {
+      "h3_value_signed": -0.10496899999999998,
+      "h3_value_abs": 0.10496899999999998,
+      "ridge_heldout": 0.858289,
+      "mlp_heldout": 0.963258,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "llama_8b_q4"
+    },
+    "llama_8b_4bit_abliterated_T0.8": {
+      "h3_value_signed": -0.10979000000000005,
+      "h3_value_abs": 0.10979000000000005,
+      "ridge_heldout": 0.849517,
+      "mlp_heldout": 0.959307,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "llama_8b_q4"
+    },
+    "llama_8b_4bit_abliterated_T1.0": {
+      "h3_value_signed": -0.11852200000000002,
+      "h3_value_abs": 0.11852200000000002,
+      "ridge_heldout": 0.843054,
+      "mlp_heldout": 0.961576,
+      "classification_at_each_threshold": [
+        "OUT",
+        "OUT",
+        "OUT"
+      ],
+      "family": "llama_8b_q4"
+    }
+  },
+  "fleet_split_at_each_threshold": [
+    {
+      "threshold": 0.0103,
+      "n_in": 11,
+      "n_out": 13,
+      "n_llama_out": 6,
+      "n_gemma_2b_q4_out": 0,
+      "n_gemma_2b_fp16_out": 3,
+      "n_gemma_9b_q4_out": 4,
+      "out_cells": [
+        "gemma_2b_fp16_abliterated_T0.4",
+        "gemma_2b_fp16_abliterated_T0.6",
+        "gemma_2b_fp16_abliterated_T0.8",
+        "gemma_9b_4bit_abliterated_T0.2",
+        "gemma_9b_4bit_abliterated_T0.6",
+        "gemma_9b_4bit_abliterated_T0.8",
+        "gemma_9b_4bit_abliterated_T1.0",
+        "llama_8b_4bit_abliterated_T0.0",
+        "llama_8b_4bit_abliterated_T0.2",
+        "llama_8b_4bit_abliterated_T0.4",
+        "llama_8b_4bit_abliterated_T0.6",
+        "llama_8b_4bit_abliterated_T0.8",
+        "llama_8b_4bit_abliterated_T1.0"
+      ]
+    },
+    {
+      "threshold": 0.0128,
+      "n_in": 13,
+      "n_out": 11,
+      "n_llama_out": 6,
+      "n_gemma_2b_q4_out": 0,
+      "n_gemma_2b_fp16_out": 2,
+      "n_gemma_9b_q4_out": 3,
+      "out_cells": [
+        "gemma_2b_fp16_abliterated_T0.4",
+        "gemma_2b_fp16_abliterated_T0.8",
+        "gemma_9b_4bit_abliterated_T0.2",
+        "gemma_9b_4bit_abliterated_T0.8",
+        "gemma_9b_4bit_abliterated_T1.0",
+        "llama_8b_4bit_abliterated_T0.0",
+        "llama_8b_4bit_abliterated_T0.2",
+        "llama_8b_4bit_abliterated_T0.4",
+        "llama_8b_4bit_abliterated_T0.6",
+        "llama_8b_4bit_abliterated_T0.8",
+        "llama_8b_4bit_abliterated_T1.0"
+      ]
+    },
+    {
+      "threshold": 0.0154,
+      "n_in": 14,
+      "n_out": 10,
+      "n_llama_out": 5,
+      "n_gemma_2b_q4_out": 0,
+      "n_gemma_2b_fp16_out": 2,
+      "n_gemma_9b_q4_out": 3,
+      "out_cells": [
+        "gemma_2b_fp16_abliterated_T0.4",
+        "gemma_2b_fp16_abliterated_T0.8",
+        "gemma_9b_4bit_abliterated_T0.2",
+        "gemma_9b_4bit_abliterated_T0.8",
+        "gemma_9b_4bit_abliterated_T1.0",
+        "llama_8b_4bit_abliterated_T0.2",
+        "llama_8b_4bit_abliterated_T0.4",
+        "llama_8b_4bit_abliterated_T0.6",
+        "llama_8b_4bit_abliterated_T0.8",
+        "llama_8b_4bit_abliterated_T1.0"
+      ]
+    }
+  ],
+  "stability_summary": "11/13 at 0.0103, 13/11 at 0.0128, 14/10 at 0.0154; LLaMA stability: NOT stable across thresholds",
+  "timestamp_utc": "2026-05-10T11:00:30.280216Z"
+}

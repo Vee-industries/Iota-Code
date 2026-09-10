@@ -1,0 +1,191 @@
+{
+  "tau_H3": 0.0154,
+  "tau_H3_source": "V5b ceiling = max H3 across V5b 4-config sweep (statsbot-adopted)",
+  "n_cells": 24,
+  "n_in": 14,
+  "n_out": 10,
+  "records": [
+    {
+      "cell_label": "gemma_2b_q4_abliterated_t00",
+      "h3_value": 0.0002532005310058594
+    },
+    {
+      "cell_label": "gemma_2b_q4_abliterated_t02",
+      "h3_value": 0.0008361935615539551
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_t00",
+      "h3_value": 0.0011158585548400879
+    },
+    {
+      "cell_label": "gemma_2b_q4_abliterated_t04",
+      "h3_value": 0.001652061939239502
+    },
+    {
+      "cell_label": "gemma_9b_q4_abliterated_t00",
+      "h3_value": 0.0025611519813537598
+    },
+    {
+      "cell_label": "gemma_2b_q4_abliterated_t08",
+      "h3_value": 0.004337668418884277
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_t10",
+      "h3_value": 0.004627048969268799
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_t02",
+      "h3_value": 0.005975842475891113
+    },
+    {
+      "cell_label": "gemma_9b_q4_abliterated_t04",
+      "h3_value": 0.0061719417572021484
+    },
+    {
+      "cell_label": "gemma_2b_q4_abliterated_t06",
+      "h3_value": 0.006553232669830322
+    },
+    {
+      "cell_label": "gemma_2b_q4_abliterated_t10",
+      "h3_value": 0.008663952350616455
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_t06",
+      "h3_value": 0.010446429252624512
+    },
+    {
+      "cell_label": "gemma_9b_q4_abliterated_t06",
+      "h3_value": 0.010822057723999023
+    },
+    {
+      "cell_label": "llama_8b_q4_abliterated_t00",
+      "h3_value": 0.015240728855133057
+    },
+    {
+      "cell_label": "gemma_9b_q4_abliterated_t08",
+      "h3_value": 0.01897871494293213
+    },
+    {
+      "cell_label": "gemma_9b_q4_abliterated_t10",
+      "h3_value": 0.02001887559890747
+    },
+    {
+      "cell_label": "gemma_9b_q4_abliterated_t02",
+      "h3_value": 0.02236342430114746
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_t04",
+      "h3_value": 0.024816930294036865
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_t08",
+      "h3_value": 0.05146151781082153
+    },
+    {
+      "cell_label": "llama_8b_q4_abliterated_t02",
+      "h3_value": 0.06597501039505005
+    },
+    {
+      "cell_label": "llama_8b_q4_abliterated_t04",
+      "h3_value": 0.09617006778717041
+    },
+    {
+      "cell_label": "llama_8b_q4_abliterated_t06",
+      "h3_value": 0.10496872663497925
+    },
+    {
+      "cell_label": "llama_8b_q4_abliterated_t08",
+      "h3_value": 0.1097906231880188
+    },
+    {
+      "cell_label": "llama_8b_q4_abliterated_t10",
+      "h3_value": 0.11852198839187622
+    }
+  ],
+  "parallel_arrays": {
+    "cell_labels": [
+      "gemma_2b_q4_abliterated_t00",
+      "gemma_2b_q4_abliterated_t02",
+      "gemma_2b_fp16_abliterated_t00",
+      "gemma_2b_q4_abliterated_t04",
+      "gemma_9b_q4_abliterated_t00",
+      "gemma_2b_q4_abliterated_t08",
+      "gemma_2b_fp16_abliterated_t10",
+      "gemma_2b_fp16_abliterated_t02",
+      "gemma_9b_q4_abliterated_t04",
+      "gemma_2b_q4_abliterated_t06",
+      "gemma_2b_q4_abliterated_t10",
+      "gemma_2b_fp16_abliterated_t06",
+      "gemma_9b_q4_abliterated_t06",
+      "llama_8b_q4_abliterated_t00",
+      "gemma_9b_q4_abliterated_t08",
+      "gemma_9b_q4_abliterated_t10",
+      "gemma_9b_q4_abliterated_t02",
+      "gemma_2b_fp16_abliterated_t04",
+      "gemma_2b_fp16_abliterated_t08",
+      "llama_8b_q4_abliterated_t02",
+      "llama_8b_q4_abliterated_t04",
+      "llama_8b_q4_abliterated_t06",
+      "llama_8b_q4_abliterated_t08",
+      "llama_8b_q4_abliterated_t10"
+    ],
+    "h3_values": [
+      0.0002532005310058594,
+      0.0008361935615539551,
+      0.0011158585548400879,
+      0.001652061939239502,
+      0.0025611519813537598,
+      0.004337668418884277,
+      0.004627048969268799,
+      0.005975842475891113,
+      0.0061719417572021484,
+      0.006553232669830322,
+      0.008663952350616455,
+      0.010446429252624512,
+      0.010822057723999023,
+      0.015240728855133057,
+      0.01897871494293213,
+      0.02001887559890747,
+      0.02236342430114746,
+      0.024816930294036865,
+      0.05146151781082153,
+      0.06597501039505005,
+      0.09617006778717041,
+      0.10496872663497925,
+      0.1097906231880188,
+      0.11852198839187622
+    ]
+  },
+  "classification": {
+    "cells_in": [
+      "gemma_2b_q4_abliterated_t00",
+      "gemma_2b_q4_abliterated_t02",
+      "gemma_2b_fp16_abliterated_t00",
+      "gemma_2b_q4_abliterated_t04",
+      "gemma_9b_q4_abliterated_t00",
+      "gemma_2b_q4_abliterated_t08",
+      "gemma_2b_fp16_abliterated_t10",
+      "gemma_2b_fp16_abliterated_t02",
+      "gemma_9b_q4_abliterated_t04",
+      "gemma_2b_q4_abliterated_t06",
+      "gemma_2b_q4_abliterated_t10",
+      "gemma_2b_fp16_abliterated_t06",
+      "gemma_9b_q4_abliterated_t06",
+      "llama_8b_q4_abliterated_t00"
+    ],
+    "cells_out": [
+      "gemma_9b_q4_abliterated_t08",
+      "gemma_9b_q4_abliterated_t10",
+      "gemma_9b_q4_abliterated_t02",
+      "gemma_2b_fp16_abliterated_t04",
+      "gemma_2b_fp16_abliterated_t08",
+      "llama_8b_q4_abliterated_t02",
+      "llama_8b_q4_abliterated_t04",
+      "llama_8b_q4_abliterated_t06",
+      "llama_8b_q4_abliterated_t08",
+      "llama_8b_q4_abliterated_t10"
+    ]
+  },
+  "_source_file": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\statsbot_inputs\\follow_up_pulls.json",
+  "_sort_order": "ascending by h3_value"
+}

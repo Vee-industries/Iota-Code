@@ -628,10 +628,12 @@ def _run_math(run_mode, session, paths, model, tok):
 # ── Runs 0039, 0040 -- Jolt ───────────────────────────────────────────────────────
 
 def _run_jolt(run_mode, session, paths, model, tok):
-    """Runs 0039, 0040, 0060 -- shock injection. turn_fn injects shock at specific turn.
+    """Runs 0039, 0040, 0060, 0062 -- shock injection. turn_fn injects shock at specific turn.
 
     Run 0039: late shock (turn 13), 16-turn protocol, 4-cohort SHOCK_VARIANTS,
-              thematic systems-disruption recovery prompts at turns 14-16.
+              thematic systems-disruption recovery prompts at turns 14-16,
+              status-token enforcer ON at every turn (single-token output from
+              {DONE, WAIT, STOP}).
     Run 0040: early shock (turn 5), 13-turn protocol, single SHOCK_PROMPT.
     Run 0060: same as R0039 in every respect EXCEPT recovery prompts at
               turns 14-16 are non-thematic factual questions (see
@@ -640,9 +642,21 @@ def _run_jolt(run_mode, session, paths, model, tok):
               cohort discrimination under thematic vs non-thematic recovery
               to separate spontaneous-retention from input-triggered-
               reactivation readings of the carryover signal.
+    Run 0062: same as R0039 in every respect EXCEPT the status-token enforcer
+              is SUPPRESSED at the three recovery turns (14, 15, 16); the model
+              generates free-form (multi-token) responses to the recovery
+              prompts under otherwise identical threading, cohort assignment,
+              and shock variants. The §3.6 follow-up to Paper A (Vaillancourt
+              2026c) measures whether cohort discrimination in pooled hidden
+              states is reproduced when behavior is not channel-narrowed,
+              and whether the free-form outputs themselves are byte-identical,
+              semantically equivalent, or semantically divergent across
+              cohorts. Pre-recovery turns (0-13 including the shock) retain
+              the status-token enforcer so the threaded transcript fed into
+              the recovery turns is matched to R0039.
     """
-    shock_at   = {39: 13, 40: 5, 60: 13}[run_mode]
-    n_turns    = 16 if run_mode in (39, 60) else 13
+    shock_at   = {39: 13, 40: 5, 60: 13, 62: 13}[run_mode]
+    n_turns    = 16 if run_mode in (39, 60, 62) else 13
     prompts_seq = JOLT_PROMPTS_NONTHEMATIC if run_mode == 60 else JOLT_PROMPTS
 
     def turn_fn(trial, turn_idx):
@@ -650,16 +664,20 @@ def _run_jolt(run_mode, session, paths, model, tok):
         is_recovery = int(turn_idx > shock_at)
         if is_shock:
             prompt = (SHOCK_VARIANTS[trial % len(SHOCK_VARIANTS)]
-                      if run_mode in (39, 60) else SHOCK_PROMPT)
+                      if run_mode in (39, 60, 62) else SHOCK_PROMPT)
         else:
             prompt = prompts_seq[turn_idx - 1] if turn_idx <= len(prompts_seq) else prompts_seq[-1]
+        gen_kwargs = {'use_long_output': True}
+        if run_mode == 62 and is_recovery:
+            gen_kwargs['use_status_enforcer'] = False
         extra = {
             'is_shock':      int(is_shock),
             'is_recovery':   is_recovery,
-            'shock_variant': (trial % len(SHOCK_VARIANTS)) if run_mode in (39, 60) else -1,
+            'shock_variant': (trial % len(SHOCK_VARIANTS)) if run_mode in (39, 60, 62) else -1,
             'recovery_condition': 'non_thematic' if run_mode == 60 else 'thematic',
+            'enforcer_condition': 'off_recovery_only' if run_mode == 62 else 'on_all_turns',
         }
-        return prompt, {'use_long_output': True}, extra
+        return prompt, gen_kwargs, extra
 
     _standard_trial_loop(
         model, tok, session, paths, run_mode,

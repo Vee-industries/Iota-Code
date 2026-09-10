@@ -32,9 +32,10 @@ synthetic suite (V5a–V5f) with known ground truth, so when you read a number
 off the apparatus on a real model, you know how trustworthy it is in that
 regime.
 
-It's reproducible. 62 runs, every one dispatched the same way: `python
-start_here.py --single-run N`. The full pipeline from raw model weights to
-paper figures is one repository.
+It's reproducible. Every collection and analysis run is dispatched the same
+way, `python start_here.py --single-run N`; the calibration scripts and the
+cohort test are standalone; `python reproduce.py` sequences all of it. The
+full pipeline from raw model weights to paper figures is one repository.
 
 ---
 
@@ -116,39 +117,43 @@ The framework has 62 runs across three phases.
   swap.
 - **Pooled analysis (50–51):** cross-temperature synthesis.
 - **Cross-model (52–54):** comparison + concordance + paper summary.
-- **Paper output (55–56):** stats export + cross-model assembly.
+- **Paper output (55–56, 59):** stats export, methodology calibration, and
+  paper assembly (results.json + figures).
 - **Apparatus orchestration (57–58):** function-class sensitivity + the full
   Bayesian apparatus (kraskov anchor → I-projection → threshold → aggregator
   → paper-2 measurement layer).
+- **Cohort follow-ups (60, 62) and the cohort test (61):** non-thematic and
+  enforcer-off jolt collections; Run 0061 is the standalone analysis script
+  `_run_run0061_jolt_carryover.py --run 39|60|62`.
 
 Full hypothesis-to-run map is in `start_here.py`'s docstring and on the
 dashboard's Hypotheses tab.
 
 ---
 
-## Reproducing the papers
+## Reproducing the papers, end to end
 
-Three companion papers use this framework as their measurement substrate.
-The exact substrate runs for each paper:
-
-| Paper | Substrate runs | What this framework provides |
-|---|---|---|
-| **Technical note on R** | none (pure theory) | The formal quantity that IOTA estimates |
-| **IOTA apparatus paper** | 1, 2, 3, 17, 18, 41–58 | The calibrated four-class triangulation + simplex aggregator |
-| **One iota: hidden-state carryover** | 39 | The cache-cleared cohort discrimination test |
-
-To reproduce the empirical sections of the apparatus paper, the minimum
-collection is:
+One command runs the whole pipeline unattended and resumes wherever it stopped:
 
 ```bash
-python start_here.py --single-run 1       # null isolation (C_t / E_t)
-python start_here.py --single-run 3       # temperature grid
-python start_here.py --single-run 17      # activation patching
-# ... (full list in start_here.py docstring)
+python reproduce.py --plan      # see the stages
+python reproduce.py             # run everything (collection is 1-2 days per model on a 10 GB card)
+python reproduce.py --skip-collection   # analysis, calibration, results, probes, verify (CPU, a few hours)
 ```
 
-Total wall-clock on a single 10 GB GPU: roughly 1–3 weeks depending on which
-model variants you collect.
+Stages, in order: `env` (packages, CUDA, session file, unit tests) -> `collect` (Runs 0001, 0003, 0002 at T=0; runs 4-15, 23, 39, 60 and the E_t recovery Run 0016 at each of six temperatures; 62, 17, 18 at T=0; four model configurations in size order) -> `analysis` (`--all-stats`, runs 41-54 per model) -> `calibration` (operating point, kNN-MI reliability, V5 suite, Runs 0056-0058, lambda calibration, V5g bridge, tau_H4) -> `behavioral` (Run 0061 on Runs 0039/0060/0062) -> `results` (Run 0059: results.json + figures) -> `probes` (the 2026-09-10 measurements: Gaussian redundancy, multi-step persistence, KV interpolation, drop-history) -> `verify` (rebuilt results against the released `data/paper/results8th.json` and the numbers the papers quote).
+
+Every stage is idempotent: the framework's own resume logic skips completed trials, the calibration scripts skip existing outputs, and `data/paper/reproduce_status.json` records finished stages. GPU stages wait for the card to drain and the 9B model runs with `IOTA_VRAM_FRACTION=0.93` (the 0.85 default fails at load on 10 GB). Set `HF_TOKEN` in the environment if a model on your list is gated. Log: `.iota_reproduce.log`.
+
+Which runs each paper needs:
+
+| Paper | Substrate runs |
+|---|---|
+| A: Technical note on R | none (theory) |
+| B: IOTA apparatus | 1, 2, 3, 4-15, 16, 17, 18, 23, 41-59; probes |
+| C: One iota | 39, 60, 62, 61; drop-history probe |
+
+The released `data/paper/` folder (12 MB) is what the papers cite; a fresh clone can check every quoted number against it without collecting anything (`python reproduce.py --only verify`).
 
 ---
 
@@ -267,7 +272,7 @@ commercially.
 
 ## Author
 
-**Kevin Vaillancourt** — independent researcher.
+**Kevin Vaillancourt** — independent researcher. kvsudbury@gmail.com
 
 This is single-author work. Issues, questions, and pull requests are
 welcome at [github.com/Vee-industries/Iota-Code](https://github.com/Vee-industries/Iota-Code).
@@ -277,6 +282,7 @@ welcome at [github.com/Vee-industries/Iota-Code](https://github.com/Vee-industri
 ## Changelog
 
 See `CHANGELOG.md` for the full version history. Most recent change
-(v1.0.0, 2026-05-13): per-(trial, temperature) seed differentiation
-in the standard trial loop; added the `post_collection_integrity_check.py`
-utility; cleanup pass for publication-readiness.
+(v1.0.1, 2026-09-10): `reproduce.py` one-command pipeline; Run 0023
+collected on all fleet cells; `data/paper/` tracked in the repo; four new
+measurement scripts (Gaussian redundancy, multi-step persistence, KV
+interpolation, drop-history) and the tau_H4 derivation.

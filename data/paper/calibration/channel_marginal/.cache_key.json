@@ -1,0 +1,8 @@
+{
+  "script": "run_channel_marginal.py",
+  "script_hash": "bd09aef6c20fb860c6fcb830c9e10ac9d4559e6ca43479a58b79511b08267aa5",
+  "upstream": {
+    "analysis.py": "a308be83a1b580233ef455f11b54c1e23e29d3e66039550bd4792c4e11b4b5bd",
+    "cartography.py": "4bb6f890385bf6b7b7efb006369d223b39d947b07083ddcd7095cad8ee61f6a8"
+  }
+}

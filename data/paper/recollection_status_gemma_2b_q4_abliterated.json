@@ -1,0 +1,55 @@
+{
+  "start_iso": "2026-05-14T10:44:01.375200",
+  "model": "gemma/2b_4bit/abliterated",
+  "steps": [
+    {
+      "step": "r0001",
+      "result": "OK"
+    },
+    {
+      "step": "r0001_wait",
+      "result": "OK"
+    },
+    {
+      "step": "r0001_integrity",
+      "result": "FAIL_OR_NO_DATA"
+    },
+    {
+      "step": "r0003",
+      "result": "OK"
+    },
+    {
+      "step": "r0003_integrity",
+      "result": "FAIL_OR_NO_DATA"
+    },
+    {
+      "step": "r0039_t0.0",
+      "result": "OK"
+    },
+    {
+      "step": "r0039_t0.2",
+      "result": "OK"
+    },
+    {
+      "step": "r0039_t0.4",
+      "result": "OK"
+    },
+    {
+      "step": "r0039_t0.6",
+      "result": "OK"
+    },
+    {
+      "step": "r0039_t0.8",
+      "result": "OK"
+    },
+    {
+      "step": "r0039_t1.0",
+      "result": "OK"
+    },
+    {
+      "step": "r0039_integrity",
+      "result": "FAIL_OR_NO_DATA"
+    }
+  ],
+  "end_iso": "2026-05-14T12:38:23.877993"
+}

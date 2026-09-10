@@ -1,0 +1,352 @@
+{
+  "phase": "phase11_geometric_diagnostics_p2",
+  "iota_version": "0.82.0.23",
+  "timestamp": "2026-05-17T18:29:26.651125Z",
+  "schema_replaces": "convex_hull_diagnostic",
+  "projection_note": "Hull computed in 2D (E, C) projection of the 3-simplex (R = 1 − E − C). Field 8 (hull_signed_distance) uses facet-equation signed distance for non-degenerate hulls and point-to-segment fallback for degenerate hulls. Sign convention preserved from Ship 12: positive=inside, negative=outside.",
+  "cells": {
+    "gemma_2b_q4_abliterated_t00": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.011051105816140605,
+      "signed_anchor_pull": -0.011051105816140605,
+      "class_hull_volume": 0.004960634991494775,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.029231259850160174,
+      "bootstrap_variance_decomposition": {
+        "q_star_movement_var": 7.052446975143037e-05,
+        "hull_movement_var": 0.000124603188948963,
+        "cross_term": -0.0001633703745947624,
+        "observed_var": 3.1757284105630936e-05,
+        "n_resamples": 12,
+        "q_star_only_frac": 2.2207336596181273,
+        "hull_only_frac": 3.923609731062279,
+        "cross_frac": -5.144343390680406,
+        "bootstrap_median_signed_distance": -0.04460760275097969,
+        "bootstrap_n_inside": 0
+      }
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.008209619079935053,
+      "signed_anchor_pull": -0.008209619079935053,
+      "class_hull_volume": 0.005682926874361595,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.012380122727036036
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.006314174217317434,
+      "signed_anchor_pull": 0.006314174217317434,
+      "class_hull_volume": 0.008467250118258884,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.006918694129275205
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": false,
+      "anchor_pull_distance": 0.0029150440878291245,
+      "signed_anchor_pull": -0.0029150440878291245,
+      "class_hull_volume": 0.0002828046749036912,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "geometric_mean_exit",
+      "hull_signed_distance": -0.001642674834663134,
+      "bootstrap_variance_decomposition": {
+        "q_star_movement_var": 2.1442010099158833e-05,
+        "hull_movement_var": 0.0002615726885187544,
+        "cross_term": -0.0001026551272905064,
+        "observed_var": 0.00018035957132740682,
+        "n_resamples": 12,
+        "q_star_only_frac": 0.11888479187076322,
+        "hull_only_frac": 1.4502844877798104,
+        "cross_frac": -0.5691692796505736,
+        "bootstrap_median_signed_distance": -0.0279192577505894,
+        "bootstrap_n_inside": 1
+      }
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.008604942067455434,
+      "signed_anchor_pull": 0.008604942067455434,
+      "class_hull_volume": 0.006535352419531088,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.001755936997360208
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.008387630026100407,
+      "signed_anchor_pull": -0.008387630026100407,
+      "class_hull_volume": 0.004218947717977804,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.01188473920036276
+    },
+    "gemma_2b_fp16_abliterated_t00": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.0006026171199269015,
+      "signed_anchor_pull": 0.0006026171199269015,
+      "class_hull_volume": 0.004902391769174608,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.010008524937972302,
+      "bootstrap_variance_decomposition": {
+        "q_star_movement_var": 6.437069002471022e-05,
+        "hull_movement_var": 0.0010265888468765538,
+        "cross_term": -0.0005524713826314094,
+        "observed_var": 0.0005384881542698546,
+        "n_resamples": 12,
+        "q_star_only_frac": 0.11953965842014026,
+        "hull_only_frac": 1.9064279106910407,
+        "cross_frac": -1.0259675691111811,
+        "bootstrap_median_signed_distance": -0.0027435455037685963,
+        "bootstrap_n_inside": 5
+      }
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.0007799634691183811,
+      "signed_anchor_pull": 0.0007799634691183811,
+      "class_hull_volume": 0.014123092809413306,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.03852285565798183
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.004081083574346715,
+      "signed_anchor_pull": -0.004081083574346715,
+      "class_hull_volume": 0.0037018731722714203,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.00984224223843061
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.0027735987869118156,
+      "signed_anchor_pull": 0.0027735987869118156,
+      "class_hull_volume": 0.00276122734394437,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.011931217479727307
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.004116688856797716,
+      "signed_anchor_pull": -0.004116688856797716,
+      "class_hull_volume": 0.002947075438372547,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.013272027368019301
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.008813259834065147,
+      "signed_anchor_pull": -0.008813259834065147,
+      "class_hull_volume": 0.003036850682489528,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.03309277835343294,
+      "bootstrap_variance_decomposition": {
+        "q_star_movement_var": 5.388855529050778e-05,
+        "hull_movement_var": 0.00014693573604383518,
+        "cross_term": -5.175394864427319e-05,
+        "observed_var": 0.00014907034269006977,
+        "n_resamples": 12,
+        "q_star_only_frac": 0.36149749385460783,
+        "hull_only_frac": 0.9856805410941288,
+        "cross_frac": -0.34717803494873667,
+        "bootstrap_median_signed_distance": -0.003454475846859817,
+        "bootstrap_n_inside": 5
+      }
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.002294859325438353,
+      "signed_anchor_pull": -0.002294859325438353,
+      "class_hull_volume": 0.009029359652061066,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.011558730838252651,
+      "bootstrap_variance_decomposition": {
+        "q_star_movement_var": 5.809444271367068e-05,
+        "hull_movement_var": 0.0006039265220648775,
+        "cross_term": -0.0001422290913044975,
+        "observed_var": 0.0005197918734740507,
+        "n_resamples": 12,
+        "q_star_only_frac": 0.11176481526229728,
+        "hull_only_frac": 1.16186218539453,
+        "cross_frac": -0.27362700065682716,
+        "bootstrap_median_signed_distance": -0.004814859083713485,
+        "bootstrap_n_inside": 6
+      }
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.003646759259222098,
+      "signed_anchor_pull": 0.003646759259222098,
+      "class_hull_volume": 0.022458583213739527,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.04271870341563261
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.006932984322980555,
+      "signed_anchor_pull": 0.006932984322980555,
+      "class_hull_volume": 0.003014923202542468,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.004075620634744648
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.008691618443471896,
+      "signed_anchor_pull": 0.008691618443471896,
+      "class_hull_volume": 0.0037010189851286804,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.0034556901897878634
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.008009615752375215,
+      "signed_anchor_pull": 0.008009615752375215,
+      "class_hull_volume": 0.0037587639458376222,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.004132258024613755
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.009813807461633371,
+      "signed_anchor_pull": 0.009813807461633371,
+      "class_hull_volume": 0.004811699584114721,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.004192757010578141
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "q_star_inside_class_hull": true,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.0027500136916736237,
+      "signed_anchor_pull": 0.0027500136916736237,
+      "class_hull_volume": 0.00899721597386175,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "none",
+      "hull_signed_distance": 0.00624504401690025,
+      "bootstrap_variance_decomposition": {
+        "q_star_movement_var": 2.9624713075692907e-05,
+        "hull_movement_var": 0.00017112007114155483,
+        "cross_term": -4.5015723526236376e-05,
+        "observed_var": 0.00015572906069101137,
+        "n_resamples": 12,
+        "q_star_only_frac": 0.1902324007108253,
+        "hull_only_frac": 1.0988319738284522,
+        "cross_frac": -0.2890643745392774,
+        "bootstrap_median_signed_distance": 0.04272331223145023,
+        "bootstrap_n_inside": 12
+      }
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.003612115159904842,
+      "signed_anchor_pull": -0.003612115159904842,
+      "class_hull_volume": 0.0014548686158742511,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.01360775066497666
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.003915972413169879,
+      "signed_anchor_pull": -0.003915972413169879,
+      "class_hull_volume": 0.0025342062299222546,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.005486111649245284
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.0036076532159142975,
+      "signed_anchor_pull": -0.0036076532159142975,
+      "class_hull_volume": 0.003249194374240793,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.0063708693132883965
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.0041685395165554865,
+      "signed_anchor_pull": -0.0041685395165554865,
+      "class_hull_volume": 0.0034059423935544207,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.00608471474161093
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "q_star_inside_class_hull": false,
+      "geometric_mean_inside_class_hull": true,
+      "anchor_pull_distance": 0.004644798405150271,
+      "signed_anchor_pull": -0.004644798405150271,
+      "class_hull_volume": 0.0035561422926369767,
+      "hull_degenerate": false,
+      "hull_exit_mechanism": "anchor_pull",
+      "hull_signed_distance": -0.011936458705028907
+    }
+  },
+  "geometric_aggregates": {
+    "n_cells_inside_hull": 11,
+    "n_cells_outside_hull": 13,
+    "n_cells_hull_degenerate": 0,
+    "hull_exit_mechanism_counts": {
+      "none": 11,
+      "anchor_pull": 12,
+      "geometric_mean_exit": 1
+    },
+    "mean_anchor_pull_distance": 0.00536410266264311,
+    "median_anchor_pull_distance": 0.0041426141866766015,
+    "max_anchor_pull_distance": 0.011051105816140605,
+    "max_anchor_pull_cell": "gemma_2b_q4_abliterated_t00",
+    "quadrant_counts": {
+      "inside_small": 5,
+      "inside_large": 6,
+      "outside_small": 7,
+      "outside_large": 6
+    },
+    "v5d_flagged_quadrant_distribution": {
+      "inside_small": 4,
+      "inside_large": 2,
+      "outside_small": 6,
+      "outside_large": 3
+    }
+  },
+  "summary": {
+    "n_cells": 24,
+    "v5d_cross_reference_available": true,
+    "n_cells_with_bootstrap_decomposition": 6
+  }
+}

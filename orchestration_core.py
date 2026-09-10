@@ -461,6 +461,12 @@ def load_model(path: str, vram: float = 0.85, quant_config=None, quant='4bit', t
     Returns (model, tokenizer). tokenizer has _iota_eos_ids attached
     as a list of every EOS token ID; downstream reads via get_eos_ids().
     """
+    # v2026-09-10: per-run override of the VRAM fraction (default 0.85). Set IOTA_VRAM_FRACTION=0.93 for cells
+    # that OOM at load with "reserved but unallocated" memory (Gemma 9B Q4 on a 10 GB card).
+    try:
+        vram = float(os.environ.get("IOTA_VRAM_FRACTION", vram))
+    except ValueError:
+        pass
     print(f"\n  Loading: {path}")
     _append_log(f"  Loading model: {path}", kind="ok")
 

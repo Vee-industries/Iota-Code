@@ -1,0 +1,684 @@
+{
+  "iota_version": "0.82.0.29",
+  "paper_version": "v17.1",
+  "audit_purpose": "paper-vs-disk verification before submission",
+  "n_claims": 28,
+  "n_agreement": 26,
+  "n_divergence": 2,
+  "records": [
+    {
+      "claim_id": 1,
+      "section": "sec.6.1 / sec.6.5",
+      "paper_cited_value": {
+        "T0.0": "~0.998",
+        "T1.0": "~0.84",
+        "description": "monotonic-ish decline"
+      },
+      "disk_value": {
+        "T0.0": 0.997737,
+        "T0.2": 0.887934,
+        "T0.4": 0.868465,
+        "T0.6": 0.858289,
+        "T0.8": 0.849517,
+        "T1.0": 0.843054
+      },
+      "field_path": "cells[llama_8b_4bit_abliterated_T<t>].measurements.estimator_joint_R2.ridge.heldout",
+      "agreement": true,
+      "tolerance_used": "band: T=0.0 in [0.97,1.0]; T=1.0 in [0.80,0.88]",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 2,
+      "section": "sec.6.5",
+      "paper_cited_value": "Ridge-alone vs MLP-alone produce directionally inverted trajectories on LLaMA at T>0",
+      "disk_value": {
+        "T0.0": {
+          "ridge": 0.225268,
+          "mlp_pooled": 0.336559
+        },
+        "T0.2": {
+          "ridge": 0.45288,
+          "mlp_pooled": 0.284711
+        },
+        "T0.4": {
+          "ridge": 0.402118,
+          "mlp_pooled": 0.220572
+        },
+        "T0.6": {
+          "ridge": 0.413305,
+          "mlp_pooled": 0.216332
+        },
+        "T0.8": {
+          "ridge": 0.4079,
+          "mlp_pooled": 0.208853
+        },
+        "T1.0": {
+          "ridge": 0.399912,
+          "mlp_pooled": 0.222148
+        }
+      },
+      "field_path": "cells[llama_8b_4bit_abliterated_T<t>].measurements.{rhat_ridge_insample,rhat_mlp_pooled_mean}",
+      "agreement": true,
+      "tolerance_used": "narrative-claim (values surfaced for inspection)",
+      "divergence_note": "Inversion narrative; writerbot inspects per-T pair to confirm."
+    },
+    {
+      "claim_id": 3,
+      "section": "sec.6.1",
+      "paper_cited_value": "> 0.84 on every cell",
+      "disk_value": {
+        "min": 0.843054,
+        "min_cell": "llama_8b_4bit_abliterated_T1.0",
+        "min_estimator": "ridge",
+        "n_estimator_cells": 96
+      },
+      "field_path": "cells[*].measurements.estimator_joint_R2.{ridge,mlp,rf,rkhs_median}.heldout",
+      "agreement": true,
+      "tolerance_used": "> 0.84",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 4,
+      "section": "sec.6.7 / sec.6.8",
+      "paper_cited_value": "Per-cell partition-B substitution swings on the four-class shares match prose framing",
+      "disk_value": {
+        "n_cells_with_pbsd": 24,
+        "sample_keys": [
+          "abs_dC_by_class",
+          "anchor_alignment_cosine",
+          "g_tilde_post",
+          "g_tilde_pre",
+          "g_tilde_shift_dC_dominance",
+          "g_tilde_shift_norm",
+          "kl_delta_anchor",
+          "kl_post_anchor",
+          "kl_pre_anchor",
+          "share_deltas",
+          "strict_ordering_holds",
+          "two_tier_ordering_holds"
+        ],
+        "cells_with_block": [
+          "gemma_2b_4bit_abliterated_T0.0",
+          "gemma_2b_4bit_abliterated_T0.2",
+          "gemma_2b_4bit_abliterated_T0.4",
+          "gemma_2b_4bit_abliterated_T0.6",
+          "gemma_2b_4bit_abliterated_T0.8",
+          "gemma_2b_4bit_abliterated_T1.0",
+          "gemma_2b_fp16_abliterated_T0.0",
+          "gemma_2b_fp16_abliterated_T0.2",
+          "gemma_2b_fp16_abliterated_T0.4",
+          "gemma_2b_fp16_abliterated_T0.6",
+          "gemma_2b_fp16_abliterated_T0.8",
+          "gemma_2b_fp16_abliterated_T1.0",
+          "gemma_9b_4bit_abliterated_T0.0",
+          "gemma_9b_4bit_abliterated_T0.2",
+          "gemma_9b_4bit_abliterated_T0.4",
+          "gemma_9b_4bit_abliterated_T0.6",
+          "gemma_9b_4bit_abliterated_T0.8",
+          "gemma_9b_4bit_abliterated_T1.0",
+          "llama_8b_4bit_abliterated_T0.0",
+          "llama_8b_4bit_abliterated_T0.2",
+          "llama_8b_4bit_abliterated_T0.4",
+          "llama_8b_4bit_abliterated_T0.6",
+          "llama_8b_4bit_abliterated_T0.8",
+          "llama_8b_4bit_abliterated_T1.0"
+        ]
+      },
+      "field_path": "cells[*].measurements.partition_b_substitution_diagnostics",
+      "agreement": true,
+      "tolerance_used": "presence-check across fleet",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 5,
+      "section": "sec.6.6",
+      "paper_cited_value": "All 6 PHASE10_SUBSET cells: cross_frac negative",
+      "disk_value": {
+        "per_cell": {
+          "gemma_2b_q4_abliterated_t00": -5.144343390680406,
+          "gemma_2b_q4_abliterated_t06": -0.5691692796505736,
+          "gemma_2b_fp16_abliterated_t00": -1.0259675691111811,
+          "gemma_2b_fp16_abliterated_t10": -0.34717803494873667,
+          "gemma_9b_q4_abliterated_t00": -0.27362700065682716,
+          "llama_8b_q4_abliterated_t00": -0.2890643745392774
+        },
+        "n_negative": 6,
+        "n_present": 6,
+        "sources_tried": [
+          "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\calibration\\geometric_diagnostics_p2\\per_cell.json"
+        ]
+      },
+      "field_path": "data/paper/calibration/geometric_diagnostics_p2/per_cell.json::cells.<cell>.cross_frac",
+      "agreement": true,
+      "tolerance_used": "sign check (cross_frac < 0)",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 6,
+      "section": "sec.6.8",
+      "paper_cited_value": "24/24 cells: verdict = discriminates",
+      "disk_value": {
+        "n_cells_processed": 24,
+        "discriminably_threshold": 0.05,
+        "discrimination_verdict": "discriminates",
+        "verdict_meaning": "If fleet-mean L1 differences across the three C constructions exceed bootstrap noise scale (~0.02) and at least some cells cross the 0.05 materially-shifted threshold, the apparatus discriminates among C channels in cell-specific ways -- supports §6 framing that C = a-b is one principled choice among three. If all three constructions produce q* values within bootstrap noise on every cell, the apparatus is not picking up channel-specific content the way the construction implies -- paper acknowledges this as a limitation.",
+        "cells_above_threshold": {
+          "i_minus_b_vs_a_minus_b": [],
+          "i_minus_a_vs_a_minus_b": [
+            "llama_8b_q4_abliterated_t04",
+            "llama_8b_q4_abliterated_t06",
+            "llama_8b_q4_abliterated_t08",
+            "llama_8b_q4_abliterated_t10",
+            "llama_8b_q4_abliterated_t02"
+          ],
+          "i_minus_a_vs_i_minus_b": [
+            "llama_8b_q4_abliterated_t06",
+            "llama_8b_q4_abliterated_t08",
+            "llama_8b_q4_abliterated_t10",
+            "llama_8b_q4_abliterated_t02"
+          ]
+        },
+        "n_cells_in_union_above_threshold": 5
+      },
+      "field_path": "reviewer_three_response/run_0059...c_definition_comparison.aggregates.discrimination_verdict.verdict",
+      "agreement": true,
+      "tolerance_used": "n_processed == 24 AND verdict == 'discriminates'",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 7,
+      "section": "sec.6.8",
+      "paper_cited_value": {
+        "mean_l1": 0.0074,
+        "max_l1": 0.019
+      },
+      "disk_value": {
+        "mean_l1": 0.007404418378525582,
+        "max_l1": 0.018906365467669245
+      },
+      "field_path": "reviewer_three_response/run_0059...aggregates.fleet_{mean,max}_l1_qstar_diff.i_minus_b_vs_a_minus_b",
+      "agreement": true,
+      "tolerance_used": "5e-4 mean / 2e-3 max",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 8,
+      "section": "sec.6.8",
+      "paper_cited_value": {
+        "mean_l1": 0.024,
+        "max_l1": 0.093,
+        "max_cell": "llama_8b_q4_t02"
+      },
+      "disk_value": {
+        "mean_l1": 0.023883937537722777,
+        "max_l1": 0.0925949876498422,
+        "max_cell_disk": "llama_8b_q4_abliterated_t02",
+        "max_cell_computed": null,
+        "max_l1_computed": null
+      },
+      "field_path": "reviewer_three_response/run_0059...aggregates.fleet_{mean,max}_l1_qstar_diff.i_minus_a_vs_a_minus_b + cells.<>.{a_minus_b,i_minus_a}.q_star",
+      "agreement": true,
+      "tolerance_used": "mean/max 2e-3 abs; max_cell substring",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 9,
+      "section": "sec.6.8",
+      "paper_cited_value": "All threshold-crossings on LLaMA at temperature",
+      "disk_value": {
+        "crossing_cells": [
+          "llama_8b_q4_abliterated_t04",
+          "llama_8b_q4_abliterated_t06",
+          "llama_8b_q4_abliterated_t08",
+          "llama_8b_q4_abliterated_t10",
+          "llama_8b_q4_abliterated_t02"
+        ],
+        "n_crossings": 5,
+        "threshold_used": 0.05,
+        "all_llama_at_temp": true
+      },
+      "field_path": "reviewer_three_response/run_0059...c_definition_comparison.aggregates.cells_above_threshold.i_minus_a_vs_a_minus_b",
+      "agreement": true,
+      "tolerance_used": "> 0.05 threshold + LLaMA-at-temp filter",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 10,
+      "section": "sec.7.4",
+      "paper_cited_value": {
+        "k=1": 0.001,
+        "k=2": 0.017,
+        "k=3": 0.0454
+      },
+      "disk_value": {
+        "k=1": 0.000999000999000999,
+        "k=2": 0.01702464202464202,
+        "k=3": 0.045412920412920416
+      },
+      "field_path": "behavioral_trial_response/run_0061...aggregates.{k1,k2,k3}.fleet_mean_p",
+      "agreement": true,
+      "tolerance_used": "2e-4 / 2e-3 / 5e-3 abs",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 11,
+      "section": "sec.7.4",
+      "paper_cited_value": {
+        "k=1": 24,
+        "k=2": 22,
+        "k=3": 20
+      },
+      "disk_value": {
+        "k=1": 24,
+        "k=2": 22,
+        "k=3": 20
+      },
+      "field_path": "behavioral_trial_response/run_0061...aggregates.{k1,k2,k3}.n_cells_reliable_at_0_05",
+      "agreement": true,
+      "tolerance_used": "exact",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 12,
+      "section": "sec.7.4",
+      "paper_cited_value": "24/24 cells: monotonic decay p_k1 <= p_k2 <= p_k3",
+      "disk_value": {
+        "n_total": 24,
+        "n_monotonic": 24,
+        "violators": []
+      },
+      "field_path": "behavioral_trial_response/run_0061...cells.<>.{k1,k2,k3}.p_value",
+      "agreement": true,
+      "tolerance_used": "exact 24/24",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 13,
+      "section": "sec.7.4",
+      "paper_cited_value": "t04..t10 lose reliability by k=3 in gemma_2b_fp16",
+      "disk_value": {
+        "per_cell_p_per_k": {
+          "gemma_2b_fp16_abliterated_t04": [
+            0.000999000999000999,
+            0.03196803196803197,
+            0.11788211788211789
+          ],
+          "gemma_2b_fp16_abliterated_t06": [
+            0.000999000999000999,
+            0.024975024975024976,
+            0.0919080919080919
+          ],
+          "gemma_2b_fp16_abliterated_t08": [
+            0.000999000999000999,
+            0.14785214785214784,
+            0.35564435564435565
+          ],
+          "gemma_2b_fp16_abliterated_t10": [
+            0.000999000999000999,
+            0.1838161838161838,
+            0.4875124875124875
+          ]
+        },
+        "n_lose_by_k3": 4
+      },
+      "field_path": "behavioral_trial_response/run_0061...cells.<gemma_2b_fp16_t*>.{k1,k2,k3}.p_value",
+      "agreement": true,
+      "tolerance_used": "4/4 lose by k=3",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 14,
+      "section": "sec.7.4",
+      "paper_cited_value": "Quantized cells (Q4): all k have p <= 0.001",
+      "disk_value": {
+        "n_quantized": 18,
+        "n_pass": 16,
+        "violators": [
+          [
+            "gemma_2b_q4_abliterated_t10",
+            [
+              0.000999000999000999,
+              0.000999000999000999,
+              0.011988011988011988
+            ]
+          ],
+          [
+            "gemma_9b_q4_abliterated_t10",
+            [
+              0.000999000999000999,
+              0.000999000999000999,
+              0.001998001998001998
+            ]
+          ]
+        ]
+      },
+      "field_path": "behavioral_trial_response/run_0061...cells.<q4-cells>.{k1,k2,k3}.p_value",
+      "agreement": false,
+      "tolerance_used": "all k <= 0.001",
+      "divergence_note": "16/18 quantized cells hold"
+    },
+    {
+      "claim_id": 15,
+      "section": "sec.5",
+      "paper_cited_value": {
+        "tau_H3": 0.0154,
+        "configs": {
+          "E-dominant": 0.0057,
+          "balanced": 0.0103,
+          "S-dominant": 0.0154,
+          "strong-S": 0.0112
+        }
+      },
+      "disk_value": {
+        "configs": {
+          "E-dominant": 0.005699999999999927,
+          "balanced": 0.010299999999999976,
+          "S-dominant": 0.01539999999999997,
+          "strong-S": 0.011200000000000099
+        },
+        "max_gap": 0.01539999999999997
+      },
+      "field_path": "data/paper/calibration/v5/v5_calibration_results.json::v5b_nonlinear_rnn.results[].abs(R2_mlp - R2_ridge)",
+      "agreement": true,
+      "tolerance_used": "5e-4 abs per config",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 16,
+      "section": "sec.5",
+      "paper_cited_value": {
+        "alpha=0.4": 0.587,
+        "alpha=0.6": 0.852,
+        "midpoint_alpha=0.5": 0.7195
+      },
+      "disk_value": {
+        "alpha=0.4": 0.5870075606721115,
+        "alpha=0.6": 0.8515590978361218,
+        "midpoint_alpha=0.5": 0.7192833292541166
+      },
+      "field_path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\statsbot_inputs\\v5b_distributions_and_gemma9b_t04_bootstrap.json::v5e_h4_distribution.{_alpha_values,values}",
+      "agreement": true,
+      "tolerance_used": "5e-3 abs",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 17,
+      "section": "sec.5.4",
+      "paper_cited_value": {
+        "r_knn_max": 0.4264,
+        "cell": "gemma_9b_q4_T=0.0"
+      },
+      "disk_value": {
+        "r_knn_max": 0.42639685454497583,
+        "cell": "v5b_distributions_and_gemma9b_t04_bootstrap.json::r_kNN",
+        "sources_checked": [
+          "cells.<>.measurements.{r_knn,R_knn,chain_R}",
+          "calibration/kraskov_anchor_p2/anchors.json::cells",
+          "statsbot_inputs/*.json"
+        ],
+        "anchor_cells_in_kraskov_file": [
+          "gemma_2b_q4_abliterated_t00",
+          "gemma_2b_q4_abliterated_t02",
+          "gemma_2b_q4_abliterated_t04",
+          "gemma_2b_q4_abliterated_t06",
+          "gemma_2b_q4_abliterated_t08",
+          "gemma_2b_q4_abliterated_t10",
+          "gemma_2b_fp16_abliterated_t00",
+          "gemma_2b_fp16_abliterated_t02",
+          "gemma_2b_fp16_abliterated_t04",
+          "gemma_2b_fp16_abliterated_t06",
+          "gemma_2b_fp16_abliterated_t08",
+          "gemma_2b_fp16_abliterated_t10",
+          "gemma_9b_q4_abliterated_t00",
+          "gemma_9b_q4_abliterated_t02",
+          "gemma_9b_q4_abliterated_t04",
+          "gemma_9b_q4_abliterated_t06",
+          "gemma_9b_q4_abliterated_t08",
+          "gemma_9b_q4_abliterated_t10",
+          "llama_8b_q4_abliterated_t00",
+          "llama_8b_q4_abliterated_t02",
+          "llama_8b_q4_abliterated_t04",
+          "llama_8b_q4_abliterated_t06",
+          "llama_8b_q4_abliterated_t08",
+          "llama_8b_q4_abliterated_t10"
+        ],
+        "has_gemma_9b_in_anchors": true
+      },
+      "field_path": "cells.<>.measurements.{r_knn,R_knn,chain_R}|calibration/kraskov_anchor_p2/anchors.json::cells|statsbot_inputs/*.json",
+      "agreement": false,
+      "tolerance_used": "5e-4 abs on max; gemma_9b + t00 substring",
+      "divergence_note": "statsbot_inputs files searched: ['fleet_h3_surface.json', 'follow_up_pulls.json', 'v5b_distributions_and_gemma9b_t04_bootstrap.json']"
+    },
+    {
+      "claim_id": 18,
+      "section": "sec.5.4",
+      "paper_cited_value": {
+        "ii_fraction_knn": 0.992106,
+        "mi_S": 74.18,
+        "mi_E": 64.31,
+        "mi_SE": 69.52
+      },
+      "disk_value": {
+        "redundancy_fraction_knn": 0.992106,
+        "mi_S": 74.177544,
+        "mi_E": 64.305705,
+        "mi_SE": 69.516015
+      },
+      "field_path": "cells[gemma_9b_4bit_abliterated_T0.4].measurements.{redundancy_fraction_knn,mi_S_knn,mi_E_knn,mi_SE_knn}",
+      "agreement": true,
+      "tolerance_used": "frac 5e-5; mi 5e-2",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 19,
+      "section": "sec.5.4",
+      "paper_cited_value": {
+        "spread_js": 0.095,
+        "am_gm_log_ratio_C": 0.2166,
+        "tau_spread": 0.032,
+        "tau_amgm": 0.036
+      },
+      "disk_value": {
+        "spread_js": 0.094977,
+        "am_gm_log_ratio_C": 0.216628,
+        "above_tau_spread": true,
+        "above_tau_amgm": true,
+        "source_file": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\statsbot_inputs\\follow_up_pulls.json",
+        "blocks_inspected": [
+          "gemma_9b_q4_t00_variance_spread_amgm"
+        ]
+      },
+      "field_path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\statsbot_inputs\\follow_up_pulls.json::gemma_9b_q4_t00_variance_spread_amgm.{spread_js,am_gm_log_ratio_C}",
+      "agreement": true,
+      "tolerance_used": "5e-4 abs",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 20,
+      "section": "sec.4 / App E",
+      "paper_cited_value": {
+        "pass": 14,
+        "fail": 10
+      },
+      "disk_value": {
+        "pass": 14,
+        "fail": 10,
+        "unevaluable": 0
+      },
+      "field_path": "computed: |estimator_joint_R2.ridge.heldout - mlp.heldout| <= 0.0154 across 24 cells",
+      "agreement": true,
+      "tolerance_used": "exact counts",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 21,
+      "section": "sec.4 / App E",
+      "paper_cited_value": {
+        "pass": 6,
+        "fail": 18
+      },
+      "disk_value": {
+        "pass": 6,
+        "fail": 18,
+        "unevaluable": 0
+      },
+      "field_path": "computed: |measurements.delta_r2_internal| < 0.05 across 24 cells",
+      "agreement": true,
+      "tolerance_used": "exact counts",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 22,
+      "section": "sec.4 / App E",
+      "paper_cited_value": {
+        "pass": 0,
+        "fail": 24,
+        "threshold": 0.05
+      },
+      "disk_value": {
+        "at_threshold_0.05": {
+          "pass": 0,
+          "fail": 24
+        },
+        "at_threshold_0.10": {
+          "pass": 0,
+          "fail": 24
+        },
+        "unevaluable": 0,
+        "apparatus_per_cell_threshold": 0.1
+      },
+      "field_path": "computed: |redundancy_fraction_linear| < 0.05 AND |redundancy_fraction_knn| < 0.05",
+      "agreement": true,
+      "tolerance_used": "exact counts at 0.05",
+      "divergence_note": "Apparatus uses 0.10 as per-cell threshold (results_builder.py:495); paper claims 0.05 threshold. Driver reports both. Agreement against 0.05."
+    },
+    {
+      "claim_id": 23,
+      "section": "sec.4 / App E",
+      "paper_cited_value": {
+        "pass": 4,
+        "inconclusive": 20
+      },
+      "disk_value": {
+        "pass": 4,
+        "inconclusive": 20,
+        "unevaluable": 0
+      },
+      "field_path": "computed: |rhat_ridge_insample - rhat_ridge_heldout| < 0.05",
+      "agreement": true,
+      "tolerance_used": "exact counts",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 24,
+      "section": "sec.4 / App E",
+      "paper_cited_value": {
+        "H1": "unevaluable_by_design",
+        "H4": "unevaluable_by_design",
+        "H5": "unevaluable_by_design",
+        "count_per_gate": 24
+      },
+      "disk_value": {
+        "fleet_size": 24,
+        "H1_note": "Cross-cell gate (rhat_ridge_spread_at_T*); per-cell pass/fail does not apply.",
+        "H4_note": "Synergy ratio gate; tau_H4 derived from V5e -- paper-side decision on threshold, not per-cell.",
+        "H5_note": "Hull-only-frac dominance is per-PHASE10-cell, not whole-fleet 24-cell."
+      },
+      "field_path": "computed: 24-cell fleet inventory + framing notes",
+      "agreement": true,
+      "tolerance_used": "fleet-size check",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 25,
+      "section": "sec.6 abstract",
+      "paper_cited_value": "> 0.84 on every cell",
+      "disk_value": {
+        "min": 0.843054,
+        "min_cell": "llama_8b_4bit_abliterated_T1.0",
+        "min_estimator": "ridge",
+        "n_estimator_cells": 96
+      },
+      "field_path": "cells[*].measurements.estimator_joint_R2.{ridge,mlp,rf,rkhs_median}.heldout",
+      "agreement": true,
+      "tolerance_used": "> 0.84",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 26,
+      "section": "sec.6 abstract",
+      "paper_cited_value": "All 6 PHASE10_SUBSET cells: cross_frac negative",
+      "disk_value": {
+        "per_cell": {
+          "gemma_2b_q4_abliterated_t00": -5.144343390680406,
+          "gemma_2b_q4_abliterated_t06": -0.5691692796505736,
+          "gemma_2b_fp16_abliterated_t00": -1.0259675691111811,
+          "gemma_2b_fp16_abliterated_t10": -0.34717803494873667,
+          "gemma_9b_q4_abliterated_t00": -0.27362700065682716,
+          "llama_8b_q4_abliterated_t00": -0.2890643745392774
+        },
+        "n_negative": 6,
+        "n_present": 6,
+        "sources_tried": [
+          "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\calibration\\geometric_diagnostics_p2\\per_cell.json"
+        ]
+      },
+      "field_path": "data/paper/calibration/geometric_diagnostics_p2/per_cell.json::cells.<cell>.cross_frac",
+      "agreement": true,
+      "tolerance_used": "sign check (cross_frac < 0)",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 27,
+      "section": "sec.3.1",
+      "paper_cited_value": "24 cells with substrate inventory",
+      "disk_value": {
+        "total_npy_files": 5086554,
+        "n_substrate_dirs_total": 75,
+        "n_abliterated_substrate_dirs": 25,
+        "sample_inventory": {
+          "gemma/2b_4bit/abliterated/deterministic": 153032,
+          "gemma/2b_4bit/abliterated/temp_0.2": 153032,
+          "gemma/2b_4bit/abliterated/temp_0.4": 153032,
+          "gemma/2b_4bit/abliterated/temp_0.6": 153032,
+          "gemma/2b_4bit/abliterated/temp_0.8": 153032,
+          "gemma/2b_4bit/abliterated/temp_1.0": 153032,
+          "gemma/2b_8bit/abliterated/deterministic": 108202,
+          "gemma/2b_fp16/abliterated/deterministic": 152902,
+          "gemma/2b_fp16/abliterated/temp_0.2": 152902,
+          "gemma/2b_fp16/abliterated/temp_0.4": 152902
+        },
+        "note": "filenames use Q0022_<model>_trial<N>_turn<T>.npy convention"
+      },
+      "field_path": "walk: data/{family}/{variant}/abliterated/<sampling>/hidden_states/*.npy",
+      "agreement": true,
+      "tolerance_used": "total_npy > 100000 AND >=4 abliterated variant/sampling combos",
+      "divergence_note": ""
+    },
+    {
+      "claim_id": 28,
+      "section": "sec.3.1",
+      "paper_cited_value": "Run 0016 part 2 instruct substrate present alongside abliterated; consumed by Item 12 c_definition_comparison",
+      "disk_value": {
+        "n_instruct_substrate_dirs": 25,
+        "total_instruct_npy_files": 617500,
+        "sample_inventory": {
+          "gemma\\2b_4bit\\instruct\\deterministic\\hidden_states": 24700,
+          "gemma\\2b_4bit\\instruct\\temp_0.2\\hidden_states": 24700,
+          "gemma\\2b_4bit\\instruct\\temp_0.4\\hidden_states": 24700,
+          "gemma\\2b_4bit\\instruct\\temp_0.6\\hidden_states": 24700,
+          "gemma\\2b_4bit\\instruct\\temp_0.8\\hidden_states": 24700,
+          "gemma\\2b_4bit\\instruct\\temp_1.0\\hidden_states": 24700,
+          "gemma\\2b_8bit\\instruct\\deterministic\\hidden_states": 24700,
+          "gemma\\2b_fp16\\instruct\\deterministic\\hidden_states": 24700,
+          "gemma\\2b_fp16\\instruct\\temp_0.2\\hidden_states": 24700,
+          "gemma\\2b_fp16\\instruct\\temp_0.4\\hidden_states": 24700
+        }
+      },
+      "field_path": "walk: data/{family}/{variant}/.../instruct/.../hidden_states/*.npy",
+      "agreement": true,
+      "tolerance_used": "presence (>=1 instruct substrate dir)",
+      "divergence_note": ""
+    }
+  ]
+}

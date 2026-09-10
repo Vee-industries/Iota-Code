@@ -1,0 +1,217 @@
+{
+  "phase": "statsbot_followup_pulls",
+  "iota_version": "0.82.0.26",
+  "timestamp": "2026-05-07T19:59:00Z",
+  "description": "Three follow-up pulls for statsbot third-pass instantiation.",
+  "v5b_h3_raw_values": {
+    "values": [
+      0.005699999999999927,
+      0.010299999999999976,
+      0.01539999999999997,
+      0.011200000000000099
+    ],
+    "config_labels": [
+      "E-dominant",
+      "balanced",
+      "S-dominant",
+      "strong-S"
+    ],
+    "definition": "h_3 = |R2_Ridge_heldout - R2_MLP_heldout| per V5b config",
+    "_source": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\calibration\\v5\\v5_calibration_results.json",
+    "_per_config": [
+      {
+        "config": "E-dominant",
+        "a_scale": 0.2,
+        "b_scale": 0.8,
+        "R2_ridge_heldout": 0.8572,
+        "R2_mlp_heldout": 0.8515,
+        "h3": 0.005699999999999927
+      },
+      {
+        "config": "balanced",
+        "a_scale": 0.5,
+        "b_scale": 0.5,
+        "R2_ridge_heldout": 0.7822,
+        "R2_mlp_heldout": 0.7719,
+        "h3": 0.010299999999999976
+      },
+      {
+        "config": "S-dominant",
+        "a_scale": 0.8,
+        "b_scale": 0.2,
+        "R2_ridge_heldout": 0.6944,
+        "R2_mlp_heldout": 0.679,
+        "h3": 0.01539999999999997
+      },
+      {
+        "config": "strong-S",
+        "a_scale": 0.95,
+        "b_scale": 0.1,
+        "R2_ridge_heldout": 0.7899,
+        "R2_mlp_heldout": 0.7787,
+        "h3": 0.011200000000000099
+      }
+    ]
+  },
+  "fleet_h3_per_cell": {
+    "cells": [
+      {
+        "cell_label": "gemma_2b_q4_abliterated_t00",
+        "r2_ridge_heldout": 0.9997490644454956,
+        "r2_mlp_heldout": 0.9994958639144897,
+        "h3": 0.0002532005310058594
+      },
+      {
+        "cell_label": "gemma_2b_q4_abliterated_t02",
+        "r2_ridge_heldout": 0.9997825622558594,
+        "r2_mlp_heldout": 0.9989463686943054,
+        "h3": 0.0008361935615539551
+      },
+      {
+        "cell_label": "gemma_2b_q4_abliterated_t04",
+        "r2_ridge_heldout": 0.99900221824646,
+        "r2_mlp_heldout": 0.9973501563072205,
+        "h3": 0.001652061939239502
+      },
+      {
+        "cell_label": "gemma_2b_q4_abliterated_t06",
+        "r2_ridge_heldout": 0.9913584589958191,
+        "r2_mlp_heldout": 0.9979116916656494,
+        "h3": 0.006553232669830322
+      },
+      {
+        "cell_label": "gemma_2b_q4_abliterated_t08",
+        "r2_ridge_heldout": 0.9907875657081604,
+        "r2_mlp_heldout": 0.9951252341270447,
+        "h3": 0.004337668418884277
+      },
+      {
+        "cell_label": "gemma_2b_q4_abliterated_t10",
+        "r2_ridge_heldout": 0.9848116636276245,
+        "r2_mlp_heldout": 0.993475615978241,
+        "h3": 0.008663952350616455
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_t00",
+        "r2_ridge_heldout": 0.9979231953620911,
+        "r2_mlp_heldout": 0.9990390539169312,
+        "h3": 0.0011158585548400879
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_t02",
+        "r2_ridge_heldout": 0.992575466632843,
+        "r2_mlp_heldout": 0.9985513091087341,
+        "h3": 0.005975842475891113
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_t04",
+        "r2_ridge_heldout": 0.9697154760360718,
+        "r2_mlp_heldout": 0.9945324063301086,
+        "h3": 0.024816930294036865
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_t06",
+        "r2_ridge_heldout": 0.9857035875320435,
+        "r2_mlp_heldout": 0.996150016784668,
+        "h3": 0.010446429252624512
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_t08",
+        "r2_ridge_heldout": 0.9421367645263672,
+        "r2_mlp_heldout": 0.9935982823371887,
+        "h3": 0.05146151781082153
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_t10",
+        "r2_ridge_heldout": 0.9883168935775757,
+        "r2_mlp_heldout": 0.9929439425468445,
+        "h3": 0.004627048969268799
+      },
+      {
+        "cell_label": "gemma_9b_q4_abliterated_t00",
+        "r2_ridge_heldout": 0.9987044930458069,
+        "r2_mlp_heldout": 0.9961433410644531,
+        "h3": 0.0025611519813537598
+      },
+      {
+        "cell_label": "gemma_9b_q4_abliterated_t02",
+        "r2_ridge_heldout": 0.9717681407928467,
+        "r2_mlp_heldout": 0.9941315650939941,
+        "h3": 0.02236342430114746
+      },
+      {
+        "cell_label": "gemma_9b_q4_abliterated_t04",
+        "r2_ridge_heldout": 0.9857811331748962,
+        "r2_mlp_heldout": 0.9919530749320984,
+        "h3": 0.0061719417572021484
+      },
+      {
+        "cell_label": "gemma_9b_q4_abliterated_t06",
+        "r2_ridge_heldout": 0.976902186870575,
+        "r2_mlp_heldout": 0.987724244594574,
+        "h3": 0.010822057723999023
+      },
+      {
+        "cell_label": "gemma_9b_q4_abliterated_t08",
+        "r2_ridge_heldout": 0.9672068357467651,
+        "r2_mlp_heldout": 0.9861855506896973,
+        "h3": 0.01897871494293213
+      },
+      {
+        "cell_label": "gemma_9b_q4_abliterated_t10",
+        "r2_ridge_heldout": 0.9594351053237915,
+        "r2_mlp_heldout": 0.979453980922699,
+        "h3": 0.02001887559890747
+      },
+      {
+        "cell_label": "llama_8b_q4_abliterated_t00",
+        "r2_ridge_heldout": 0.9977371096611023,
+        "r2_mlp_heldout": 0.9824963808059692,
+        "h3": 0.015240728855133057
+      },
+      {
+        "cell_label": "llama_8b_q4_abliterated_t02",
+        "r2_ridge_heldout": 0.8879337310791016,
+        "r2_mlp_heldout": 0.9539087414741516,
+        "h3": 0.06597501039505005
+      },
+      {
+        "cell_label": "llama_8b_q4_abliterated_t04",
+        "r2_ridge_heldout": 0.8684653639793396,
+        "r2_mlp_heldout": 0.96463543176651,
+        "h3": 0.09617006778717041
+      },
+      {
+        "cell_label": "llama_8b_q4_abliterated_t06",
+        "r2_ridge_heldout": 0.8582888245582581,
+        "r2_mlp_heldout": 0.9632575511932373,
+        "h3": 0.10496872663497925
+      },
+      {
+        "cell_label": "llama_8b_q4_abliterated_t08",
+        "r2_ridge_heldout": 0.8495168089866638,
+        "r2_mlp_heldout": 0.9593074321746826,
+        "h3": 0.1097906231880188
+      },
+      {
+        "cell_label": "llama_8b_q4_abliterated_t10",
+        "r2_ridge_heldout": 0.843054473400116,
+        "r2_mlp_heldout": 0.9615764617919922,
+        "h3": 0.11852198839187622
+      }
+    ],
+    "n_cells": 24,
+    "definition": "h_3 = |R2_Ridge_heldout - R2_MLP_heldout| per fleet cell",
+    "_source": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\calibration\\estimator_joint_R2_p2\\per_cell.json",
+    "_skipped": []
+  },
+  "gemma_9b_q4_t00_variance_spread_amgm": {
+    "spread_js": 0.094977,
+    "am_gm_log_ratio_C": 0.216628,
+    "_field_names_in_apparatus": {
+      "spread_js": "top-level in bayesian-solver per-cell output",
+      "am_gm_log_ratio_C": "under solver_diagnostics"
+    },
+    "_source_path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\results4th.json :: cross_cell_aggregates.apparatus.phase5_aggregator.cells.gemma_9b_q4_abliterated_t00"
+  }
+}

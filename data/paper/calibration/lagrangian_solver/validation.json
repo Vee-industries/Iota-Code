@@ -1,0 +1,83 @@
+{
+  "tier1": {
+    "tier": 1,
+    "passed": true,
+    "max_error": 0.0,
+    "tolerance": 1e-08
+  },
+  "tier2": {
+    "tier": 2,
+    "passed": true,
+    "max_error": 1.1102230246251565e-16,
+    "tolerance": 1e-08,
+    "per_lambda": [
+      {
+        "lambda": 0,
+        "max_error": 0.0
+      },
+      {
+        "lambda": 0.1,
+        "max_error": 5.551115123125783e-17
+      },
+      {
+        "lambda": 1.0,
+        "max_error": 1.1102230246251565e-16
+      },
+      {
+        "lambda": 10.0,
+        "max_error": 5.551115123125783e-17
+      },
+      {
+        "lambda": 100.0,
+        "max_error": 2.7755575615628914e-17
+      }
+    ]
+  },
+  "tier3": {
+    "tier": 3,
+    "passed": true,
+    "max_error": 0.0,
+    "tolerance": 1e-08,
+    "per_lambda": [
+      {
+        "lambda": 0.1,
+        "max_error": 0.0
+      },
+      {
+        "lambda": 1.0,
+        "max_error": 0.0
+      },
+      {
+        "lambda": 10.0,
+        "max_error": 0.0
+      }
+    ]
+  },
+  "mirror_descent_check": {
+    "tier": "mirror_descent",
+    "passed": true,
+    "max_error": 1.5188986457470577e-08,
+    "tolerance": 1e-06,
+    "per_lambda": [
+      {
+        "lambda": 0.1,
+        "max_error": 1.5051945301269853e-08,
+        "n_iterations": 24
+      },
+      {
+        "lambda": 1.0,
+        "max_error": 1.5188986457470577e-08,
+        "n_iterations": 24
+      },
+      {
+        "lambda": 10.0,
+        "max_error": 1.907490609909246e-09,
+        "n_iterations": 27
+      }
+    ]
+  },
+  "all_tiers_pass": true,
+  "phase": "phase2_solver_module",
+  "iota_version": "0.82.0.23",
+  "timestamp": "2026-05-17T18:28:13.795634Z"
+}

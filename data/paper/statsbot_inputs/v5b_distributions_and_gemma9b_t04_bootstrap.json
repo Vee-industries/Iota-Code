@@ -1,0 +1,655 @@
+{
+  "phase": "statsbot_inputs",
+  "iota_version": "0.82.0.26",
+  "timestamp": "2026-05-07T18:33:03Z",
+  "description": "Side-file for statsbot H3 / H4 / V5d-boundary derivations. Pulls 1, 2 (V5b), 2b (V5e), 2c (V5d), 3, 4 implemented. V5e/V5d use plug-in MI; V5b uses KSG.",
+  "v5b_h3_distribution": {
+    "values": [
+      0.005699999999999927,
+      0.010299999999999976,
+      0.01539999999999997,
+      0.011200000000000099
+    ],
+    "n_configs": 4,
+    "per_config_N": 20000,
+    "definition": "h_i = |R2_Ridge_i - R2_MLP_i| per V5b config",
+    "_source": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\calibration\\v5\\v5_calibration_results.json",
+    "_per_config_records": [
+      {
+        "config": "E-dominant",
+        "a_scale": 0.2,
+        "b_scale": 0.8,
+        "R2_ridge": 0.8572,
+        "R2_mlp": 0.8515,
+        "h3": 0.005699999999999927
+      },
+      {
+        "config": "balanced",
+        "a_scale": 0.5,
+        "b_scale": 0.5,
+        "R2_ridge": 0.7822,
+        "R2_mlp": 0.7719,
+        "h3": 0.010299999999999976
+      },
+      {
+        "config": "S-dominant",
+        "a_scale": 0.8,
+        "b_scale": 0.2,
+        "R2_ridge": 0.6944,
+        "R2_mlp": 0.679,
+        "h3": 0.01539999999999997
+      },
+      {
+        "config": "strong-S",
+        "a_scale": 0.95,
+        "b_scale": 0.1,
+        "R2_ridge": 0.7899,
+        "R2_mlp": 0.7787,
+        "h3": 0.011200000000000099
+      }
+    ],
+    "_note": "Only 4 configs on disk per existing run_v5b(). Statsbot may need extended grid; if so, reuse the Pull 2 extended grid configs and rerun ridge/MLP estimation on those."
+  },
+  "v5b_h4_distribution": {
+    "values": [
+      2.3597574499264757e-06,
+      1.2011004829921831e-06,
+      1.5240694149685954e-07,
+      2.204873998954321e-07,
+      -3.197229541108422e-07,
+      1.0660565186091902e-07,
+      1.888880815145195e-07,
+      2.318865301061682e-06,
+      -8.592596818817002e-07,
+      -1.5666421826357117e-06,
+      5.928981565987543e-07,
+      -5.449959926489715e-07,
+      1.359096788693649e-06,
+      3.901679231338389e-08,
+      -1.123501227613432e-06,
+      1.2922419429891856e-06,
+      -5.520300574043397e-07,
+      1.9098392869692763e-07,
+      2.160625311482284e-07,
+      -1.7782805319928264e-08,
+      1.6164473115487933e-08,
+      2.6501252858689984e-07,
+      4.975173898914303e-07,
+      -2.1096511139799555e-07
+    ],
+    "n_configs": 24,
+    "per_config_N": 20000,
+    "definition": "r_i = II_i / I_total_i where II = I(S_next; S_prev, E_t) - I(S_next; S_prev) - I(S_next; E_t) and I_total = I(S_next; S_prev, E_t)",
+    "_grid_definition": "a_scale in linspace(0.05, 0.95, 21) with b_scale = 1 - a_scale, plus 4 original run_v5b() configs (E-dominant 0.2/0.8, balanced 0.5/0.5, S-dominant 0.8/0.2, strong-S 0.95/0.1) where not already in grid",
+    "_estimator": "_kraskov_mi from run_kraskov_anchor.py (sklearn mutual_info_regression, k=5, PCA dim=32, seed=42)",
+    "_per_config_records": [
+      {
+        "a_scale": 0.05,
+        "b_scale": 0.95,
+        "mi_E": 4.38416674596544,
+        "mi_S": 0.13282406611793185,
+        "mi_joint": 4.517001471111245,
+        "II": 1.065902787278361e-05,
+        "I_total": 4.517001471111245,
+        "ratio": 2.3597574499264757e-06,
+        "wall_s": 24.774094820022583
+      },
+      {
+        "a_scale": 0.095,
+        "b_scale": 0.905,
+        "mi_E": 4.297305488696721,
+        "mi_S": 0.16996208484882747,
+        "mi_joint": 4.467272939189233,
+        "II": 5.365643684918098e-06,
+        "I_total": 4.467272939189233,
+        "ratio": 1.2011004829921831e-06,
+        "wall_s": 23.660465955734253
+      },
+      {
+        "a_scale": 0.14,
+        "b_scale": 0.86,
+        "mi_E": 4.175909584687173,
+        "mi_S": 0.18360869959879622,
+        "mi_joint": 4.359518948706919,
+        "II": 6.644209493700259e-07,
+        "I_total": 4.359518948706919,
+        "ratio": 1.5240694149685954e-07,
+        "wall_s": 23.122466564178467
+      },
+      {
+        "a_scale": 0.185,
+        "b_scale": 0.815,
+        "mi_E": 4.088688236561753,
+        "mi_S": 0.2819471951474579,
+        "mi_joint": 4.370636395379465,
+        "II": 9.63670254705562e-07,
+        "I_total": 4.370636395379465,
+        "ratio": 2.204873998954321e-07,
+        "wall_s": 23.815463304519653
+      },
+      {
+        "a_scale": 0.22999999999999998,
+        "b_scale": 0.77,
+        "mi_E": 3.8563525972138635,
+        "mi_S": 0.3788440493322751,
+        "mi_joint": 4.2351952924569884,
+        "II": -1.3540891501406804e-06,
+        "I_total": 4.2351952924569884,
+        "ratio": -3.197229541108422e-07,
+        "wall_s": 23.22928762435913
+      },
+      {
+        "a_scale": 0.27499999999999997,
+        "b_scale": 0.725,
+        "mi_E": 3.7216893845948773,
+        "mi_S": 0.45512675396873004,
+        "mi_joint": 4.176816583835862,
+        "II": 4.45272254623319e-07,
+        "I_total": 4.176816583835862,
+        "ratio": 1.0660565186091902e-07,
+        "wall_s": 23.154160976409912
+      },
+      {
+        "a_scale": 0.32,
+        "b_scale": 0.68,
+        "mi_E": 3.4478376454379607,
+        "mi_S": 0.6123695824947202,
+        "mi_joint": 4.0602079948575795,
+        "II": 7.669248986985622e-07,
+        "I_total": 4.0602079948575795,
+        "ratio": 1.888880815145195e-07,
+        "wall_s": 24.047126531600952
+      },
+      {
+        "a_scale": 0.365,
+        "b_scale": 0.635,
+        "mi_E": 3.2873595626826164,
+        "mi_S": 0.7486038424752355,
+        "mi_joint": 4.0359727640350505,
+        "II": 9.358877198550886e-06,
+        "I_total": 4.0359727640350505,
+        "ratio": 2.318865301061682e-06,
+        "wall_s": 22.86653757095337
+      },
+      {
+        "a_scale": 0.41,
+        "b_scale": 0.59,
+        "mi_E": 3.0917998169654908,
+        "mi_S": 0.8690944389675659,
+        "mi_joint": 3.9608908524992428,
+        "II": -3.403433813886636e-06,
+        "I_total": 3.9608908524992428,
+        "ratio": -8.592596818817002e-07,
+        "wall_s": 22.718571186065674
+      },
+      {
+        "a_scale": 0.45499999999999996,
+        "b_scale": 0.545,
+        "mi_E": 2.7997820271928333,
+        "mi_S": 1.142606555995874,
+        "mi_joint": 3.9423824068861286,
+        "II": -6.1763025787087145e-06,
+        "I_total": 3.9423824068861286,
+        "ratio": -1.5666421826357117e-06,
+        "wall_s": 22.91228222846985
+      },
+      {
+        "a_scale": 0.49999999999999994,
+        "b_scale": 0.5,
+        "mi_E": 2.562126701701179,
+        "mi_S": 1.305563669802308,
+        "mi_joint": 3.8676926646513383,
+        "II": 2.2931478511623027e-06,
+        "I_total": 3.8676926646513383,
+        "ratio": 5.928981565987543e-07,
+        "wall_s": 22.70307683944702
+      },
+      {
+        "a_scale": 0.545,
+        "b_scale": 0.455,
+        "mi_E": 2.3128263152511357,
+        "mi_S": 1.5034982198669855,
+        "mi_joint": 3.8163224552376764,
+        "II": -2.0798804447608177e-06,
+        "I_total": 3.8163224552376764,
+        "ratio": -5.449959926489715e-07,
+        "wall_s": 23.6617693901062
+      },
+      {
+        "a_scale": 0.5900000000000001,
+        "b_scale": 0.41,
+        "mi_E": 2.0286224848109535,
+        "mi_S": 1.6781812714915505,
+        "mi_joint": 3.7068087942144325,
+        "II": 5.037911928518213e-06,
+        "I_total": 3.7068087942144325,
+        "ratio": 1.359096788693649e-06,
+        "wall_s": 23.39067244529724
+      },
+      {
+        "a_scale": 0.635,
+        "b_scale": 0.365,
+        "mi_E": 1.6850714595543144,
+        "mi_S": 1.9172654620172693,
+        "mi_joint": 3.6023370621232207,
+        "II": 1.405516369956672e-07,
+        "I_total": 3.6023370621232207,
+        "ratio": 3.901679231338389e-08,
+        "wall_s": 22.932748794555664
+      },
+      {
+        "a_scale": 0.68,
+        "b_scale": 0.32,
+        "mi_E": 1.4565689141737916,
+        "mi_S": 2.2197298084269557,
+        "mi_joint": 3.67629459227926,
+        "II": -4.1303214874943706e-06,
+        "I_total": 3.67629459227926,
+        "ratio": -1.123501227613432e-06,
+        "wall_s": 23.03544807434082
+      },
+      {
+        "a_scale": 0.725,
+        "b_scale": 0.275,
+        "mi_E": 1.0667541976208614,
+        "mi_S": 2.5001664619617694,
+        "mi_joint": 3.566925268913071,
+        "II": 4.60933043999745e-06,
+        "I_total": 3.566925268913071,
+        "ratio": 1.2922419429891856e-06,
+        "wall_s": 23.882691144943237
+      },
+      {
+        "a_scale": 0.77,
+        "b_scale": 0.23,
+        "mi_E": 0.8399036649224794,
+        "mi_S": 2.931747763030341,
+        "mi_joint": 3.7716493458890152,
+        "II": -2.0820638049201534e-06,
+        "I_total": 3.7716493458890152,
+        "ratio": -5.520300574043397e-07,
+        "wall_s": 23.949557065963745
+      },
+      {
+        "a_scale": 0.8150000000000001,
+        "b_scale": 0.185,
+        "mi_E": 0.5194231196023642,
+        "mi_S": 3.5031891256966663,
+        "mi_joint": 4.0226130135534675,
+        "II": 7.682544369558286e-07,
+        "I_total": 4.0226130135534675,
+        "ratio": 1.9098392869692763e-07,
+        "wall_s": 23.06325078010559
+      },
+      {
+        "a_scale": 0.86,
+        "b_scale": 0.14,
+        "mi_E": 0.3341740845684562,
+        "mi_S": 4.241115279675093,
+        "mi_joint": 4.575290352792363,
+        "II": 9.885488143623888e-07,
+        "I_total": 4.575290352792363,
+        "ratio": 2.160625311482284e-07,
+        "wall_s": 22.981477737426758
+      },
+      {
+        "a_scale": 0.905,
+        "b_scale": 0.095,
+        "mi_E": 0.21779528031286066,
+        "mi_S": 5.064749270903832,
+        "mi_joint": 5.282544457278233,
+        "II": -9.393845967764491e-08,
+        "I_total": 5.282544457278233,
+        "ratio": -1.7782805319928264e-08,
+        "wall_s": 23.91296124458313
+      },
+      {
+        "a_scale": 0.95,
+        "b_scale": 0.05,
+        "mi_E": 0.127965422401199,
+        "mi_S": 6.208576788949188,
+        "mi_joint": 6.3365423137772545,
+        "II": 1.0242686787620414e-07,
+        "I_total": 6.3365423137772545,
+        "ratio": 1.6164473115487933e-08,
+        "wall_s": 23.51042628288269
+      },
+      {
+        "a_scale": 0.2,
+        "b_scale": 0.8,
+        "mi_E": 4.012709570575798,
+        "mi_S": 0.3017464198995512,
+        "mi_joint": 4.314457133860544,
+        "II": 1.1433851945241713e-06,
+        "I_total": 4.314457133860544,
+        "ratio": 2.6501252858689984e-07,
+        "wall_s": 23.399351119995117
+      },
+      {
+        "a_scale": 0.8,
+        "b_scale": 0.2,
+        "mi_E": 0.6580310913774836,
+        "mi_S": 3.3279187946233897,
+        "mi_joint": 3.9859518690812434,
+        "II": 1.9830803701381683e-06,
+        "I_total": 3.9859518690812434,
+        "ratio": 4.975173898914303e-07,
+        "wall_s": 23.34602975845337
+      },
+      {
+        "a_scale": 0.95,
+        "b_scale": 0.1,
+        "mi_E": 0.22229634406557075,
+        "mi_S": 6.1669618909501835,
+        "mi_joint": 6.389256887105463,
+        "II": -1.3479102909386143e-06,
+        "I_total": 6.389256887105463,
+        "ratio": -2.1096511139799555e-07,
+        "wall_s": 23.25352668762207
+      }
+    ],
+    "_total_wall_s": 561.3294501304626,
+    "_note": "Note on II sign: with KSG bias, II can come out slightly negative even for theoretically zero-synergy systems. Statsbot interpreting the distribution should account for this. Original run_v5b configs (anti-correlated a/b axis) should sit in the lower portion; doubly-driven mid-range configs should give the higher II/I_total values."
+  },
+  "gemma_9b_q4_t04_variance_spread_amgm": {
+    "spread": 0.02894,
+    "amgm": 0.045555,
+    "_field_names_in_apparatus": {
+      "spread": "spread_js (top-level in bayesian-solver per-cell output)",
+      "amgm": "am_gm_log_ratio_C (under solver_diagnostics)"
+    },
+    "_source_path": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\results4th.json :: cross_cell_aggregates.apparatus.phase5_aggregator.cells.gemma_9b_q4_abliterated_t04",
+    "_writerbot_label_to_apparatus_field": {
+      "variance_spread": "spread_js",
+      "amgm": "am_gm_log_ratio_C"
+    }
+  },
+  "gemma_9b_q4_t04_bootstrap": {
+    "canonical_field": "p_anchor[2] (R_kNN) from data/paper/calibration/kraskov_anchor_p2/anchors.json",
+    "fleet_n": 24,
+    "max_r_kNN": 0.42639685454497583,
+    "max_r_kNN_cell": "gemma_9b_q4_abliterated_t00",
+    "max_r_kNN_p_anchor": [
+      0.43150124560846015,
+      0.14210189984656404,
+      0.42639685454497583
+    ],
+    "d3_framing": "reframed_no_v5d_contamination",
+    "d3_action": "no_bootstrap_needed",
+    "narrative": "Maximum R_kNN across the 24-cell fleet is 0.4264 on gemma_9b_q4_abliterated_t00, far below the V5d saturation boundary at 1.0. The empirical fleet is uncontaminated by the V5d failure mode: no cell sits in or near the pure-synergy regime where the apparatus would lose discriminative power. D3 closing statement reduces to this saturation-distance argument; no per-cell bootstrap CI is required.",
+    "_fleet_top_5": [
+      {
+        "cell": "gemma_9b_q4_abliterated_t00",
+        "p_anchor": [
+          0.43150124560846015,
+          0.14210189984656404,
+          0.42639685454497583
+        ],
+        "r_kNN": 0.42639685454497583,
+        "mi_E_raw": 4313.0974892173945,
+        "mi_S_raw": 4262.076231448246
+      },
+      {
+        "cell": "gemma_2b_q4_abliterated_t00",
+        "p_anchor": [
+          0.4100710390780562,
+          0.1795215549564322,
+          0.4104074059655118
+        ],
+        "r_kNN": 0.4104074059655118,
+        "mi_E_raw": 4261.268100278205,
+        "mi_S_raw": 4264.763469009259
+      },
+      {
+        "cell": "gemma_9b_q4_abliterated_t02",
+        "p_anchor": [
+          0.41312949153414424,
+          0.17909883324431514,
+          0.4077716752215407
+        ],
+        "r_kNN": 0.4077716752215407,
+        "mi_E_raw": 4350.603345879384,
+        "mi_S_raw": 4294.181003602002
+      },
+      {
+        "cell": "gemma_2b_fp16_abliterated_t02",
+        "p_anchor": [
+          0.4034512086893863,
+          0.1938694866655135,
+          0.4026793046451002
+        ],
+        "r_kNN": 0.4026793046451002,
+        "mi_E_raw": 4256.678035706754,
+        "mi_S_raw": 4248.533935701057
+      },
+      {
+        "cell": "gemma_2b_q4_abliterated_t02",
+        "p_anchor": [
+          0.4001282365059057,
+          0.2002433635944718,
+          0.39962839989962257
+        ],
+        "r_kNN": 0.39962839989962257,
+        "mi_E_raw": 4286.55936413012,
+        "mi_S_raw": 4281.204632597281
+      }
+    ],
+    "_fleet_distribution": {
+      "min": 0.3637287728902865,
+      "p25": 0.37390529544593565,
+      "median": 0.3917158994957722,
+      "p75": 0.3992802606941509,
+      "max": 0.42639685454497583
+    },
+    "_field_path_decision_rationale": "p_anchor[2] (R_kNN) from kraskov_anchor_p2 is the apparatus's headline pure-kNN-MI synergy share. q_star is the post-Bayesian solver result that combines p_anchor with p_classes (Ridge/MLP/RF/RKHS), so q_star is not a pure kNN-MI quantity. R_kNN is."
+  },
+  "v5e_h4_distribution": {
+    "values": [
+      0.24187330751915326,
+      0.285143288387321,
+      0.5870075606721115,
+      0.8515590978361218,
+      0.9750380180421672,
+      0.9999870215574915
+    ],
+    "n_configs": 6,
+    "per_config_N": 100000,
+    "definition": "r_alpha = II / I_total under PLUG-IN MI on discrete (S, E, Y) distribution, V5e at alpha",
+    "_alpha_values": [
+      0.0,
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "_per_alpha_records": [
+      {
+        "mi_E": 0.13148416267792634,
+        "mi_S": 0.1322704066159264,
+        "mi_joint": 0.34790302453374733,
+        "II": 0.08414845523989459,
+        "I_total": 0.34790302453374733,
+        "ratio": 0.24187330751915326,
+        "n_samples": 100000,
+        "alpha": 0.0,
+        "wall_s": 0.05753302574157715
+      },
+      {
+        "mi_E": 0.08245252575958312,
+        "mi_S": 0.08389278444766886,
+        "mi_joint": 0.2326974168459379,
+        "II": 0.06635210663868592,
+        "I_total": 0.2326974168459379,
+        "ratio": 0.285143288387321,
+        "n_samples": 100000,
+        "alpha": 0.2,
+        "wall_s": 0.05377674102783203
+      },
+      {
+        "mi_E": 0.04428164734830809,
+        "mi_S": 0.04598952243362933,
+        "mi_joint": 0.21857826242254305,
+        "II": 0.12830709264060564,
+        "I_total": 0.21857826242254305,
+        "ratio": 0.5870075606721115,
+        "n_samples": 100000,
+        "alpha": 0.4,
+        "wall_s": 0.047583580017089844
+      },
+      {
+        "mi_E": 0.019596085197715878,
+        "mi_S": 0.02106247632419772,
+        "mi_joint": 0.2739040313634493,
+        "II": 0.2332454698415357,
+        "I_total": 0.2739040313634493,
+        "ratio": 0.8515590978361218,
+        "n_samples": 100000,
+        "alpha": 0.6,
+        "wall_s": 0.05046367645263672
+      },
+      {
+        "mi_E": 0.00517810249464094,
+        "mi_S": 0.004912066222402416,
+        "mi_joint": 0.40422145701764667,
+        "II": 0.3941312883006033,
+        "I_total": 0.40422145701764667,
+        "ratio": 0.9750380180421672,
+        "n_samples": 100000,
+        "alpha": 0.8,
+        "wall_s": 0.043462276458740234
+      },
+      {
+        "mi_E": 8.181443976877948e-06,
+        "mi_S": 8.14421987287259e-07,
+        "mi_joint": 0.6931391003381819,
+        "II": 0.6931301044722178,
+        "I_total": 0.6931391003381819,
+        "ratio": 0.9999870215574915,
+        "n_samples": 100000,
+        "alpha": 1.0,
+        "wall_s": 0.03843832015991211
+      }
+    ],
+    "_estimator": "Plug-in MI on discrete joint counts (NOT KSG -- KSG fails on binary inputs)",
+    "_methodology_note": "V5e uses binary {0, 1} integer inputs. The apparatus's _kraskov_mi (sklearn mutual_info_regression with PCA + KSG nearest neighbors) structurally underestimates joint MI for synergistic relationships on binary data, because nearest-neighbor distances do not reflect XOR-style structure. Plug-in MI on the empirical joint distribution is exact for V5e's finitely-supported distribution. V5b stays KSG (continuous data, KSG works). The empirical fleet uses R_kNN (marginal-MI-share, a different quantity than II/I_total), so the plug-in/KSG split does not introduce a fleet-vs-calibration inconsistency.",
+    "_ksg_diagnostic": {
+      "values": [
+        -0.0035815359178481333,
+        -0.06803031585777394,
+        -0.1526025258942383,
+        0.1256123037670938,
+        -0.2353387963941748,
+        0.5940284795319222
+      ],
+      "n_configs": 6,
+      "per_config_N": 20000,
+      "definition": "r_alpha = II / I_total under KSG, V5e linear/XOR mixture at alpha",
+      "_alpha_values": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0
+      ],
+      "_per_alpha_records": [
+        {
+          "alpha": 0.0,
+          "mi_E": 0.136361861145037,
+          "mi_S": 0.13066980916969761,
+          "mi_joint": 0.2660786998940896,
+          "II": -0.0009529704206450162,
+          "I_total": 0.2660786998940896,
+          "ratio": -0.0035815359178481333,
+          "wall_s": 5.216768026351929
+        },
+        {
+          "alpha": 0.2,
+          "mi_E": 0.08534770087012422,
+          "mi_S": 0.09274673338502648,
+          "mi_joint": 0.1667503549392384,
+          "II": -0.011344079315912303,
+          "I_total": 0.1667503549392384,
+          "ratio": -0.06803031585777394,
+          "wall_s": 0.35631370544433594
+        },
+        {
+          "alpha": 0.4,
+          "mi_E": 0.05038220706646879,
+          "mi_S": 0.051225779899750634,
+          "mi_joint": 0.08815527008097401,
+          "II": -0.013452716885245408,
+          "I_total": 0.08815527008097401,
+          "ratio": -0.1526025258942383,
+          "wall_s": 0.3684682846069336
+        },
+        {
+          "alpha": 0.6,
+          "mi_E": 0.01886410545836803,
+          "mi_S": 0.023295708143488802,
+          "mi_joint": 0.048216384772444165,
+          "II": 0.006056571170587333,
+          "I_total": 0.048216384772444165,
+          "ratio": 0.1256123037670938,
+          "wall_s": 0.37529706954956055
+        },
+        {
+          "alpha": 0.8,
+          "mi_E": 0.009591393623057165,
+          "mi_S": 0.009687663332576868,
+          "mi_joint": 0.015606291174459663,
+          "II": -0.0036727657811743697,
+          "I_total": 0.015606291174459663,
+          "ratio": -0.2353387963941748,
+          "wall_s": 0.35090088844299316
+        },
+        {
+          "alpha": 1.0,
+          "mi_E": 0.0017133673400868688,
+          "mi_S": 0.001426820776951665,
+          "mi_joint": 0.0077349960741530666,
+          "II": 0.004594807957114533,
+          "I_total": 0.0077349960741530666,
+          "ratio": 0.5940284795319222,
+          "wall_s": 0.3656649589538574
+        }
+      ],
+      "_estimator": "_kraskov_mi from run_kraskov_anchor.py (sklearn mutual_info_regression, k=5, PCA dim=32)",
+      "_total_wall_s": 7.033412933349609,
+      "_note": "V5e alpha=0 is pure linear persistence (no synergy), alpha=1 is pure XOR (full synergy). The alpha sweep is the natural synergy-axis reference distribution for the H4 mixture-or-equivalent."
+    }
+  },
+  "v5d_h4_value": {
+    "value": 0.9999932477799053,
+    "theoretical_value": 1.0,
+    "n_samples": 100000,
+    "_plug_in_breakdown": {
+      "mi_E": 8.049219206869552e-07,
+      "mi_S": 3.875326687981001e-06,
+      "mi_joint": 0.6931421877516359,
+      "II": 0.6931375075030273,
+      "I_total": 0.6931421877516359,
+      "ratio": 0.9999932477799053,
+      "n_samples": 100000
+    },
+    "_estimator": "Plug-in MI on discrete joint counts (NOT KSG)",
+    "_methodology_note": "Same KSG-on-binary failure as V5e (see v5e_h4_distribution). V5d switched to plug-in MI for the saturation anchor.",
+    "_ksg_diagnostic": {
+      "value": -12.771961687577175,
+      "theoretical_value": 1.0,
+      "n_samples": 20000,
+      "_ksg_breakdown": {
+        "mi_E": 0.008434820740815141,
+        "mi_S": 0.006964258466427786,
+        "mi_joint": 0.001118147113430723,
+        "II": -0.014280932093812204,
+        "I_total": 0.001118147113430723,
+        "ratio": -12.771961687577175
+      },
+      "_wall_s": 0.41663360595703125,
+      "_estimator": "_kraskov_mi from run_kraskov_anchor.py (sklearn mutual_info_regression, k=5, PCA dim=32)",
+      "_note": "V5d is pure XOR synergy: S_{t+1} = S_t XOR E_t. By construction the marginal MIs I(Y;S) = I(Y;E) = 0 (for uniform binary inputs) and joint MI I(Y;S,E) = 1 bit (Y is fully determined by joint). So II/I_total = 1.0 theoretically. The KSG estimator may underestimate slightly due to finite-sample bias."
+    }
+  }
+}

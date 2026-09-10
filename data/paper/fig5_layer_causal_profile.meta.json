@@ -1,0 +1,27 @@
+{
+  "figure_name": "fig5_layer_causal_profile",
+  "source_fields": [
+    "cells.{key}.measurements.layer_output_change_rate",
+    "cells.{key}.measurements.layer_binomial_p"
+  ],
+  "cell_filter": {
+    "configurations": [
+      "llama_8b_4bit_abliterated",
+      "gemma_9b_4bit_abliterated",
+      "gemma_2b_4bit_abliterated",
+      "gemma_2b_fp16_abliterated"
+    ],
+    "temperatures": [
+      0.0,
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ]
+  },
+  "caption_draft": "Single-layer causal patching results (Run 0018). Per-layer output change rate under noise injection at a single layer, grouped by decoding temperature. Dashed red line at 0.05 marks the binomial significance threshold. The L16-at-low-T vs L31-at-high-T crossover is the paper's causal finding.",
+  "results_json_hash": "0c3475f888adc52c7634c0fc3c7dfdd7f585a9b498d02786319178112164e486",
+  "generated_at": "2026-05-08T17:28:12.983483",
+  "iota_version": "0.82.0.23"
+}

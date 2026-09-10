@@ -1,0 +1,16 @@
+{
+ "cell": "gemma/2b_4bit/abliterated/deterministic",
+ "trials": [
+  1,
+  2
+ ],
+ "tokens_full_A": 606,
+ "tokens_drop_A": 39,
+ "tokens_full_B": 606,
+ "tokens_drop_B": 39,
+ "full_history_cosd_A_vs_B": 0.0020141005516052246,
+ "dropped_history_cosd_A_vs_B": 0.0,
+ "dropped_history_bytes_identical": true,
+ "dropped_vs_full_cosd_A": 0.2786998748779297,
+ "generated_at": "2026-09-10T11:09:03"
+}

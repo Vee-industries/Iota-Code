@@ -1,0 +1,514 @@
+{
+  "iota_version": "0.82.0.29",
+  "paper_version": "v26_response_pull_1",
+  "description": "Family-level statistical test on the four-fingerprint convergence framing of v25 sec.6.",
+  "test_form": "mixed_effects",
+  "metric_definition": "per-cell sum of fleet z-scores of four fingerprints, each oriented so higher = more LLaMA-extreme: F1 = -ridge_heldout_R2, F2 = |ridge_heldout - mlp_heldout| (computed directly from estimator_joint_R2.{ridge,mlp}.heldout), F3 = L1((i-a).q_star, (a-b).q_star), F4 = partition_b_substitution_diagnostics.g_tilde_shift_norm",
+  "model_spec": "Form A: statsmodels MixedLM \"metric ~ temperature\" with groups=family, plus OLS fixed-effect cross-check with F-test on family categorical and LLaMA-vs-Gemma contrast. Form B: 2000-resample family-stratified bootstrap, replacement within each family pool, 95th percentile CI on LLaMA-pooled-Gemma metric difference.",
+  "family_effect_p_value": 6.390739342718877e-07,
+  "family_effect_ci_95": [
+    4.652046656307871,
+    8.003306223242792
+  ],
+  "family_effect_estimate": 6.327676439775331,
+  "n_cells_per_family": 6,
+  "n_families": 4,
+  "convergence_diagnostics": {
+    "n_cells": 24,
+    "n_families": 4,
+    "temp_levels": [
+      0.0,
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "families": [
+      "gemma_2b_fp16",
+      "gemma_2b_q4",
+      "gemma_9b_q4",
+      "llama_8b_q4"
+    ]
+  },
+  "interpretation_note": "Primary test (mixed_effects): family-level effect p=6.391e-07, LLaMA-vs-Gemma estimate +6.3277 (95% CI [+4.6520, +8.0033]).",
+  "form_a_mixed_effects": {
+    "status": "ran",
+    "diagnostics": {
+      "n_cells": 24,
+      "n_families": 4,
+      "temp_levels": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0
+      ],
+      "families": [
+        "gemma_2b_fp16",
+        "gemma_2b_q4",
+        "gemma_9b_q4",
+        "llama_8b_q4"
+      ]
+    },
+    "random_effect_family_model": {
+      "converged": true,
+      "family_variance": 10.362601531851636,
+      "residual_variance": 2.499919236986884,
+      "log_likelihood": -48.27901375049612,
+      "aic": NaN,
+      "temp_fixed_effect": 3.777771390927272,
+      "temp_fixed_pvalue": 6.385782393072753e-05,
+      "note": "family-variance / total-variance ratio gives the fraction of metric variance attributable to family-level differences after temperature is conditioned out.",
+      "family_variance_share": 0.805643133106278
+    },
+    "fixed_effect_family_model": {
+      "family_F_pvalue": 6.390739342718877e-07,
+      "family_F_stat": 25.871653898741503,
+      "family_df_num": 3,
+      "family_df_denom": 19,
+      "temp_fixed_pvalue": 0.0007695452793032842,
+      "r_squared_full": 0.8312606107442979,
+      "r_squared_reduced": 0.14196054581137008,
+      "llama_vs_gemma_contrast": 6.327676439775331,
+      "llama_vs_gemma_pvalue": 1.1067057065033767e-07,
+      "llama_vs_gemma_ci_95": [
+        4.652046656307871,
+        8.003306223242792
+      ]
+    }
+  },
+  "form_b_stratified_bootstrap": {
+    "status": "ran",
+    "n_resamples": 2000,
+    "seed": 42,
+    "families_in_pool": [
+      "gemma_2b_fp16",
+      "gemma_2b_q4",
+      "gemma_9b_q4",
+      "llama_8b_q4"
+    ],
+    "llama_families": [
+      "llama_8b_q4"
+    ],
+    "gemma_families": [
+      "gemma_2b_fp16",
+      "gemma_2b_q4",
+      "gemma_9b_q4"
+    ],
+    "cells_per_family": {
+      "gemma_2b_q4": 6,
+      "gemma_2b_fp16": 6,
+      "gemma_9b_q4": 6,
+      "llama_8b_q4": 6
+    },
+    "llama_minus_gemma_mean": 6.309477066103154,
+    "llama_minus_gemma_ci_95": [
+      3.2628434977876855,
+      8.352523863822622
+    ],
+    "llama_minus_gemma_median": 6.400749881730073,
+    "p_two_sided": 0.0,
+    "distribution_summary": {
+      "min": 0.18516680160902,
+      "max": 9.359242203575262,
+      "std": 1.3663732949714358,
+      "mean_llama_metric_resampled": 4.725861164244164,
+      "mean_gemma_metric_resampled": -1.5836159018589906
+    }
+  },
+  "per_cell_records": [
+    {
+      "cell_label": "gemma_2b_4bit_abliterated_T0.0",
+      "family": "gemma_2b_q4",
+      "temperature": 0.0,
+      "F1_neg_ridge_heldout_r2": -0.999749,
+      "F2_h3_value_abs": 0.0002529999999999477,
+      "F3_ia_minus_ab_l1": 0.012119222964402071,
+      "F4_pbs_g_tilde_shift_norm": 0.045785,
+      "z_components": {
+        "F1_z": -0.771339295679082,
+        "F2_z": -0.7564548466636337,
+        "F3_z": -0.4345388811591156,
+        "F4_z": -0.8508302049869613
+      },
+      "metric_zsum": -2.8131632284887926
+    },
+    {
+      "cell_label": "gemma_2b_4bit_abliterated_T0.2",
+      "family": "gemma_2b_q4",
+      "temperature": 0.2,
+      "F1_neg_ridge_heldout_r2": -0.999783,
+      "F2_h3_value_abs": 0.0008369999999999767,
+      "F3_ia_minus_ab_l1": 0.015796556680720997,
+      "F4_pbs_g_tilde_shift_norm": 0.052161,
+      "z_components": {
+        "F1_z": -0.7719767919976755,
+        "F2_z": -0.7414425406725172,
+        "F3_z": -0.29871370080483495,
+        "F4_z": -0.6374813132301826
+      },
+      "metric_zsum": -2.4496143467052107
+    },
+    {
+      "cell_label": "gemma_2b_4bit_abliterated_T0.4",
+      "family": "gemma_2b_q4",
+      "temperature": 0.4,
+      "F1_neg_ridge_heldout_r2": -0.999002,
+      "F2_h3_value_abs": 0.0016519999999999868,
+      "F3_ia_minus_ab_l1": 0.010525654486626373,
+      "F4_pbs_g_tilde_shift_norm": 0.053191,
+      "z_components": {
+        "F1_z": -0.7573331265617386,
+        "F2_z": -0.7204921478938195,
+        "F3_z": -0.49339857206512544,
+        "F4_z": -0.6030162319081181
+      },
+      "metric_zsum": -2.5742400784288018
+    },
+    {
+      "cell_label": "gemma_2b_4bit_abliterated_T0.6",
+      "family": "gemma_2b_q4",
+      "temperature": 0.6,
+      "F1_neg_ridge_heldout_r2": -0.991358,
+      "F2_h3_value_abs": 0.00655400000000006,
+      "F3_ia_minus_ab_l1": 0.004088529379635442,
+      "F4_pbs_g_tilde_shift_norm": 0.036115,
+      "z_components": {
+        "F1_z": -0.6140089542284513,
+        "F2_z": -0.5944813191807194,
+        "F3_z": -0.7311587934831926,
+        "F4_z": -1.1744004344863417
+      },
+      "metric_zsum": -3.1140495013787053
+    },
+    {
+      "cell_label": "gemma_2b_4bit_abliterated_T0.8",
+      "family": "gemma_2b_q4",
+      "temperature": 0.8,
+      "F1_neg_ridge_heldout_r2": -0.990788,
+      "F2_h3_value_abs": 0.004337000000000035,
+      "F3_ia_minus_ab_l1": 0.00615798639845766,
+      "F4_pbs_g_tilde_shift_norm": 0.079352,
+      "z_components": {
+        "F1_z": -0.6033215159461426,
+        "F2_z": -0.6514715287394591,
+        "F3_z": -0.6547217892565732,
+        "F4_z": 0.27236337242831354
+      },
+      "metric_zsum": -1.6371514615138616
+    },
+    {
+      "cell_label": "gemma_2b_4bit_abliterated_T1.0",
+      "family": "gemma_2b_q4",
+      "temperature": 1.0,
+      "F1_neg_ridge_heldout_r2": -0.984812,
+      "F2_h3_value_abs": 0.008664000000000005,
+      "F3_ia_minus_ab_l1": 0.0070025438499252135,
+      "F4_pbs_g_tilde_shift_norm": 0.073055,
+      "z_components": {
+        "F1_z": -0.4912721630074032,
+        "F2_z": -0.5402416519867924,
+        "F3_z": -0.6235274030478717,
+        "F4_z": 0.0616579189476928
+      },
+      "metric_zsum": -1.5933832990943744
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_T0.0",
+      "family": "gemma_2b_fp16",
+      "temperature": 0.0,
+      "F1_neg_ridge_heldout_r2": -0.997923,
+      "F2_h3_value_abs": 0.0011160000000000059,
+      "F3_ia_minus_ab_l1": 0.012851877117050325,
+      "F4_pbs_g_tilde_shift_norm": 0.014588,
+      "z_components": {
+        "F1_z": -0.737101993392245,
+        "F2_z": -0.7342705657212815,
+        "F3_z": -0.40747773030975076,
+        "F4_z": -1.8947206341174858
+      },
+      "metric_zsum": -3.7735709235407633
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_T0.2",
+      "family": "gemma_2b_fp16",
+      "temperature": 0.2,
+      "F1_neg_ridge_heldout_r2": -0.992575,
+      "F2_h3_value_abs": 0.005975999999999981,
+      "F3_ia_minus_ab_l1": 0.015722628166083663,
+      "F4_pbs_g_tilde_shift_norm": 0.034134,
+      "z_components": {
+        "F1_z": -0.6368275724557687,
+        "F2_z": -0.6093393891513805,
+        "F3_z": -0.30144430798072963,
+        "F4_z": -1.2406871588543122
+      },
+      "metric_zsum": -2.7882984284421912
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_T0.4",
+      "family": "gemma_2b_fp16",
+      "temperature": 0.4,
+      "F1_neg_ridge_heldout_r2": -0.969715,
+      "F2_h3_value_abs": 0.024816999999999978,
+      "F3_ia_minus_ab_l1": 0.010357263019003304,
+      "F4_pbs_g_tilde_shift_norm": 0.041862,
+      "z_components": {
+        "F1_z": -0.20820504765998735,
+        "F2_z": -0.12501257891403192,
+        "F3_z": -0.4996182418651567,
+        "F4_z": -0.9820986652068237
+      },
+      "metric_zsum": -1.8149345336459994
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_T0.6",
+      "family": "gemma_2b_fp16",
+      "temperature": 0.6,
+      "F1_neg_ridge_heldout_r2": -0.985704,
+      "F2_h3_value_abs": 0.010445999999999955,
+      "F3_ia_minus_ab_l1": 0.00409194951754549,
+      "F4_pbs_g_tilde_shift_norm": 0.075851,
+      "z_components": {
+        "F1_z": -0.5079970664246315,
+        "F2_z": -0.4944335539111631,
+        "F3_z": -0.7310324680299416,
+        "F4_z": 0.15521555717729674
+      },
+      "metric_zsum": -1.5782475311884396
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_T0.8",
+      "family": "gemma_2b_fp16",
+      "temperature": 0.8,
+      "F1_neg_ridge_heldout_r2": -0.942137,
+      "F2_h3_value_abs": 0.05146099999999998,
+      "F3_ia_minus_ab_l1": 0.006483233713577591,
+      "F4_pbs_g_tilde_shift_norm": 0.061626,
+      "z_components": {
+        "F1_z": 0.3088794662865594,
+        "F2_z": 0.5598981759272142,
+        "F3_z": -0.6427085267561189,
+        "F4_z": -0.3207706387512129
+      },
+      "metric_zsum": -0.09470152329355819
+    },
+    {
+      "cell_label": "gemma_2b_fp16_abliterated_T1.0",
+      "family": "gemma_2b_fp16",
+      "temperature": 1.0,
+      "F1_neg_ridge_heldout_r2": -0.988317,
+      "F2_h3_value_abs": 0.004627000000000048,
+      "F3_ia_minus_ab_l1": 0.007064683168207908,
+      "F4_pbs_g_tilde_shift_norm": 0.062828,
+      "z_components": {
+        "F1_z": -0.5569905334977446,
+        "F2_z": -0.6440167877507198,
+        "F3_z": -0.6212322390067665,
+        "F4_z": -0.28055022346080405
+      },
+      "metric_zsum": -2.1027897837160348
+    },
+    {
+      "cell_label": "gemma_9b_4bit_abliterated_T0.0",
+      "family": "gemma_9b_q4",
+      "temperature": 0.0,
+      "F1_neg_ridge_heldout_r2": -0.998704,
+      "F2_h3_value_abs": 0.0025610000000000355,
+      "F3_ia_minus_ab_l1": 0.011742263615119042,
+      "F4_pbs_g_tilde_shift_norm": 0.035676,
+      "z_components": {
+        "F1_z": -0.7517456588281819,
+        "F2_z": -0.697125390794633,
+        "F3_z": -0.4484621678533274,
+        "F4_z": -1.1890899206032217
+      },
+      "metric_zsum": -3.086423138079364
+    },
+    {
+      "cell_label": "gemma_9b_4bit_abliterated_T0.2",
+      "family": "gemma_9b_q4",
+      "temperature": 0.2,
+      "F1_neg_ridge_heldout_r2": -0.971768,
+      "F2_h3_value_abs": 0.02236400000000005,
+      "F3_ia_minus_ab_l1": 0.014145150377063986,
+      "F4_pbs_g_tilde_shift_norm": 0.08002,
+      "z_components": {
+        "F1_z": -0.24669857536802442,
+        "F2_z": -0.18806940527739804,
+        "F3_z": -0.35970967678520915,
+        "F4_z": 0.29471548342165194
+      },
+      "metric_zsum": -0.49976217400897965
+    },
+    {
+      "cell_label": "gemma_9b_4bit_abliterated_T0.4",
+      "family": "gemma_9b_q4",
+      "temperature": 0.4,
+      "F1_neg_ridge_heldout_r2": -0.985781,
+      "F2_h3_value_abs": 0.006171999999999955,
+      "F3_ia_minus_ab_l1": 0.008118677750896808,
+      "F4_pbs_g_tilde_shift_norm": 0.105794,
+      "z_components": {
+        "F1_z": -0.5094408080873293,
+        "F2_z": -0.6043010124831301,
+        "F3_z": -0.582302129495395,
+        "F4_z": 1.157145586329308
+      },
+      "metric_zsum": -0.5388983637365461
+    },
+    {
+      "cell_label": "gemma_9b_4bit_abliterated_T0.6",
+      "family": "gemma_9b_q4",
+      "temperature": 0.6,
+      "F1_neg_ridge_heldout_r2": -0.976902,
+      "F2_h3_value_abs": 0.010821999999999998,
+      "F3_ia_minus_ab_l1": 0.0052881404087422035,
+      "F4_pbs_g_tilde_shift_norm": 0.114475,
+      "z_components": {
+        "F1_z": -0.342960519475705,
+        "F2_z": -0.4847680966292108,
+        "F3_z": -0.6868502272901539,
+        "F4_z": 1.4476226455107062
+      },
+      "metric_zsum": -0.06695619788436336
+    },
+    {
+      "cell_label": "gemma_9b_4bit_abliterated_T0.8",
+      "family": "gemma_9b_q4",
+      "temperature": 0.8,
+      "F1_neg_ridge_heldout_r2": -0.967207,
+      "F2_h3_value_abs": 0.018978999999999968,
+      "F3_ia_minus_ab_l1": 0.01682928381255927,
+      "F4_pbs_g_tilde_shift_norm": 0.112316,
+      "z_components": {
+        "F1_z": -0.16118031921782636,
+        "F2_z": -0.2750842268183707,
+        "F3_z": -0.2605691211284749,
+        "F4_z": 1.3753798197103795
+      },
+      "metric_zsum": 0.6785461525457075
+    },
+    {
+      "cell_label": "gemma_9b_4bit_abliterated_T1.0",
+      "family": "gemma_9b_q4",
+      "temperature": 1.0,
+      "F1_neg_ridge_heldout_r2": -0.959435,
+      "F2_h3_value_abs": 0.02001900000000001,
+      "F3_ia_minus_ab_l1": 0.02222756165526063,
+      "F4_pbs_g_tilde_shift_norm": 0.12196,
+      "z_components": {
+        "F1_z": -0.015456160743949955,
+        "F2_z": -0.24834998327254706,
+        "F3_z": -0.061179531237950356,
+        "F4_z": 1.6980800568657077
+      },
+      "metric_zsum": 1.3730943816112604
+    },
+    {
+      "cell_label": "llama_8b_4bit_abliterated_T0.0",
+      "family": "llama_8b_q4",
+      "temperature": 0.0,
+      "F1_neg_ridge_heldout_r2": -0.997737,
+      "F2_h3_value_abs": 0.015240999999999949,
+      "F3_ia_minus_ab_l1": 0.013931510323241192,
+      "F4_pbs_g_tilde_shift_norm": 0.040694,
+      "z_components": {
+        "F1_z": -0.7336145135317015,
+        "F2_z": -0.37117326756287566,
+        "F3_z": -0.3676006383024104,
+        "F4_z": -1.0211813982011646
+      },
+      "metric_zsum": -2.493569817598152
+    },
+    {
+      "cell_label": "llama_8b_4bit_abliterated_T0.2",
+      "family": "llama_8b_q4",
+      "temperature": 0.2,
+      "F1_neg_ridge_heldout_r2": -0.887934,
+      "F2_h3_value_abs": 0.065975,
+      "F3_ia_minus_ab_l1": 0.0925949876498422,
+      "F4_pbs_g_tilde_shift_norm": 0.083913,
+      "z_components": {
+        "F1_z": 1.3251798473673007,
+        "F2_z": 0.9329951094118962,
+        "F3_z": 2.5378960664883086,
+        "F4_z": 0.4249801063214545
+      },
+      "metric_zsum": 5.221051129588959
+    },
+    {
+      "cell_label": "llama_8b_4bit_abliterated_T0.4",
+      "family": "llama_8b_q4",
+      "temperature": 0.4,
+      "F1_neg_ridge_heldout_r2": -0.868465,
+      "F2_h3_value_abs": 0.09616999999999998,
+      "F3_ia_minus_ab_l1": 0.05632778146192974,
+      "F4_pbs_g_tilde_shift_norm": 0.093981,
+      "z_components": {
+        "F1_z": 1.6902214893292016,
+        "F2_z": 1.70918788236008,
+        "F3_z": 1.198338604091313,
+        "F4_z": 0.7618679109336325
+      },
+      "metric_zsum": 5.359615886714226
+    },
+    {
+      "cell_label": "llama_8b_4bit_abliterated_T0.6",
+      "family": "llama_8b_q4",
+      "temperature": 0.6,
+      "F1_neg_ridge_heldout_r2": -0.858289,
+      "F2_h3_value_abs": 0.10496899999999998,
+      "F3_ia_minus_ab_l1": 0.07462420529715269,
+      "F4_pbs_g_tilde_shift_norm": 0.089907,
+      "z_components": {
+        "F1_z": 1.8810203875060127,
+        "F2_z": 1.9353750063597845,
+        "F3_z": 1.8741312459800017,
+        "F4_z": 0.6255468028694676
+      },
+      "metric_zsum": 6.3160734427152665
+    },
+    {
+      "cell_label": "llama_8b_4bit_abliterated_T0.8",
+      "family": "llama_8b_q4",
+      "temperature": 0.8,
+      "F1_neg_ridge_heldout_r2": -0.849517,
+      "F2_h3_value_abs": 0.10979000000000005,
+      "F3_ia_minus_ab_l1": 0.06701514675055048,
+      "F4_pbs_g_tilde_shift_norm": 0.099857,
+      "z_components": {
+        "F1_z": 2.045494437703239,
+        "F2_z": 2.05930364879672,
+        "F3_z": 1.5930847516593616,
+        "F4_z": 0.9584861806894093
+      },
+      "metric_zsum": 6.6563690188487294
+    },
+    {
+      "cell_label": "llama_8b_4bit_abliterated_T1.0",
+      "family": "llama_8b_q4",
+      "temperature": 1.0,
+      "F1_neg_ridge_heldout_r2": -0.843054,
+      "F2_h3_value_abs": 0.11852200000000002,
+      "F3_ia_minus_ab_l1": 0.07810766334175234,
+      "F4_pbs_g_tilde_shift_norm": 0.099955,
+      "z_components": {
+        "F1_z": 2.16667498791125,
+        "F2_z": 2.28376847056799,
+        "F3_z": 2.0027954776391126,
+        "F4_z": 0.9617653826016057
+      },
+      "metric_zsum": 7.415004318719959
+    }
+  ],
+  "fingerprint_provenance": {
+    "F1_source": "cells.<>.measurements.estimator_joint_R2.ridge.heldout (sign-flipped)",
+    "F2_source": "cells.<>.measurements.estimator_joint_R2.{ridge,mlp}.heldout, computed as |ridge.heldout - mlp.heldout| (the precomputed rhat_gap_mlp_minus_ridge scalar at results_builder.py:474 returns null fleet-wide)",
+    "F3_source": "reviewer_three_response/run_0059_lambda_and_c_sensitivity.json::c_definition_comparison.cells.<>.{a_minus_b,i_minus_a}.q_star, L1 distance",
+    "F4_source": "cells.<>.measurements.partition_b_substitution_diagnostics.g_tilde_shift_norm (canonical fn-class sensitivity scalar)"
+  },
+  "timestamp_utc": "2026-05-10T11:00:30.229936Z"
+}

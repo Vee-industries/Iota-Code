@@ -1,0 +1,245 @@
+{
+  "iota_version": "0.82.0.29",
+  "paper_version": "v22_reviewer_response",
+  "description": "Per-cell R^2 of C_t regressed on S_{t-1}^a, partition-B held-out. Bounds the linear variance overlap between C and S_prev on the apparatus's primary chain-rule substrate (abliterated hidden states).",
+  "c_vs_s_prev_variance_overlap": {
+    "schema": "per-cell R^2 of C_t regressed on S_{t-1}^a, linear",
+    "fleet_size": 24,
+    "regression_target": "C_t (per-trial abliteration-delta embedding from qcache c_t)",
+    "regression_predictor": "S_{t-1}^a (abliterated model hidden state at t-1, from qcache s_prev)",
+    "estimator": "Ridge alpha=0.01, multi-output (sklearn default uniform_average across output dims)",
+    "split": "partition-B 80/20, random_state=42",
+    "per_cell": [
+      {
+        "cell_label": "gemma_2b_4bit_abliterated_T0.0",
+        "r2_heldout": 1.0,
+        "r2_train": 1.0,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 1024
+      },
+      {
+        "cell_label": "gemma_2b_4bit_abliterated_T0.2",
+        "r2_heldout": 1.0,
+        "r2_train": 1.0,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 1024
+      },
+      {
+        "cell_label": "gemma_2b_4bit_abliterated_T0.4",
+        "r2_heldout": 0.9999056458473206,
+        "r2_train": 1.0,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 1024
+      },
+      {
+        "cell_label": "gemma_2b_4bit_abliterated_T0.6",
+        "r2_heldout": 0.9960509538650513,
+        "r2_train": 0.9974706172943115,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "gemma_2b_4bit_abliterated_T0.8",
+        "r2_heldout": 0.993248462677002,
+        "r2_train": 0.9939111471176147,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "gemma_2b_4bit_abliterated_T1.0",
+        "r2_heldout": 0.9907933473587036,
+        "r2_train": 0.9911321401596069,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_T0.0",
+        "r2_heldout": 0.9999402761459351,
+        "r2_train": 0.9999992251396179,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 256
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_T0.2",
+        "r2_heldout": 0.9528763294219971,
+        "r2_train": 0.9538114070892334,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 64
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_T0.4",
+        "r2_heldout": 0.9995548725128174,
+        "r2_train": 0.9999996423721313,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 512
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_T0.6",
+        "r2_heldout": 0.9875533580780029,
+        "r2_train": 0.9891184568405151,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_T0.8",
+        "r2_heldout": 0.9175069332122803,
+        "r2_train": 0.9192653298377991,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 64
+      },
+      {
+        "cell_label": "gemma_2b_fp16_abliterated_T1.0",
+        "r2_heldout": 0.9965378046035767,
+        "r2_train": 0.9973975419998169,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 256
+      },
+      {
+        "cell_label": "gemma_9b_4bit_abliterated_T0.0",
+        "r2_heldout": 0.9999608993530273,
+        "r2_train": 0.9999986290931702,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 512
+      },
+      {
+        "cell_label": "gemma_9b_4bit_abliterated_T0.2",
+        "r2_heldout": 0.8893758654594421,
+        "r2_train": 0.8894165754318237,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 64
+      },
+      {
+        "cell_label": "gemma_9b_4bit_abliterated_T0.4",
+        "r2_heldout": 0.9870782494544983,
+        "r2_train": 0.9875216484069824,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "gemma_9b_4bit_abliterated_T0.6",
+        "r2_heldout": 0.9821581840515137,
+        "r2_train": 0.9822931289672852,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "gemma_9b_4bit_abliterated_T0.8",
+        "r2_heldout": 0.9763679504394531,
+        "r2_train": 0.9773035645484924,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "gemma_9b_4bit_abliterated_T1.0",
+        "r2_heldout": 0.9716460108757019,
+        "r2_train": 0.9733322262763977,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "llama_8b_4bit_abliterated_T0.0",
+        "r2_heldout": 0.9999690055847168,
+        "r2_train": 0.9999980926513672,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 1024
+      },
+      {
+        "cell_label": "llama_8b_4bit_abliterated_T0.2",
+        "r2_heldout": 0.9456996917724609,
+        "r2_train": 0.9497640132904053,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 128
+      },
+      {
+        "cell_label": "llama_8b_4bit_abliterated_T0.4",
+        "r2_heldout": 0.9024574756622314,
+        "r2_train": 0.9008693695068359,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 64
+      },
+      {
+        "cell_label": "llama_8b_4bit_abliterated_T0.6",
+        "r2_heldout": 0.8998199701309204,
+        "r2_train": 0.897638201713562,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 64
+      },
+      {
+        "cell_label": "llama_8b_4bit_abliterated_T0.8",
+        "r2_heldout": 0.8972250819206238,
+        "r2_train": 0.8951230049133301,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 64
+      },
+      {
+        "cell_label": "llama_8b_4bit_abliterated_T1.0",
+        "r2_heldout": 0.8948298692703247,
+        "r2_train": 0.8927706480026245,
+        "n_rows_total": 21600,
+        "n_train": 17280,
+        "n_heldout": 4320,
+        "pool_dim": 64
+      }
+    ],
+    "fleet_summary": {
+      "n_cells_with_valid_r2": 24,
+      "min_r2": 0.8893758654594421,
+      "max_r2": 1.0,
+      "mean_r2": 0.9658565099040667,
+      "median_r2": 0.9873158037662506
+    }
+  },
+  "substrate_provenance": {
+    "chain_rule_substrate": "abliterated (Run 0016 part 1) hidden states at t-1, t, t+1",
+    "c_construction": "C_t = a_t - b_t (abliterated minus base) loaded as kind=C embedding",
+    "qcache_fields": "Xs = s_prev = S_{t-1}^a, Xc = c_t = C_t",
+    "note": "Confirms writerbot's operational point: chain rule operates on abliterated substrate; C_t is the only place the base variant enters."
+  },
+  "timestamp_utc": "2026-05-09T20:11:40.304563Z"
+}

@@ -21,15 +21,16 @@ data_archive_*/
 *.npy
 *.npz
 
-# Surgical exception: paper-referenced analysis outputs (small JSONs the
-# papers promise are bundled with the repo release). Walk the tree one
-# level at a time so unrelated siblings stay ignored.
+# Exception (2026-09-10): the whole paper-data folder is released with the repo.
+# It holds the results file, every calibration JSON, the Q0057/Q0058 manifests,
+# the reviewer-response and verification JSONs, the 2026-09-10 probe outputs and
+# the paper figures (12 MB, no .npy/.npz). Backups and checkpoints stay out.
 !data/paper/
-data/paper/*
-!data/paper/behavioral_trial_response/
-data/paper/behavioral_trial_response/*
-!data/paper/behavioral_trial_response/run_0061_jolt_carryover_analysis.json
-!data/paper/behavioral_trial_response/run_0061_jolt_carryover_analysis_r0060.json
+!data/paper/**
+data/paper/**/*.bak*
+data/paper/**/_bak/
+data/paper/**/_*checkpoint*.json
+data/paper/reproduce_status.json
 
 # Local virtualenvs / IDE
 .venv/
@@ -43,3 +44,6 @@ Thumbs.db
 
 # Generated logs
 *.log
+
+# Working notes for AI collaborators (personal; never distributed)
+IOTA_Philosophy_and_Context.md

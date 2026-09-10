@@ -1,0 +1,251 @@
+{
+  "phase": "phase11_hull_diagnostic_p2",
+  "iota_version": "0.82.0.12",
+  "timestamp": "2026-04-30T19:19:23.924166Z",
+  "projection_note": "Hull computed in 2D (E, C) projection of the 3-simplex (R = 1 − E − C). Signed distance is approximate — min Euclidean distance to hull boundary, signed positive if inside the hull.",
+  "cells": {
+    "gemma_2b_q4_abliterated_t00": {
+      "anchored_in_hull": false,
+      "hull_signed_distance": -0.0007505376980252846,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_q4_abliterated_t02": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.003247952191755398,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_q4_abliterated_t04": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.003419348506766911,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_q4_abliterated_t06": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.015991727048253288,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_q4_abliterated_t08": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.011195696084376896,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_q4_abliterated_t10": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.0026787067776212685,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_fp16_abliterated_t00": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.03169016609434546,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_fp16_abliterated_t02": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.05447857477245541,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_fp16_abliterated_t04": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.013142066315748293,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_fp16_abliterated_t06": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.02325780921672266,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_fp16_abliterated_t08": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.0019440812923972892,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_2b_fp16_abliterated_t10": {
+      "anchored_in_hull": false,
+      "hull_signed_distance": -0.02950433970890627,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_9b_q4_abliterated_t00": {
+      "anchored_in_hull": false,
+      "hull_signed_distance": -0.03149130447199877,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_9b_q4_abliterated_t02": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.044162706671015586,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_9b_q4_abliterated_t04": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.006728776463627544,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_9b_q4_abliterated_t06": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.006262836367803494,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_9b_q4_abliterated_t08": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.011458831872947378,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "gemma_9b_q4_abliterated_t10": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.003847759034618717,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "llama_8b_q4_abliterated_t00": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.026632415385067023,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "llama_8b_q4_abliterated_t02": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.05493079587216218,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "llama_8b_q4_abliterated_t04": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.027475922861375724,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "llama_8b_q4_abliterated_t06": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.03158856594553295,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "llama_8b_q4_abliterated_t08": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.03259324384142827,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    },
+    "llama_8b_q4_abliterated_t10": {
+      "anchored_in_hull": true,
+      "hull_signed_distance": 0.029294038826342222,
+      "hull_vertices": [
+        "Ridge",
+        "MLP",
+        "RF",
+        "RKHS_median"
+      ]
+    }
+  },
+  "summary": {
+    "n_cells": 24
+  }
+}

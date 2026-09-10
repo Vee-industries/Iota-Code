@@ -1,0 +1,421 @@
+{
+  "experiment": "V5_synthetic_calibration_suite",
+  "description": "Five calibration tests of Ridge permutation estimator against systems with known or reference R",
+  "v5a_toy_model": {
+    "description": "Stochastic persistence model, binary state, closed-form true R",
+    "n_steps": 50000,
+    "n_repeats": 5,
+    "results": [
+      {
+        "p": 0.1,
+        "R_true": 0.0678,
+        "R_hat": 0.0125,
+        "R_hat_std": 0.001,
+        "error": -0.0553,
+        "R2": 0.8156
+      },
+      {
+        "p": 0.2,
+        "R_true": 0.1691,
+        "R_hat": 0.0595,
+        "R_hat_std": 0.002,
+        "error": -0.1096,
+        "R2": 0.6771
+      },
+      {
+        "p": 0.3,
+        "R_true": 0.3025,
+        "R_hat": 0.156,
+        "R_hat_std": 0.0051,
+        "error": -0.1464,
+        "R2": 0.5787
+      },
+      {
+        "p": 0.4,
+        "R_true": 0.4596,
+        "R_hat": 0.3062,
+        "R_hat_std": 0.0052,
+        "error": -0.1534,
+        "R2": 0.5194
+      },
+      {
+        "p": 0.5,
+        "R_true": 0.6226,
+        "R_hat": 0.4961,
+        "R_hat_std": 0.0061,
+        "error": -0.1265,
+        "R2": 0.499
+      },
+      {
+        "p": 0.6,
+        "R_true": 0.7693,
+        "R_hat": 0.693,
+        "R_hat_std": 0.0069,
+        "error": -0.0763,
+        "R2": 0.5202
+      },
+      {
+        "p": 0.7,
+        "R_true": 0.8821,
+        "R_hat": 0.8459,
+        "R_hat_std": 0.0023,
+        "error": -0.0362,
+        "R2": 0.5819
+      },
+      {
+        "p": 0.8,
+        "R_true": 0.9545,
+        "R_hat": 0.9408,
+        "R_hat_std": 0.0012,
+        "error": -0.0137,
+        "R2": 0.6791
+      },
+      {
+        "p": 0.9,
+        "R_true": 0.9906,
+        "R_hat": 0.9876,
+        "R_hat_std": 0.0003,
+        "error": -0.0029,
+        "R2": 0.8149
+      }
+    ]
+  },
+  "v5b_nonlinear_rnn": {
+    "description": "Nonlinear RNN (tanh), continuous 8-dim state, MLP reference R",
+    "n_steps": 20000,
+    "dim": 8,
+    "noise_std": 0.1,
+    "results": [
+      {
+        "config": "E-dominant",
+        "a_scale": 0.2,
+        "b_scale": 0.8,
+        "R_ref_mlp": 0.043,
+        "R_hat_ridge": 0.0424,
+        "gap": -0.0006,
+        "R2_ridge": 0.8572,
+        "R2_mlp": 0.8515
+      },
+      {
+        "config": "balanced",
+        "a_scale": 0.5,
+        "b_scale": 0.5,
+        "R_ref_mlp": 0.2812,
+        "R_hat_ridge": 0.2829,
+        "gap": 0.0016,
+        "R2_ridge": 0.7822,
+        "R2_mlp": 0.7719
+      },
+      {
+        "config": "S-dominant",
+        "a_scale": 0.8,
+        "b_scale": 0.2,
+        "R_ref_mlp": 0.7897,
+        "R_hat_ridge": 0.7913,
+        "gap": 0.0016,
+        "R2_ridge": 0.6944,
+        "R2_mlp": 0.679
+      },
+      {
+        "config": "strong-S",
+        "a_scale": 0.95,
+        "b_scale": 0.1,
+        "R_ref_mlp": 0.9678,
+        "R_hat_ridge": 0.9689,
+        "gap": 0.0012,
+        "R2_ridge": 0.7899,
+        "R2_mlp": 0.7787
+      }
+    ]
+  },
+  "v5c_correlated_predictors": {
+    "description": "Exogeneity violation: E_t copies S_t with probability q",
+    "persistence": 0.5,
+    "n_steps": 50000,
+    "n_repeats": 5,
+    "results": [
+      {
+        "q_correlation": 0.0,
+        "R_true_at_q0": 0.6226,
+        "R_hat": 0.4991,
+        "R_hat_std": 0.007,
+        "shift_from_q0": 0.0
+      },
+      {
+        "q_correlation": 0.1,
+        "R_true_at_q0": 0.6226,
+        "R_hat": 0.4973,
+        "R_hat_std": 0.0045,
+        "shift_from_q0": -0.0018
+      },
+      {
+        "q_correlation": 0.2,
+        "R_true_at_q0": 0.6226,
+        "R_hat": 0.5,
+        "R_hat_std": 0.01,
+        "shift_from_q0": 0.0009
+      },
+      {
+        "q_correlation": 0.3,
+        "R_true_at_q0": 0.6226,
+        "R_hat": 0.4968,
+        "R_hat_std": 0.0118,
+        "shift_from_q0": -0.0023
+      },
+      {
+        "q_correlation": 0.4,
+        "R_true_at_q0": 0.6226,
+        "R_hat": 0.4999,
+        "R_hat_std": 0.0072,
+        "shift_from_q0": 0.0008
+      },
+      {
+        "q_correlation": 0.5,
+        "R_true_at_q0": 0.6226,
+        "R_hat": 0.5028,
+        "R_hat_std": 0.0092,
+        "shift_from_q0": 0.0037
+      }
+    ]
+  },
+  "v5d_xor_synergy": {
+    "description": "Pure synergistic dependence: S_{t+1} = S_t XOR E_t",
+    "n_steps": 50000,
+    "n_repeats": 5,
+    "result": {
+      "R_true_E_first": 1.0,
+      "R_hat": 0.2934,
+      "R_hat_std": 0.309,
+      "error": -0.7066,
+      "R2": -0.0001,
+      "note": "XOR is purely nonlinear; Ridge R2~0 expected. Estimator cannot recover R in purely synergistic systems."
+    }
+  },
+  "v5e_synergy_mixture": {
+    "description": "Mixture of persistence (linear) and XOR (synergistic), alpha sweep",
+    "persistence": 0.5,
+    "n_steps": 50000,
+    "n_repeats": 5,
+    "results": [
+      {
+        "alpha": 0.0,
+        "R_ref_mlp": 0.5024,
+        "R_hat_ridge": 0.5007,
+        "gap": -0.0017,
+        "R2_ridge": 0.5028,
+        "R2_mlp": 0.502
+      },
+      {
+        "alpha": 0.2,
+        "R_ref_mlp": 0.5096,
+        "R_hat_ridge": 0.5077,
+        "gap": -0.0018,
+        "R2_ridge": 0.3158,
+        "R2_mlp": 0.3586
+      },
+      {
+        "alpha": 0.4,
+        "R_ref_mlp": 0.505,
+        "R_hat_ridge": 0.5133,
+        "gap": 0.0084,
+        "R2_ridge": 0.1786,
+        "R2_mlp": 0.3421
+      },
+      {
+        "alpha": 0.6,
+        "R_ref_mlp": 0.5041,
+        "R_hat_ridge": 0.5463,
+        "gap": 0.0422,
+        "R2_ridge": 0.0758,
+        "R2_mlp": 0.4372
+      },
+      {
+        "alpha": 0.8,
+        "R_ref_mlp": 0.5007,
+        "R_hat_ridge": 0.5372,
+        "gap": 0.0366,
+        "R2_ridge": 0.0189,
+        "R2_mlp": 0.6705
+      },
+      {
+        "alpha": 1.0,
+        "R_ref_mlp": 0.5003,
+        "R_hat_ridge": 0.3067,
+        "gap": -0.1936,
+        "R2_ridge": -0.0006,
+        "R2_mlp": 1.0
+      }
+    ]
+  },
+  "v5f_doubly_conditional": {
+    "description": "Doubly-conditional three-channel system (E, C \u2192 S \u2192 Y). Paper 2 measurement-validation calibration system per codebot_handoff_v0_14.md \u00a73.1. Noise scales \u03c3_S, \u03c3_Y tuned to match empirical-cell MI magnitudes via binary search.",
+    "result": {
+      "description": "Doubly-conditional system: E, C ~ N(0,1) independent; S = E + C + \u03b5 with \u03b5 ~ N(0, \u03c3_S\u00b2); Y = sin(S) + \u03b7 with \u03b7 ~ N(0, \u03c3_Y\u00b2). Constructed for paper 2 measurement validation per codebot_handoff_v0_14.md \u00a73.1.",
+      "construction": {
+        "sigma_S": 0.78209375,
+        "sigma_Y": 0.547765625,
+        "noise_target_mi_ec_nats": 0.3,
+        "noise_target_mi_s_nats": 0.45,
+        "n_steps_final": 20000,
+        "n_repeats": 3,
+        "tune_n_steps": 10000
+      },
+      "tuning_log": [
+        {
+          "phase": 1,
+          "iter": 0,
+          "sigma_S": 2.5005,
+          "sigma_Y": 0.3,
+          "mi_ec": -0.0,
+          "mi_s": 0.8542511532202197,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 1,
+          "iter": 1,
+          "sigma_S": 1.25075,
+          "sigma_Y": 0.3,
+          "mi_ec": 0.08554495875001304,
+          "mi_s": 0.8675518226762784,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 1,
+          "iter": 2,
+          "sigma_S": 0.625875,
+          "sigma_Y": 0.3,
+          "mi_ec": 0.4231678338187903,
+          "mi_s": 0.9115111600392993,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 1,
+          "iter": 3,
+          "sigma_S": 0.9383125,
+          "sigma_Y": 0.3,
+          "mi_ec": 0.2097255914300031,
+          "mi_s": 0.8957303003361068,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 1,
+          "iter": 4,
+          "sigma_S": 0.78209375,
+          "sigma_Y": 0.3,
+          "mi_ec": 0.30399676732786046,
+          "mi_s": 0.9066185739415082,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 2,
+          "iter": 0,
+          "sigma_S": 0.78209375,
+          "sigma_Y": 2.5005,
+          "mi_ec": 0.01811153721245773,
+          "mi_s": 0.032242090074727274,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 2,
+          "iter": 1,
+          "sigma_S": 0.78209375,
+          "sigma_Y": 1.25075,
+          "mi_ec": 0.06875179567395295,
+          "mi_s": 0.12471314607582175,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 2,
+          "iter": 2,
+          "sigma_S": 0.78209375,
+          "sigma_Y": 0.625875,
+          "mi_ec": 0.17941421733529936,
+          "mi_s": 0.38698312407559304,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 2,
+          "iter": 3,
+          "sigma_S": 0.78209375,
+          "sigma_Y": 0.3134375,
+          "mi_ec": 0.298533537467636,
+          "mi_s": 0.8703310099572104,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 2,
+          "iter": 4,
+          "sigma_S": 0.78209375,
+          "sigma_Y": 0.46965625,
+          "mi_ec": 0.2337068536071328,
+          "mi_s": 0.5637655677973177,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        },
+        {
+          "phase": 2,
+          "iter": 5,
+          "sigma_S": 0.78209375,
+          "sigma_Y": 0.547765625,
+          "mi_ec": 0.20485559891624588,
+          "mi_s": 0.4641074506990833,
+          "target_mi_ec": 0.3,
+          "target_mi_s": 0.45
+        }
+      ],
+      "analytic_truth": {
+        "R_truth_mean": 0.5812973490408916,
+        "R_truth_std": 0.006975352549451846,
+        "R_truth_per_seed": [
+          0.5911505949285023,
+          0.575960270383971,
+          0.5767811818102015
+        ],
+        "mi_ec_proxy_mean_nats": 0.20393535187014347,
+        "mi_s_proxy_mean_nats": 0.4871746867356201,
+        "truth_formula": "R_truth = (I(Y;S) - I(Y;E,C)) / I(Y;S)"
+      },
+      "attribution_ridge": {
+        "shares_mean": {
+          "E": 0.001289918269153874,
+          "C": 0.001034224388002085,
+          "S": 0.997675857342844
+        },
+        "R2_mean": 0.2384874038120752
+      },
+      "attribution_mlp": {
+        "shares_mean": {
+          "E": 0.003896205384697298,
+          "C": 0.006133955737571691,
+          "S": 0.989969838877731
+        },
+        "R2_mean": 0.6165864199395515
+      },
+      "attribution_rkhs": {
+        "shares_mean": {
+          "E": 0.07672855153673885,
+          "C": 0.09345284058475611,
+          "S": 0.8298186078785049
+        },
+        "R2_mean": 0.5114475932551906
+      },
+      "attribution_rf": {
+        "shares_mean": {
+          "E": 0.0005773948884860811,
+          "C": 0.0010648699780616362,
+          "S": 0.9983577351334523
+        },
+        "R2_mean": 0.5953159663611277
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+ "cell": "gemma/2b_4bit/abliterated/deterministic",
+ "cohorts": [
+  1,
+  2
+ ],
+ "trials": [
+  1,
+  2
+ ],
+ "control_trial": 5,
+ "alphas": [
+  0.0,
+  0.25,
+  0.5,
+  0.75,
+  1.0
+ ],
+ "reconstruction": {
+  "cosd_A_vs_saved14": 0.0,
+  "cosd_B_vs_saved14": -1.1920928955078125e-07,
+  "cosd_A_vs_B_full_prefill": 0.0020141005516052246,
+  "prefix_tokens": 588,
+  "continuation_tokens": 18
+ },
+ "cache_on_equals_prefill": {
+  "cosd_A": 1.3113021850585938e-06
+ },
+ "sweep": [
+  {
+   "alpha": 0.0,
+   "cosd_to_A": 1.3113021850585938e-06,
+   "cosd_to_B": 0.002027571201324463,
+   "position": 0.0006463174590662649,
+   "argmax_token": "The"
+  },
+  {
+   "alpha": 0.25,
+   "cosd_to_A": 0.00014138221740722656,
+   "cosd_to_B": 0.0015224814414978027,
+   "position": 0.08497223709741725,
+   "argmax_token": "The"
+  },
+  {
+   "alpha": 0.5,
+   "cosd_to_A": 0.0004488825798034668,
+   "cosd_to_B": 0.00102311372756958,
+   "position": 0.3049481695369217,
+   "argmax_token": "The"
+  },
+  {
+   "alpha": 0.75,
+   "cosd_to_A": 0.0009360313415527344,
+   "cosd_to_B": 0.0004419088363647461,
+   "position": 0.6792975165932728,
+   "argmax_token": "The"
+  },
+  {
+   "alpha": 1.0,
+   "cosd_to_A": 0.002030313014984131,
+   "cosd_to_B": 1.430511474609375e-06,
+   "position": 0.9992959187735675,
+   "argmax_token": "The"
+  }
+ ],
+ "same_cohort_control": {
+  "cosd_A_vs_A2_full": 0.0,
+  "cosd_mid_vs_A": 1.3113021850585938e-06
+ },
+ "generated_at": "2026-09-10T08:31:42"
+}

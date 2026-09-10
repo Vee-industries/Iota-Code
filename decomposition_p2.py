@@ -32,7 +32,7 @@ The six new phases:
     estimator for "does the apparatus do better than naive averaging?"
 
   Phase 10 (bootstrap_variance_p2): paired-bootstrap refit loop on
-    a representative cell subset (PHASE10_SUBSET); n_bootstrap=10;
+    a representative cell subset (PHASE10_SUBSET); n_bootstrap=10 default, 12 in the released run;
     all four classes refit per resample with shared bootstrap
     indices and shared internal split; apparatus applied per
     resample. Per-channel variance for each estimator + anchored.
@@ -93,10 +93,11 @@ LAMBDA_SWEEP_GRID = [0.0, 0.1, 0.5, 1.0, 2.0, 5.0, 10.0, float('inf')]
 # Profile of gemma_2b_q4_abliterated_t00 (21,600 rows, pool_dim=1024)
 # clocked ~17.7 min per resample on a single 3080. At n_bootstrap=200
 # × 24 cells the fleet projects to 600-900 hr. Reduced to N=10 over
-# a representative 5-cell subset (PHASE10_SUBSET below); other 19
+# a representative 6-cell subset (PHASE10_SUBSET below); other 18
 # cells get methods-note tag 'bootstrap_not_run_single_shot_only'
 # with rationale documented in CHANGELOG 0.82.0.23.
-N_BOOTSTRAP = 10
+N_BOOTSTRAP = 10   # code default (unit tests pin it). The released bootstrap_variance_p2/per_cell.json was
+                   # produced with n_bootstrap=12 (paper B §4.5); see CHANGELOG 1.0.1 and reproduce.py.
 
 # Phase 10 subset -- 5 cells chosen to span the variation surfaces
 # that matter for cross-class variance comparison: pool_dim (the
@@ -850,6 +851,12 @@ def _run_bootstrap_variance_p2(session=None, paths=None,
         consumes Q0057 full-data shares. Reconciled when Phase 6
         partition-B refit lands.
     """
+    # v1.0.1: IOTA_N_BOOTSTRAP overrides the resample count without changing the code default
+    # (the released bootstrap_variance_p2/per_cell.json was produced with 12; reproduce.py sets it).
+    try:
+        n_bootstrap = int(os.environ.get('IOTA_N_BOOTSTRAP', n_bootstrap))
+    except (TypeError, ValueError):
+        pass
     ui.section(f"Phase 10 -- Bootstrap variance (n_bootstrap={n_bootstrap})")
     p6_path = os.path.join(DATA, 'paper', 'calibration',
                             'function_class_p2', 'per_cell.json')

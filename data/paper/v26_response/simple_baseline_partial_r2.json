@@ -1,0 +1,312 @@
+{
+  "iota_version": "0.82.0.29",
+  "paper_version": "v26_response_pull_4",
+  "description": "Per-cell simple-baseline partial R^2 of S_{t+1}^a regressed on [E_t, C_t, S_{t-1}^a], compared against apparatus q*[R] from apparatus_aggregator/per_cell.json.",
+  "method": "linear_regression_partial_r2",
+  "estimator": "Ridge alpha=0.01",
+  "regressors": [
+    "E_t",
+    "C_t",
+    "S_{t-1}^a"
+  ],
+  "target": "S_{t+1}^a",
+  "partial_r2_for": "S_{t-1}^a",
+  "partial_r2_formula": "(R2_full - R2_reduced) / (1 - R2_reduced)",
+  "split": "partition-B 80/20, random_state=42",
+  "operating_point": "canonical_partition_b (matches function_class_p2._ridge_partition seed)",
+  "per_cell": {
+    "gemma_2b_4bit_abliterated_T0.0": {
+      "simple_baseline_partial_r2": 0.9822718052738336,
+      "apparatus_q_star_R": 0.47798566603137294,
+      "absolute_difference": 0.5042861392424607,
+      "ratio": 2.0550235604959783,
+      "r2_full": 0.9999739527702332,
+      "r2_reduced": 0.9985307455062866,
+      "partial_r2_note": null,
+      "pool_dim": 1024
+    },
+    "gemma_2b_4bit_abliterated_T0.2": {
+      "simple_baseline_partial_r2": null,
+      "apparatus_q_star_R": 0.4533615837600043,
+      "absolute_difference": null,
+      "ratio": null,
+      "r2_full": 1.0,
+      "r2_reduced": 0.9999759793281555,
+      "partial_r2_note": "reduced R^2 >= 0.9999, partial R^2 ill-conditioned (near-saturation regime); reporting None.",
+      "pool_dim": 1024
+    },
+    "gemma_2b_4bit_abliterated_T0.4": {
+      "simple_baseline_partial_r2": 0.8360010815912116,
+      "apparatus_q_star_R": 0.4476413694392663,
+      "absolute_difference": 0.38835971215194526,
+      "ratio": 1.8675688590588049,
+      "r2_full": 0.9981563091278076,
+      "r2_reduced": 0.9887579083442688,
+      "partial_r2_note": null,
+      "pool_dim": 1024
+    },
+    "gemma_2b_4bit_abliterated_T0.6": {
+      "simple_baseline_partial_r2": 0.8845479743971834,
+      "apparatus_q_star_R": 0.4143424434836269,
+      "absolute_difference": 0.47020553091355644,
+      "ratio": 2.134823473454119,
+      "r2_full": 0.989304780960083,
+      "r2_reduced": 0.9073622226715088,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "gemma_2b_4bit_abliterated_T0.8": {
+      "simple_baseline_partial_r2": 0.9212267526672316,
+      "apparatus_q_star_R": 0.4194670176092139,
+      "absolute_difference": 0.5017597350580177,
+      "ratio": 2.196184000157719,
+      "r2_full": 0.9923042058944702,
+      "r2_reduced": 0.902304470539093,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "gemma_2b_4bit_abliterated_T1.0": {
+      "simple_baseline_partial_r2": 0.9041298242667543,
+      "apparatus_q_star_R": 0.41848330240189185,
+      "absolute_difference": 0.4856465218648624,
+      "ratio": 2.16049199353352,
+      "r2_full": 0.9898608922958374,
+      "r2_reduced": 0.8942412734031677,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "gemma_2b_fp16_abliterated_T0.0": {
+      "simple_baseline_partial_r2": 0.4761243271401285,
+      "apparatus_q_star_R": 0.40797188299047316,
+      "absolute_difference": 0.06815244414965532,
+      "ratio": 1.1670518165371873,
+      "r2_full": 0.9994605183601379,
+      "r2_reduced": 0.9989702105522156,
+      "partial_r2_note": null,
+      "pool_dim": 256
+    },
+    "gemma_2b_fp16_abliterated_T0.2": {
+      "simple_baseline_partial_r2": 0.9441413036662154,
+      "apparatus_q_star_R": 0.411979932986665,
+      "absolute_difference": 0.5321613706795504,
+      "ratio": 2.2917167271270356,
+      "r2_full": 0.9927791953086853,
+      "r2_reduced": 0.8707308769226074,
+      "partial_r2_note": null,
+      "pool_dim": 64
+    },
+    "gemma_2b_fp16_abliterated_T0.4": {
+      "simple_baseline_partial_r2": 0.8318526855653171,
+      "apparatus_q_star_R": 0.439073622069449,
+      "absolute_difference": 0.3927790634958681,
+      "ratio": 1.8945631068535054,
+      "r2_full": 0.9894123077392578,
+      "r2_reduced": 0.9370332360267639,
+      "partial_r2_note": null,
+      "pool_dim": 512
+    },
+    "gemma_2b_fp16_abliterated_T0.6": {
+      "simple_baseline_partial_r2": 0.9059227376432205,
+      "apparatus_q_star_R": 0.396093526291824,
+      "absolute_difference": 0.5098292113513965,
+      "ratio": 2.2871435090705754,
+      "r2_full": 0.9892545938491821,
+      "r2_reduced": 0.8857810497283936,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "gemma_2b_fp16_abliterated_T0.8": {
+      "simple_baseline_partial_r2": 0.737165742706208,
+      "apparatus_q_star_R": 0.4226993626273955,
+      "absolute_difference": 0.31446638007881256,
+      "ratio": 1.7439480819752524,
+      "r2_full": 0.9429873824119568,
+      "r2_reduced": 0.783085286617279,
+      "partial_r2_note": null,
+      "pool_dim": 64
+    },
+    "gemma_2b_fp16_abliterated_T1.0": {
+      "simple_baseline_partial_r2": 0.8638147110541531,
+      "apparatus_q_star_R": 0.43152572783450244,
+      "absolute_difference": 0.43228898321965065,
+      "ratio": 2.0017687366845505,
+      "r2_full": 0.9891056418418884,
+      "r2_reduced": 0.9200034141540527,
+      "partial_r2_note": null,
+      "pool_dim": 256
+    },
+    "gemma_9b_4bit_abliterated_T0.0": {
+      "simple_baseline_partial_r2": 0.28503553299492385,
+      "apparatus_q_star_R": 0.46655515589352936,
+      "absolute_difference": 0.18151962289860551,
+      "ratio": 0.6109364121140923,
+      "r2_full": 0.9989506006240845,
+      "r2_reduced": 0.998532235622406,
+      "partial_r2_note": null,
+      "pool_dim": 512
+    },
+    "gemma_9b_4bit_abliterated_T0.2": {
+      "simple_baseline_partial_r2": 0.8836622326440965,
+      "apparatus_q_star_R": 0.4202730479296255,
+      "absolute_difference": 0.463389184714471,
+      "ratio": 2.10259077282554,
+      "r2_full": 0.9775020480155945,
+      "r2_reduced": 0.8066152334213257,
+      "partial_r2_note": null,
+      "pool_dim": 64
+    },
+    "gemma_9b_4bit_abliterated_T0.4": {
+      "simple_baseline_partial_r2": 0.9098929245141475,
+      "apparatus_q_star_R": 0.3999870115531514,
+      "absolute_difference": 0.5099059129609961,
+      "ratio": 2.2748061767831635,
+      "r2_full": 0.9894400238990784,
+      "r2_reduced": 0.8828063607215881,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "gemma_9b_4bit_abliterated_T0.6": {
+      "simple_baseline_partial_r2": 0.8815294412443253,
+      "apparatus_q_star_R": 0.4043159572025387,
+      "absolute_difference": 0.4772134840417866,
+      "ratio": 2.1802984164751393,
+      "r2_full": 0.9814853668212891,
+      "r2_reduced": 0.8437195420265198,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "gemma_9b_4bit_abliterated_T0.8": {
+      "simple_baseline_partial_r2": 0.8488411447665837,
+      "apparatus_q_star_R": 0.4094356935459337,
+      "absolute_difference": 0.43940545122065,
+      "ratio": 2.0731977161423374,
+      "r2_full": 0.9731663465499878,
+      "r2_reduced": 0.8224804401397705,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "gemma_9b_4bit_abliterated_T1.0": {
+      "simple_baseline_partial_r2": 0.826888401635997,
+      "apparatus_q_star_R": 0.40443981304840176,
+      "absolute_difference": 0.4224485885875952,
+      "ratio": 2.044527702165262,
+      "r2_full": 0.9671530723571777,
+      "r2_reduced": 0.810255765914917,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "llama_8b_4bit_abliterated_T0.0": {
+      "simple_baseline_partial_r2": 0.29449605349472036,
+      "apparatus_q_star_R": 0.3423494430916945,
+      "absolute_difference": 0.04785338959697416,
+      "ratio": 0.8602206296443218,
+      "r2_full": 0.9980127811431885,
+      "r2_reduced": 0.9971832633018494,
+      "partial_r2_note": null,
+      "pool_dim": 1024
+    },
+    "llama_8b_4bit_abliterated_T0.2": {
+      "simple_baseline_partial_r2": 0.6184647443779527,
+      "apparatus_q_star_R": 0.3780760902154659,
+      "absolute_difference": 0.24038865416248684,
+      "ratio": 1.6358208317947034,
+      "r2_full": 0.9105778336524963,
+      "r2_reduced": 0.7656254172325134,
+      "partial_r2_note": null,
+      "pool_dim": 128
+    },
+    "llama_8b_4bit_abliterated_T0.4": {
+      "simple_baseline_partial_r2": 0.6328229018258175,
+      "apparatus_q_star_R": 0.3724702998143643,
+      "absolute_difference": 0.26035260201145316,
+      "ratio": 1.6989888915739335,
+      "r2_full": 0.894898533821106,
+      "r2_reduced": 0.713758111000061,
+      "partial_r2_note": null,
+      "pool_dim": 64
+    },
+    "llama_8b_4bit_abliterated_T0.6": {
+      "simple_baseline_partial_r2": 0.6149858654311708,
+      "apparatus_q_star_R": 0.37670178863086407,
+      "absolute_difference": 0.23828407680030678,
+      "ratio": 1.6325536113496,
+      "r2_full": 0.8860570192337036,
+      "r2_reduced": 0.7040550708770752,
+      "partial_r2_note": null,
+      "pool_dim": 64
+    },
+    "llama_8b_4bit_abliterated_T0.8": {
+      "simple_baseline_partial_r2": 0.6002171716832759,
+      "apparatus_q_star_R": 0.3739890671084347,
+      "absolute_difference": 0.22622810457484122,
+      "ratio": 1.6049056629488274,
+      "r2_full": 0.8792818188667297,
+      "r2_reduced": 0.6980406045913696,
+      "partial_r2_note": null,
+      "pool_dim": 64
+    },
+    "llama_8b_4bit_abliterated_T1.0": {
+      "simple_baseline_partial_r2": 0.5883903609535358,
+      "apparatus_q_star_R": 0.37331566446183634,
+      "absolute_difference": 0.21507469649169947,
+      "ratio": 1.5761202032648334,
+      "r2_full": 0.8731769919395447,
+      "r2_reduced": 0.691885232925415,
+      "partial_r2_note": null,
+      "pool_dim": 64
+    }
+  },
+  "fleet_correlation": {
+    "pearson": {
+      "r": 0.38192711516777395,
+      "p": 0.07211431532488007,
+      "n": 23
+    },
+    "spearman": {
+      "r": 0.37549407114624506,
+      "p": 0.07745523146339542,
+      "n": 23
+    }
+  },
+  "largest_divergence_cells": [
+    {
+      "cell_key": "gemma_2b_fp16_abliterated_T0.2",
+      "abs_diff": 0.5321613706795504,
+      "simple_baseline_partial_r2": 0.9441413036662154,
+      "apparatus_q_star_R": 0.411979932986665,
+      "interpretation_note": "partial_R^2=0.9441 vs q*[R]=0.4120 (abs_diff=0.5322); cell where the apparatus diverges most from the linear-conditioning baseline"
+    },
+    {
+      "cell_key": "gemma_9b_4bit_abliterated_T0.4",
+      "abs_diff": 0.5099059129609961,
+      "simple_baseline_partial_r2": 0.9098929245141475,
+      "apparatus_q_star_R": 0.3999870115531514,
+      "interpretation_note": "partial_R^2=0.9099 vs q*[R]=0.4000 (abs_diff=0.5099); cell where the apparatus diverges most from the linear-conditioning baseline"
+    },
+    {
+      "cell_key": "gemma_2b_fp16_abliterated_T0.6",
+      "abs_diff": 0.5098292113513965,
+      "simple_baseline_partial_r2": 0.9059227376432205,
+      "apparatus_q_star_R": 0.396093526291824,
+      "interpretation_note": "partial_R^2=0.9059 vs q*[R]=0.3961 (abs_diff=0.5098); cell where the apparatus diverges most from the linear-conditioning baseline"
+    },
+    {
+      "cell_key": "gemma_2b_4bit_abliterated_T0.0",
+      "abs_diff": 0.5042861392424607,
+      "simple_baseline_partial_r2": 0.9822718052738336,
+      "apparatus_q_star_R": 0.47798566603137294,
+      "interpretation_note": "partial_R^2=0.9823 vs q*[R]=0.4780 (abs_diff=0.5043); cell where the apparatus diverges most from the linear-conditioning baseline"
+    },
+    {
+      "cell_key": "gemma_2b_4bit_abliterated_T0.8",
+      "abs_diff": 0.5017597350580177,
+      "simple_baseline_partial_r2": 0.9212267526672316,
+      "apparatus_q_star_R": 0.4194670176092139,
+      "interpretation_note": "partial_R^2=0.9212 vs q*[R]=0.4195 (abs_diff=0.5018); cell where the apparatus diverges most from the linear-conditioning baseline"
+    }
+  ],
+  "interpretation_note": "Apparatus q*[R] diverges materially from simple-baseline partial R^2 (Pearson r=+0.382, Spearman r=+0.375). The apparatus's q* is doing meaningful work beyond what a linear regression with channel-conditioning produces; the simple baseline cannot replicate the apparatus's per-cell answer.",
+  "quantity_caveat": "NOTE on the ratio field: q*[R] is a redistributed share (sums to 1 with E and C under I-projection at lambda=1.0); partial R^2 is a variance-explained fraction. They are different quantities with different scales, both addressing \"how much does S_prev explain after E and C are accounted for\" but via different math. The absolute_difference and Pearson/Spearman correlations are the substantive comparisons; the ratio is mechanical and should be read as a magnitude-scaling diagnostic, not a meaningful coefficient.",
+  "apparatus_q_star_source": "C:\\Users\\Gaming\\Desktop\\iota active\\data\\paper\\calibration\\apparatus_aggregator\\per_cell.json",
+  "timestamp_utc": "2026-05-09T23:43:40.620218Z"
+}

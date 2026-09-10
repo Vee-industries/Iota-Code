@@ -1,0 +1,13 @@
+{
+  "figure_name": "fig2_toy_heatmap",
+  "source_fields": [
+    "toy_nonlinearity.rows[*].nl_S",
+    "toy_nonlinearity.rows[*].nl_E",
+    "toy_nonlinearity.rows[*].Rhat_gap"
+  ],
+  "cell_filter": null,
+  "caption_draft": "Ridge-vs-MLP share-gap under channel-marginal nonlinearity. Negative values (red): Ridge over-attributes to S, the pattern produced when E carries nonlinear structure Ridge cannot see. Mechanism: permuting a nonlinearly-contributing E on a Ridge fit loses less R^2 than under an MLP fit, inflating Ridge R.",
+  "results_json_hash": "0c3475f888adc52c7634c0fc3c7dfdd7f585a9b498d02786319178112164e486",
+  "generated_at": "2026-05-08T17:28:07.807586",
+  "iota_version": "0.82.0.23"
+}

@@ -1,0 +1,195 @@
+{
+  "start_iso": "2026-05-14T15:03:28.756809",
+  "model_count": 4,
+  "models": [
+    {
+      "tag": "gemma_2b_q4",
+      "steps": [
+        {
+          "step": "clear",
+          "result": "OK"
+        },
+        {
+          "step": "r0001",
+          "result": "OK"
+        },
+        {
+          "step": "r0001_wait",
+          "result": "OK"
+        },
+        {
+          "step": "r0003",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.0",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.2",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.4",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.6",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.8",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t1.0",
+          "result": "OK"
+        }
+      ],
+      "start_iso": "2026-05-14T15:03:28.756809",
+      "end_iso": "2026-05-14T17:00:14.746337"
+    },
+    {
+      "tag": "gemma_2b_fp16",
+      "steps": [
+        {
+          "step": "clear",
+          "result": "OK"
+        },
+        {
+          "step": "r0001",
+          "result": "OK"
+        },
+        {
+          "step": "r0001_wait",
+          "result": "OK"
+        },
+        {
+          "step": "r0003",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.0",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.2",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.4",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.6",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.8",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t1.0",
+          "result": "OK"
+        }
+      ],
+      "start_iso": "2026-05-14T17:00:14.746337",
+      "end_iso": "2026-05-14T18:34:11.015272"
+    },
+    {
+      "tag": "llama_8b_q4",
+      "steps": [
+        {
+          "step": "clear",
+          "result": "OK"
+        },
+        {
+          "step": "r0001",
+          "result": "OK"
+        },
+        {
+          "step": "r0001_wait",
+          "result": "OK"
+        },
+        {
+          "step": "r0003",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.0",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.2",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.4",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.6",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.8",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t1.0",
+          "result": "OK"
+        }
+      ],
+      "start_iso": "2026-05-14T18:34:11.015272",
+      "end_iso": "2026-05-14T22:39:44.597937"
+    },
+    {
+      "tag": "gemma_9b_q4",
+      "steps": [
+        {
+          "step": "clear",
+          "result": "OK"
+        },
+        {
+          "step": "r0001",
+          "result": "OK"
+        },
+        {
+          "step": "r0001_wait",
+          "result": "OK"
+        },
+        {
+          "step": "r0003",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.0",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.2",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.4",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.6",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t0.8",
+          "result": "OK"
+        },
+        {
+          "step": "r0039_t1.0",
+          "result": "OK"
+        }
+      ],
+      "start_iso": "2026-05-14T22:39:44.597937",
+      "end_iso": "2026-05-15T03:55:03.828591"
+    }
+  ],
+  "end_iso": "2026-05-15T03:55:03.828591"
+}

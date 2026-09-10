@@ -1,0 +1,233 @@
+{
+  "iota_version": "0.82.0.29",
+  "diagnosis_purpose": "Disambiguate whether R0001 100% collapse is design-by-layout (T=0.0-only baseline, shared across temp dirs) or historical-bug-induced.",
+  "item_a_b_r0001_mtimes_inodes": [
+    {
+      "model": "gemma_2b_q4",
+      "trial": 27,
+      "turn": 5,
+      "mtime_spread_sec": 13927.384,
+      "min_mtime_iso": "2026-04-10T19:33:15.912185",
+      "max_mtime_iso": "2026-04-10T23:25:23.296446",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        4736
+      ],
+      "layout_verdict": "INDEPENDENT_COLLECTIONS_SAME_OUTPUT (drift > 1hr, same md5 -- historical bug)"
+    },
+    {
+      "model": "gemma_2b_q4",
+      "trial": 27,
+      "turn": 8,
+      "mtime_spread_sec": 13927.324,
+      "min_mtime_iso": "2026-04-10T19:33:16.498248",
+      "max_mtime_iso": "2026-04-10T23:25:23.822720",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        4736
+      ],
+      "layout_verdict": "INDEPENDENT_COLLECTIONS_SAME_OUTPUT (drift > 1hr, same md5 -- historical bug)"
+    },
+    {
+      "model": "gemma_2b_q4",
+      "trial": 50,
+      "turn": 5,
+      "mtime_spread_sec": 13927.665,
+      "min_mtime_iso": "2026-04-10T19:34:09.647472",
+      "max_mtime_iso": "2026-04-10T23:26:17.312866",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        4736
+      ],
+      "layout_verdict": "INDEPENDENT_COLLECTIONS_SAME_OUTPUT (drift > 1hr, same md5 -- historical bug)"
+    },
+    {
+      "model": "gemma_2b_q4",
+      "trial": 50,
+      "turn": 8,
+      "mtime_spread_sec": 13927.672,
+      "min_mtime_iso": "2026-04-10T19:34:10.177330",
+      "max_mtime_iso": "2026-04-10T23:26:17.849380",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        4736
+      ],
+      "layout_verdict": "INDEPENDENT_COLLECTIONS_SAME_OUTPUT (drift > 1hr, same md5 -- historical bug)"
+    },
+    {
+      "model": "gemma_2b_fp16",
+      "trial": 27,
+      "turn": 5,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-04-15T18:56:53.555434",
+      "max_mtime_iso": "2026-04-15T18:56:53.555434",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        4736
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "gemma_2b_fp16",
+      "trial": 27,
+      "turn": 8,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-04-15T18:56:54.000013",
+      "max_mtime_iso": "2026-04-15T18:56:54.000013",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        4736
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "gemma_2b_fp16",
+      "trial": 50,
+      "turn": 5,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-04-15T18:57:38.640205",
+      "max_mtime_iso": "2026-04-15T18:57:38.640205",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        4736
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "gemma_2b_fp16",
+      "trial": 50,
+      "turn": 8,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-04-15T18:57:39.092405",
+      "max_mtime_iso": "2026-04-15T18:57:39.092405",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        4736
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "gemma_9b_q4",
+      "trial": 27,
+      "turn": 5,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-04-01T19:26:52.854441",
+      "max_mtime_iso": "2026-04-01T19:26:52.854441",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        7296
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "gemma_9b_q4",
+      "trial": 27,
+      "turn": 8,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-04-01T19:26:54.464585",
+      "max_mtime_iso": "2026-04-01T19:26:54.464585",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        7296
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "gemma_9b_q4",
+      "trial": 50,
+      "turn": 5,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-04-01T19:29:29.605859",
+      "max_mtime_iso": "2026-04-01T19:29:29.605859",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        7296
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "gemma_9b_q4",
+      "trial": 50,
+      "turn": 8,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-04-01T19:29:31.111867",
+      "max_mtime_iso": "2026-04-01T19:29:31.111867",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        7296
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "llama_8b_q4",
+      "trial": 27,
+      "turn": 5,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-03-20T16:13:24.955972",
+      "max_mtime_iso": "2026-03-20T16:13:24.955972",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        8320
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "llama_8b_q4",
+      "trial": 27,
+      "turn": 8,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-03-20T16:13:28.716460",
+      "max_mtime_iso": "2026-03-20T16:13:28.716460",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        8320
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "llama_8b_q4",
+      "trial": 50,
+      "turn": 5,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-03-20T16:19:38.421865",
+      "max_mtime_iso": "2026-03-20T16:19:38.421865",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        8320
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    },
+    {
+      "model": "llama_8b_q4",
+      "trial": 50,
+      "turn": 8,
+      "mtime_spread_sec": 0.0,
+      "min_mtime_iso": "2026-03-20T16:19:42.172891",
+      "max_mtime_iso": "2026-03-20T16:19:42.172891",
+      "distinct_inodes": 6,
+      "distinct_md5s": 1,
+      "sizes": [
+        8320
+      ],
+      "layout_verdict": "BULK_COPY (identical mtimes, distinct inodes, same md5)"
+    }
+  ],
+  "item_c_c_embedding_cross_t": [],
+  "synthesis": "INCONCLUSIVE: layout breakdown (0, 12, 4, 0), C variance 0/0. Inspect per-item data.",
+  "timestamp_utc": "2026-05-13T08:53:57.520150Z"
+}
