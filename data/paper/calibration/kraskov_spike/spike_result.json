@@ -1,7 +1,7 @@
 {
   "phase": "phase1_kraskov_spike",
   "iota_version": "0.82.0.23",
-  "timestamp": "2026-05-17T18:28:13.782399Z",
+  "timestamp": "2026-09-11T16:24:16.480059Z",
   "part_a_bias_measurement": {
     "per_config": [
       {
@@ -18,7 +18,7 @@
         "bias_mean": 0.0346827997993458,
         "mi_E_raw": 4.012689287619477,
         "mi_S_raw": 0.30173206657855456,
-        "wall_clock_s": 12.749111413955688
+        "wall_clock_s": 14.10698413848877
       },
       {
         "config_label": "balanced",
@@ -34,7 +34,7 @@
         "bias_mean": 0.07551082838958798,
         "mi_E_raw": 2.5620909546348853,
         "mi_S_raw": 1.3055429173979372,
-        "wall_clock_s": 11.696317434310913
+        "wall_clock_s": 12.933695077896118
       },
       {
         "config_label": "S-dominant",
@@ -50,7 +50,7 @@
         "bias_mean": 0.037760553716210496,
         "mi_E_raw": 0.6579969030688151,
         "mi_S_raw": 3.3278789047038506,
-        "wall_clock_s": 11.673303127288818
+        "wall_clock_s": 12.85209345817566
       },
       {
         "config_label": "strong-S",
@@ -66,7 +66,7 @@
         "bias_mean": 0.006355021837520685,
         "mi_E_raw": 0.22227727085773985,
         "mi_S_raw": 6.166924292232714,
-        "wall_clock_s": 11.633777141571045
+        "wall_clock_s": 12.643190860748291
       }
     ],
     "beta_overall": 0.038577300935666234,

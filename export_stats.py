@@ -1711,7 +1711,7 @@ def fig_r_vs_temperature(session, vis_dir, single_model=False):
         ax.fill_between(temps, ci_lo, ci_hi, color=c, alpha=0.08)
     ax.set_xlabel('Temperature')
     ax.set_ylabel('R (Internal Trajectory Fraction)')
-    ax.set_title('Internal Causation Fraction Across Temperature\nwith 95% Bootstrap Confidence Intervals')
+    ax.set_title('Prior-State Share R Across Temperature\nwith 95% Bootstrap Confidence Intervals')
     ax.legend()
     ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
     # Auto y-axis: pad 5% around data range
@@ -2560,7 +2560,7 @@ def _infer_outcomes(df: pd.DataFrame, granger: dict, bs: dict,
             "implication": (
                 f"S_{{t-1}} adds predictive power over E_t "
                 f"(ΔR²={d:.4f}" + (f", p={p11:.3f}" if not np.isnan(p11) else "") + f") -- "
-                f"hidden state causally upstream of next state."
+                f"prior state adds explained variance beyond the input (conditional association)."
                 if status11 == "supported"
                 else f"S_{{t-1}} does not reliably add predictive power "
                      f"(ΔR²={d:.4f}" + (f", p={p11:.3f}" if not np.isnan(p11) else "") + ")."

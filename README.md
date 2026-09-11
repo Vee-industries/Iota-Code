@@ -22,10 +22,17 @@ into three channels:
 - **C** — training constraint (instruction-tuning / RLHF / abliteration delta)
 - **R** — prior hidden state, holding input fixed
 
-The decomposition `E + C + R = 1` is exact by construction. The apparatus
-estimates the three shares using four function-class families (Ridge, MLP,
-RKHS, Random Forest), anchored against a kNN mutual-information estimator,
-aggregated on the probability simplex.
+The three shares are normalised to sum to one by construction (`E + C + R = 1`
+is a normalisation of permutation effects under a fixed fitted model, with
+interaction mass reported separately, not a conservation law). R is a
+prior-state *predictive* share: it reads as a causal fraction only under
+conditions (exogeneity, no hidden confounding, a structural-equation form)
+that the conversation-threading protocol does not meet; see the apparatus
+paper §2.3 and §10. The apparatus estimates the three shares using four
+function-class families (Ridge, MLP, RKHS, Random Forest), anchored against a
+kNN mutual-information estimator, aggregated on the probability simplex.
+The hypothesis registry (`IOTA_Hypotheses_v10.md`) predates this wording and
+carries a note at the top on how to read its causal language.
 
 It's calibrated. The apparatus's behavior is characterized on a six-system
 synthetic suite (V5a–V5f) with known ground truth, so when you read a number
@@ -143,7 +150,7 @@ python reproduce.py --skip-collection   # analysis, calibration, results, probes
 
 Stages, in order: `env` (packages, CUDA, session file, unit tests) -> `collect` (Runs 0001, 0003, 0002 at T=0; runs 4-15, 23, 39, 60 and the E_t recovery Run 0016 at each of six temperatures; 62, 17, 18 at T=0; four model configurations in size order) -> `analysis` (`--all-stats`, runs 41-54 per model) -> `calibration` (operating point, kNN-MI reliability, V5 suite, Runs 0056-0058, lambda calibration, V5g bridge, tau_H4) -> `behavioral` (Run 0061 on Runs 0039/0060/0062) -> `results` (Run 0059: results.json + figures) -> `probes` (the 2026-09-10 measurements: Gaussian redundancy, multi-step persistence, KV interpolation, drop-history) -> `verify` (rebuilt results against the released `data/paper/results8th.json` and the numbers the papers quote).
 
-Every stage is idempotent: the framework's own resume logic skips completed trials, the calibration scripts skip existing outputs, and `data/paper/reproduce_status.json` records finished stages. GPU stages wait for the card to drain and the 9B model runs with `IOTA_VRAM_FRACTION=0.93` (the 0.85 default fails at load on 10 GB). Set `HF_TOKEN` in the environment if a model on your list is gated. Log: `.iota_reproduce.log`.
+Every stage is idempotent: the framework's own resume logic skips completed trials, the calibration scripts skip existing outputs, and `data/paper/reproduce_status.json` records finished stages. GPU stages wait for the card to drain and the 9B model runs with `IOTA_VRAM_FRACTION=0.93` (the 0.85 default fails at load on 10 GB). The driver also sets `IOTA_FRESH=1` (no resume cache is reused) and `IOTA_PREREQ_GATE=off` (the per-cell prerequisite scanner warns instead of skipping; it keys Run 0016 on a bookkeeping CSV rather than on the files the analysis runs read). Row de-duplication and the cross-validated Ridge penalty are defaults (`IOTA_DEDUP_ROWS=0`, `IOTA_RIDGE_ALPHA=0.01` reproduce the v1.0.1 estimator). Set `HF_TOKEN` in the environment if a model on your list is gated. Log: `.iota_reproduce.log`.
 
 Which runs each paper needs:
 
@@ -153,7 +160,7 @@ Which runs each paper needs:
 | B: IOTA apparatus | 1, 2, 3, 4-15, 16, 17, 18, 23, 41-59; probes |
 | C: One iota | 39, 60, 62, 61; drop-history probe |
 
-The released `data/paper/` folder (12 MB) is what the papers cite; a fresh clone can check every quoted number against it without collecting anything (`python reproduce.py --only verify`).
+The released `data/paper/` folder is what the papers cite (`results_v1.0.2.json`; `results8th.json` is the v1.0.1 record); a fresh clone can check every quoted number against it without collecting anything (`python reproduce.py --only verify`, or `python _paper_numbers_pack.py --results data/paper/results_v1.0.2.json` for the full list).
 
 ---
 
@@ -282,7 +289,8 @@ welcome at [github.com/Vee-industries/Iota-Code](https://github.com/Vee-industri
 ## Changelog
 
 See `CHANGELOG.md` for the full version history. Most recent change
-(v1.0.1, 2026-09-10): `reproduce.py` one-command pipeline; Run 0023
-collected on all fleet cells; `data/paper/` tracked in the repo; four new
-measurement scripts (Gaussian redundancy, multi-step persistence, KV
-interpolation, drop-history) and the tau_H4 derivation.
+(v1.0.2, 2026-09-11): the de-duplicated re-run. One row per distinct tuple
+by default, the nine-run apparatus row set, a Ridge penalty selected per cell by
+cross-validation (the fixed 0.01 is degenerate on distinct rows), `IOTA_FRESH=1`
+so no resume cache is silently reused, phase 12 wired into Run 0058, and
+`data/paper/results_v1.0.2.json` as the frozen results object the papers cite.

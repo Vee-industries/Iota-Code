@@ -1986,14 +1986,22 @@ def _run_session(session):
         if _run_problems:
             _prereq_warning_block(run_num, _run_problems)
             if os.environ.get('IOTA_HEADLESS') == '1':
-                ui.warn(f"[headless] Skipping Run {run_num:04d} -- prerequisites not met.")
-                continue
-            ui.blank()
-            ui.opt("c", f"Continue -- run {run_num:04d} anyway  (results may be invalid)")
-            ui.opt("s", f"Skip     -- skip Run {run_num:04d} and continue to next run")
-            ui.opt("a", "Abort    -- stop the entire session")
-            ui.blank()
-            _gate = input("  > ").strip().lower()
+                if os.environ.get('IOTA_PREREQ_GATE', 'on') == 'off':
+                    # v1.0.2: explicit override for analysis-only re-runs whose
+                    # inputs are known to be on disk (the scanner keys Run 0016
+                    # on its bookkeeping CSV, not on the E_t files Run 0042 reads).
+                    ui.warn(f"[headless] IOTA_PREREQ_GATE=off -- running Run {run_num:04d} anyway.")
+                    _gate = 'c'
+                else:
+                    ui.warn(f"[headless] Skipping Run {run_num:04d} -- prerequisites not met.")
+                    continue
+            else:
+                ui.blank()
+                ui.opt("c", f"Continue -- run {run_num:04d} anyway  (results may be invalid)")
+                ui.opt("s", f"Skip     -- skip Run {run_num:04d} and continue to next run")
+                ui.opt("a", "Abort    -- stop the entire session")
+                ui.blank()
+                _gate = input("  > ").strip().lower()
             if _gate == 'a':
                 ui.warn("Session aborted.")
                 return

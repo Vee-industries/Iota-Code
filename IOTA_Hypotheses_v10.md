@@ -4,12 +4,29 @@ Hypotheses and Experimental Design
 
 *Version 24.1 | IOTA Framework v0.81.1.2 | April 2026 | 53 Runs | 51 Hypotheses in scope + 3 in appendix*
 
-> **Authority for paper claims:** see `paper_framing.md` for the
-> framing-and-layout spec. This document is the hypothesis registry
-> — it defines what was asked. The framing spec defines what is
-> claimed in the paper. Where they appear to conflict, the framing
-> spec wins for paper-bound prose; this document wins for the
-> experimental record.
+> **Authority for paper claims (updated 2026-09-11):** the papers are
+> the claims of record: the apparatus paper (Vaillancourt 2026b, §2.3
+> and §10) and the technical note (2026a). This document is the
+> hypothesis registry: it records what was asked, in the language of
+> March-April 2026 when the hypotheses were registered. Where the two
+> differ, the papers win for what is claimed; this document wins for
+> what was tested and how.
+>
+> **On the causal wording in this registry.** R as measured here is
+> a prior-state *predictive* share: the chain-rule ratio
+> I(S_{t+1}; S_t | E_t) / I(S_{t+1}; S_t, E_t), estimated as a
+> renormalised partition of permutation effects under a fixed fitted
+> model (interaction mass reported separately). It has a causal
+> reading only when exogeneity, no hidden confounding, and a
+> structural-equation form all hold (paper B §2.3, regime 1); the
+> conversation-threading protocol used here violates exogeneity
+> (regime 3), so "causal determination", "internal causation" and
+> "causally upstream" below should be read as "conditional
+> association holding input fixed" unless the run is an
+> intervention. The interventions are the activation-patching
+> cluster (Runs 0017-0019, H0_29) and the abliteration-contrast
+> construction of C; their causal wording stands. "E + C + R = 1"
+> is a normalisation, not a conservation law.
 
 ---
 
@@ -76,24 +93,29 @@ historical record of what was registered.
 
 ## The Central Claim
 
-Every response a language model generates is determined by three
-sources: what arrived in the prompt (E, external input), what the
-model is constrained to produce (C, constraint pressure from
-training and system instructions), and something from the model's
-own prior trajectory (R, internal causation). The IOTA decomposition
-formalises this as **E + C + R = 1**, where each term represents a
-fraction of causal determination over the next hidden state.
+The next hidden state a language model computes is predictable from
+three sources: what arrived in the prompt (E, external input), what
+the model is constrained to produce (C, the training-constraint
+channel, read here as the abliteration contrast), and the state it
+carried from its own prior turns (R, the prior-state share). The
+IOTA decomposition normalises the three as **E + C + R = 1**: each
+term is a share of next-state predictability under a fixed fitted
+model, not a fraction of causal determination (see the note at the
+top of this document and paper B §2.3).
 
-R is what we are measuring. It is the fraction of next-state
-determination attributable to the model's internal hidden-state
-trajectory beyond what can be explained by current input and
-constraints. If R is zero, the model is a pure lookup function. If R
-is large, prior turns are causally upstream of what it produces.
+R is what we are measuring. It is the share of next-state
+predictability attributable to the model's carried hidden state
+beyond what current input and constraints already explain. If R is
+zero, the next state is a function of the current input alone. If R
+is large, the carried state is doing measurable work at every turn.
+Whether that work is causal in the interventional sense is a
+separate question that only the patching runs address.
 
 > **Why this matters.** Interpretability research typically asks
 > "which circuit does what." We ask a prior question: to what degree
-> does the model's own trajectory cause its outputs at all? This is
-> a question about causal fraction, not mechanism. It can be
+> does the model's own carried state predict its next state at all,
+> holding input fixed? This is a question about a share, not a
+> mechanism. It can be
 > answered without access to weights, and the answer has direct
 > implications for robustness, interpretability, and what it means
 > for a model to be coherent across a conversation.
@@ -102,12 +124,12 @@ is large, prior turns are causally upstream of what it produces.
 
 The core difficulty: you cannot observe R directly. E, C, and R are
 all operating simultaneously on every turn. The measurement problem
-is to attribute causal credit to each source despite never seeing
+is to attribute predictive credit to each source despite never seeing
 them in isolation.
 
 The solution: if S\_{t+1} is more similar to S_t than to the
-external input E_t (after controlling for C_t), then the internal
-trajectory is causally upstream. Key metrics:
+external input E_t (after controlling for C_t), then the carried
+state is doing work the input does not explain. Key metrics:
 
 > **Similarity index (iota):** Cumulative mean cosine similarity of
 > each turn's final-layer hidden state to turn-1. Trajectory
@@ -129,7 +151,8 @@ trajectory is causally upstream. Key metrics:
 > measure variance drop in S_t predictions, renormalize to sum to 1.
 > Run 34 (canonical 0043). Reported as perm_sens_E/C/R. NOT proper
 > Sobol indices (see H0₂₂ note). The closest available approximation
-> to E+C+R=1 as a causal partition.
+> to E+C+R=1 as a predictive partition (causal only in regime 1 of
+> paper B §2.3).
 >
 > **Onset delay ratio:** first_token_latency / mean_inter_interval.
 > Deliberation proxy. Tested by H0₂₃.
@@ -608,8 +631,8 @@ if similarity index collapses at T=1.0, Runs 27–34 cannot be cited.
 > models: A (S_t ~ E_t), B (S_t ~ E_t + S\_{t-1}),
 > C (S_t ~ E_t + C_t), D (full). Delta-R²_internal measures what
 > S\_{t-1} adds after E and C are in the model. Note:
-> Delta-R²_internal is a marginal R² increment, not a causal
-> fraction. Run 34 addresses the causal partition.
+> Delta-R²_internal is a marginal R² increment, not a share of a
+> partition. Run 34 produces the normalised (predictive) partition.
 >
 > **Prediction:** Delta-R²_internal > 0.01 (p < 0.05, N=1000).
 > Delta-R²_constraint > 0.01 (p < 0.05). Both must pass.
@@ -627,15 +650,17 @@ if similarity index collapses at T=1.0, Runs 27–34 cannot be cited.
 ### H0₂₂ — E, C, R Permutation Fractions Are Equal
 
 > **Null hypothesis:** E, C, R cannot be estimated as a proper
-> causal partition summing to 1.
+> partition summing to 1 under a fixed fitted model.
 >
-> **Why this matters:** Run 33 proves R exists but cannot deliver
-> E+C+R=1 as a causal partition. Run 34 uses fixed-model
+> **Why this matters:** Run 33 shows R is non-zero but cannot deliver
+> E+C+R=1 as a partition. Run 34 uses fixed-model
 > permutation sensitivity: fit a Ridge model on the full quadruplet
 > dataset, then permute each component (E, C, S_prev) independently
 > across trials and measure the variance drop in S_t predictions.
-> Effects are renormalized to sum to 1. This is the run that earns
-> E+C+R=1 as written. Interaction mass reported separately.
+> Effects are renormalized to sum to 1. This is the run that produces
+> E+C+R=1 as written: a normalisation of permutation effects, with
+> interaction mass reported separately (predictive, not causal; see
+> the note at the top of this document).
 >
 > **NOTE on naming:** This is fixed-model permutation sensitivity,
 > not proper first-order Sobol indices (Saltelli, 2002). Proper

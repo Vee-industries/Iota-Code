@@ -47,3 +47,5 @@ Thumbs.db
 
 # Working notes for AI collaborators (personal; never distributed)
 IOTA_Philosophy_and_Context.md
+
+data/paper/dedup_rerun_status.json

@@ -203,6 +203,7 @@ def _emit_manifest(phase_states, phase1_data, phase5_data, paper2_data=None):
             (9, 'phase9', 'stacking_baseline_p2/per_cell.json'),
             (10, 'phase10', 'bootstrap_variance_p2/per_cell.json'),
             (11, 'phase11', 'geometric_diagnostics_p2/per_cell.json'),
+            (12, 'phase12', 'estimator_joint_R2_p2/per_cell.json'),
         ]:
             data = paper2_data.get(key) or {}
             manifest[f'{key}_summary'] = {
@@ -232,6 +233,7 @@ def main():
         'phase9_stacking_baseline_p2': 'pending',
         'phase10_bootstrap_variance_p2': 'pending',
         'phase11_geometric_diagnostics_p2': 'pending',
+        'phase12_estimator_joint_R2_p2': 'pending',
     }
 
     p1_ok, p1_data = _phase1()
@@ -303,6 +305,15 @@ def main():
                 paper2_data['phase11'] = p11_data
             else:
                 phase_states['phase11_geometric_diagnostics_p2'] = 'skipped_upstream'
+
+            # v1.0.2: phase 12 (per-estimator joint R2 at the partition-B point; the H3 input
+            # results.json reads) was a module nothing invoked -- its file dated from 2026-05-04.
+            if phase_states.get('phase6_function_class_p2') == 'done':
+                p12_ok, p12_data = dp2._run_estimator_joint_R2_p2()
+                phase_states['phase12_estimator_joint_R2_p2'] = 'done' if p12_ok else 'failed'
+                paper2_data['phase12'] = p12_data
+            else:
+                phase_states['phase12_estimator_joint_R2_p2'] = 'skipped_upstream'
 
         except Exception as _p2_e:
             ui.err(f"Paper-2 phases failed: {type(_p2_e).__name__}: {_p2_e}")

@@ -28,6 +28,7 @@ docstring in results_schema.py for the field-relationship explanation.
 """
 
 import os
+from ridge_policy import fit_ridge as _fit_ridge_policy   # v1.0.2
 import json
 import datetime
 import warnings
@@ -99,7 +100,7 @@ def compute_estimator_joint_R2(cell_data, target_pca_components=None,
     out = {}
 
     if ui_msg: ui_msg("    Ridge joint R²...")
-    ridge_mdl = Ridge(alpha=fc.RIDGE_ALPHA).fit(Xj_tr_s, y_tr_native_s)
+    ridge_mdl = _fit_ridge_policy(Xj_tr_s, y_tr_native_s)   # v1.0.2: alpha by ridge_policy
     out['ridge'] = {
         'train':   float(r2_score(y_tr_native_s, ridge_mdl.predict(Xj_tr_s),
                                     multioutput='variance_weighted')),

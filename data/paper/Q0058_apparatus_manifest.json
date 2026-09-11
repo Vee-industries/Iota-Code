@@ -1,6 +1,6 @@
 {
   "iota_version": "0.82.0.23",
-  "timestamp": "2026-05-17T18:29:26.653125Z",
+  "timestamp": "2026-09-11T17:23:01.069469Z",
   "apparatus_phase_status": {
     "phase1_kraskov_spike": "done",
     "phase2_solver_module": "done",
@@ -12,7 +12,8 @@
     "phase8_apparatus_p2": "done",
     "phase9_stacking_baseline_p2": "done",
     "phase10_bootstrap_variance_p2": "done",
-    "phase11_geometric_diagnostics_p2": "done"
+    "phase11_geometric_diagnostics_p2": "done",
+    "phase12_estimator_joint_R2_p2": "done"
   },
   "phase1_summary": {
     "bucket": "strong",
@@ -21,7 +22,7 @@
   },
   "phase5_summary": {
     "n_cells_evaluated": 24,
-    "n_v5d_flagged": 15,
+    "n_v5d_flagged": 18,
     "per_cell_path": "data/paper/calibration/apparatus_aggregator/per_cell.json"
   },
   "phase6_summary": {
@@ -47,5 +48,9 @@
   "phase11_summary": {
     "n_cells": 24,
     "output_path": "data/paper/calibration/geometric_diagnostics_p2/per_cell.json"
+  },
+  "phase12_summary": {
+    "n_cells": null,
+    "output_path": "data/paper/calibration/estimator_joint_R2_p2/per_cell.json"
   }
 }

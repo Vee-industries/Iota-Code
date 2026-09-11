@@ -1,7 +1,7 @@
 {
   "phase": "phase3_v5d_threshold",
   "iota_version": "0.82.0.23",
-  "timestamp": "2026-05-17T18:28:13.854648Z",
+  "timestamp": "2026-09-11T16:24:16.558000Z",
   "tau_spread": 0.03204083392726704,
   "tau_amgm": 0.03610666666362056,
   "v5d_true_spread_flag_rate": 0.76,

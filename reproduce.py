@@ -29,7 +29,7 @@ finished stage in data/paper/reproduce_status.json so a restart continues where 
   results      Run 0059: results.json + paper figures
   probes       the 2026-09-10 measurements: Gaussian redundancy on de-duplicated rows,
                multi-step persistence R_k, KV-cache interpolation (GPU), drop-history (GPU)
-  verify       compare the rebuilt results.json against the released results8th.json and
+  verify       compare the rebuilt results.json against the released results_v1.0.2.json and
                print the headline numbers next to the values the papers quote
 
 Wall clock on an RTX 3080 (10 GB): collection is the cost, roughly 1-2 days per model
@@ -48,7 +48,9 @@ PY = sys.executable
 SESSION = ROOT / "last_session.json"
 STATUS = ROOT / "data" / "paper" / "reproduce_status.json"
 LOG = ROOT / ".iota_reproduce.log"
-ENV = dict(os.environ, PYTHONIOENCODING="utf-8", PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True", IOTA_HEADLESS="1")
+ENV = dict(os.environ, PYTHONIOENCODING="utf-8", PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True", IOTA_HEADLESS="1",
+           IOTA_FRESH="1",           # v1.0.2: every resume cache (Q0057 cells, anchors.json, partition-B phase files) is ignored
+           IOTA_PREREQ_GATE="off")   # v1.0.2: the per-cell prerequisite scanner keys Run 0016 on a bookkeeping CSV; analysis runs read the files directly
 
 MODELS = {
     "gemma_2b_q4":   dict(model_path="IlyaGusev/gemma-2-2b-it-abliterated", model_name="gemma-2-2b-it-abliterated",
@@ -273,16 +275,16 @@ def stage_probes(models, status):
 
 
 def stage_verify(models, status):
-    new = ROOT / "data" / "paper" / "results.json"; ref = ROOT / "data" / "paper" / "results8th.json"
+    new = ROOT / "data" / "paper" / "results.json"; ref = ROOT / "data" / "paper" / "results_v1.0.2.json"   # v1.0.1 record: results8th.json
     if not ref.exists():
-        log("  results8th.json (released) not found; nothing to compare against"); return True
+        log("  results_v1.0.2.json (released) not found; nothing to compare against"); return True
     R = json.load(open(ref))["cells"]
     def summary(cells):
         import statistics
         r = [c["measurements"]["anchored_shares"]["R"] for c in cells.values() if c.get("measurements", {}).get("anchored_shares")]
         return (len(r), statistics.mean(r), min(r), max(r)) if r else (0, float("nan"), float("nan"), float("nan"))
     n, m, lo, hi = summary(R)
-    log(f"  released results8th.json: {n} cells, fleet-mean R-hat {m:.4f}, range {lo:.4f}-{hi:.4f}   (papers: 0.41, 0.34-0.48)")
+    log(f"  released results_v1.0.2.json: {n} cells, fleet-mean R-hat {m:.4f}, range {lo:.4f}-{hi:.4f}   (papers: 0.40, 0.24-0.53)")
     if new.exists():
         N = json.load(open(new))["cells"]; n2, m2, lo2, hi2 = summary(N)
         log(f"  rebuilt  results.json:     {n2} cells, fleet-mean R-hat {m2:.4f}, range {lo2:.4f}-{hi2:.4f}")

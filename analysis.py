@@ -14,6 +14,7 @@ Run map:
 """
 
 import os, sys, glob, json
+from ridge_policy import fit_ridge as _fit_ridge_policy   # v1.0.2
 
 # ── CPU cap (v0.71.0.3) ─────────────────────────────────────────────────────
 # Analysis runs are CPU-bound (Ridge fits, permutation shuffles, bootstrap).
@@ -343,7 +344,7 @@ def _run_granger(run_num, session, paths):
     ui.msg(f"  ΔR²_internal           : {results['delta_r2_internal']:.4f}")
     ui.blank()
     if results['supports_H011']:
-        ui.ok("H11 SUPPORTED — internal state causally upstream of next state.")
+        ui.ok("H11 SUPPORTED — prior state adds explained variance beyond the input (conditional association; not an intervention).")
     else:
         ui.warn("H11 NOT SUPPORTED — ΔR² below threshold.")
     ui.msg(f"  Saved: {out_file}")
@@ -463,7 +464,12 @@ def _run_baseline_swap(session, paths):
 
 # v0.79.4.0: renumbered to new execution-order IDs.
 # Old [3,4,5,15,16,17,19,26,28] → new [6,7,8,13,14,15,1,3,23]
-SOURCE_RUNS_3WAY = [6, 7, 8, 13, 14, 15, 1, 23]  # v0.82.0.27: Run 0003 removed (temperature-robustness sweep, not chain-rule source)
+SOURCE_RUNS_3WAY = [6, 7, 8, 13, 14, 15, 1, 3, 23]  # v1.0.2: the nine-run apparatus row set the papers describe (v0.82.0.27 had dropped Run 0003; the released Q0057/Run 0058 layer was computed with it)
+if os.environ.get('IOTA_SOURCE_RUNS_3WAY'):
+    # v1.0.2: explicit override (comma-separated run numbers). The released
+    # apparatus row set (Q0057 of 2026-04-29, r1-23 caches) is the nine-run
+    # set [6, 7, 8, 13, 14, 15, 1, 3, 23]; the de-duplicated re-run uses it.
+    SOURCE_RUNS_3WAY = [int(x) for x in os.environ['IOTA_SOURCE_RUNS_3WAY'].split(',') if x.strip()]
 # v40.0.0: Run 0001 (was R19) now provides per-trial real E_t and real C_t
 # following the three-model redesign. It is the canonical 3-way source.
 
@@ -488,10 +494,32 @@ SOURCE_RUNS_VALIDATION = [33]  # was Run 0033 — held-out set for Run 0043 eval
 
 _CACHE_MAX_DIM = 1024
 
+def _dedup_mode():
+    """v1.0.2: IOTA_DEDUP_ROWS=1 makes _load_quadruplets keep one row per distinct
+    (s_prev, e_t, s_next, c_t) and writes/reads a separate '_dedup' qcache family."""
+    return os.environ.get('IOTA_DEDUP_ROWS', '1') == '1'   # v1.0.2: default on; IOTA_DEDUP_ROWS=0 reproduces the duplicated row sets of v1.0.1
+
+
+def _qcache_suffix():
+    return '_dedup' if _dedup_mode() else ''
+
+
+def _dedup_rows(rows):
+    """Keep the first occurrence of each distinct (s_prev, e_t, s_next, c_t) row."""
+    seen = set(); out = []
+    for r in rows:
+        key = (r['s_prev'].tobytes(), r['e_t'].tobytes(), r['s_next'].tobytes(),
+               r['c_t'].tobytes() if r.get('c_t') is not None else b'')
+        if key in seen:
+            continue
+        seen.add(key); out.append(r)
+    return out
+
+
 def _qcache_path(hidden_dir, source_runs, require_ct):
     tag = 'ct' if require_ct else 'noct'
     rmin, rmax = min(source_runs), max(source_runs)
-    return os.path.join(hidden_dir, f'_qcache_{tag}_d{POOL_DIM}_r{rmin}-{rmax}.npz')
+    return os.path.join(hidden_dir, f'_qcache_{tag}_d{POOL_DIM}_r{rmin}-{rmax}{_qcache_suffix()}.npz')
 
 def _qcache_load(hidden_dir, source_runs, require_ct):
     """Load quadruplets from cache. Returns list of row dicts or None."""
@@ -605,9 +633,12 @@ def _qcache_save(hidden_dir, source_runs, require_ct, rows):
         # v0.75.1.0: clean up stale caches — keep only the one we just wrote.
         # One cache per temperature directory. No accumulation, instant re-entry.
         for stale in glob.glob(os.path.join(hidden_dir, '_qcache_*.npz')):
-            if os.path.abspath(stale) != os.path.abspath(path):
-                try: os.remove(stale)
-                except OSError: pass  # v0.83.1: tighten cleanup-stale except
+            if os.path.abspath(stale) == os.path.abspath(path):
+                continue
+            if stale.endswith('_dedup.npz') != _dedup_mode():
+                continue   # v1.0.2: the other cache family is left alone
+            try: os.remove(stale)
+            except OSError: pass  # v0.83.1: tighten cleanup-stale except
     except Exception as e:
         ui.warn(f"  [cache] Save failed: {e}")
 
@@ -800,6 +831,9 @@ def _load_quadruplets(hidden_dir, source_runs, model_name, require_ct=True):
                     n_loaded += 1
                 prev_s = curr_s
         ui.msg(f"  Run {run_num}: {n_loaded} quadruplets ({len(trial_ids)} trials)")
+    if _dedup_mode():
+        _n0 = len(rows); rows = _dedup_rows(rows)
+        ui.msg(f"  [dedup] {_n0} rows -> {len(rows)} distinct (s_prev, e_t, s_next, c_t) rows")
     _qcache_save(hidden_dir, source_runs, require_ct, rows)
     return rows
 
@@ -1624,7 +1658,7 @@ def _permutation_sensitivity(rows_3way, component, n_perm=N_PERMUTE_SOBOL, seed=
     sy = StandardScaler()
     full_Xs = sx.fit_transform(full_X)
     ys = sy.fit_transform(y)
-    mdl = Ridge(alpha=0.01).fit(full_Xs, ys)
+    mdl = _fit_ridge_policy(full_Xs, ys)   # v1.0.2: alpha by ridge_policy (CV default; IOTA_RIDGE_ALPHA=0.01 reproduces v1.0.1)
     baseline_pred = mdl.predict(full_Xs)
     baseline_r2   = float(_r2(ys, baseline_pred))
     # baseline_var kept for backward compat with interaction_mass calculation
@@ -1703,7 +1737,7 @@ def _fit_perm_model(rows_3way):
     sy = StandardScaler()
     full_Xs = sx.fit_transform(full_X)
     ys      = sy.fit_transform(y)
-    mdl     = Ridge(alpha=0.01).fit(full_Xs, ys)
+    mdl     = _fit_ridge_policy(full_Xs, ys)   # v1.0.2: alpha by ridge_policy (CV default; IOTA_RIDGE_ALPHA=0.01 reproduces v1.0.1)
     baseline_pred = mdl.predict(full_Xs)
     baseline_var  = float(np.var(baseline_pred))
     return mdl, sx, sy, baseline_var
@@ -1980,6 +2014,7 @@ def _run_permutation_sensitivity(session, paths):
         _partial34 = {
             'run_num': 34, 'status': 'running',
             'n_3way': len(rows_3way), 'n_perm': N_PERMUTE_SOBOL,
+            'ridge_alpha': float(getattr(mdl_train, 'alpha', 0.01)), 'ridge_alpha_policy': getattr(mdl_train, 'iota_alpha_policy', 'fixed_0.01'),
             'perm_sens_E': {'effect': effect_E, 'std': std_E, 'fraction': frac_E},
             'perm_sens_C': {'effect': effect_C, 'std': std_C, 'fraction': frac_C},
             'perm_sens_R': {'effect': effect_R, 'std': std_R, 'fraction': frac_R},
@@ -2186,6 +2221,8 @@ def _run_permutation_sensitivity(session, paths):
         "run_num": 34,
         "n_3way": len(rows_3way),
         "n_perm": N_PERMUTE_SOBOL,
+        "ridge_alpha": float(getattr(mdl_train, 'alpha', 0.01)),                       # v1.0.2
+        "ridge_alpha_policy": getattr(mdl_train, 'iota_alpha_policy', 'fixed_0.01'),  # v1.0.2
         "baseline_var": baseline_var,
         # In-sample results (primary, backward compatible keys preserved)
         "perm_sens_E": {"effect": effect_E, "std": std_E, "fraction": frac_E},
@@ -2733,7 +2770,7 @@ def _sweep_one_dim_mem(dim, rows_full):
     sy = StandardScaler()
     full_Xs = sx.fit_transform(full_X)
     ys = sy.fit_transform(y)
-    mdl = Ridge(alpha=0.01).fit(full_Xs, ys)
+    mdl = _fit_ridge_policy(full_Xs, ys)   # v1.0.2: alpha by ridge_policy (CV default; IOTA_RIDGE_ALPHA=0.01 reproduces v1.0.1)
     baseline_pred = mdl.predict(full_Xs)
     baseline_r2 = float(_r2s(ys, baseline_pred))
     baseline_var = float(np.var(baseline_pred))
@@ -3525,12 +3562,21 @@ def _run_mlp_decomposition(session, paths,
     # compatibility but no longer gates the per-condition load.
     ridge_per_cond = _load_ridge_reference_per_condition(ana_dir)
     if not ridge_per_cond:
-        ui.err("Run 0044 output not found or empty — per-condition Ridge reference unavailable.")
-        ui.err("  Run 0046 requires BOTH pooled (56a) and per-condition (56b) passes.")
-        ui.err("  Run 0044 must complete at this temperature before Run 0046 can proceed.")
-        return
-    do_per_condition = True
-    ui.msg(f"  Ridge (Run 0044): {len(ridge_per_cond)} conditions available")
+        if os.path.exists(os.path.join(ana_dir, "Q0044_per_condition_R.json")):
+            # v1.0.2: Run 0044 ran but skipped every source run (< 30 rows), the
+            # normal outcome on de-duplicated rows at low temperature. The pooled
+            # pass (56a) is what results.json and Run 0057 read; run it alone and
+            # record why 56b is absent instead of refusing.
+            ui.warn("Run 0044 ran but no condition had enough rows -- per-condition pass (56b) skipped; pooled pass (56a) only.")
+            do_per_condition = False
+        else:
+            ui.err("Run 0044 output not found or empty — per-condition Ridge reference unavailable.")
+            ui.err("  Run 0046 requires BOTH pooled (56a) and per-condition (56b) passes.")
+            ui.err("  Run 0044 must complete at this temperature before Run 0046 can proceed.")
+            return
+    else:
+        do_per_condition = True
+        ui.msg(f"  Ridge (Run 0044): {len(ridge_per_cond)} conditions available")
     ui.blank()
 
     # ── Resume ───────────────────────────────────────────────────────────
@@ -3570,6 +3616,7 @@ def _run_mlp_decomposition(session, paths,
         'pooled':         partial.get('pooled', {'ridge_reference': ridge_pooled,
                                                  'results': []}),
         'per_condition':  partial.get('per_condition', {}) if do_per_condition else None,
+        'per_condition_status': 'complete' if do_per_condition else 'skipped: Run 0044 had no condition with >= 30 rows',
     }
     # Ensure nested shape
     if 'results' not in result['pooled']:

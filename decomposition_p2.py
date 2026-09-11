@@ -63,6 +63,7 @@ import datetime
 import glob
 import json
 import os
+from resume_policy import fresh as _fresh   # v1.0.2
 import sys
 import time
 
@@ -342,7 +343,7 @@ def _run_function_class_fits_p2(session=None, paths=None,
         # Cell-level checkpoint
         prior = per_cell.get(cell_key) or {}
         if (not force_refit
-                and prior.get('partition_source') == LIVE_SENTINEL):
+                and not _fresh() and prior.get('partition_source') == LIVE_SENTINEL):
             ui.msg(f"  [skip] {cell_key} -- cached at {LIVE_SENTINEL}")
             n_skip_cached += 1
             continue
@@ -947,7 +948,7 @@ def _run_bootstrap_variance_p2(session=None, paths=None,
         # Don't overwrite a real bootstrap result that's already in
         # per_cell from a prior run.
         prior = per_cell.get(cell_key) or {}
-        if prior.get('variance_source') == LIVE_SENTINEL:
+        if prior.get('variance_source') == LIVE_SENTINEL and not _fresh():
             continue
         per_cell[cell_key] = {
             'n_bootstrap':                   0,
@@ -972,7 +973,7 @@ def _run_bootstrap_variance_p2(session=None, paths=None,
         if cell_key not in active_filter:
             continue
         prior = per_cell.get(cell_key) or {}
-        if (prior.get('variance_source') == LIVE_SENTINEL
+        if (not _fresh() and prior.get('variance_source') == LIVE_SENTINEL
                 and int(prior.get('n_bootstrap') or 0) >= n_bootstrap):
             ui.msg(f"  [skip] {cell_key} -- already complete at "
                     f"n_bootstrap={prior.get('n_bootstrap')}")
@@ -1353,7 +1354,7 @@ def _run_estimator_joint_R2_p2(session=None, paths=None,
 
         prior = per_cell.get(cell_key) or {}
         if (not force_refit
-                and prior.get('partition_source') == LIVE_SENTINEL):
+                and not _fresh() and prior.get('partition_source') == LIVE_SENTINEL):
             ui.msg(f"  [skip] {cell_key} -- cached at {LIVE_SENTINEL}")
             n_skip_cached += 1
             continue

@@ -1,3 +1,49 @@
+## CURRENT STATE -- 1.0.2 (2026-09-11)  [entry: claude-fable-5.1, with Kevin]
+
+### De-duplicated re-run: honest row counts, a well-posed linear estimator, no silent resume caches.
+
+Why: paper B §3.1 disclosed that most apparatus rows repeat (120 to 3,843 distinct (S_t, E_t, S_t+1) triples
+per cell out of 16,080 to 22,800), so no split in the v1.0.1 pipeline was held out. Re-running on distinct rows
+exposed two further defects. (1) Ridge(alpha=0.01) on standardized [E, C, S, prompt_tokens] is degenerate once
+rows are distinct: C_t takes 6 to 8 values per cell, the E and C blocks are near-collinear, and the fit has
+cross-validated R^2 below zero with coefficient norms ~10x the honest fit, so its permutation partition collapses
+(R share 0.01-0.05 on 21 of 24 cells) while MLP/RF/RKHS do not. Duplication had masked this. (2) Run 0058 phases 6
+and 10 resumed from LIVE_SENTINEL caches and phase 12 (estimator_joint_R2_p2, the H3 held-out input) was a module
+nothing invoked (its file dated 2026-05-04), so a re-fire re-emitted May numbers with a new timestamp.
+
+- Rows: `IOTA_DEDUP_ROWS` (default on) keeps one row per distinct (s_prev, e_t, s_next, c_t) in
+  `analysis._load_quadruplets`; the cache family gets a `_dedup` suffix and every reader selects the matching
+  family. `IOTA_DEDUP_ROWS=0` reproduces the v1.0.1 row sets.
+- Row set: `analysis.SOURCE_RUNS_3WAY` default is the nine-run apparatus set [6,7,8,13,14,15,1,3,23] the papers
+  describe (v0.82.0.27 had dropped Run 0003; the released Q0057/Run 0058 layer was computed with it).
+  `IOTA_SOURCE_RUNS_3WAY` overrides.
+- Ridge: `ridge_policy.py` selects the penalty per cell by leave-one-out (GCV) over 1e-3..1e4, memoised per
+  (tag, n, p) within a process so bootstrap/permutation refits reuse the cell's alpha; used at all six Ridge
+  sites (analysis.py Runs 0041/0043/0044, function_class_p2, estimator_joint_R2_p2, run_channel_marginal).
+  `IOTA_RIDGE_ALPHA=0.01` reproduces the v1.0.1 estimator. Q0043 records ridge_alpha / ridge_alpha_policy.
+  Selected alphas on the fleet: 10 to 100. Probes: data/paper/calibration/ridge_partition_probe*.json.
+- Resume: `resume_policy.py`; `IOTA_FRESH=1` makes every resume site (Q0057 cells, kraskov anchors.json,
+  phase 6/10/12 sentinels) ignore its cache. reproduce.py sets it.
+- Run 0058 now runs phase 12 (estimator joint R^2) after phase 11 and lists it in the manifest.
+- Gate: `IOTA_PREREQ_GATE=off` lets the headless per-run prerequisite gate warn instead of skip (the scanner
+  keys Run 0016 on a bookkeeping CSV that holds 2 of 13 source runs in every fleet cell since 2026-05-17;
+  Run 0042 reads the E_t files directly, which are present). reproduce.py sets it.
+- Run 0046 runs its pooled pass alone when Run 0044 skipped every source run (< 30 distinct rows at low T)
+  and records `per_condition_status`.
+- Results: `data/paper/results_v1.0.2.json` is the frozen release object the papers cite (fleet-mean anchored
+  R 0.405, range 0.239-0.525; LLaMA 0.290, Gemma 9B 0.450, Gemma 2B FP16 0.426, Gemma 2B Q4 0.454);
+  `results8th.json` stays as the v1.0.1 record. `reproduce.py --only verify` compares against v1.0.2.
+- New scripts: `_dedup_rerun.py` (the re-run driver), `_rebuild_apparatus_cache.py`, `_ridge_partition_probe.py`,
+  `_ridge_partition_probe2.py`, `_paper_numbers_pack.py` (every fleet quantity the papers quote from one results
+  file), `_simple_baseline_partial_r2.py`, `_compare_dedup_results.py`.
+- Docs: hypothesis registry and README aligned with the papers on what R is (a predictive share under a fixed
+  fitted model; causal only in paper B §2.3 regime 1; "E + C + R = 1" is a normalisation); two code strings
+  that said "causally upstream" now say what the test shows.
+- Not reproduced (May artifacts under data/paper/reviewer_three_response and v26_response were produced by
+  scripts outside the pipeline): the three-construction C-channel comparison, the bootstrap variance
+  decomposition, the mixed-effects composite test. The papers say so. V5 calibration was not re-run under the
+  new Ridge rule (it fits its own reference models); named as follow-up.
+
 ## CURRENT STATE -- 1.0.1 (2026-09-10)  [entry: claude-fable-5.1, with Kevin]
 
 ### Reproducibility release: one-command pipeline, Run 0023 collected, four new measurements, paper data tracked.

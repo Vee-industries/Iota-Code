@@ -52,6 +52,7 @@ named as a §10 follow-up.
 """
 
 import os
+from ridge_policy import fit_ridge as _fit_ridge_policy   # v1.0.2
 import re
 import glob
 import warnings
@@ -122,6 +123,13 @@ PARTITION_B_SEED = 42
 
 # ── Cell data loader ────────────────────────────────────────────────
 
+def _select_qcache(files):
+    """v1.0.2: with IOTA_DEDUP_ROWS=1 use only '_dedup' caches, otherwise only the plain ones."""
+    import os as _os
+    dedup = _os.environ.get('IOTA_DEDUP_ROWS', '') == '1'
+    return [f for f in files if f.endswith('_dedup.npz') == dedup]
+
+
 def load_cell_data_from_qcache(hidden_dir):
     """Load (Xe, Xc, Xs, Xp, y) from the cell's _qcache_ct npz file.
 
@@ -136,12 +144,12 @@ def load_cell_data_from_qcache(hidden_dir):
       dict with 'error' key on failure.
     """
     cache_glob = os.path.join(hidden_dir, '_qcache_ct_d*_r*.npz')
-    cache_files = sorted(glob.glob(cache_glob))
+    cache_files = _select_qcache(sorted(glob.glob(cache_glob)))
     if not cache_files:
         return {'error': f'no qcache in {hidden_dir}'}
 
     cache_path = cache_files[0]
-    m = re.match(r'_qcache_ct_d(\d+)_r(\d+)-(\d+)\.npz$',
+    m = re.match(r'_qcache_ct_d(\d+)_r(\d+)-(\d+)(?:_dedup)?\.npz$',
                  os.path.basename(cache_path))
     if not m:
         return {'error': f'qcache filename unparseable: {cache_path}'}
@@ -201,7 +209,7 @@ def _ridge_partition(Xj_tr_s, Xj_te_s, y_tr_s, y_te_s,
     """Fit Ridge on train, permute test blocks, return (E, C, R) shares."""
     from sklearn.linear_model import Ridge
     from sklearn.metrics import r2_score
-    mdl = Ridge(alpha=RIDGE_ALPHA).fit(Xj_tr_s, y_tr_s)
+    mdl = _fit_ridge_policy(Xj_tr_s, y_tr_s)   # v1.0.2: alpha by ridge_policy (RIDGE_ALPHA kept for the v1.0.1 record)
     base_r2 = float(r2_score(y_te_s, mdl.predict(Xj_te_s),
                               multioutput='variance_weighted'))
     drops = {'E': [], 'C': [], 'R': []}

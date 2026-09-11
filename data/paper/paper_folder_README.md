@@ -11,7 +11,8 @@ C = One iota (2026c).
 
 ```
 data/paper/
-├── results8th.json                     # THE released results object (24 cells; B §6, C §4 and App. C read it)
+├── results_v1.0.2.json                 # THE released results object (24 cells; B §6, C §4 and App. C read it)
+├── results8th.json                     # v1.0.1 record (duplicated rows, Ridge alpha 0.01); B §6.5 compares against it
 ├── Q0057_function_class_sensitivity.json   # Run 0057: four-class permutation shares per cell (Ridge/MLP/RF/RKHS)
 ├── Q0058_apparatus_manifest.json       # Run 0058 phase manifest
 ├── calibration/                        # every calibration artifact (see below)
@@ -26,12 +27,14 @@ data/paper/
 └── paper_figure_specs.md               # figure content spec
 ```
 
-## results8th.json versus results.json
+## results_v1.0.2.json, results8th.json, results.json
 
-`results8th.json` is the frozen results object the papers cite (generated 2026-05-08, iota 0.82.0.23;
-its `anchored_shares` equal the 2026-05-17 Run 0058 aggregator output to 5e-7). The pipeline writes
-`results.json` when Run 0059 runs; `reproduce.py --only verify` compares a rebuilt `results.json`
-against `results8th.json` cell by cell. Do not overwrite `results8th.json`.
+`results_v1.0.2.json` is the frozen results object the papers cite (v1.0.2, generated 2026-09-11 13:23 by Run 0059 on the
+de-duplicated nine-run row set with the cross-validated Ridge policy and a single partition-B protocol; B §6, C §4 and
+App. C read it; `measurements.anchored_shares` is the phase-8 partition-B q* at lambda = 1). Do not overwrite it.
+`results8th.json` is the v1.0.1 record (generated 2026-05-08 on duplicated rows with Ridge alpha = 0.01); it is kept for the
+comparison paper B §6.5 documents. `results.json` is whatever the last `python reproduce.py` (or Run 0059) produced;
+`reproduce.py --only verify` compares it against `results_v1.0.2.json` cell by cell.
 
 ## calibration/
 

@@ -46,6 +46,8 @@ import datetime
 import glob
 import json
 import os
+from resume_policy import fresh as _fresh   # v1.0.2
+import ridge_policy as _ridge_policy   # v1.0.2
 import re
 import sys
 import time
@@ -158,6 +160,13 @@ RKHS_N_SUBSAMPLE = 2500
 # ─────────────────────────────────────────────────────────────────────────
 #  Cell key + parsing -- match v0_12 schema
 # ─────────────────────────────────────────────────────────────────────────
+
+def _select_qcache(files):
+    """v1.0.2: with IOTA_DEDUP_ROWS=1 use only '_dedup' caches, otherwise only the plain ones."""
+    import os as _os
+    dedup = _os.environ.get('IOTA_DEDUP_ROWS', '') == '1'
+    return [f for f in files if f.endswith('_dedup.npz') == dedup]
+
 
 def _temp_str(temp):
     """Format temperature as canonical T-suffix used in cell keys."""
@@ -347,9 +356,9 @@ def _run_rf_on_cell(q42_path):
     pool_dim = None
     source_runs_min_max = None
     cache_glob = os.path.join(hidden_dir, '_qcache_ct_d*_r*.npz')
-    cache_files = sorted(glob.glob(cache_glob))
+    cache_files = _select_qcache(sorted(glob.glob(cache_glob)))
     if cache_files:
-        m = re.match(r'_qcache_ct_d(\d+)_r(\d+)-(\d+)\.npz$',
+        m = re.match(r'_qcache_ct_d(\d+)_r(\d+)-(\d+)(?:_dedup)?\.npz$',
                      os.path.basename(cache_files[0]))
         if m:
             pool_dim = int(m.group(1))
@@ -411,7 +420,7 @@ def _run_rf_on_cell(q42_path):
         # freshness check. Schema is documented there.
         cache_path = os.path.join(
             hidden_dir,
-            f'_qcache_ct_d{int(pool_dim)}_r{source_runs_min_max[0] if source_runs_min_max else 3}-{source_runs_min_max[1] if source_runs_min_max else 28}.npz'
+            f'_qcache_ct_d{int(pool_dim)}_r{source_runs_min_max[0] if source_runs_min_max else 3}-{source_runs_min_max[1] if source_runs_min_max else 28}' + ('_dedup' if os.environ.get('IOTA_DEDUP_ROWS', '') == '1' else '') + '.npz'
         ) if source_runs_min_max else None
         if cache_path is None or not os.path.exists(cache_path):
             return {'error': f'no qcache at expected path {cache_path}'}
@@ -658,9 +667,9 @@ def _run_rkhs_on_cell(q42_path):
     pool_dim = None
     source_runs_min_max = None
     cache_glob = os.path.join(hidden_dir, '_qcache_ct_d*_r*.npz')
-    cache_files = sorted(glob.glob(cache_glob))
+    cache_files = _select_qcache(sorted(glob.glob(cache_glob)))
     if cache_files:
-        m = re.match(r'_qcache_ct_d(\d+)_r(\d+)-(\d+)\.npz$',
+        m = re.match(r'_qcache_ct_d(\d+)_r(\d+)-(\d+)(?:_dedup)?\.npz$',
                      os.path.basename(cache_files[0]))
         if m:
             pool_dim = int(m.group(1))
@@ -678,7 +687,7 @@ def _run_rkhs_on_cell(q42_path):
         # Cache load -- copied verbatim from _run_rf_on_cell
         cache_path = os.path.join(
             hidden_dir,
-            f'_qcache_ct_d{int(pool_dim)}_r{source_runs_min_max[0] if source_runs_min_max else 3}-{source_runs_min_max[1] if source_runs_min_max else 28}.npz'
+            f'_qcache_ct_d{int(pool_dim)}_r{source_runs_min_max[0] if source_runs_min_max else 3}-{source_runs_min_max[1] if source_runs_min_max else 28}' + ('_dedup' if os.environ.get('IOTA_DEDUP_ROWS', '') == '1' else '') + '.npz'
         ) if source_runs_min_max else None
         if cache_path is None or not os.path.exists(cache_path):
             return {'error': f'no qcache at expected path {cache_path}'}
@@ -1395,7 +1404,7 @@ def main():
     # ridge/mlp, asymmetry) get rebuilt from a fresh canon pull
     # regardless of resume status, so a 0.80.0.47-style canon fix
     # takes effect on resume without needing a standalone hot-patch.
-    existing_cells, existing_metadata = _load_existing_q57(args.out)
+    existing_cells, existing_metadata = ({}, {}) if _fresh() else _load_existing_q57(args.out)   # v1.0.2
     n_resume_skip = sum(
         1 for k, v in existing_cells.items() if _is_cell_rf_complete(v)
     )
@@ -1576,7 +1585,7 @@ def main():
             'test_size': TEST_SIZE,
             'rf_hyperparameters': RF_HYPERS,
             'mlp_hyperparameters': dict(MLP_HYPERS, hidden_layer_sizes=list(MLP_HYPERS['hidden_layer_sizes'])),
-            'ridge_alpha': RIDGE_ALPHA,
+            'ridge_alpha': _ridge_policy.policy_label(),   # v1.0.2: Ridge shares come from Q0043 (results.json), fitted under ridge_policy
             # v0.81.1.4: RKHS hyperparameter spec (Matérn ν grid + RBF
             # length-scale grid). RKHS_median is the per-channel median
             # share across the grid; range under rkhs_kernel_grid block

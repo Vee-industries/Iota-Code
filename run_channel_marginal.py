@@ -36,6 +36,7 @@ import csv
 import glob
 import json
 import os
+from ridge_policy import fit_ridge as _fit_ridge_policy   # v1.0.2
 import re
 import sys
 import time
@@ -59,6 +60,13 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, 'data')
 OUT_DIR  = os.path.join(DATA, 'paper', 'calibration', 'channel_marginal')
 OUT_PATH = os.path.join(OUT_DIR, 'channel_marginal_nonlinearity.csv')
+
+
+def _select_qcache(files):
+    """v1.0.2: with IOTA_DEDUP_ROWS=1 use only '_dedup' caches, otherwise only the plain ones."""
+    import os as _os
+    dedup = _os.environ.get('IOTA_DEDUP_ROWS', '') == '1'
+    return [f for f in files if f.endswith('_dedup.npz') == dedup]
 
 
 def _parse_path(q42_path):
@@ -136,10 +144,10 @@ def _compute_cell(q42_path):
     pool_dim = None
     source_runs_min_max = None
     cache_glob = os.path.join(hidden_dir, '_qcache_ct_d*_r*.npz')
-    cache_files = sorted(glob.glob(cache_glob))
+    cache_files = _select_qcache(sorted(glob.glob(cache_glob)))
     if cache_files:
         # Parse `_qcache_ct_d{POOL_DIM}_r{rmin}-{rmax}.npz`
-        m = re.match(r'_qcache_ct_d(\d+)_r(\d+)-(\d+)\.npz$',
+        m = re.match(r'_qcache_ct_d(\d+)_r(\d+)-(\d+)(?:_dedup)?\.npz$',
                      os.path.basename(cache_files[0]))
         if m:
             pool_dim = int(m.group(1))
@@ -215,8 +223,8 @@ def _compute_cell(q42_path):
         Xs_tr_s = sxS.transform(Xs_tr); Xs_te_s = sxS.transform(Xs_te)
         y_tr_s  = sy.transform(y_tr);   y_te_s  = sy.transform(y_te)
 
-        ridge_E = Ridge(alpha=0.01).fit(Xe_tr_s, y_tr_s)
-        ridge_S = Ridge(alpha=0.01).fit(Xs_tr_s, y_tr_s)
+        ridge_E = _fit_ridge_policy(Xe_tr_s, y_tr_s, tag='E')   # v1.0.2: alpha by ridge_policy, per block
+        ridge_S = _fit_ridge_policy(Xs_tr_s, y_tr_s, tag='S')
         r2_ridge_E = float(r2_score(y_te_s, ridge_E.predict(Xe_te_s),
                                     multioutput='variance_weighted'))
         r2_ridge_S = float(r2_score(y_te_s, ridge_S.predict(Xs_te_s),

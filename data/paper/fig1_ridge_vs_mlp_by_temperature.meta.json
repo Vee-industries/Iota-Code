@@ -21,7 +21,7 @@
     ]
   },
   "caption_draft": "Remainder share (R-hat) under Ridge versus MLP permutation importance, by decoding temperature, across four model configurations. The Ridge estimator compresses cross-architecture differences toward a common ceiling; the MLP reference preserves genuine architectural spread.",
-  "results_json_hash": "0c3475f888adc52c7634c0fc3c7dfdd7f585a9b498d02786319178112164e486",
-  "generated_at": "2026-05-08T17:28:06.114721",
+  "results_json_hash": "fdf0a5d7b891cb315ff4705aac0e5c3b13311af8967951d4695a415cb7039989",
+  "generated_at": "2026-09-11T13:23:34.201908",
   "iota_version": "0.82.0.23"
 }

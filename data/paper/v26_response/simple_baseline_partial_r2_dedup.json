@@ -1,0 +1,199 @@
+{
+ "method": "partition-B 80/20 (random_state 42), Ridge alpha by ridge_policy (loo_gcv_logspace(-3,4,15)), partial R2 = (R2_full - R2_reduced)/(1 - R2_reduced) on held-out",
+ "rows": "de-duplicated nine-run apparatus caches (_qcache_ct_d*_r1-23_dedup.npz)",
+ "generated_at": "2026-09-11T12:35:45",
+ "per_cell": {
+  "llama_8b_4bit_abliterated_T0.0": {
+   "n_rows": 2000,
+   "r2_full": 0.8050627708435059,
+   "r2_reduced": 0.6625904440879822,
+   "partial_r2_S": 0.42225338393401773,
+   "alpha_full": 100.0,
+   "alpha_reduced": 31.622776601683793
+  },
+  "llama_8b_4bit_abliterated_T0.2": {
+   "n_rows": 2393,
+   "r2_full": 0.7541295289993286,
+   "r2_reduced": 0.6492578387260437,
+   "partial_r2_S": 0.29899938431231865,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 10.0
+  },
+  "llama_8b_4bit_abliterated_T0.4": {
+   "n_rows": 2812,
+   "r2_full": 0.7090665102005005,
+   "r2_reduced": 0.6058028340339661,
+   "partial_r2_S": 0.2619594585706183,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 10.0
+  },
+  "llama_8b_4bit_abliterated_T0.6": {
+   "n_rows": 3276,
+   "r2_full": 0.703319251537323,
+   "r2_reduced": 0.6058557629585266,
+   "partial_r2_S": 0.247278735597854,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 10.0
+  },
+  "llama_8b_4bit_abliterated_T0.8": {
+   "n_rows": 3599,
+   "r2_full": 0.7196434736251831,
+   "r2_reduced": 0.6019409894943237,
+   "partial_r2_S": 0.2956910433489131,
+   "alpha_full": 10.0,
+   "alpha_reduced": 10.0
+  },
+  "llama_8b_4bit_abliterated_T1.0": {
+   "n_rows": 3843,
+   "r2_full": 0.7076364159584045,
+   "r2_reduced": 0.603244423866272,
+   "partial_r2_S": 0.263114114512021,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 10.0
+  },
+  "gemma_9b_4bit_abliterated_T0.0": {
+   "n_rows": 788,
+   "r2_full": 0.7770854234695435,
+   "r2_reduced": 0.39174020290374756,
+   "partial_r2_S": 0.6335207791232962,
+   "alpha_full": 100.0,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_9b_4bit_abliterated_T0.2": {
+   "n_rows": 861,
+   "r2_full": 0.7667332291603088,
+   "r2_reduced": 0.522296667098999,
+   "partial_r2_S": 0.5116911380477362,
+   "alpha_full": 100.0,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_9b_4bit_abliterated_T0.4": {
+   "n_rows": 1040,
+   "r2_full": 0.8193165063858032,
+   "r2_reduced": 0.6036238074302673,
+   "partial_r2_S": 0.5441615894163221,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 100.0
+  },
+  "gemma_9b_4bit_abliterated_T0.6": {
+   "n_rows": 1281,
+   "r2_full": 0.8158210515975952,
+   "r2_reduced": 0.5604543685913086,
+   "partial_r2_S": 0.580978776169079,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 100.0
+  },
+  "gemma_9b_4bit_abliterated_T0.8": {
+   "n_rows": 1606,
+   "r2_full": 0.8171981573104858,
+   "r2_reduced": 0.5694226622581482,
+   "partial_r2_S": 0.5754494566569337,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 100.0
+  },
+  "gemma_9b_4bit_abliterated_T1.0": {
+   "n_rows": 1885,
+   "r2_full": 0.841058075428009,
+   "r2_reduced": 0.5898341536521912,
+   "partial_r2_S": 0.6124935169828528,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 100.0
+  },
+  "gemma_2b_fp16_abliterated_T0.0": {
+   "n_rows": 281,
+   "r2_full": 0.8304311037063599,
+   "r2_reduced": 0.6839375495910645,
+   "partial_r2_S": 0.46349559691686115,
+   "alpha_full": 100.0,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_fp16_abliterated_T0.2": {
+   "n_rows": 314,
+   "r2_full": 0.672325074672699,
+   "r2_reduced": 0.4833730459213257,
+   "partial_r2_S": 0.3657417160673324,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 10.0
+  },
+  "gemma_2b_fp16_abliterated_T0.4": {
+   "n_rows": 454,
+   "r2_full": 0.8405166268348694,
+   "r2_reduced": 0.6865082383155823,
+   "partial_r2_S": 0.49126773760110004,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_fp16_abliterated_T0.6": {
+   "n_rows": 699,
+   "r2_full": 0.7961206436157227,
+   "r2_reduced": 0.583565890789032,
+   "partial_r2_S": 0.5104162894567533,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 10.0
+  },
+  "gemma_2b_fp16_abliterated_T0.8": {
+   "n_rows": 1159,
+   "r2_full": 0.777912974357605,
+   "r2_reduced": 0.5588260889053345,
+   "partial_r2_S": 0.4965998213916589,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_fp16_abliterated_T1.0": {
+   "n_rows": 1396,
+   "r2_full": 0.9034395813941956,
+   "r2_reduced": 0.7316684722900391,
+   "partial_r2_S": 0.6401450868264111,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_4bit_abliterated_T0.0": {
+   "n_rows": 120,
+   "r2_full": 0.6884985566139221,
+   "r2_reduced": 0.593096911907196,
+   "partial_r2_S": 0.23445790287285176,
+   "alpha_full": 100.0,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_4bit_abliterated_T0.2": {
+   "n_rows": 172,
+   "r2_full": 0.6308720707893372,
+   "r2_reduced": 0.5617014169692993,
+   "partial_r2_S": 0.15781628437341486,
+   "alpha_full": 100.0,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_4bit_abliterated_T0.4": {
+   "n_rows": 218,
+   "r2_full": 0.8252432942390442,
+   "r2_reduced": 0.6494210362434387,
+   "partial_r2_S": 0.5015197036114659,
+   "alpha_full": 100.0,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_4bit_abliterated_T0.6": {
+   "n_rows": 300,
+   "r2_full": 0.853689432144165,
+   "r2_reduced": 0.6168171763420105,
+   "partial_r2_S": 0.6181703384846271,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_4bit_abliterated_T0.8": {
+   "n_rows": 537,
+   "r2_full": 0.812928318977356,
+   "r2_reduced": 0.5270572304725647,
+   "partial_r2_S": 0.6044517580645832,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 31.622776601683793
+  },
+  "gemma_2b_4bit_abliterated_T1.0": {
+   "n_rows": 683,
+   "r2_full": 0.8163593411445618,
+   "r2_reduced": 0.5616247057914734,
+   "partial_r2_S": 0.5810880282681169,
+   "alpha_full": 31.622776601683793,
+   "alpha_reduced": 31.622776601683793
+  }
+ }
+}

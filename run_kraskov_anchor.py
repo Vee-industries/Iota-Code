@@ -19,6 +19,7 @@ Output: data/paper/calibration/kraskov_anchor/anchors.json
 """
 import json
 import os
+from resume_policy import fresh as _fresh   # v1.0.2
 import sys
 import glob
 import time
@@ -34,6 +35,13 @@ import ui  # noqa: E402
 DATA = os.path.join(ROOT, 'data')
 OUT_DIR = os.path.join(DATA, 'paper', 'calibration', 'kraskov_anchor')
 OUT_PATH = os.path.join(OUT_DIR, 'anchors.json')
+
+
+def _select_qcache(files):
+    """v1.0.2: with IOTA_DEDUP_ROWS=1 use only '_dedup' caches, otherwise only the plain ones."""
+    import os as _os
+    dedup = _os.environ.get('IOTA_DEDUP_ROWS', '') == '1'
+    return [f for f in files if f.endswith('_dedup.npz') == dedup]
 
 
 def _parse_q42_path(q42_path):
@@ -124,7 +132,7 @@ def _load_cell_features(q42_path):
     hidden_dir = os.path.join(cell_dir, 'hidden_states')
     if not os.path.isdir(hidden_dir):
         return None
-    cache_files = sorted(glob.glob(os.path.join(hidden_dir, '_qcache_ct_d*_r*.npz')))
+    cache_files = _select_qcache(sorted(glob.glob(os.path.join(hidden_dir, '_qcache_ct_d*_r*.npz'))))
     if not cache_files:
         return None
     # Use the first cache file (each cell has one canonical cache;
@@ -212,7 +220,7 @@ def main():
     # safe. To force a refit, delete data/paper/calibration/
     # kraskov_anchor/anchors.json before firing.
     cached_anchors = {}
-    if os.path.exists(OUT_PATH):
+    if os.path.exists(OUT_PATH) and not _fresh():   # v1.0.2: IOTA_FRESH=1 ignores the resume cache
         try:
             with open(OUT_PATH, 'r', encoding='utf-8') as f:
                 cached = json.load(f) or {}
