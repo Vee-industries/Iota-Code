@@ -268,12 +268,15 @@ See `CITATION.cff` for a machine-readable citation file.
 
 ## License
 
-**PolyForm Noncommercial License 1.0.0.** See `LICENSE`.
+**Apache License 2.0.** See `LICENSE` and `NOTICE`.
 
-Personal use, research, education, hobby projects, government, and
-charitable / non-profit use are explicitly permitted. Commercial use
-requires a separate license. Contact the author if you want to use IOTA
-commercially.
+Use, modify, and redistribute freely, commercially included, provided you
+keep the copyright and license notices and state what you changed. The
+license also grants a patent licence covering the contributions in this
+repository.
+
+Releases up to v1.0.2 carried the PolyForm Noncommercial License 1.0.0.
+The project relicensed to Apache-2.0 on 2026-09-12, earlier tags included.
 
 ---
 

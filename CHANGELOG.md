@@ -1,3 +1,41 @@
+## CURRENT STATE -- 1.0.3 (2026-09-12)  [entry: claude-opus-5, with Kevin]
+
+### Relicensed to Apache-2.0; V5 re-run under the v1.0.2 Ridge rule; §7.1's protocols unmixed.
+
+**Relicensing.** `LICENSE` is now the Apache License 2.0 and a `NOTICE` file carries the copyright.
+Releases up to and including v1.0.2 were published under the PolyForm Noncommercial License 1.0.0;
+the relicensing applies to the whole work, earlier tags included. `CITATION.cff` and the README
+follow. Why: a noncommercial licence reads as non-open to most corporate and academic reviewers,
+and Apache's patent grant is the clause MIT is silent about.
+
+**V5 calibration under one linear instrument.** `v5_synthetic_calibration.py` fitted its reference
+models at a hardcoded `Ridge(alpha=1.0)` while the fleet moved to LOO-CV selection at v1.0.2, so
+calibration and fleet were reading through different linear instruments (paper B §4.4, §10.2 named
+this open). Both fit sites now call `_v5_ridge`, which selects alpha by `RidgeCV` over
+`ridge_policy.RIDGE_ALPHA_GRID` per fit -- per fit rather than memoised, because V5a/V5c/V5d/V5e
+share a design shape and `ridge_policy.select_alpha`'s `(tag, n, p)` key would hand them one alpha.
+`IOTA_V5_RIDGE_ALPHA=1.0` reproduces the old estimator. The lambda sweep and the V5g bridge were
+re-run. The rule does pick different penalties (V5b's four configs get 0.1, 0.1, 0.316, 3.16) and
+the calibration does not move: every cell of B §5.8's table is within 0.001 of the fixed-penalty
+run, the V5b+V5e RMSE minimum stays at lambda=0.5, and its distance from the operational lambda=1.0
+stays 0.0023. The V5 designs are overdetermined (16,000 rows, 16 predictors) where the fleet cells
+are not, which is why the penalty mattered there and not here. The fixed-penalty sweep is kept at
+`data/paper/calibration/v5/v5_lambda_calibration_fixed_alpha_1.0_pre_v1.0.2.json`.
+
+**Q0057 emits one protocol.** `run_function_class_sensitivity.py` compared a held-out RF R^2 against
+the canon CSV's collection-time in-sample Ridge and MLP R^2 -- different rows, different scalers,
+different target dimensionality -- and paper B §7.1 disclosed the mixing as a caveat on its sign-check
+counts. Ridge and MLP are now refitted here, univariate and joint, on the same 80/20 split as RF, with
+shared scalers, shared target-PCA, and one shared permutation sequence scored by all three models. New
+fields: `univariate_R2.partition_b`, `permutation_shares.partition_b`, `joint_R2_held_out.
+{ridge,mlp}_partition_b`, `asymmetry.partition_b`, `R_hat_gap.partition_b`, `sign_check.partition_b`,
+and `cross_cell_aggregates.partition_b`. The collection-time fields are kept for provenance and are
+not commensurate with the RF numbers; `metadata.protocols` says so in the file. Cells written before
+v1.0.3 are no longer RF-complete and re-run, since the partition-B fits cannot be recovered from what
+they stored. Added `--limit N` for smoke tests.
+
+---
+
 ## CURRENT STATE -- 1.0.2 (2026-09-11)  [entry: claude-fable-5.1, with Kevin]
 
 ### De-duplicated re-run: honest row counts, a well-posed linear estimator, no silent resume caches.

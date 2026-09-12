@@ -217,6 +217,11 @@ def compute_v5g_point(label, X_E, X_C, X_S, y, R_truth,
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--n-steps', type=int, default=10000)
+    parser.add_argument('--lambda-from-calibration', action='store_true',
+                        help='v1.0.3: take lambda from v5_lambda_calibration.json '
+                             "lambda_star instead of the operational 1.0. That is the "
+                             'all-V5 argmin, which B 5.8 excludes from operational '
+                             'selection -- only for deliberate sensitivity work.')
     parser.add_argument('--lambda-default', type=float, default=None,
                         help='lambda value to report at headline q*; '
                              'falls back to V5 calibration result if None, '
@@ -228,10 +233,25 @@ def main():
 
     os.makedirs(OUT_DIR, exist_ok=True)
 
-    # Pick lambda_default
+    # Pick lambda_default.
+    #
+    # v1.0.3: the default is the apparatus's OPERATIONAL lambda, not the
+    # calibration file's lambda_star. Those are different numbers and the
+    # difference is not cosmetic. lambda_star in v5_lambda_calibration.json is
+    # the argmin over all 19 V5 points, which paper B 5.8 excludes from
+    # operational selection because it is dominated by V5f's outlier error and
+    # trends toward the degenerate pure-anchor endpoint; the operational value
+    # is the V5b+V5e-restricted minimum, 1.0. Reading lambda_star here silently
+    # produced a bridge at lambda=10.0 whose q* differed from the released
+    # numbers by up to 0.21 while the four-class shares moved by less than 0.01
+    # -- a difference that looks like a finding and is not one. Pass
+    # --lambda-default explicitly to sweep; the file is read only when that
+    # flag says to.
+    OPERATIONAL_LAMBDA = 1.0
+
     lam_default = args.lambda_default
     lam_source = 'cli_override' if lam_default is not None else None
-    if lam_default is None:
+    if lam_default is None and args.lambda_from_calibration:
         cal_path = os.path.join(OUT_DIR, 'v5_lambda_calibration.json')
         if os.path.exists(cal_path):
             try:
@@ -242,12 +262,16 @@ def main():
                     lam_default = float('inf')
                 else:
                     lam_default = float(lam_default)
-                lam_source = f"v5_lambda_calibration.json (RMSE={cal.get('lambda_star_rmse'):.4f})"
+                lam_source = f"v5_lambda_calibration.json lambda_star (RMSE={cal.get('lambda_star_rmse'):.4f})"
+                print("WARNING: --lambda-from-calibration uses the all-V5 argmin, "
+                      "which is NOT the operational lambda (see B 5.8). "
+                      f"Using lambda={lam_default}; released numbers are at "
+                      f"lambda={OPERATIONAL_LAMBDA}.")
             except Exception:
                 pass
     if lam_default is None:
-        lam_default = 1.0
-        lam_source = 'fallback_1.0'
+        lam_default = OPERATIONAL_LAMBDA
+        lam_source = f'operational_default_{OPERATIONAL_LAMBDA}'
 
     print(f"Using lambda_default = {lam_default} (source: {lam_source})")
     print(f"Testing dimensions: {args.dims}")

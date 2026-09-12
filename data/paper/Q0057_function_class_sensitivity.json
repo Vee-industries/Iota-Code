@@ -20,18 +20,38 @@
         },
         "rf": {
           "E": 0.05687217112990495,
-          "S": 0.022490194540237988
+          "S": 0.022490194540237977
         },
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.01154485996812582,
+            "S": 0.1351272463798523
+          },
+          "mlp": {
+            "E": 0.11341045051813126,
+            "S": 0.12418759614229202
+          },
+          "rf": {
+            "E": 0.05687217112990495,
+            "S": 0.022490194540237977
+          },
+          "ridge_alpha": {
+            "E": 10000.0,
+            "S": 3162.2776601683795
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.04495161425142904,
-        "rkhs_median": 0.2819119095802307
+        "rkhs_median": 0.2819119095802307,
+        "ridge_partition_b": 0.09928778558969498,
+        "mlp_partition_b": 0.0873272716999054
       },
       "permutation_shares": {
         "ridge": {
@@ -46,13 +66,30 @@
         },
         "rf": {
           "E": 0.5437988622501149,
-          "C": 0.016109531253037657,
+          "C": 0.016109531253037664,
           "R": 0.4400916064968475
         },
         "rkhs_median": {
           "E": 0.20081675635546342,
           "C": 0.17617016725352255,
           "R": 0.6230130763910141
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2464090769751015,
+            "C": 0.24739679274888066,
+            "R": 0.5061941302760177
+          },
+          "mlp": {
+            "E": 0.19818529625730655,
+            "C": 0.30633673876351625,
+            "R": 0.4954779649791772
+          },
+          "rf": {
+            "E": 0.5437988622501149,
+            "C": 0.016109531253037664,
+            "R": 0.4400916064968475
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.0')",
@@ -152,17 +189,37 @@
         },
         "rf_vs_ridge": {
           "gap_E": -0.5536570132115257,
-          "gap_S": -0.7377067296693567,
-          "asymmetry": 0.18404971645783097
+          "gap_S": -0.7377067296693568,
+          "asymmetry": 0.18404971645783108
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.10186559055000544,
+            "gap_S": -0.010939650237560272,
+            "asymmetry": 0.11280524078756571
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.04532731116177913,
+            "gap_S": -0.11263705183961431,
+            "asymmetry": 0.15796436300139344
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.07025199999999998,
-        "rf_vs_ridge": -0.12443139350315252
+        "rf_vs_ridge": -0.12443139350315252,
+        "partition_b": {
+          "mlp_vs_ridge": -0.010716165296840496,
+          "rf_vs_ridge": -0.0661025237791702
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_q4_abliterated_t02": {
@@ -184,13 +241,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2137916088104248,
+            "S": 0.20482772588729858
+          },
+          "mlp": {
+            "E": 0.14434252679347992,
+            "S": 0.14157743752002716
+          },
+          "rf": {
+            "E": 0.1033320047908351,
+            "S": 0.05421922419141231
+          },
+          "ridge_alpha": {
+            "E": 316.22776601683796,
+            "S": 100.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.08652098820051127,
-        "rkhs_median": 0.20486408472061157
+        "rkhs_median": 0.20486408472061157,
+        "ridge_partition_b": 0.2290927618741989,
+        "mlp_partition_b": 0.10964891314506531
       },
       "permutation_shares": {
         "ridge": {
@@ -205,13 +282,30 @@
         },
         "rf": {
           "E": 0.5817572181616044,
-          "C": 0.020813862860920476,
-          "R": 0.3974289189774751
+          "C": 0.02081386286092049,
+          "R": 0.3974289189774752
         },
         "rkhs_median": {
           "E": 0.3131904446319539,
           "C": 0.15159672785057796,
           "R": 0.5352128275174681
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.29489356370153486,
+            "C": 0.20909746506129548,
+            "R": 0.49600897123716975
+          },
+          "mlp": {
+            "E": 0.30264545646987673,
+            "C": 0.20675854808682304,
+            "R": 0.4905959954433002
+          },
+          "rf": {
+            "E": 0.5817572181616044,
+            "C": 0.02081386286092049,
+            "R": 0.3974289189774752
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.2')",
@@ -313,15 +407,35 @@
           "gap_E": -0.5038009664959386,
           "gap_S": -0.6525483348601013,
           "asymmetry": 0.1487473683641627
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": -0.06944908201694489,
+            "gap_S": -0.06325028836727142,
+            "asymmetry": -0.006198793649673462
+          },
+          "rf_vs_ridge": {
+            "gap_E": -0.11045960401958971,
+            "gap_S": -0.15060850169588627,
+            "asymmetry": 0.04014889767629656
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.09144300000000005,
-        "rf_vs_ridge": -0.2296720810225249
+        "rf_vs_ridge": -0.22967208102252484,
+        "partition_b": {
+          "mlp_vs_ridge": -0.005412975793869568,
+          "rf_vs_ridge": -0.09858005225969457
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_q4_abliterated_t04": {
@@ -337,19 +451,39 @@
           "S": 0.861832320690155
         },
         "rf": {
-          "E": 0.20403327058485576,
+          "E": 0.20403327058485574,
           "S": 0.17659997280341597
         },
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2750195264816284,
+            "S": 0.36319881677627563
+          },
+          "mlp": {
+            "E": 0.2937808930873871,
+            "S": 0.34785234928131104
+          },
+          "rf": {
+            "E": 0.20403327058485574,
+            "S": 0.17659997280341597
+          },
+          "ridge_alpha": {
+            "E": 100.0,
+            "S": 100.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.20323656928924116,
-        "rkhs_median": 0.42190641164779663
+        "rkhs_median": 0.42190641164779663,
+        "ridge_partition_b": 0.3842572271823883,
+        "mlp_partition_b": 0.3721933960914612
       },
       "permutation_shares": {
         "ridge": {
@@ -364,13 +498,30 @@
         },
         "rf": {
           "E": 0.45741991437808166,
-          "C": 0.030585634336907423,
+          "C": 0.03058563433690743,
           "R": 0.5119944512850109
         },
         "rkhs_median": {
           "E": 0.2932967643954009,
           "C": 0.16820264313814887,
           "R": 0.5385005924664502
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2871723626688962,
+            "C": 0.2168452069231193,
+            "R": 0.49598243040798456
+          },
+          "mlp": {
+            "E": 0.2813268925172349,
+            "C": 0.242803325500929,
+            "R": 0.47586978198183616
+          },
+          "rf": {
+            "E": 0.45741991437808166,
+            "C": 0.03058563433690743,
+            "R": 0.5119944512850109
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.4')",
@@ -472,15 +623,35 @@
           "gap_E": -0.4716715066558974,
           "gap_S": -0.7117539114167073,
           "asymmetry": 0.2400824047608099
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.018761366605758667,
+            "gap_S": -0.0153464674949646,
+            "asymmetry": 0.03410783410072327
+          },
+          "rf_vs_ridge": {
+            "gap_E": -0.07098625589677268,
+            "gap_S": -0.18659884397285967,
+            "asymmetry": 0.11561258807608699
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.04240999999999995,
-        "rf_vs_ridge": -0.1452775487149891
+        "rf_vs_ridge": -0.1452775487149891,
+        "partition_b": {
+          "mlp_vs_ridge": -0.020112648426148405,
+          "rf_vs_ridge": 0.0160120208770263
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": false
+        }
       }
     },
     "gemma_2b_q4_abliterated_t06": {
@@ -502,13 +673,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.18937818706035614,
+            "S": 0.36327072978019714
+          },
+          "mlp": {
+            "E": 0.17110741138458252,
+            "S": 0.28331616520881653
+          },
+          "rf": {
+            "E": 0.1935612336596454,
+            "S": 0.18584783922318066
+          },
+          "ridge_alpha": {
+            "E": 100.0,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.20443523100786098,
-        "rkhs_median": 0.4088519513607025
+        "rkhs_median": 0.4088519513607025,
+        "ridge_partition_b": 0.3663170635700226,
+        "mlp_partition_b": 0.32146745920181274
       },
       "permutation_shares": {
         "ridge": {
@@ -523,13 +714,30 @@
         },
         "rf": {
           "E": 0.5156416430236582,
-          "C": 0.058803290446875434,
+          "C": 0.05880329044687544,
           "R": 0.42555506652946623
         },
         "rkhs_median": {
           "E": 0.31041718060353996,
           "C": 0.21664052061352967,
           "R": 0.4729422987829305
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2709294358925132,
+            "C": 0.20000977341798262,
+            "R": 0.5290607906895041
+          },
+          "mlp": {
+            "E": 0.27951524658616694,
+            "C": 0.2704720967375366,
+            "R": 0.4500126566762964
+          },
+          "rf": {
+            "E": 0.5156416430236582,
+            "C": 0.05880329044687544,
+            "R": 0.42555506652946623
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.6')",
@@ -631,15 +839,35 @@
           "gap_E": -0.41511567674074523,
           "gap_S": -0.6392770205866949,
           "asymmetry": 0.22416134384594966
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": -0.01827077567577362,
+            "gap_S": -0.07995456457138062,
+            "asymmetry": 0.061683788895606995
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.004183046599289253,
+            "gap_S": -0.1774228905570165,
+            "asymmetry": 0.18160593715630574
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.10982400000000003,
-        "rf_vs_ridge": -0.2210209334705338
+        "rf_vs_ridge": -0.2210209334705338,
+        "partition_b": {
+          "mlp_vs_ridge": -0.07904813401320765,
+          "rf_vs_ridge": -0.10350572416003784
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_q4_abliterated_t08": {
@@ -661,13 +889,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.12740498781204224,
+            "S": 0.5232794284820557
+          },
+          "mlp": {
+            "E": 0.3638113737106323,
+            "S": 0.5523874759674072
+          },
+          "rf": {
+            "E": 0.37818753002324756,
+            "S": 0.35453351060714083
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 10.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
-        "rf": 0.382037958571898,
-        "rkhs_median": 0.7056946035955579
+        "rf": 0.38203795857189804,
+        "rkhs_median": 0.7056946035955579,
+        "ridge_partition_b": 0.45366063714027405,
+        "mlp_partition_b": 0.5945998430252075
       },
       "permutation_shares": {
         "ridge": {
@@ -681,14 +929,31 @@
           "R": 0.479051
         },
         "rf": {
-          "E": 0.5937095105870509,
-          "C": 0.08197944472380088,
+          "E": 0.5937095105870508,
+          "C": 0.08197944472380095,
           "R": 0.3243110446891483
         },
         "rkhs_median": {
           "E": 0.3368276563911086,
           "C": 0.24789686836631414,
           "R": 0.4152754752425773
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2893413284672949,
+            "C": 0.25727473101187476,
+            "R": 0.4533839405208303
+          },
+          "mlp": {
+            "E": 0.28300182298377385,
+            "C": 0.2863764645078045,
+            "R": 0.43062171250842163
+          },
+          "rf": {
+            "E": 0.5937095105870508,
+            "C": 0.08197944472380095,
+            "R": 0.3243110446891483
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T0.8')",
@@ -790,15 +1055,35 @@
           "gap_E": -0.2527811002906257,
           "gap_S": -0.4627007671180789,
           "asymmetry": 0.20991966682745317
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.2364063858985901,
+            "gap_S": 0.029108047485351562,
+            "asymmetry": 0.20729833841323853
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.25078254221120533,
+            "gap_S": -0.16874591787491483,
+            "asymmetry": 0.41952846008612016
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.06733199999999995,
-        "rf_vs_ridge": -0.22207195531085167
+        "rf_vs_ridge": -0.22207195531085167,
+        "partition_b": {
+          "mlp_vs_ridge": -0.02276222801240868,
+          "rf_vs_ridge": -0.12907289583168202
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_q4_abliterated_t10": {
@@ -820,13 +1105,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.21572890877723694,
+            "S": 0.5231994986534119
+          },
+          "mlp": {
+            "E": 0.3698827624320984,
+            "S": 0.5996232032775879
+          },
+          "rf": {
+            "E": 0.38344135576158006,
+            "S": 0.3747454294398284
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 10.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.3962668751213297,
-        "rkhs_median": 0.7063711894804465
+        "rkhs_median": 0.7063711894804465,
+        "ridge_partition_b": 0.5219087600708008,
+        "mlp_partition_b": 0.6077234745025635
       },
       "permutation_shares": {
         "ridge": {
@@ -848,6 +1153,23 @@
           "E": 0.34844311094745684,
           "C": 0.25823210274456665,
           "R": 0.3933247863079766
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.28057078835960075,
+            "C": 0.2484191823854561,
+            "R": 0.4710100292549431
+          },
+          "mlp": {
+            "E": 0.27914985362854966,
+            "C": 0.23610329566732696,
+            "R": 0.48474685070412343
+          },
+          "rf": {
+            "E": 0.5596943761317862,
+            "C": 0.14035013524530984,
+            "R": 0.29995548862290394
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_4bit_abliterated_T1.0')",
@@ -949,15 +1271,35 @@
           "gap_E": -0.22079608148664992,
           "gap_S": -0.4655699125096345,
           "asymmetry": 0.24477383102298456
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.15415385365486145,
+            "gap_S": 0.07642370462417603,
+            "asymmetry": 0.07773014903068542
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.16771244698434312,
+            "gap_S": -0.14845406921358345,
+            "asymmetry": 0.3161665161979266
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.041171999999999986,
-        "rf_vs_ridge": -0.23722051137709604
+        "rf_vs_ridge": -0.23722051137709604,
+        "partition_b": {
+          "mlp_vs_ridge": 0.013736821449180314,
+          "rf_vs_ridge": -0.17105454063203918
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_fp16_abliterated_t00": {
@@ -974,18 +1316,38 @@
         },
         "rf": {
           "E": 0.26837981383825316,
-          "S": 0.24271526417654093
+          "S": 0.2427152641765409
         },
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.259003609418869,
+            "S": 0.4453495442867279
+          },
+          "mlp": {
+            "E": 0.018660549074411392,
+            "S": 0.17060287296772003
+          },
+          "rf": {
+            "E": 0.26837981383825316,
+            "S": 0.2427152641765409
+          },
+          "ridge_alpha": {
+            "E": 100.0,
+            "S": 100.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
-        "rf": 0.2710236008581652,
-        "rkhs_median": 0.587159276008606
+        "rf": 0.27102360085816524,
+        "rkhs_median": 0.587159276008606,
+        "ridge_partition_b": 0.4703294634819031,
+        "mlp_partition_b": 0.10467558354139328
       },
       "permutation_shares": {
         "ridge": {
@@ -999,14 +1361,31 @@
           "R": 0.525027
         },
         "rf": {
-          "E": 0.43422516951405554,
-          "C": 0.022723832900678705,
-          "R": 0.5430509975852656
+          "E": 0.4342251695140555,
+          "C": 0.022723832900678843,
+          "R": 0.5430509975852658
         },
         "rkhs_median": {
           "E": 0.30606707200039096,
           "C": 0.12634184039133606,
           "R": 0.5675910876082729
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.25210448397700913,
+            "C": 0.17973629676469477,
+            "R": 0.568159219258296
+          },
+          "mlp": {
+            "E": 0.3174343401914282,
+            "C": 0.18948379261112705,
+            "R": 0.49308186719744473
+          },
+          "rf": {
+            "E": 0.4342251695140555,
+            "C": 0.022723832900678843,
+            "R": 0.5430509975852658
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.0')",
@@ -1108,15 +1487,35 @@
           "gap_E": -0.39994572956537233,
           "gap_S": -0.5646117679126925,
           "asymmetry": 0.1646660383473202
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": -0.24034306034445763,
+            "gap_S": -0.2747466713190079,
+            "asymmetry": 0.03440361097455025
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.009376204419384138,
+            "gap_S": -0.202634280110187,
+            "asymmetry": 0.21201048452957114
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.081785,
-        "rf_vs_ridge": -0.06376100241473437
+        "rf_vs_ridge": -0.06376100241473426,
+        "partition_b": {
+          "mlp_vs_ridge": -0.07507735206085131,
+          "rf_vs_ridge": -0.025108221673030284
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_fp16_abliterated_t02": {
@@ -1132,19 +1531,39 @@
           "S": 0.6964280009269714
         },
         "rf": {
-          "E": 0.5261163156811437,
+          "E": 0.5261163156811439,
           "S": 0.5327891959641559
         },
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.44322332739830017,
+            "S": 0.6187607049942017
+          },
+          "mlp": {
+            "E": 0.5430212020874023,
+            "S": 0.6275056600570679
+          },
+          "rf": {
+            "E": 0.5261163156811439,
+            "S": 0.5327891959641559
+          },
+          "ridge_alpha": {
+            "E": 10.0,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.5490003232507042,
-        "rkhs_median": 0.7247492671012878
+        "rkhs_median": 0.7247492671012878,
+        "ridge_partition_b": 0.6720842123031616,
+        "mlp_partition_b": 0.7039574980735779
       },
       "permutation_shares": {
         "ridge": {
@@ -1159,13 +1578,30 @@
         },
         "rf": {
           "E": 0.6239694699943885,
-          "C": 0.030034264443305567,
-          "R": 0.34599626556230606
+          "C": 0.030034264443305553,
+          "R": 0.345996265562306
         },
         "rkhs_median": {
           "E": 0.3940612564227129,
           "C": 0.09457813209387152,
           "R": 0.5113606114834156
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2665979628809441,
+            "C": 0.11664239851163512,
+            "R": 0.6167596386074208
+          },
+          "mlp": {
+            "E": 0.34002788724963945,
+            "C": 0.13861077632855212,
+            "R": 0.5213613364218083
+          },
+          "rf": {
+            "E": 0.6239694699943885,
+            "C": 0.030034264443305553,
+            "R": 0.345996265562306
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.2')",
@@ -1264,18 +1700,38 @@
           "asymmetry": 0.031050652265548706
         },
         "rf_vs_ridge": {
-          "gap_E": 0.028237555581732687,
+          "gap_E": 0.02823755558173291,
           "gap_S": -0.12452492575901919,
-          "asymmetry": 0.15276248134075188
+          "asymmetry": 0.1527624813407521
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.09979787468910217,
+            "gap_S": 0.008744955062866211,
+            "asymmetry": 0.09105291962623596
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.08289298828284375,
+            "gap_S": -0.0859715090300458,
+            "asymmetry": 0.16886449731288955
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.05201899999999998,
-        "rf_vs_ridge": -0.19926873443769394
+        "rf_vs_ridge": -0.199268734437694,
+        "partition_b": {
+          "mlp_vs_ridge": -0.09539830218561252,
+          "rf_vs_ridge": -0.2707633730451148
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_fp16_abliterated_t04": {
@@ -1297,13 +1753,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.38298800587654114,
+            "S": 0.6730152368545532
+          },
+          "mlp": {
+            "E": 0.6345405578613281,
+            "S": 0.6543254256248474
+          },
+          "rf": {
+            "E": 0.3524244272021309,
+            "S": 0.3330922369891067
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 10.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.3653720207192018,
-        "rkhs_median": 0.757865846157074
+        "rkhs_median": 0.757865846157074,
+        "ridge_partition_b": 0.6931377053260803,
+        "mlp_partition_b": 0.6355834603309631
       },
       "permutation_shares": {
         "ridge": {
@@ -1325,6 +1801,23 @@
           "E": 0.2920910414141432,
           "C": 0.18327284422520007,
           "R": 0.5246361143606567
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2958566240814318,
+            "C": 0.21815609844120676,
+            "R": 0.4859872774773615
+          },
+          "mlp": {
+            "E": 0.3020959128715892,
+            "C": 0.18525773792787417,
+            "R": 0.5126463492005366
+          },
+          "rf": {
+            "E": 0.6232267239884446,
+            "C": 0.0336086481572577,
+            "R": 0.34316462785429763
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.4')",
@@ -1426,15 +1919,35 @@
           "gap_E": -0.24122388727388228,
           "gap_S": -0.49837932539645236,
           "asymmetry": 0.2571554381225701
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.251552551984787,
+            "gap_S": -0.01868981122970581,
+            "asymmetry": 0.2702423632144928
+          },
+          "rf_vs_ridge": {
+            "gap_E": -0.03056357867441023,
+            "gap_S": -0.3399229998654465,
+            "asymmetry": 0.30935942119103627
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.02650700000000006,
-        "rf_vs_ridge": -0.20020137214570238
+        "rf_vs_ridge": -0.20020137214570238,
+        "partition_b": {
+          "mlp_vs_ridge": 0.026659071723175165,
+          "rf_vs_ridge": -0.14282264962306385
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_fp16_abliterated_t06": {
@@ -1456,13 +1969,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2862113118171692,
+            "S": 0.4865637421607971
+          },
+          "mlp": {
+            "E": 0.5232833623886108,
+            "S": 0.572161078453064
+          },
+          "rf": {
+            "E": 0.3746416186881606,
+            "S": 0.3675443509774666
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.3838635591525148,
-        "rkhs_median": 0.6592479944229126
+        "rkhs_median": 0.6592479944229126,
+        "ridge_partition_b": 0.5328747034072876,
+        "mlp_partition_b": 0.6154767870903015
       },
       "permutation_shares": {
         "ridge": {
@@ -1484,6 +2017,23 @@
           "E": 0.36635758290746884,
           "C": 0.20585453115903612,
           "R": 0.42778788593349504
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.34041794900903993,
+            "C": 0.2423131937432093,
+            "R": 0.4172688572477508
+          },
+          "mlp": {
+            "E": 0.31349229713578647,
+            "C": 0.22506273136436195,
+            "R": 0.4614449714998516
+          },
+          "rf": {
+            "E": 0.5840503839218307,
+            "C": 0.11848042675755563,
+            "R": 0.2974691893206136
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.6')",
@@ -1585,15 +2135,35 @@
           "gap_E": -0.24017623905414898,
           "gap_S": -0.45191568339295574,
           "asymmetry": 0.21173944433880676
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.23707205057144165,
+            "gap_S": 0.08559733629226685,
+            "asymmetry": 0.1514747142791748
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.0884303068709914,
+            "gap_S": -0.11901939118333049,
+            "asymmetry": 0.2074496980543219
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.017136999999999958,
-        "rf_vs_ridge": -0.16129581067938636
+        "rf_vs_ridge": -0.16129581067938636,
+        "partition_b": {
+          "mlp_vs_ridge": 0.04417611425210077,
+          "rf_vs_ridge": -0.1197996679271372
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_fp16_abliterated_t08": {
@@ -1615,13 +2185,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.5501234531402588,
+            "S": 0.7387492060661316
+          },
+          "mlp": {
+            "E": 0.7126615047454834,
+            "S": 0.8425310254096985
+          },
+          "rf": {
+            "E": 0.7376531903760288,
+            "S": 0.7283867365442395
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 10.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.7584303748302764,
-        "rkhs_median": 0.9072103196584573
+        "rkhs_median": 0.9072103196584573,
+        "ridge_partition_b": 0.7784736156463623,
+        "mlp_partition_b": 0.8623338341712952
       },
       "permutation_shares": {
         "ridge": {
@@ -1643,6 +2233,23 @@
           "E": 0.4881663105783836,
           "C": 0.24553144306330044,
           "R": 0.266302246358316
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.43287202747817083,
+            "C": 0.19222397074351327,
+            "R": 0.3749040017783158
+          },
+          "mlp": {
+            "E": 0.43396560095444314,
+            "C": 0.17608907768767407,
+            "R": 0.3899453213578828
+          },
+          "rf": {
+            "E": 0.43269415174413967,
+            "C": 0.33160685615411223,
+            "R": 0.23569899210174813
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T0.8')",
@@ -1744,15 +2351,35 @@
           "gap_E": 0.1487950627820347,
           "gap_S": 0.01782289806233639,
           "asymmetry": 0.1309721647196983
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.1625380516052246,
+            "gap_S": 0.1037818193435669,
+            "asymmetry": 0.058756232261657715
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.18752973723577004,
+            "gap_S": -0.010362469521892126,
+            "asymmetry": 0.19789220675766217
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.023146,
-        "rf_vs_ridge": -0.14128400789825188
+        "rf_vs_ridge": -0.14128400789825188,
+        "partition_b": {
+          "mlp_vs_ridge": 0.015041319579567003,
+          "rf_vs_ridge": -0.13920500967656765
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_2b_fp16_abliterated_t10": {
@@ -1774,13 +2401,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.46154794096946716,
+            "S": 0.7605662941932678
+          },
+          "mlp": {
+            "E": 0.5915204882621765,
+            "S": 0.7552518248558044
+          },
+          "rf": {
+            "E": 0.6440162472069557,
+            "S": 0.652646525679301
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 10.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.6619919017790532,
-        "rkhs_median": 0.8692289569146497
+        "rkhs_median": 0.8692289569146497,
+        "ridge_partition_b": 0.7833889126777649,
+        "mlp_partition_b": 0.7335593700408936
       },
       "permutation_shares": {
         "ridge": {
@@ -1802,6 +2449,23 @@
           "E": 0.3597918294296492,
           "C": 0.2274014292073014,
           "R": 0.41280674136304935
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.3071646482702296,
+            "C": 0.27319269556984044,
+            "R": 0.41964265615992996
+          },
+          "mlp": {
+            "E": 0.26577761750390255,
+            "C": 0.2073471875938096,
+            "R": 0.5268751949022878
+          },
+          "rf": {
+            "E": 0.5117016224145032,
+            "C": 0.16886705698782534,
+            "R": 0.31943132059767154
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_2b_fp16_abliterated_T1.0')",
@@ -1903,15 +2567,35 @@
           "gap_E": -0.1124820299803917,
           "gap_S": -0.22337056797914623,
           "asymmetry": 0.11088853799875453
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.12997254729270935,
+            "gap_S": -0.005314469337463379,
+            "asymmetry": 0.13528701663017273
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.18246830623748855,
+            "gap_S": -0.10791976851396679,
+            "asymmetry": 0.29038807475145534
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.027768000000000015,
-        "rf_vs_ridge": -0.11822267940232845
+        "rf_vs_ridge": -0.11822267940232845,
+        "partition_b": {
+          "mlp_vs_ridge": 0.10723253874235789,
+          "rf_vs_ridge": -0.10021133556225842
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "gemma_9b_q4_abliterated_t00": {
@@ -1933,13 +2617,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.09218058735132217,
+            "S": 0.45701685547828674
+          },
+          "mlp": {
+            "E": 0.337411493062973,
+            "S": 0.3810584545135498
+          },
+          "rf": {
+            "E": 0.3117896125194541,
+            "S": 0.2810856317445929
+          },
+          "ridge_alpha": {
+            "E": 100.0,
+            "S": 100.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.3128401055548413,
-        "rkhs_median": 0.46406128541442654
+        "rkhs_median": 0.46406128541442654,
+        "ridge_partition_b": 0.35875216126441956,
+        "mlp_partition_b": 0.46270811557769775
       },
       "permutation_shares": {
         "ridge": {
@@ -1954,13 +2658,30 @@
         },
         "rf": {
           "E": 0.3801570109879414,
-          "C": 0.020455214661417025,
+          "C": 0.020455214661417028,
           "R": 0.5993877743506416
         },
         "rkhs_median": {
           "E": 0.4295393031683232,
           "C": 0.10386816753227394,
           "R": 0.46659252929940276
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.39252334436438785,
+            "C": 0.25660163154882587,
+            "R": 0.3508750240867864
+          },
+          "mlp": {
+            "E": 0.3831624477839017,
+            "C": 0.1613697793388284,
+            "R": 0.4554677728772698
+          },
+          "rf": {
+            "E": 0.3801570109879414,
+            "C": 0.020455214661417028,
+            "R": 0.5993877743506416
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.0')",
@@ -2062,15 +2783,35 @@
           "gap_E": -0.09999894048004238,
           "gap_S": -0.5224229479863947,
           "asymmetry": 0.4224240075063523
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.24523090571165085,
+            "gap_S": -0.07595840096473694,
+            "asymmetry": 0.3211893066763878
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.2196090251681319,
+            "gap_S": -0.17593122373369385,
+            "asymmetry": 0.39554024890182576
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.009631000000000056,
-        "rf_vs_ridge": 0.03864977435064165
+        "rf_vs_ridge": 0.03864977435064165,
+        "partition_b": {
+          "mlp_vs_ridge": 0.10459274879048341,
+          "rf_vs_ridge": 0.24851275026385522
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": false
+        "rf_vs_ridge_signs_opposite": false,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": false
+        }
       }
     },
     "gemma_9b_q4_abliterated_t02": {
@@ -2086,19 +2827,39 @@
           "S": 0.8113385438919067
         },
         "rf": {
-          "E": 0.7243718406153528,
+          "E": 0.7243718406153529,
           "S": 0.7209179735386977
         },
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.5144108533859253,
+            "S": 0.7268009185791016
+          },
+          "mlp": {
+            "E": 0.6646501421928406,
+            "S": 0.7799957394599915
+          },
+          "rf": {
+            "E": 0.7243718406153529,
+            "S": 0.7209179735386977
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.7222309798390536,
-        "rkhs_median": 0.8507391214370728
+        "rkhs_median": 0.8507391214370728,
+        "ridge_partition_b": 0.7869857549667358,
+        "mlp_partition_b": 0.8065401911735535
       },
       "permutation_shares": {
         "ridge": {
@@ -2120,6 +2881,23 @@
           "E": 0.3889970248413286,
           "C": 0.2409052539319651,
           "R": 0.3700977212267063
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.3035438319468638,
+            "C": 0.07602773642600599,
+            "R": 0.6204284316271301
+          },
+          "mlp": {
+            "E": 0.318740789122686,
+            "C": 0.07460077760524345,
+            "R": 0.6066584332720705
+          },
+          "rf": {
+            "E": 0.35122453827209094,
+            "C": 0.005816979667268053,
+            "R": 0.642958482060641
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.2')",
@@ -2218,18 +2996,38 @@
           "asymmetry": 0.1435186266899109
         },
         "rf_vs_ridge": {
-          "gap_E": 0.19251464809902585,
+          "gap_E": 0.19251464809902596,
           "gap_S": 0.018062088509858576,
-          "asymmetry": 0.17445255958916728
+          "asymmetry": 0.1744525595891674
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.15023928880691528,
+            "gap_S": 0.05319482088088989,
+            "asymmetry": 0.09704446792602539
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.20996098722942758,
+            "gap_S": -0.005882945040403875,
+            "asymmetry": 0.21584393226983145
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.017095000000000082,
-        "rf_vs_ridge": 0.09669548206064094
+        "rf_vs_ridge": 0.09669548206064094,
+        "partition_b": {
+          "mlp_vs_ridge": -0.013769998355059654,
+          "rf_vs_ridge": 0.022530050433510862
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": false
+        "rf_vs_ridge_signs_opposite": false,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": false
+        }
       }
     },
     "gemma_9b_q4_abliterated_t04": {
@@ -2246,18 +3044,38 @@
         },
         "rf": {
           "E": 0.41927981583658647,
-          "S": 0.4028812511446052
+          "S": 0.40288125114460516
         },
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.3094130754470825,
+            "S": 0.513033926486969
+          },
+          "mlp": {
+            "E": 0.5293083190917969,
+            "S": 0.6118025779724121
+          },
+          "rf": {
+            "E": 0.41927981583658647,
+            "S": 0.40288125114460516
+          },
+          "ridge_alpha": {
+            "E": 100.0,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.43031708870745083,
-        "rkhs_median": 0.7248662885062205
+        "rkhs_median": 0.7248662885062205,
+        "ridge_partition_b": 0.5492638945579529,
+        "mlp_partition_b": 0.6729573011398315
       },
       "permutation_shares": {
         "ridge": {
@@ -2279,6 +3097,23 @@
           "E": 0.42316404117194034,
           "C": 0.18328575830021432,
           "R": 0.39355020052784545
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.37464477273503927,
+            "C": 0.23681348093260443,
+            "R": 0.3885417463323563
+          },
+          "mlp": {
+            "E": 0.384996275436009,
+            "C": 0.19439397864646715,
+            "R": 0.42060974591752387
+          },
+          "rf": {
+            "E": 0.4846699405254715,
+            "C": 0.06789584169432296,
+            "R": 0.4474342177802056
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.4')",
@@ -2378,17 +3213,37 @@
         },
         "rf_vs_ridge": {
           "gap_E": -0.16752940209325362,
-          "gap_S": -0.36647201938609547,
-          "asymmetry": 0.19894261729284185
+          "gap_S": -0.3664720193860955,
+          "asymmetry": 0.1989426172928419
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.21989524364471436,
+            "gap_S": 0.09876865148544312,
+            "asymmetry": 0.12112659215927124
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.10986674038950395,
+            "gap_S": -0.11015267534236384,
+            "asymmetry": 0.22001941573186778
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.012122000000000022,
-        "rf_vs_ridge": -0.0299077822197944
+        "rf_vs_ridge": -0.0299077822197944,
+        "partition_b": {
+          "mlp_vs_ridge": 0.032067999585167595,
+          "rf_vs_ridge": 0.058892471447849315
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": false
+        }
       }
     },
     "gemma_9b_q4_abliterated_t06": {
@@ -2410,13 +3265,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.2923777401447296,
+            "S": 0.5390779972076416
+          },
+          "mlp": {
+            "E": 0.6388269662857056,
+            "S": 0.6977382898330688
+          },
+          "rf": {
+            "E": 0.4507964750594042,
+            "S": 0.46242495694646724
+          },
+          "ridge_alpha": {
+            "E": 100.0,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.4822038461811642,
-        "rkhs_median": 0.7883018653467911
+        "rkhs_median": 0.7883018653467911,
+        "ridge_partition_b": 0.6078723669052124,
+        "mlp_partition_b": 0.7525188326835632
       },
       "permutation_shares": {
         "ridge": {
@@ -2438,6 +3313,23 @@
           "E": 0.41248583822902485,
           "C": 0.21865682315435828,
           "R": 0.3688573386166168
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.3731998775255617,
+            "C": 0.2538897245588272,
+            "R": 0.3729103979156112
+          },
+          "mlp": {
+            "E": 0.3541583505635104,
+            "C": 0.2349430970417603,
+            "R": 0.4108985523947292
+          },
+          "rf": {
+            "E": 0.42259977544952043,
+            "C": 0.1394976835830407,
+            "R": 0.43790254096743875
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.6')",
@@ -2539,15 +3431,35 @@
           "gap_E": -0.19338745867548962,
           "gap_S": -0.33020541748514287,
           "asymmetry": 0.13681795880965325
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.34644922614097595,
+            "gap_S": 0.15866029262542725,
+            "asymmetry": 0.1877889335155487
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.15841873491467456,
+            "gap_S": -0.07665304026117437,
+            "asymmetry": 0.23507177517584893
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.018373000000000028,
-        "rf_vs_ridge": -0.013094459032561234
+        "rf_vs_ridge": -0.013094459032561234,
+        "partition_b": {
+          "mlp_vs_ridge": 0.03798815447911802,
+          "rf_vs_ridge": 0.06499214305182754
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": false
+        }
       }
     },
     "gemma_9b_q4_abliterated_t08": {
@@ -2569,13 +3481,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.3471287786960602,
+            "S": 0.5637139678001404
+          },
+          "mlp": {
+            "E": 0.6767944693565369,
+            "S": 0.7189313173294067
+          },
+          "rf": {
+            "E": 0.5378769192322511,
+            "S": 0.5549531653010202
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
-        "rf": 0.5635496571157845,
-        "rkhs_median": 0.806298553943634
+        "rf": 0.5635496571157844,
+        "rkhs_median": 0.806298553943634,
+        "ridge_partition_b": 0.6039921641349792,
+        "mlp_partition_b": 0.74043869972229
       },
       "permutation_shares": {
         "ridge": {
@@ -2589,14 +3521,31 @@
           "R": 0.443993
         },
         "rf": {
-          "E": 0.45927390515812905,
-          "C": 0.13085914622088496,
-          "R": 0.40986694862098605
+          "E": 0.45927390515812916,
+          "C": 0.13085914622088488,
+          "R": 0.409866948620986
         },
         "rkhs_median": {
           "E": 0.4366763770305057,
           "C": 0.2375156209343379,
           "R": 0.3258080020351563
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.38825762005734776,
+            "C": 0.2651063793716063,
+            "R": 0.34663600057104593
+          },
+          "mlp": {
+            "E": 0.3637238155408552,
+            "C": 0.21139438539078417,
+            "R": 0.42488179906836065
+          },
+          "rf": {
+            "E": 0.45927390515812916,
+            "C": 0.13085914622088488,
+            "R": 0.409866948620986
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T0.8')",
@@ -2698,15 +3647,35 @@
           "gap_E": -0.02796362308418565,
           "gap_S": -0.19057237362033597,
           "asymmetry": 0.16260875053615031
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.3296656906604767,
+            "gap_S": 0.15521734952926636,
+            "asymmetry": 0.17444834113121033
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.19074814053619094,
+            "gap_S": -0.008760802499120146,
+            "asymmetry": 0.19950894303531108
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.02314700000000003,
-        "rf_vs_ridge": -0.010979051379013949
+        "rf_vs_ridge": -0.010979051379014004,
+        "partition_b": {
+          "mlp_vs_ridge": 0.07824579849731472,
+          "rf_vs_ridge": 0.06323094804994006
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": false
+        }
       }
     },
     "gemma_9b_q4_abliterated_t10": {
@@ -2728,13 +3697,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.39328426122665405,
+            "S": 0.5806019306182861
+          },
+          "mlp": {
+            "E": 0.7339054942131042,
+            "S": 0.7221250534057617
+          },
+          "rf": {
+            "E": 0.6330480412703936,
+            "S": 0.6284912284884567
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.6564345277167459,
-        "rkhs_median": 0.8317053318023682
+        "rkhs_median": 0.8317053318023682,
+        "ridge_partition_b": 0.6630823612213135,
+        "mlp_partition_b": 0.7599027156829834
       },
       "permutation_shares": {
         "ridge": {
@@ -2756,6 +3745,23 @@
           "E": 0.4370854786789467,
           "C": 0.23431185995281467,
           "R": 0.3286026613682387
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.4106645432517376,
+            "C": 0.2355991737619,
+            "R": 0.3537362829863624
+          },
+          "mlp": {
+            "E": 0.36278890931162244,
+            "C": 0.20574228675682818,
+            "R": 0.43146880393154946
+          },
+          "rf": {
+            "E": 0.4391988400137507,
+            "C": 0.16608974331403914,
+            "R": 0.3947114166722101
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='gemma_9b_4bit_abliterated_T1.0')",
@@ -2857,15 +3863,35 @@
           "gap_E": 0.016515298293251268,
           "gap_S": -0.16762089166306304,
           "asymmetry": 0.1841361899563143
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.3406212329864502,
+            "gap_S": 0.14152312278747559,
+            "asymmetry": 0.1990981101989746
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.23976378004373955,
+            "gap_S": 0.0478892978701706,
+            "asymmetry": 0.19187448217356895
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.02320099999999997,
-        "rf_vs_ridge": -0.01122858332778992
+        "rf_vs_ridge": -0.01122858332778992,
+        "partition_b": {
+          "mlp_vs_ridge": 0.07773252094518707,
+          "rf_vs_ridge": 0.04097513368584771
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": false
+        }
       }
     },
     "llama_8b_q4_abliterated_t00": {
@@ -2887,13 +3913,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.5810428857803345,
+            "S": 0.6645064353942871
+          },
+          "mlp": {
+            "E": 0.5950263142585754,
+            "S": 0.6129356622695923
+          },
+          "rf": {
+            "E": 0.5125128557870561,
+            "S": 0.44803998097794656
+          },
+          "ridge_alpha": {
+            "E": 100.0,
+            "S": 316.22776601683796
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.5162143736092069,
-        "rkhs_median": 0.7356886267662048
+        "rkhs_median": 0.7356886267662048,
+        "ridge_partition_b": 0.7177464962005615,
+        "mlp_partition_b": 0.5958639979362488
       },
       "permutation_shares": {
         "ridge": {
@@ -2915,6 +3961,23 @@
           "E": 0.44945267348415724,
           "C": 0.09138612593148746,
           "R": 0.4591612005843552
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.36615784636115833,
+            "C": 0.2212751147161829,
+            "R": 0.4125670389226588
+          },
+          "mlp": {
+            "E": 0.3247770738104653,
+            "C": 0.11145523371167654,
+            "R": 0.5637676924778581
+          },
+          "rf": {
+            "E": 0.712175644588471,
+            "C": 0.026837403981255604,
+            "R": 0.26098695143027356
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.0')",
@@ -3016,15 +4079,35 @@
           "gap_E": -0.14268404934905232,
           "gap_S": -0.29552343264204856,
           "asymmetry": 0.15283938329299623
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.013983428478240967,
+            "gap_S": -0.051570773124694824,
+            "asymmetry": 0.06555420160293579
+          },
+          "rf_vs_ridge": {
+            "gap_E": -0.0685300299932784,
+            "gap_S": -0.21646645441634055,
+            "asymmetry": 0.14793642442306215
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.07101600000000002,
-        "rf_vs_ridge": -0.13741304856972641
+        "rf_vs_ridge": -0.13741304856972641,
+        "partition_b": {
+          "mlp_vs_ridge": 0.1512006535551993,
+          "rf_vs_ridge": -0.15158008749238522
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "llama_8b_q4_abliterated_t02": {
@@ -3046,13 +4129,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.40076330304145813,
+            "S": 0.4875529408454895
+          },
+          "mlp": {
+            "E": 0.5886512994766235,
+            "S": 0.6178683638572693
+          },
+          "rf": {
+            "E": 0.5477862246958572,
+            "S": 0.5087112152785576
+          },
+          "ridge_alpha": {
+            "E": 31.622776601683793,
+            "S": 100.0
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.5591151320745923,
-        "rkhs_median": 0.7495940923690796
+        "rkhs_median": 0.7495940923690796,
+        "ridge_partition_b": 0.586978018283844,
+        "mlp_partition_b": 0.6736739277839661
       },
       "permutation_shares": {
         "ridge": {
@@ -3067,13 +4170,30 @@
         },
         "rf": {
           "E": 0.6807158830598704,
-          "C": 0.11295201699783361,
+          "C": 0.11295201699783364,
           "R": 0.206332099942296
         },
         "rkhs_median": {
           "E": 0.45600953870273075,
           "C": 0.21408035336974948,
           "R": 0.32991010792751974
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.4081261324860914,
+            "C": 0.2842674543772342,
+            "R": 0.3076064131366744
+          },
+          "mlp": {
+            "E": 0.4001353547159045,
+            "C": 0.15492710187833578,
+            "R": 0.4449375434057596
+          },
+          "rf": {
+            "E": 0.6807158830598704,
+            "C": 0.11295201699783364,
+            "R": 0.206332099942296
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.2')",
@@ -3175,15 +4295,35 @@
           "gap_E": -0.09802497544604949,
           "gap_S": -0.16577101109320758,
           "asymmetry": 0.06774603564715809
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.1878879964351654,
+            "gap_S": 0.13031542301177979,
+            "asymmetry": 0.05757257342338562
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.14702292165439912,
+            "gap_S": 0.02115827443306806,
+            "asymmetry": 0.12586464722133106
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.041246000000000005,
-        "rf_vs_ridge": -0.07757290005770401
+        "rf_vs_ridge": -0.07757290005770401,
+        "partition_b": {
+          "mlp_vs_ridge": 0.13733113026908517,
+          "rf_vs_ridge": -0.10127431319437841
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "llama_8b_q4_abliterated_t04": {
@@ -3205,13 +4345,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.604282021522522,
+            "S": 0.6237837076187134
+          },
+          "mlp": {
+            "E": 0.653992235660553,
+            "S": 0.696067750453949
+          },
+          "rf": {
+            "E": 0.7060179824250035,
+            "S": 0.6652028164995362
+          },
+          "ridge_alpha": {
+            "E": 10.0,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.7102273945590222,
-        "rkhs_median": 0.8359343514022514
+        "rkhs_median": 0.8359343514022514,
+        "ridge_partition_b": 0.7100762128829956,
+        "mlp_partition_b": 0.7651822566986084
       },
       "permutation_shares": {
         "ridge": {
@@ -3233,6 +4393,23 @@
           "E": 0.5650094269569156,
           "C": 0.2849378316212415,
           "R": 0.1500527414218428
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.4222136726655869,
+            "C": 0.2731177750590717,
+            "R": 0.3046685522753414
+          },
+          "mlp": {
+            "E": 0.3966977370769963,
+            "C": 0.23065866151652353,
+            "R": 0.3726436014064801
+          },
+          "rf": {
+            "E": 0.722306290366343,
+            "C": 0.11009206725501604,
+            "R": 0.16760164237864097
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.4')",
@@ -3334,15 +4511,35 @@
           "gap_E": 0.11271728223732036,
           "gap_S": 0.04837705708867801,
           "asymmetry": 0.06434022514864235
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.049710214138031006,
+            "gap_S": 0.0722840428352356,
+            "asymmetry": -0.02257382869720459
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.10173596090248149,
+            "gap_S": 0.041419108880822786,
+            "asymmetry": 0.06031685202165871
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.013700000000000045,
-        "rf_vs_ridge": -0.098443357621359
+        "rf_vs_ridge": -0.098443357621359,
+        "partition_b": {
+          "mlp_vs_ridge": 0.06797504913113872,
+          "rf_vs_ridge": -0.13706690989670042
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "llama_8b_q4_abliterated_t06": {
@@ -3364,13 +4561,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.6027979254722595,
+            "S": 0.6102265119552612
+          },
+          "mlp": {
+            "E": 0.7153216004371643,
+            "S": 0.7355873584747314
+          },
+          "rf": {
+            "E": 0.7146286152649304,
+            "S": 0.662493504210304
+          },
+          "ridge_alpha": {
+            "E": 10.0,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.7201984339020497,
-        "rkhs_median": 0.8501495747759007
+        "rkhs_median": 0.8501495747759007,
+        "ridge_partition_b": 0.7039050459861755,
+        "mlp_partition_b": 0.7947226762771606
       },
       "permutation_shares": {
         "ridge": {
@@ -3386,12 +4603,29 @@
         "rf": {
           "E": 0.7287606678904499,
           "C": 0.12529783257489813,
-          "R": 0.1459414995346519
+          "R": 0.14594149953465188
         },
         "rkhs_median": {
           "E": 0.5697984723796969,
           "C": 0.3225379279754488,
           "R": 0.10766359964485439
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.4800396943907996,
+            "C": 0.24296023231511032,
+            "R": 0.2770000732940901
+          },
+          "mlp": {
+            "E": 0.5231679997038897,
+            "C": 0.22011906739820022,
+            "R": 0.25671293289791
+          },
+          "rf": {
+            "E": 0.7287606678904499,
+            "C": 0.12529783257489813,
+            "R": 0.14594149953465188
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.6')",
@@ -3493,15 +4727,35 @@
           "gap_E": 0.12026081312183345,
           "gap_S": 0.0449852120121228,
           "asymmetry": 0.07527560110971065
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.11252367496490479,
+            "gap_S": 0.12536084651947021,
+            "asymmetry": -0.01283717155456543
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.11183068979267086,
+            "gap_S": 0.05226699225504272,
+            "asymmetry": 0.059563697537628135
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": -0.011006999999999989,
-        "rf_vs_ridge": -0.09347650046534808
+        "rf_vs_ridge": -0.09347650046534811,
+        "partition_b": {
+          "mlp_vs_ridge": -0.020287140396180126,
+          "rf_vs_ridge": -0.13105857375943822
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "llama_8b_q4_abliterated_t08": {
@@ -3523,13 +4777,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.5971488356590271,
+            "S": 0.6097533702850342
+          },
+          "mlp": {
+            "E": 0.7094357013702393,
+            "S": 0.7265910506248474
+          },
+          "rf": {
+            "E": 0.7055483379829123,
+            "S": 0.6577845621190502
+          },
+          "ridge_alpha": {
+            "E": 10.0,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.7051455209072189,
-        "rkhs_median": 0.8478057875621917
+        "rkhs_median": 0.8478057875621917,
+        "ridge_partition_b": 0.7204824686050415,
+        "mlp_partition_b": 0.7769173979759216
       },
       "permutation_shares": {
         "ridge": {
@@ -3551,6 +4825,23 @@
           "E": 0.569553723424076,
           "C": 0.3031225491082406,
           "R": 0.12732372746768336
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.5175661444362344,
+            "C": 0.30307815441383945,
+            "R": 0.1793557011499262
+          },
+          "mlp": {
+            "E": 0.4739662831617743,
+            "C": 0.19442204257183343,
+            "R": 0.3316116742663921
+          },
+          "rf": {
+            "E": 0.7868689681951807,
+            "C": 0.07778312141180445,
+            "R": 0.13534791039301494
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T0.8')",
@@ -3652,15 +4943,35 @@
           "gap_E": 0.11120980172040007,
           "gap_S": 0.04233632565359613,
           "asymmetry": 0.06887347606680394
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.11228686571121216,
+            "gap_S": 0.11683768033981323,
+            "asymmetry": -0.004550814628601074
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.10839950232388518,
+            "gap_S": 0.04803119183401605,
+            "asymmetry": 0.060368310489869126
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.09554699999999999,
-        "rf_vs_ridge": -0.012307089606985067
+        "rf_vs_ridge": -0.012307089606985067,
+        "partition_b": {
+          "mlp_vs_ridge": 0.1522559731164659,
+          "rf_vs_ridge": -0.04400779075691125
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": true,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": true,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     },
     "llama_8b_q4_abliterated_t10": {
@@ -3682,13 +4993,33 @@
         "rkhs_median": {
           "E": null,
           "S": null
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.5973330140113831,
+            "S": 0.6170763969421387
+          },
+          "mlp": {
+            "E": 0.7189397215843201,
+            "S": 0.7298847436904907
+          },
+          "rf": {
+            "E": 0.7261062516649032,
+            "S": 0.6832357316546407
+          },
+          "ridge_alpha": {
+            "E": 10.0,
+            "S": 31.622776601683793
+          }
         }
       },
       "joint_R2_held_out": {
         "ridge": null,
         "mlp": null,
         "rf": 0.7261903102272171,
-        "rkhs_median": 0.8434674364496918
+        "rkhs_median": 0.8434674364496918,
+        "ridge_partition_b": 0.708759069442749,
+        "mlp_partition_b": 0.7632812857627869
       },
       "permutation_shares": {
         "ridge": {
@@ -3704,12 +5035,29 @@
         "rf": {
           "E": 0.7993334701348743,
           "C": 0.08955709665693914,
-          "R": 0.11110943320818654
+          "R": 0.11110943320818652
         },
         "rkhs_median": {
           "E": 0.5629524453320136,
           "C": 0.31835496935690927,
           "R": 0.11869258531107724
+        },
+        "partition_b": {
+          "ridge": {
+            "E": 0.45496877581122697,
+            "C": 0.31286096650739964,
+            "R": 0.2321702576813733
+          },
+          "mlp": {
+            "E": 0.4246202945694643,
+            "C": 0.2225755182749478,
+            "R": 0.352804187155588
+          },
+          "rf": {
+            "E": 0.7993334701348743,
+            "C": 0.08955709665693914,
+            "R": 0.11110943320818652
+          }
         }
       },
       "partition_source": "pulled_from_results_json (canon_key='llama_8b_4bit_abliterated_T1.0')",
@@ -3811,20 +5159,79 @@
           "gap_E": 0.13187148708894492,
           "gap_S": 0.06458136134671832,
           "asymmetry": 0.06729012574222659
+        },
+        "partition_b": {
+          "mlp_vs_ridge": {
+            "gap_E": 0.12160670757293701,
+            "gap_S": 0.11280834674835205,
+            "asymmetry": 0.008798360824584961
+          },
+          "rf_vs_ridge": {
+            "gap_E": 0.1287732376535201,
+            "gap_S": 0.06615933471250202,
+            "asymmetry": 0.0626139029410181
+          }
         }
       },
       "R_hat_gap": {
         "mlp_vs_ridge": 0.06284699999999999,
-        "rf_vs_ridge": -0.026937566791813458
+        "rf_vs_ridge": -0.026937566791813486,
+        "partition_b": {
+          "mlp_vs_ridge": 0.12063392947421467,
+          "rf_vs_ridge": -0.12106082447318679
+        }
       },
       "sign_check": {
         "mlp_vs_ridge_signs_opposite": false,
-        "rf_vs_ridge_signs_opposite": true
+        "rf_vs_ridge_signs_opposite": true,
+        "partition_b": {
+          "mlp_vs_ridge_signs_opposite": false,
+          "rf_vs_ridge_signs_opposite": true
+        }
       }
     }
   },
   "cross_cell_aggregates": {
     "n_cells_evaluated": 24,
+    "partition_b": {
+      "n_cells_evaluated": 24,
+      "rf_reproduces_mlp_sign_on_R_hat_gap": "17/24",
+      "rf_reproduces_mlp_sign_on_asymmetry": "17/24",
+      "mlp_pattern_holds": "9/24",
+      "both_classes_show_predicted_opposite_signs": "7/24",
+      "cells_where_only_mlp_shows_pattern": [
+        "gemma_2b_q4_abliterated_t04",
+        "gemma_9b_q4_abliterated_t02"
+      ],
+      "cells_where_only_rf_shows_pattern": [
+        "gemma_2b_fp16_abliterated_t04",
+        "gemma_2b_fp16_abliterated_t06",
+        "gemma_2b_fp16_abliterated_t08",
+        "gemma_2b_fp16_abliterated_t10",
+        "gemma_2b_q4_abliterated_t02",
+        "gemma_2b_q4_abliterated_t10",
+        "llama_8b_q4_abliterated_t00",
+        "llama_8b_q4_abliterated_t02",
+        "llama_8b_q4_abliterated_t06",
+        "llama_8b_q4_abliterated_t10"
+      ],
+      "cells_where_neither_shows_pattern": [
+        "gemma_9b_q4_abliterated_t00",
+        "gemma_9b_q4_abliterated_t04",
+        "gemma_9b_q4_abliterated_t06",
+        "gemma_9b_q4_abliterated_t08",
+        "gemma_9b_q4_abliterated_t10"
+      ],
+      "cells_where_both_show_pattern": [
+        "gemma_2b_fp16_abliterated_t00",
+        "gemma_2b_fp16_abliterated_t02",
+        "gemma_2b_q4_abliterated_t00",
+        "gemma_2b_q4_abliterated_t06",
+        "gemma_2b_q4_abliterated_t08",
+        "llama_8b_q4_abliterated_t04",
+        "llama_8b_q4_abliterated_t08"
+      ]
+    },
     "rf_reproduces_mlp_sign_on_R_hat_gap": "22/24",
     "rf_reproduces_mlp_sign_on_asymmetry": "22/24",
     "both_classes_show_predicted_opposite_signs": "13/24",
@@ -3904,6 +5311,11 @@
       "tol": 1e-05
     },
     "ridge_alpha": "loo_gcv_logspace(-3,4,15)",
+    "protocols": {
+      "collection_time": "univariate_R2.ridge / .mlp and permutation_shares.ridge / .mlp: pulled from the canon run (run_channel_marginal, results.json). In-sample on the full row set, at the cell's native target dimensionality.",
+      "partition_b": "univariate_R2.partition_b, permutation_shares.partition_b, asymmetry.partition_b, R_hat_gap.partition_b, sign_check.partition_b and cross_cell_aggregates.partition_b: Ridge, MLP and RF all refitted here on one 80/20 split per cell (random_state=42), shared StandardScalers, shared target-PCA to 64 dims where native pool_dim > 64, and one shared permutation sequence scored by all three models. This is the protocol to read for between-class comparisons; the collection-time fields are kept for provenance and are not commensurate with the RF numbers."
+    },
+    "ridge_alpha_partition_b": "loo_gcv_logspace(-3,4,15)",
     "rkhs_alpha": 0.001,
     "rkhs_kernels": [
       {
@@ -3927,8 +5339,8 @@
     "partition_source_note": "Ridge and MLP partition fractions (E/C/R) are pulled from results.json's per-cell measurements: rhat_ridge_insample and rhat_mlp_pooled_mean (canonical paper \u00a75/\u00a76 fields, matching paper 1 v0_13 \u00a74.2). Pre-0.81.1.3 this run incorrectly pulled rhat_ridge_heldout (the H1 cross-source quantity) and rhat_mlp_reference (single 256-arch fit), producing sign-flipped R\u0302_MLP\u2212R\u0302_Ridge gaps on Gemma 9B Q4 and Gemma 2B FP16 vs the paper's published numbers. Each cell's partition_source field documents pulled-vs-computed status. RF and RKHS_median partitions are computed in this run.",
     "rf_joint_R2_train_available_in": "cells.<key>.permutation_shares.rf",
     "canon_joint_R2_status": "joint_R2_held_out for ridge and mlp is null in this run because Q0057 fits Ridge/MLP for permutation-importance partitioning, not for joint-fit R\u00b2 on a held-out test set. As of v0.82.0.23, the canonical per-estimator joint R\u00b2 (train + held-out) is surfaced under cells.<key>.measurements.estimator_joint_R2 by Phase 12 -- fits Ridge/MLP/RF/RKHS at the canonical partition-B operating point and emits R\u00b2 values. See results_schema.py docstring for the relationship between estimator_joint_R2 and linearity_max_gap; the two are distinct cuts of related computation, both independently meaningful for \u00a75 recoverability-plane positioning.",
-    "git_commit": "5517fd512554",
-    "timestamp": "2026-09-11T16:23:22.758776Z",
+    "git_commit": "7a75a6ba81ab",
+    "timestamp": "2026-09-12T21:24:57.748043Z",
     "iota_version": "0.82.0.23",
     "protocol_decisions_during_run": [
       {

@@ -15,7 +15,21 @@ Output: v5_calibration_results.json
 
 import numpy as np
 import json
-from sklearn.linear_model import Ridge
+import os
+from sklearn.linear_model import Ridge, RidgeCV
+import ridge_policy
+
+
+def _v5_ridge(X_train, y_train):
+    """Ridge under the v1.0.2 policy: alpha by leave-one-out CV over the same grid the
+    fleet uses (ridge_policy). Selected per fit rather than memoised, because several V5
+    systems share a design shape and would otherwise share one alpha. Set
+    IOTA_V5_RIDGE_ALPHA=1.0 to reproduce the pre-v1.0.2 fixed-penalty calibration."""
+    pin = os.environ.get('IOTA_V5_RIDGE_ALPHA', '').strip()
+    if pin:
+        return Ridge(alpha=float(pin)), float(pin)
+    a = float(RidgeCV(alphas=ridge_policy.RIDGE_ALPHA_GRID).fit(X_train, y_train).alpha_)
+    return Ridge(alpha=a), a
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split
 import warnings
@@ -64,7 +78,7 @@ def estimate_R_ridge(X_S, X_E, y, n_permutations=200, seed=42):
         X, y, test_size=0.2, random_state=seed
     )
 
-    model = Ridge(alpha=1.0)
+    model, _v5_alpha = _v5_ridge(X_train, y_train)
     model.fit(X_train, y_train)
     baseline_r2 = model.score(X_test, y_test)
 
@@ -583,7 +597,7 @@ def estimate_R_3channel(X_E, X_C, X_S, y, n_permutations=200,
     )
 
     if regressor == 'ridge':
-        model = Ridge(alpha=1.0)
+        model, _v5_alpha = _v5_ridge(X_train, y_train)
     elif regressor == 'mlp':
         model = MLPRegressor(
             hidden_layer_sizes=(128, 64),

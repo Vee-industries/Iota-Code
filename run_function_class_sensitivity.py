@@ -342,6 +342,7 @@ def _run_rf_on_cell(q42_path):
     from sklearn.linear_model import Ridge
     from sklearn.metrics import r2_score
     from sklearn.model_selection import train_test_split
+    from sklearn.neural_network import MLPRegressor   # v1.0.3
     from sklearn.preprocessing import StandardScaler
     import warnings
     warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
@@ -540,6 +541,38 @@ def _run_rf_on_cell(q42_path):
         r2_rf_S = float(r2_score(y_te_s, rf_S.predict(Xs_te_s),
                                  multioutput='variance_weighted'))
 
+        # ─── Per-channel Ridge + MLP univariate fits, same partition ────
+        # v1.0.3: the function-class asymmetry used to compare this script's
+        # held-out RF R^2 against the canon CSV's Ridge and MLP R^2, which are
+        # collection-time in-sample numbers on a different split with a
+        # different target dimensionality. Refitting both here puts all three
+        # classes on one partition, one pair of scalers and one target-PCA, so
+        # the gaps subtract like quantities. Ridge follows the v1.0.2 policy
+        # (alpha by LOO-GCV); the tag carries the cell path and the channel so
+        # two cells of equal design shape cannot share a memoised alpha.
+        _tag = os.path.basename(q42_path)
+        _t_rg = _time.time()
+        ridge_E_pb = _ridge_policy.fit_ridge(Xe_tr_s, y_tr_s, tag=_tag + '|E')
+        ridge_S_pb = _ridge_policy.fit_ridge(Xs_tr_s, y_tr_s, tag=_tag + '|S')
+        r2_ridge_E_pb = float(r2_score(y_te_s, ridge_E_pb.predict(Xe_te_s),
+                                       multioutput='variance_weighted'))
+        r2_ridge_S_pb = float(r2_score(y_te_s, ridge_S_pb.predict(Xs_te_s),
+                                       multioutput='variance_weighted'))
+        ui.ok(f"[ridge] univariate partition-B fits done "
+              f"(alpha_E={ridge_E_pb.alpha:g}, alpha_S={ridge_S_pb.alpha:g}, "
+              f"{_time.time()-_t_rg:.1f}s)")
+        _t_mlp = _time.time()
+        ui.msg(f"[mlp] fitting univariate-E/S on the RF partition "
+               f"(n={Xe_tr_s.shape[0]}, d_E={Xe_tr_s.shape[1]})...")
+        mlp_E_pb = MLPRegressor(**MLP_HYPERS).fit(Xe_tr_s, y_tr_s)
+        mlp_S_pb = MLPRegressor(**MLP_HYPERS).fit(Xs_tr_s, y_tr_s)
+        r2_mlp_E_pb = float(r2_score(y_te_s, mlp_E_pb.predict(Xe_te_s),
+                                     multioutput='variance_weighted'))
+        r2_mlp_S_pb = float(r2_score(y_te_s, mlp_S_pb.predict(Xs_te_s),
+                                     multioutput='variance_weighted'))
+        ui.ok(f"[mlp] univariate partition-B fits done "
+              f"({_time.time()-_t_mlp:.1f}s)")
+
         # ─── Joint RF fit (E + C + S + prompt) + permutation drops ────
         full_X = np.hstack([Xe, Xc, Xs, Xp])
         Xj_tr, Xj_te, yj_tr_raw, yj_te_raw = train_test_split(
@@ -567,49 +600,90 @@ def _run_rf_on_cell(q42_path):
         r2_joint_test = float(r2_score(yj_te_s, rf_joint.predict(Xj_te_s),
                                        multioutput='variance_weighted'))
 
+        # v1.0.3: joint Ridge and MLP on the same partition, so the
+        # permutation shares below can be differenced against an RF share
+        # fitted on the same rows with the same scalers. The canon shares
+        # from results.json stay in the record but are collection-time.
+        _t_j2 = _time.time()
+        ridge_joint = _ridge_policy.fit_ridge(Xj_tr_s, yj_tr_s, tag=_tag + '|J')
+        mlp_joint = MLPRegressor(**MLP_HYPERS).fit(Xj_tr_s, yj_tr_s)
+        r2_joint_test_ridge = float(r2_score(yj_te_s, ridge_joint.predict(Xj_te_s),
+                                             multioutput='variance_weighted'))
+        r2_joint_test_mlp = float(r2_score(yj_te_s, mlp_joint.predict(Xj_te_s),
+                                           multioutput='variance_weighted'))
+        ui.ok(f"[joint] partition-B Ridge (alpha={ridge_joint.alpha:g}, "
+              f"R2={r2_joint_test_ridge:.4f}) and MLP (R2={r2_joint_test_mlp:.4f}) "
+              f"fitted ({_time.time()-_t_j2:.1f}s)")
+
         # Permutation drops: shuffle each block, recompute test R²
         d_e = Xe.shape[1]; d_c = Xc.shape[1]; d_s = Xs.shape[1]
         slice_E = slice(0,           d_e)
         slice_C = slice(d_e,         d_e + d_c)
         slice_S = slice(d_e + d_c,   d_e + d_c + d_s)
 
+        # v1.0.3: one shuffle sequence, three models. Drawing the permutation
+        # indices once and scoring all three on the identical shuffled matrix
+        # removes shuffle noise from the between-class differences, which is
+        # the whole point of the comparison.
         rng = np.random.RandomState(RANDOM_STATE)
-        drops = {'E': [], 'C': [], 'R': []}
-        baseline_r2 = r2_joint_test
+        _models = {'rf': (rf_joint, r2_joint_test),
+                   'ridge': (ridge_joint, r2_joint_test_ridge),
+                   'mlp': (mlp_joint, r2_joint_test_mlp)}
+        all_drops = {m: {'E': [], 'C': [], 'R': []} for m in _models}
 
         _t_perm = _time.time()
-        ui.msg(f"[rf] permutation analysis: {N_PERMUTATIONS} shuffles × 3 blocks "
-               f"on n={Xj_te_s.shape[0]} test rows...")
+        ui.msg(f"[perm] permutation analysis: {N_PERMUTATIONS} shuffles × 3 blocks "
+               f"× 3 classes on n={Xj_te_s.shape[0]} test rows...")
         for label, sl in [('E', slice_E), ('C', slice_C), ('R', slice_S)]:
             _t_block = _time.time()
             for _ in range(N_PERMUTATIONS):
                 Xj_te_perm = Xj_te_s.copy()
                 perm_idx = rng.permutation(Xj_te_perm.shape[0])
                 Xj_te_perm[:, sl] = Xj_te_perm[perm_idx][:, sl]
-                r2_p = float(r2_score(yj_te_s, rf_joint.predict(Xj_te_perm),
-                                      multioutput='variance_weighted'))
-                drops[label].append(baseline_r2 - r2_p)
-            ui.ok(f"[rf] perm block {label} done ({_time.time()-_t_block:.1f}s, "
-                  f"mean drop={np.mean(drops[label]):.4f})")
-        ui.ok(f"[rf] permutation analysis total: {_time.time()-_t_perm:.1f}s")
+                for _m, (_mdl, _base) in _models.items():
+                    r2_p = float(r2_score(yj_te_s, _mdl.predict(Xj_te_perm),
+                                          multioutput='variance_weighted'))
+                    all_drops[_m][label].append(_base - r2_p)
+            ui.ok(f"[perm] block {label} done ({_time.time()-_t_block:.1f}s, "
+                  f"mean drop rf={np.mean(all_drops['rf'][label]):.4f} "
+                  f"ridge={np.mean(all_drops['ridge'][label]):.4f} "
+                  f"mlp={np.mean(all_drops['mlp'][label]):.4f})")
+        ui.ok(f"[perm] permutation analysis total: {_time.time()-_t_perm:.1f}s")
 
-        mean_drops = {k: float(np.mean(v)) for k, v in drops.items()}
-        # Renormalize to sum 1 (matches canon partition convention)
-        total = sum(max(0.0, v) for v in mean_drops.values())
-        if total <= 0:
-            partition = {'E': 0.0, 'C': 0.0, 'R': 0.0}
-        else:
-            partition = {k: max(0.0, v) / total for k, v in mean_drops.items()}
+        def _renorm(md):
+            # Renormalize to sum 1 (matches canon partition convention)
+            tot = sum(max(0.0, v) for v in md.values())
+            if tot <= 0:
+                return {'E': 0.0, 'C': 0.0, 'R': 0.0}
+            return {k: max(0.0, v) / tot for k, v in md.items()}
+
+        _mean_drops_all = {m: {k: float(np.mean(v)) for k, v in d.items()}
+                           for m, d in all_drops.items()}
+        _partitions_all = {m: _renorm(d) for m, d in _mean_drops_all.items()}
+        mean_drops = _mean_drops_all['rf']
+        partition = _partitions_all['rf']
 
         return {
             'pool_dim':     int(pool_dim),
             'n_rows':       int(n),
             'r2_rf_E':      r2_rf_E,
             'r2_rf_S':      r2_rf_S,
+            # v1.0.3: same-partition Ridge and MLP, for the unmixed asymmetry
+            'r2_ridge_E_partition_b':    r2_ridge_E_pb,
+            'r2_ridge_S_partition_b':    r2_ridge_S_pb,
+            'r2_mlp_E_partition_b':      r2_mlp_E_pb,
+            'r2_mlp_S_partition_b':      r2_mlp_S_pb,
+            'ridge_alpha_E_partition_b': float(ridge_E_pb.alpha),
+            'ridge_alpha_S_partition_b': float(ridge_S_pb.alpha),
             'rf_joint_R2_train':    r2_joint_train,
             'rf_joint_R2_held_out': r2_joint_test,
             'rf_partition':         partition,
             'rf_partition_raw_drops': mean_drops,
+            # v1.0.3: Ridge and MLP permutation shares on the same partition
+            'ridge_partition_b':         _partitions_all['ridge'],
+            'mlp_partition_b':           _partitions_all['mlp'],
+            'joint_R2_held_out_ridge_b': r2_joint_test_ridge,
+            'joint_R2_held_out_mlp_b':   r2_joint_test_mlp,
             # v0.80.0.45: target dim metadata
             'native_pool_dim':                        native_pool_dim,
             'rf_target_dim':                          rf_target_dim,
@@ -1031,12 +1105,29 @@ def _build_cell_entry(family, size, variant, cond, temp,
                 'E': None,
                 'S': None,
             },
+            # v1.0.3: all three classes on this script's held-out partition,
+            # one split, one pair of scalers, one target-PCA. The 'ridge' and
+            # 'mlp' entries above are the canon collection-time in-sample
+            # numbers, kept for provenance; they are not comparable to 'rf'.
+            'partition_b': {
+                'ridge': {'E': rf_result.get('r2_ridge_E_partition_b'),
+                          'S': rf_result.get('r2_ridge_S_partition_b')},
+                'mlp':   {'E': rf_result.get('r2_mlp_E_partition_b'),
+                          'S': rf_result.get('r2_mlp_S_partition_b')},
+                'rf':    {'E': rf_result['r2_rf_E'],
+                          'S': rf_result['r2_rf_S']},
+                'ridge_alpha': {'E': rf_result.get('ridge_alpha_E_partition_b'),
+                                'S': rf_result.get('ridge_alpha_S_partition_b')},
+            },
         },
         'joint_R2_held_out': {
             'ridge': None,
             'mlp':   None,
             'rf':    rf_result['rf_joint_R2_held_out'],
             'rkhs_median': rkhs_r2_test,
+            # v1.0.3: Ridge and MLP joint fits on this partition
+            'ridge_partition_b': rf_result.get('joint_R2_held_out_ridge_b'),
+            'mlp_partition_b':   rf_result.get('joint_R2_held_out_mlp_b'),
         },
         'permutation_shares': {
             'ridge': ridge_partition,
@@ -1048,6 +1139,14 @@ def _build_cell_entry(family, size, variant, cond, temp,
             # distance). Range across the grid recorded under
             # 'rkhs_kernel_grid' for dispersion inspection.
             'rkhs_median': rkhs_partition,
+            # v1.0.3: Ridge and MLP permutation shares from this partition's
+            # own joint fits, scored on the same shuffled test matrices as rf.
+            # 'ridge' and 'mlp' above are the collection-time canon shares.
+            'partition_b': {
+                'ridge': rf_result.get('ridge_partition_b'),
+                'mlp':   rf_result.get('mlp_partition_b'),
+                'rf':    rf_result['rf_partition'],
+            },
         },
         'partition_source': partition_source,
         # v0.80.0.45: target dim per-estimator audit trail.
@@ -1084,7 +1183,14 @@ def _build_cell_entry(family, size, variant, cond, temp,
     else:
         cell_entry['rkhs_kernel_grid'] = None
 
-    # Asymmetry computations (canon vs RF)
+    # Asymmetry computations.
+    # 'mlp_vs_ridge' and 'rf_vs_ridge' are the historical protocol-mixed
+    # readings, kept for continuity: the first is the canon CSV's
+    # collection-time in-sample gap, the second subtracts an in-sample Ridge
+    # R^2 from a held-out RF one. 'partition_b' below is the unmixed pair --
+    # univariate R^2, joint fit and permutation shares all from this script's
+    # single held-out split (v1.0.3). Read partition_b; the other two are
+    # what the v1.0.2 tables were computed from.
     asym = {}
     r_hat_gap = {}
     sign_check = {}
@@ -1133,6 +1239,37 @@ def _build_cell_entry(family, size, variant, cond, temp,
         except (KeyError, TypeError, ValueError):
             pass
 
+    # v1.0.3: the unmixed reading. Every quantity below is held out on the
+    # same partition, so the gaps subtract like quantities and the sign check
+    # compares two numbers from one protocol.
+    _pb_u = cell_entry['univariate_R2']['partition_b']
+    _pb_p = cell_entry['permutation_shares']['partition_b']
+    if _pb_u['ridge']['E'] is not None and _pb_u['ridge']['S'] is not None:
+        pb_asym, pb_gap, pb_sign = {}, {}, {}
+        for _cls in ('mlp', 'rf'):
+            if _pb_u[_cls]['E'] is None or _pb_u[_cls]['S'] is None:
+                continue
+            _gE = _pb_u[_cls]['E'] - _pb_u['ridge']['E']
+            _gS = _pb_u[_cls]['S'] - _pb_u['ridge']['S']
+            _a = _gE - _gS
+            pb_asym[f'{_cls}_vs_ridge'] = {
+                'gap_E': _gE, 'gap_S': _gS, 'asymmetry': _a,
+            }
+            _pr, _pc = _pb_p.get('ridge'), _pb_p.get(_cls)
+            if (isinstance(_pr, dict) and isinstance(_pc, dict)
+                    and 'R' in _pr and 'R' in _pc):
+                _rh = _pc['R'] - _pr['R']
+                pb_gap[f'{_cls}_vs_ridge'] = _rh
+                pb_sign[f'{_cls}_vs_ridge_signs_opposite'] = (
+                    (_a > 0 and _rh < 0) or (_a < 0 and _rh > 0)
+                )
+        if pb_asym:
+            asym['partition_b'] = pb_asym
+        if pb_gap:
+            r_hat_gap['partition_b'] = pb_gap
+        if pb_sign:
+            sign_check['partition_b'] = pb_sign
+
     cell_entry['asymmetry'] = asym
     cell_entry['R_hat_gap'] = r_hat_gap
     cell_entry['sign_check'] = sign_check
@@ -1143,6 +1280,43 @@ def _build_cell_entry(family, size, variant, cond, temp,
 # ─────────────────────────────────────────────────────────────────────────
 #  Cross-cell aggregates -- writerbot-spec summary
 # ─────────────────────────────────────────────────────────────────────────
+
+def _tally_sign_patterns(valid, getter):
+    """v1.0.3: the sign-pattern tally, over whichever protocol `getter`
+    reads. getter(cell_entry) -> (mlp_ok, rf_ok), each True/False/None."""
+    mlp_pattern_cells, rf_pattern_cells = [], []
+    both_cells, only_mlp_cells, only_rf_cells, neither_cells = [], [], [], []
+    for k, v in valid.items():
+        mlp_ok, rf_ok = getter(v)
+        if mlp_ok is True:
+            mlp_pattern_cells.append(k)
+        if rf_ok is True:
+            rf_pattern_cells.append(k)
+        if mlp_ok is True and rf_ok is True:
+            both_cells.append(k)
+        elif mlp_ok is True and rf_ok is not True:
+            only_mlp_cells.append(k)
+        elif rf_ok is True and mlp_ok is not True:
+            only_rf_cells.append(k)
+        elif mlp_ok is False and rf_ok is False:
+            neither_cells.append(k)
+    n = len(valid)
+    return {
+        'n_cells_evaluated': n,
+        'rf_reproduces_mlp_sign_on_R_hat_gap':
+            f"{len(both_cells) + len(only_rf_cells)}/{n}" if n else "0/0",
+        'rf_reproduces_mlp_sign_on_asymmetry':
+            f"{len(rf_pattern_cells)}/{n}" if n else "0/0",
+        'mlp_pattern_holds':
+            f"{len(mlp_pattern_cells)}/{n}" if n else "0/0",
+        'both_classes_show_predicted_opposite_signs':
+            f"{len(both_cells)}/{n}" if n else "0/0",
+        'cells_where_only_mlp_shows_pattern': sorted(only_mlp_cells),
+        'cells_where_only_rf_shows_pattern':  sorted(only_rf_cells),
+        'cells_where_neither_shows_pattern':  sorted(neither_cells),
+        'cells_where_both_show_pattern':      sorted(both_cells),
+    }
+
 
 def _build_cross_cell_aggregates(cells):
     """Per writerbot's handoff: summary fields for §5.4 prose."""
@@ -1191,8 +1365,23 @@ def _build_cross_cell_aggregates(cells):
             if isinstance(_evr, (int, float)):
                 evr_values.append(_evr)
 
+    def _pb_getter(v):
+        sc = (v.get('sign_check', {}) or {}).get('partition_b') or {}
+        return (sc.get('mlp_vs_ridge_signs_opposite'),
+                sc.get('rf_vs_ridge_signs_opposite'))
+
+    _pb_valid = {k: v for k, v in valid.items()
+                 if (v.get('sign_check', {}) or {}).get('partition_b')}
+    partition_b_tally = (_tally_sign_patterns(_pb_valid, _pb_getter)
+                         if _pb_valid else None)
+
     return {
         'n_cells_evaluated': n_total,
+        # v1.0.3: the unmixed tally. Every R^2 and every permutation share
+        # behind these counts is held out on one partition per cell. The
+        # sibling fields below are the protocol-mixed v1.0.2 counts (canon
+        # in-sample Ridge/MLP against partition-B RF), kept for continuity.
+        'partition_b': partition_b_tally,
         'rf_reproduces_mlp_sign_on_R_hat_gap':
             f"{len(both_cells) + len(only_rf_cells)}/{n_total}"
             if n_total else "0/0",
@@ -1223,7 +1412,12 @@ def _is_cell_rf_complete(cell_entry):
     A cell is RF-complete iff:
       - It is a dict with no 'error' key,
       - univariate_R2.rf has both 'E' and 'S' populated,
-      - permutation_shares.rf has 'R' populated.
+      - permutation_shares.rf has 'R' populated,
+      - v1.0.3: univariate_R2.partition_b.ridge and
+        permutation_shares.partition_b.ridge are populated. A cell written
+        before v1.0.3 has neither and is re-run, which is correct: the
+        partition-B Ridge and MLP fits cannot be recovered from what it
+        stored.
 
     Canon-side fields (R_hat_gap, sign_check, permutation_shares
     ridge/mlp) are NOT required to be complete -- those are cheap to
@@ -1242,6 +1436,13 @@ def _is_cell_rf_complete(cell_entry):
     perm_rf = cell_entry.get('permutation_shares', {}).get('rf')
     if not isinstance(perm_rf, dict) or 'R' not in perm_rf:
         return False
+    # v1.0.3
+    pb_u = (cell_entry.get('univariate_R2', {}) or {}).get('partition_b') or {}
+    if (pb_u.get('ridge') or {}).get('E') is None:
+        return False
+    pb_p = (cell_entry.get('permutation_shares', {}) or {}).get('partition_b') or {}
+    if not isinstance(pb_p.get('ridge'), dict):
+        return False
     return True
 
 
@@ -1255,11 +1456,27 @@ def _extract_rf_result_from_cell(cell_entry):
     rf_partition_raw_drops. _build_cell_entry doesn't consume
     either, so None is harmless."""
     td = cell_entry.get('target_dimensionality', {}) or {}
+    _pbu = (cell_entry.get('univariate_R2', {}) or {}).get('partition_b') or {}
+    _pbp = (cell_entry.get('permutation_shares', {}) or {}).get('partition_b') or {}
     return {
         'pool_dim':                cell_entry.get('pool_dim'),
         'n_rows':                  cell_entry.get('n_rows'),
         'r2_rf_E':                 cell_entry.get('univariate_R2', {}).get('rf', {}).get('E'),
         'r2_rf_S':                 cell_entry.get('univariate_R2', {}).get('rf', {}).get('S'),
+        # v1.0.3: partition-B Ridge/MLP, so a resumed cell rebuilds its
+        # unmixed asymmetry without refitting.
+        'r2_ridge_E_partition_b':  (_pbu.get('ridge') or {}).get('E'),
+        'r2_ridge_S_partition_b':  (_pbu.get('ridge') or {}).get('S'),
+        'r2_mlp_E_partition_b':    (_pbu.get('mlp') or {}).get('E'),
+        'r2_mlp_S_partition_b':    (_pbu.get('mlp') or {}).get('S'),
+        'ridge_alpha_E_partition_b': (_pbu.get('ridge_alpha') or {}).get('E'),
+        'ridge_alpha_S_partition_b': (_pbu.get('ridge_alpha') or {}).get('S'),
+        'ridge_partition_b':       _pbp.get('ridge'),
+        'mlp_partition_b':         _pbp.get('mlp'),
+        'joint_R2_held_out_ridge_b':
+            cell_entry.get('joint_R2_held_out', {}).get('ridge_partition_b'),
+        'joint_R2_held_out_mlp_b':
+            cell_entry.get('joint_R2_held_out', {}).get('mlp_partition_b'),
         'rf_joint_R2_train':       None,
         'rf_joint_R2_held_out':    cell_entry.get('joint_R2_held_out', {}).get('rf'),
         'rf_partition':            cell_entry.get('permutation_shares', {}).get('rf'),
@@ -1372,6 +1589,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default=OUT_PATH)
     ap.add_argument('--root', default=DATA)
+    ap.add_argument('--limit', type=int, default=0,
+                    help='v1.0.3: process only the first N cells. For smoke '
+                         'tests -- a limited run must not overwrite the '
+                         'released output, so pass --out as well.')
     args = ap.parse_args()
 
     if not os.path.isdir(args.root):
@@ -1383,6 +1604,10 @@ def main():
     # Discover all Q0042 cells
     pattern = os.path.join(args.root, '**', 'Q0042_decomposition.json')
     q42_files = sorted(glob.glob(pattern, recursive=True))
+    if args.limit:
+        q42_files = q42_files[:args.limit]
+        ui.warn(f"--limit {args.limit}: processing {len(q42_files)} cell(s) only; "
+                f"this output is not a complete Q0057")
     if not q42_files:
         ui.err(f"no Q0042 files found under {args.root}")
         return 1
@@ -1586,6 +1811,27 @@ def main():
             'rf_hyperparameters': RF_HYPERS,
             'mlp_hyperparameters': dict(MLP_HYPERS, hidden_layer_sizes=list(MLP_HYPERS['hidden_layer_sizes'])),
             'ridge_alpha': _ridge_policy.policy_label(),   # v1.0.2: Ridge shares come from Q0043 (results.json), fitted under ridge_policy
+            # v1.0.3: what the two protocols in this file mean.
+            'protocols': {
+                'collection_time': (
+                    "univariate_R2.ridge / .mlp and permutation_shares.ridge / "
+                    ".mlp: pulled from the canon run (run_channel_marginal, "
+                    "results.json). In-sample on the full row set, at the "
+                    "cell's native target dimensionality."),
+                'partition_b': (
+                    "univariate_R2.partition_b, permutation_shares."
+                    "partition_b, asymmetry.partition_b, R_hat_gap."
+                    "partition_b, sign_check.partition_b and "
+                    "cross_cell_aggregates.partition_b: Ridge, MLP and RF all "
+                    "refitted here on one 80/20 split per cell (random_state="
+                    f"{RANDOM_STATE}), shared StandardScalers, shared target-"
+                    "PCA to 64 dims where native pool_dim > 64, and one shared "
+                    "permutation sequence scored by all three models. This is "
+                    "the protocol to read for between-class comparisons; the "
+                    "collection-time fields are kept for provenance and are "
+                    "not commensurate with the RF numbers."),
+            },
+            'ridge_alpha_partition_b': _ridge_policy.policy_label(),
             # v0.81.1.4: RKHS hyperparameter spec (Matérn ν grid + RBF
             # length-scale grid). RKHS_median is the per-channel median
             # share across the grid; range under rkhs_kernel_grid block

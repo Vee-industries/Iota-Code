@@ -9,7 +9,7 @@ authors:
     email: kvsudbury@gmail.com
 repository-code: "https://github.com/Vee-industries/Iota-Code"
 url: "https://github.com/Vee-industries/Iota-Code"
-license: "LicenseRef-PolyForm-Noncommercial-1.0.0"
+license: Apache-2.0
 keywords:
   - transformers
   - mechanistic-interpretability
