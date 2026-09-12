@@ -1,11 +1,12 @@
 # data/paper/
 
-The released paper-facing data: everything the three papers quote a number from, plus the
+The released paper-facing data: everything the two papers quote a number from, plus the
 figures. About 12 MB, no hidden-state arrays. Tracked in git since v1.0.1 so a fresh clone can
 check every number in the papers without collecting anything (`python reproduce.py --only verify`).
 
-Label convention for the papers: A = technical note on R (2026a), B = apparatus (2026b),
-C = One iota (2026c).
+Label convention for the papers: B = apparatus (2026b), C = One iota (2026c). The formal
+treatment of R that earlier drafts cited as a separate technical note (2026a) is Appendix F
+of B; there is no separate A.
 
 ## Layout
 

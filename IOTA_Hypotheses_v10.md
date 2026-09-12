@@ -6,7 +6,8 @@ Hypotheses and Experimental Design
 
 > **Authority for paper claims (updated 2026-09-11):** the papers are
 > the claims of record: the apparatus paper (Vaillancourt 2026b, §2.3
-> and §10) and the technical note (2026a). This document is the
+> and §10), whose Appendix F carries the formal treatment of R that
+> earlier drafts cited as a separate technical note. This document is the
 > hypothesis registry: it records what was asked, in the language of
 > March-April 2026 when the hypotheses were registered. Where the two
 > differ, the papers win for what is claimed; this document wins for
