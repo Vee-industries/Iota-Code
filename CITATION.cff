@@ -31,13 +31,6 @@ preferred-citation:
   notes: "Submitted to TMLR; arXiv preprint"
 references:
   - type: generic
-    title: "The Remainder R: Formal Properties of an Ordered Conditional Mutual-Information Share"
-    authors:
-      - given-names: Kevin
-        family-names: Vaillancourt
-    year: 2026
-    notes: "Submitted to Information and Inference; arXiv preprint"
-  - type: generic
     title: "One iota: transcript-mediated hidden-state carryover in transformer language models is measurable"
     authors:
       - given-names: Kevin
