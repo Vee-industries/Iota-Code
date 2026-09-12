@@ -31,7 +31,7 @@ preferred-citation:
   notes: "Submitted to TMLR; arXiv preprint"
 references:
   - type: generic
-    title: "Formal Properties of the Structural Remainder R: An Information-Theoretic Measurement Target"
+    title: "The Remainder R: Formal Properties of an Ordered Conditional Mutual-Information Share"
     authors:
       - given-names: Kevin
         family-names: Vaillancourt
