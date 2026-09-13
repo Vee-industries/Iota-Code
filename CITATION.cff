@@ -18,8 +18,8 @@ keywords:
   - hidden-state-analysis
   - AI-alignment
   - measurement-apparatus
-version: 1.0.2
-date-released: 2026-09-11
+version: 1.0.3
+date-released: 2026-09-12
 preferred-citation:
   type: generic
   title: "IOTA: a calibrated apparatus for chain-rule decomposition of predictive information in transformer hidden states"
